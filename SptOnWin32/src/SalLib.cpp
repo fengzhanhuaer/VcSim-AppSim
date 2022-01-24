@@ -88,7 +88,9 @@ void MkGbkTable()
 }
 #endif
 #if 1
-#include "SalFontCode.c"
+const uint16 GbkFirstByteLen = 0xff - 0x81;
+const uint16 GbkSecondByteLen = 0xff - 0x40;
+extern uint16 Gbk2Unicode[GbkFirstByteLen][GbkSecondByteLen];
 int32 spt::StrGBK2UCS2(uint16* Dst, const char* Sur, int32 BufUint16Size)
 {
 	uint16* dst = Dst;
@@ -102,14 +104,14 @@ int32 spt::StrGBK2UCS2(uint16* Dst, const char* Sur, int32 BufUint16Size)
 			{
 				*dst = 0;
 				break;
-			}		
+			}
 			if ((uint8)sur[0] < 0x80)
 			{
 				*dst = *sur++;
 			}
-			else if (((uint8)sur[0] >= (uint8)0x81) &&((uint8)sur[0] < (uint8)0xff)&&((uint8)sur[1] < (uint8)0xff)&&((uint8)sur[1] >= (uint8)0x40))
+			else if (((uint8)sur[0] >= (uint8)0x81) && ((uint8)sur[0] < (uint8)0xff) && ((uint8)sur[1] < (uint8)0xff) && ((uint8)sur[1] >= (uint8)0x40))
 			{
-				*dst = Gbk2Unicode[(uint8)((uint8)sur[0]- (uint8)0x81)][(uint8)((uint8)sur[1]- (uint8)0x40)];
+				*dst = Gbk2Unicode[(uint8)((uint8)sur[0] - (uint8)0x81)][(uint8)((uint8)sur[1] - (uint8)0x40)];
 				sur += 2;
 			}
 			else
@@ -169,13 +171,13 @@ int32 spt::StrGBK2UTF8(char* Dst, const char* Sur, int32 BufLen)
 			}
 			else if (code <= 0x7ff)
 			{
-				*dst++ = 0xc0 | ((code>>6) & 0x1f);
+				*dst++ = 0xc0 | ((code >> 6) & 0x1f);
 				*dst++ = 0x80 | (code & 0x3f);
 			}
-			else 
+			else
 			{
 				*dst++ = 0xe0 | ((code >> 12) & 0xf);
-				*dst++ = 0x80 | (((code&0xfff) >> 6) & 0x3f);
+				*dst++ = 0x80 | (((code & 0xfff) >> 6) & 0x3f);
 				*dst++ = 0x80 | (code & 0x3f);
 			}
 			len++;

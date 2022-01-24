@@ -2016,7 +2016,6 @@ int32 spt::SalFwData::SavePubHdrFile(const char* FileName, SalFwRecordCfg* FwCfg
 	for (uint32 j = 1; j < SampWriter; j++)
 	{
 		SalFwSampData1Point* p = PointAt(j);
-		bool8 rec = 0;
 		uint32* pdata = &p->Data[AngCfgNum].u32;
 		uint32* pbfdata = &PointAt(j - 1)->Data[AngCfgNum].u32;
 		for (uint32 i = 0; i < DigCfgNum; i++)
