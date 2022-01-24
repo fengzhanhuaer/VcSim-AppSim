@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="GB2312"?>
+<Ied Ser="33755" Stamp="3375563778378040000000">
+    <Group InstId="0" GroupId="1" Name="软件平台状态量" DesName="ApiStatusGroup" IoType="EIOT_STATUS" IoTypeIndex="1" InstNum="14">
+        <Inst InstId="0" GroupId="0" Name="液晶通讯异常" DesName="E_SAS_LcdCmmErr" sAddr="ApiStatusGroup.E_SAS_LcdCmmErr"/>
+        <Inst InstId="1" GroupId="0" Name="虚拟液晶通讯异常" DesName="E_SAS_VirLcdCmmErr" sAddr="ApiStatusGroup.E_SAS_VirLcdCmmErr"/>
+        <Inst InstId="2" GroupId="0" Name="采样序号跳变" DesName="E_SAS_SampCntJump" sAddr="ApiStatusGroup.E_SAS_SampCntJump"/>
+        <Inst InstId="3" GroupId="0" Name="SV发送同步状态" DesName="E_SAS_HostSvSynState" sAddr="ApiStatusGroup.E_SAS_HostSvSynState"/>
+        <Inst InstId="4" GroupId="0" Name="B码校验异常" DesName="E_SAS_HostBCodeCheckAlarm" sAddr="ApiStatusGroup.E_SAS_HostBCodeCheckAlarm"/>
+        <Inst InstId="5" GroupId="0" Name="B码精度异常" DesName="E_SAS_HostBCodePrecisionAlarm" sAddr="ApiStatusGroup.E_SAS_HostBCodePrecisionAlarm"/>
+        <Inst InstId="6" GroupId="0" Name="对时信号状态" DesName="E_SAS_HostTPortAlarm" sAddr="ApiStatusGroup.E_SAS_HostTPortAlarm"/>
+        <Inst InstId="7" GroupId="0" Name="对时服务状态" DesName="E_SAS_HostTSrvAlarm" sAddr="ApiStatusGroup.E_SAS_HostTSrvAlarm"/>
+        <Inst InstId="8" GroupId="0" Name="对时帧跳变异常" DesName="E_SAS_HostContAlarm" sAddr="ApiStatusGroup.E_SAS_HostContAlarm"/>
+        <Inst InstId="9" GroupId="0" Name="CCD文件解析异常" DesName="E_SAS_CCDFileParseAlarm" sAddr="ApiStatusGroup.E_SAS_CCDFileParseAlarm"/>
+        <Inst InstId="10" GroupId="0" Name="CCD文件CRC异常" DesName="E_SAS_CCDFileCrcAlarm" sAddr="ApiStatusGroup.E_SAS_CCDFileCrcAlarm"/>
+        <Inst InstId="11" GroupId="0" Name="账号文件上电导入异常" DesName="E_SAS_UserFileLoadAlarm" sAddr="ApiStatusGroup.E_SAS_UserFileLoadAlarm"/>
+        <Inst InstId="12" GroupId="0" Name="内存申请异常" DesName="E_SAS_RamAllocErr" sAddr="ApiStatusGroup.E_SAS_RamAllocErr"/>
+        <Inst InstId="13" GroupId="0" Name="内存自检异常" DesName="E_SAS_RamCheckErr" sAddr="ApiStatusGroup.E_SAS_RamCheckErr"/>
+    </Group>
+    <Group InstId="0" GroupId="2" Name="保护告警信号" DesName="AppEventWarnGroup" IoType="EIOT_EVENT" IoTypeIndex="2" InstNum="2">
+        <Inst InstId="0" GroupId="0" Name="告警测试1" DesName="E_Test1" sAddr="AppEventWarnGroup.E_Test1"/>
+        <Inst InstId="1" GroupId="0" Name="告警测试2" DesName="E_Test2" sAddr="AppEventWarnGroup.E_Test2"/>
+    </Group>
+    <Group InstId="0" GroupId="3" Name="保护软压板" DesName="SoftRelayEnGroup" IoType="EIOT_PARA" IoTypeIndex="3" InstNum="3">
+        <Inst InstId="0" GroupId="0" Name="测试1" DesName="E_SRE_test1" Max="1" Def="0" Min="0" DotNum="0" DataOffSet="0" ValueType="0" Units="" sAddr="SoftRelayEnGroup.E_SRE_test1"/>
+        <Inst InstId="1" GroupId="0" Name="测试2" DesName="E_SRE_test2" Max="1" Def="0" Min="0" DotNum="0" DataOffSet="1" ValueType="0" Units="" sAddr="SoftRelayEnGroup.E_SRE_test2"/>
+        <Inst InstId="2" GroupId="0" Name="定值区号" DesName="E_PP_Zone" Max="16" Def="1" Min="1" DotNum="0" DataOffSet="2" ValueType="12" Units="" sAddr="SoftRelayEnGroup.E_PP_Zone"/>
+    </Group>
+    <Group InstId="1" GroupId="3" Name="保护定值" DesName="ProtParaGroup" IoType="EIOT_PARA" IoTypeIndex="3" InstNum="7">
+        <Inst InstId="0" GroupId="1" Name="测试1" DesName="E_PP_test1" Max="1" Def="0" Min="-50" DotNum="0" DataOffSet="0" ValueType="0" Units="A" sAddr="ProtParaGroup.E_PP_test1"/>
+        <Inst InstId="1" GroupId="1" Name="测试2" DesName="E_PP_test2" Max="100" Def="50" Min="50" DotNum="0" DataOffSet="1" ValueType="0" Units="" sAddr="ProtParaGroup.E_PP_test2"/>
+        <Inst InstId="2" GroupId="1" Name="装置名称" DesName="UnitName" Max="32" Def="7456216" Min="0" DotNum="0" DataOffSet="2" ValueType="3" Units="" sAddr="ProtParaGroup.UnitName"/>
+        <Inst InstId="3" GroupId="1" Name="CT二次值" DesName="E_PP_Ct" Max="1" Def="0" Min="0" DotNum="0" DataOffSet="10" ValueType="2" Units="A" sAddr="ProtParaGroup.E_PP_Ct"/>
+        <Inst InstId="4" GroupId="1" Name="电流值" DesName="E_PP_Current" Max="20000" Def="12345" Min="50" DotNum="3" DataOffSet="11" ValueType="0" Units="A" sAddr="ProtParaGroup.E_PP_Current"/>
+        <Inst InstId="5" GroupId="1" Name="跳闸矩阵" DesName="E_PP_Bit" Max="65535" Def="15" Min="0" DotNum="0" DataOffSet="12" ValueType="9" Units="" sAddr="ProtParaGroup.E_PP_Bit"/>
+        <Inst InstId="6" GroupId="1" Name="Hex定值" DesName="E_PP_Hex" Max="65535" Def="15" Min="0" DotNum="0" DataOffSet="13" ValueType="6" Units="" sAddr="ProtParaGroup.E_PP_Hex"/>
+    </Group>
+    <Group InstId="2" GroupId="3" Name="Ptct参数" DesName="PtctParaGroup" IoType="EIOT_PARA" IoTypeIndex="3" InstNum="2">
+        <Inst InstId="0" GroupId="2" Name="测试1" DesName="E_PP_test1" Max="-1294967296" Def="0" Min="50" DotNum="0" DataOffSet="0" ValueType="1" Units="A" sAddr="PtctParaGroup.E_PP_test1"/>
+        <Inst InstId="1" GroupId="2" Name="测试1" DesName="E_PP_test1" Max="-1294967296" Def="0" Min="50" DotNum="0" DataOffSet="1" ValueType="1" Units="A" sAddr="PtctParaGroup.E_PP_test1"/>
+    </Group>
+    <Group InstId="0" GroupId="4" Name="液晶显示灯" DesName="hmiLedGroup" IoType="EIOT_HMILED" IoTypeIndex="4" InstNum="5">
+        <Inst InstId="0" GroupId="0" Name="运行" DesName="hmiLed1" Row="0" Col="0" Color="E_GREEN" HoldOn="0" sAddr1="hmiLedGroup.hmiLed1"/>
+        <Inst InstId="1" GroupId="0" Name="告警" DesName="hmiLed1" Row="1" Col="1" Color="E_RED" HoldOn="0" sAddr1="hmiLedGroup.hmiLed1"/>
+        <Inst InstId="2" GroupId="0" Name="异常" DesName="hmiLed1" Row="2" Col="2" Color="E_YELLOW" HoldOn="0" sAddr1="hmiLedGroup.hmiLed1"/>
+        <Inst InstId="3" GroupId="0" Name="跳闸" DesName="hmiLed1" Row="4" Col="3" Color="E_GREEN" HoldOn="1" sAddr1="hmiLedGroup.hmiLed1"/>
+        <Inst InstId="4" GroupId="0" Name="失电" DesName="hmiLed1" Row="6" Col="4" Color="E_RED" HoldOn="0" sAddr1="hmiLedGroup.hmiLed1"/>
+    </Group>
+    <Group InstId="0" GroupId="5" Name="TaskGroup" DesName="TaskGroup" IoType="EIOT_TASK" IoTypeIndex="5" InstNum="13">
+        <Inst InstId="0" GroupId="0" Name="tLogTask" DesName="tLogTask" Priority="140" StackSize="1048576" sAddr="TaskGroup.tLogTask"/>
+        <Inst InstId="1" GroupId="0" Name="tDate" DesName="tDate" Priority="140" StackSize="524288" sAddr="TaskGroup.tDate"/>
+        <Inst InstId="2" GroupId="0" Name="tEventSave" DesName="tEventSave" Priority="60" StackSize="1048576" sAddr="TaskGroup.tEventSave"/>
+        <Inst InstId="3" GroupId="0" Name="tSjRecord" DesName="tSjRecord" Priority="90" StackSize="1048576" sAddr="TaskGroup.tSjRecord"/>
+        <Inst InstId="4" GroupId="0" Name="tHmi" DesName="tHmi" Priority="155" StackSize="2097152" sAddr="TaskGroup.tHmi"/>
+        <Inst InstId="5" GroupId="0" Name="tAppShd" DesName="tAppShd" Priority="5" StackSize="5242880" sAddr="TaskGroup.tAppShd"/>
+        <Inst InstId="6" GroupId="0" Name="tParaSave" DesName="tParaSave" Priority="100" StackSize="1048576" sAddr="TaskGroup.tParaSave"/>
+        <Inst InstId="7" GroupId="0" Name="tDbgMain" DesName="tDbgMain" Priority="150" StackSize="2097152" sAddr="TaskGroup.tDbgMain"/>
+        <Inst InstId="8" GroupId="0" Name="tSptCmm" DesName="tSptCmm" Priority="70" StackSize="2097152" sAddr="TaskGroup.tSptCmm"/>
+        <Inst InstId="9" GroupId="0" Name="tCheck" DesName="tCheck" Priority="200" StackSize="1048576" sAddr="TaskGroup.tCheck"/>
+        <Inst InstId="10" GroupId="0" Name="tFwSave" DesName="tFwSave" Priority="60" StackSize="2097152" sAddr="TaskGroup.tFwSave"/>
+        <Inst InstId="11" GroupId="0" Name="tPubCmm" DesName="tPubCmm" Priority="90" StackSize="2097152" sAddr="TaskGroup.tPubCmm"/>
+        <Inst InstId="12" GroupId="0" Name="tMonitor" DesName="tMonitor" Priority="55" StackSize="1048576" sAddr="TaskGroup.tMonitor"/>
+    </Group>
+    <Group InstId="0" GroupId="6" Name="LogGroup" DesName="LogGroup" IoType="EIOT_LOG" IoTypeIndex="6" InstNum="8">
+        <Inst InstId="0" GroupId="0" Name="LogReal" DesName="LogReal" sAddr="LogGroup.LogReal"/>
+        <Inst InstId="1" GroupId="0" Name="LogMsg" DesName="LogMsg" sAddr="LogGroup.LogMsg"/>
+        <Inst InstId="2" GroupId="0" Name="LogWarn" DesName="LogWarn" sAddr="LogGroup.LogWarn"/>
+        <Inst InstId="3" GroupId="0" Name="LogErr" DesName="LogErr" sAddr="LogGroup.LogErr"/>
+        <Inst InstId="4" GroupId="0" Name="LogTest" DesName="LogTest" sAddr="LogGroup.LogTest"/>
+        <Inst InstId="5" GroupId="0" Name="LogApp" DesName="LogApp" sAddr="LogGroup.LogApp"/>
+        <Inst InstId="6" GroupId="0" Name="LogLoad" DesName="LogLoad" sAddr="LogGroup.LogLoad"/>
+        <Inst InstId="7" GroupId="0" Name="LogAct" DesName="LogAct" sAddr="LogGroup.LogAct"/>
+    </Group>
+    <Group InstId="0" GroupId="7" Name="模拟量输入帧" DesName="AngFrameIn0" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="17">
+        <Inst InstId="0" GroupId="0" Name="一母A相电流" DesName="AngNorAngSampIn0" Node="0" sAddr1="AngFrameIn0.AngNorAngSampIn0" FrameIndex="0" sAddr2="AngNorAngIn0.AngNorAngSampIn0"/>
+        <Inst InstId="1" GroupId="0" Name="一母B相电流" DesName="AngNorAngSampIn1" Node="1" sAddr1="AngFrameIn0.AngNorAngSampIn1" FrameIndex="1" sAddr2="AngNorAngIn0.AngNorAngSampIn1"/>
+        <Inst InstId="2" GroupId="0" Name="一母C相电流" DesName="AngNorAngSampIn2" Node="2" sAddr1="AngFrameIn0.AngNorAngSampIn2" FrameIndex="2" sAddr2="AngNorAngIn0.AngNorAngSampIn2"/>
+        <Inst InstId="3" GroupId="0" Name="一母A相电压" DesName="AngNorAngSampIn3" Node="3" sAddr1="AngFrameIn0.AngNorAngSampIn3" FrameIndex="3" sAddr2="AngNorAngIn0.AngNorAngSampIn3"/>
+        <Inst InstId="4" GroupId="0" Name="一母B相电压" DesName="AngNorAngSampIn4" Node="4" sAddr1="AngFrameIn0.AngNorAngSampIn4" FrameIndex="4" sAddr2="AngNorAngIn0.AngNorAngSampIn4"/>
+        <Inst InstId="5" GroupId="0" Name="一母C相电压" DesName="AngNorAngSampIn5" Node="5" sAddr1="AngFrameIn0.AngNorAngSampIn5" FrameIndex="5" sAddr2="AngNorAngIn0.AngNorAngSampIn5"/>
+        <Inst InstId="6" GroupId="0" Name="二母A相电流" DesName="AngNorAngSampIn6" Node="0" sAddr1="AngFrameIn0.AngNorAngSampIn6" FrameIndex="0" sAddr2="AngNorAngIn1.AngNorAngSampIn6"/>
+        <Inst InstId="7" GroupId="0" Name="二母A相电流" DesName="AngNorAngSampIn7" Node="1" sAddr1="AngFrameIn0.AngNorAngSampIn7" FrameIndex="1" sAddr2="AngNorAngIn1.AngNorAngSampIn7"/>
+        <Inst InstId="8" GroupId="0" Name="二母A相电流" DesName="AngNorAngSampIn8" Node="2" sAddr1="AngFrameIn0.AngNorAngSampIn8" FrameIndex="2" sAddr2="AngNorAngIn1.AngNorAngSampIn8"/>
+        <Inst InstId="9" GroupId="0" Name="二母A相电压" DesName="AngNorAngSampIn9" Node="3" sAddr1="AngFrameIn0.AngNorAngSampIn9" FrameIndex="3" sAddr2="AngNorAngIn1.AngNorAngSampIn9"/>
+        <Inst InstId="10" GroupId="0" Name="二母B相电压" DesName="AngNorAngSampIn10" Node="4" sAddr1="AngFrameIn0.AngNorAngSampIn10" FrameIndex="4" sAddr2="AngNorAngIn1.AngNorAngSampIn10"/>
+        <Inst InstId="11" GroupId="0" Name="二母C相电压" DesName="AngNorAngSampIn11" Node="5" sAddr1="AngFrameIn0.AngNorAngSampIn11" FrameIndex="5" sAddr2="AngNorAngIn1.AngNorAngSampIn11"/>
+        <Inst InstId="12" GroupId="0" Name="SV一母A相电流" DesName="SvAngIn2" Node="0" sAddr1="AngFrameIn0.SvAngIn2" FrameIndex="0"/>
+        <Inst InstId="13" GroupId="0" Name="SV一母B相电流" DesName="SvAngIn3" Node="1" sAddr1="AngFrameIn0.SvAngIn3" FrameIndex="1"/>
+        <Inst InstId="14" GroupId="0" Name="SV一母C相电流" DesName="SvAngIn4" Node="2" sAddr1="AngFrameIn0.SvAngIn4" FrameIndex="2"/>
+        <Inst InstId="15" GroupId="0" Name="SV一母A相电压" DesName="SvAngIn5" Node="3" sAddr1="AngFrameIn0.SvAngIn5" FrameIndex="3"/>
+        <Inst InstId="16" GroupId="0" Name="SV一母B相电压" DesName="SvAngIn6" Node="4" sAddr1="AngFrameIn0.SvAngIn6" FrameIndex="4"/>
+    </Group>
+    <Group InstId="1" GroupId="7" Name="模拟量输入板卡1" DesName="AngNorAngIn0" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="6">
+        <Inst InstId="0" GroupId="0" Name="一母A相电流" DesName="AngNorAngSampIn0" Node="0" sAddr1="AngFrameIn0.AngNorAngSampIn0" FrameIndex="0" sAddr2="AngNorAngIn0.AngNorAngSampIn0"/>
+        <Inst InstId="1" GroupId="0" Name="一母B相电流" DesName="AngNorAngSampIn1" Node="1" sAddr1="AngFrameIn0.AngNorAngSampIn1" FrameIndex="1" sAddr2="AngNorAngIn0.AngNorAngSampIn1"/>
+        <Inst InstId="2" GroupId="0" Name="一母C相电流" DesName="AngNorAngSampIn2" Node="2" sAddr1="AngFrameIn0.AngNorAngSampIn2" FrameIndex="2" sAddr2="AngNorAngIn0.AngNorAngSampIn2"/>
+        <Inst InstId="3" GroupId="0" Name="一母A相电压" DesName="AngNorAngSampIn3" Node="3" sAddr1="AngFrameIn0.AngNorAngSampIn3" FrameIndex="3" sAddr2="AngNorAngIn0.AngNorAngSampIn3"/>
+        <Inst InstId="4" GroupId="0" Name="一母B相电压" DesName="AngNorAngSampIn4" Node="4" sAddr1="AngFrameIn0.AngNorAngSampIn4" FrameIndex="4" sAddr2="AngNorAngIn0.AngNorAngSampIn4"/>
+        <Inst InstId="5" GroupId="0" Name="一母C相电压" DesName="AngNorAngSampIn5" Node="5" sAddr1="AngFrameIn0.AngNorAngSampIn5" FrameIndex="5" sAddr2="AngNorAngIn0.AngNorAngSampIn5"/>
+    </Group>
+    <Group InstId="2" GroupId="7" Name="模拟量输入板卡2" DesName="AngNorAngIn1" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="6">
+        <Inst InstId="6" GroupId="0" Name="二母A相电流" DesName="AngNorAngSampIn6" Node="0" sAddr1="AngFrameIn0.AngNorAngSampIn6" FrameIndex="0" sAddr2="AngNorAngIn1.AngNorAngSampIn6"/>
+        <Inst InstId="7" GroupId="0" Name="二母A相电流" DesName="AngNorAngSampIn7" Node="1" sAddr1="AngFrameIn0.AngNorAngSampIn7" FrameIndex="1" sAddr2="AngNorAngIn1.AngNorAngSampIn7"/>
+        <Inst InstId="8" GroupId="0" Name="二母A相电流" DesName="AngNorAngSampIn8" Node="2" sAddr1="AngFrameIn0.AngNorAngSampIn8" FrameIndex="2" sAddr2="AngNorAngIn1.AngNorAngSampIn8"/>
+        <Inst InstId="9" GroupId="0" Name="二母A相电压" DesName="AngNorAngSampIn9" Node="3" sAddr1="AngFrameIn0.AngNorAngSampIn9" FrameIndex="3" sAddr2="AngNorAngIn1.AngNorAngSampIn9"/>
+        <Inst InstId="10" GroupId="0" Name="二母B相电压" DesName="AngNorAngSampIn10" Node="4" sAddr1="AngFrameIn0.AngNorAngSampIn10" FrameIndex="4" sAddr2="AngNorAngIn1.AngNorAngSampIn10"/>
+        <Inst InstId="11" GroupId="0" Name="二母C相电压" DesName="AngNorAngSampIn11" Node="5" sAddr1="AngFrameIn0.AngNorAngSampIn11" FrameIndex="5" sAddr2="AngNorAngIn1.AngNorAngSampIn11"/>
+    </Group>
+    <Group InstId="3" GroupId="7" Name="模拟量输入数据集1" DesName="VirSvBoard0" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="4" GroupId="7" Name="模拟量输入数据集2" DesName="VirSvBoard0" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="5" GroupId="7" Name="模拟量输入数据集3" DesName="VirSvBoard1" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="6" GroupId="7" Name="模拟量输入数据集4" DesName="VirSvBoard2" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="7" GroupId="7" Name="模拟量输入数据集5" DesName="VirSvBoard3" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="8" GroupId="7" Name="虚拟数据集" DesName="virSvOutBoard" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="15">
+        <Inst InstId="0" GroupId="8" Name="一母A相电电压" DesName="SvSendDataSetCell0" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell0" FrameIndex="0"/>
+        <Inst InstId="1" GroupId="8" Name="一母B相电电压" DesName="SvSendDataSetCell1" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell1" FrameIndex="1"/>
+        <Inst InstId="2" GroupId="8" Name="一母C相电电压" DesName="SvSendDataSetCell2" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell2" FrameIndex="2"/>
+        <Inst InstId="3" GroupId="8" Name="一母A相电电压" DesName="SvSendDataSetCell3" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell3" FrameIndex="3"/>
+        <Inst InstId="4" GroupId="8" Name="一母B相电电压" DesName="SvSendDataSetCell4" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell4" FrameIndex="4"/>
+        <Inst InstId="5" GroupId="8" Name="一母C相电电压" DesName="SvSendDataSetCell5" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell5" FrameIndex="5"/>
+        <Inst InstId="6" GroupId="8" Name="一母A相电电压" DesName="SvSendDataSetCell6" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell6" FrameIndex="6"/>
+        <Inst InstId="7" GroupId="8" Name="一母B相电电压" DesName="SvSendDataSetCell7" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell7" FrameIndex="7"/>
+        <Inst InstId="8" GroupId="8" Name="一母C相电电压" DesName="SvSendDataSetCell8" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell8" FrameIndex="8"/>
+        <Inst InstId="9" GroupId="8" Name="一母A相电电压" DesName="SvSendDataSetCell9" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell9" FrameIndex="9"/>
+        <Inst InstId="10" GroupId="8" Name="一母B相电电压" DesName="SvSendDataSetCell10" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell10" FrameIndex="10"/>
+        <Inst InstId="11" GroupId="8" Name="一母C相电电压" DesName="SvSendDataSetCell11" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell11" FrameIndex="11"/>
+        <Inst InstId="12" GroupId="8" Name="一母A相电电压" DesName="SvSendDataSetCell12" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell12" FrameIndex="12"/>
+        <Inst InstId="13" GroupId="8" Name="一母B相电电压" DesName="SvSendDataSetCell13" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell13" FrameIndex="13"/>
+        <Inst InstId="14" GroupId="8" Name="一母C相电电压" DesName="SvSendDataSetCell14" Node="0" sAddr1="virSvOutBoard.SvSendDataSetCell14" FrameIndex="14"/>
+    </Group>
+    <Group InstId="9" GroupId="7" Name="一母发送数据集" DesName="dsSV1" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="10" GroupId="7" Name="遥信开入板卡1" DesName="NormalStateBoardIn1" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="2">
+        <Inst InstId="0" GroupId="10" Name="遥信开入1" DesName="NormalBoolIn1" Node="0" sAddr1="NormalStateBoardIn1.NormalBoolIn1" FrameIndex="0"/>
+        <Inst InstId="1" GroupId="10" Name="遥信开入2" DesName="NormalBoolIn2" Node="1" sAddr1="NormalStateBoardIn1.NormalBoolIn2" FrameIndex="0"/>
+    </Group>
+    <Group InstId="11" GroupId="7" Name="遥信开入板卡2" DesName="NormalStateBoardIn2" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="8">
+        <Inst InstId="0" GroupId="11" Name="遥信开入3" DesName="NormalBoolIn3" Node="0" sAddr1="NormalStateBoardIn2.NormalBoolIn3" FrameIndex="0"/>
+        <Inst InstId="1" GroupId="11" Name="遥信开入4" DesName="NormalBoolIn4" Node="1" sAddr1="NormalStateBoardIn2.NormalBoolIn4" FrameIndex="0"/>
+        <Inst InstId="2" GroupId="11" Name="遥信开入5" DesName="NormalBoolIn5" Node="2" sAddr1="NormalStateBoardIn2.NormalBoolIn5" FrameIndex="0"/>
+        <Inst InstId="3" GroupId="11" Name="遥信开入6" DesName="NormalBoolIn6" Node="3" sAddr1="NormalStateBoardIn2.NormalBoolIn6" FrameIndex="0"/>
+        <Inst InstId="4" GroupId="11" Name="遥信开入7" DesName="NormalBoolIn7" Node="4" sAddr1="NormalStateBoardIn2.NormalBoolIn7" FrameIndex="0"/>
+        <Inst InstId="5" GroupId="11" Name="遥信开入8" DesName="NormalBoolIn8" Node="5" sAddr1="NormalStateBoardIn2.NormalBoolIn8" FrameIndex="0"/>
+        <Inst InstId="6" GroupId="11" Name="遥信开入9" DesName="NormalBoolIn9" Node="6" sAddr1="NormalStateBoardIn2.NormalBoolIn9" FrameIndex="0"/>
+        <Inst InstId="7" GroupId="11" Name="遥信开入10" DesName="NormalBoolIn10" Node="7" sAddr1="NormalStateBoardIn2.NormalBoolIn10" FrameIndex="0"/>
+    </Group>
+    <Group InstId="12" GroupId="7" Name="直流量板卡" DesName="AppDcInBoard[0]" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="2">
+        <Inst InstId="0" GroupId="12" Name="直流量开入1" DesName="AppNormalDcIn[0]" sAddr="AppDcInBoard[0].AppNormalDcIn[0]"/>
+        <Inst InstId="1" GroupId="12" Name="直流量开入2" DesName="AppNormalDcIn[1]" sAddr="AppDcInBoard[0].AppNormalDcIn[1]"/>
+    </Group>
+    <Group InstId="13" GroupId="7" Name="开出板卡1" DesName="NorDoBoard1" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="1">
+        <Inst InstId="0" GroupId="13" Name="开出1" DesName="NorDoOut1" Node="0" sAddr1="NorDoBoard1.NorDoOut1" FrameIndex="0"/>
+    </Group>
+    <Group InstId="14" GroupId="7" Name="开出板卡2" DesName="NorDoBoard2" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="1">
+        <Inst InstId="0" GroupId="14" Name="开出2" DesName="NorDoOut2" Node="1" sAddr1="NorDoBoard2.NorDoOut2" FrameIndex="0"/>
+    </Group>
+    <Group InstId="15" GroupId="7" Name="开出板卡3" DesName="NorDoBoard3" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="1">
+        <Inst InstId="0" GroupId="15" Name="开出3" DesName="NorDoOut3" Node="2" sAddr1="NorDoBoard3.NorDoOut3" FrameIndex="0"/>
+    </Group>
+    <Group InstId="16" GroupId="7" Name="开出板卡4" DesName="NorDoBoard4" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="1">
+        <Inst InstId="0" GroupId="16" Name="开出4" DesName="NorDoOut4" Node="3" sAddr1="NorDoBoard4.NorDoOut4" FrameIndex="0"/>
+    </Group>
+    <Group InstId="17" GroupId="7" Name="开出板卡5" DesName="NorDoBoard5" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="6">
+        <Inst InstId="0" GroupId="17" Name="开出5" DesName="NorDoOut5" Node="4" sAddr1="NorDoBoard5.NorDoOut5" FrameIndex="0"/>
+        <Inst InstId="1" GroupId="17" Name="开出6" DesName="NorDoOut6" Node="5" sAddr1="NorDoBoard5.NorDoOut6" FrameIndex="0"/>
+        <Inst InstId="2" GroupId="17" Name="开出7" DesName="NorDoOut7" Node="6" sAddr1="NorDoBoard5.NorDoOut7" FrameIndex="0"/>
+        <Inst InstId="3" GroupId="17" Name="开出8" DesName="NorDoOut8" Node="7" sAddr1="NorDoBoard5.NorDoOut8" FrameIndex="0"/>
+        <Inst InstId="4" GroupId="17" Name="开出9" DesName="NorDoOut9" Node="8" sAddr1="NorDoBoard5.NorDoOut9" FrameIndex="0"/>
+        <Inst InstId="5" GroupId="17" Name="开出10" DesName="NorDoOut10" Node="9" sAddr1="NorDoBoard5.NorDoOut10" FrameIndex="0"/>
+    </Group>
+    <Group InstId="18" GroupId="7" Name="GOOSE输出帧" DesName="GoOutFrame[0]" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="5">
+        <Inst InstId="0" GroupId="18" Name="GO1" DesName="GoOutCell1" Node="0" sAddr1="GoOutFrame[0].GoOutCell1" FrameIndex="0"/>
+        <Inst InstId="1" GroupId="18" Name="GO2" DesName="GoOutCell2" Node="0" sAddr1="GoOutFrame[0].GoOutCell2" FrameIndex="0"/>
+        <Inst InstId="2" GroupId="18" Name="GO3" DesName="GoOutCell3" Node="0" sAddr1="GoOutFrame[0].GoOutCell3" FrameIndex="0"/>
+        <Inst InstId="3" GroupId="18" Name="GO4" DesName="GoOutCell4" Node="0" sAddr1="GoOutFrame[0].GoOutCell4" FrameIndex="0"/>
+        <Inst InstId="4" GroupId="18" Name="GO5" DesName="GoOutCell5" Node="0" sAddr1="GoOutFrame[0].GoOutCell5" FrameIndex="0"/>
+    </Group>
+    <Group InstId="19" GroupId="7" Name="Go数据集1" DesName="dsGOOSE1" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="20" GroupId="7" Name="Go数据集2" DesName="dsGOOSE2" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="21" GroupId="7" Name="Go数据集3" DesName="dsGOOSE3" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="22" GroupId="7" Name="Go数据集4" DesName="dsGOOSE4" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="23" GroupId="7" Name="Go数据集5" DesName="dsGOOSE5" IoType="EIOT_HalIo" IoTypeIndex="7" InstNum="0"/>
+    <Group InstId="0" GroupId="8" Name="模拟量有效值" DesName="ApiAnglogRmsGroup[0]" IoType="EIOT_AngRms" IoTypeIndex="8" InstNum="15">
+        <Inst InstId="0" GroupId="0" Name="一母A相电流" DesName="ApiAnglogRms[0]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[0]"/>
+        <Inst InstId="1" GroupId="0" Name="一母A相电流" DesName="ApiAnglogRms[1]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[1]"/>
+        <Inst InstId="2" GroupId="0" Name="一母A相电流" DesName="ApiAnglogRms[2]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[2]"/>
+        <Inst InstId="3" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[3]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[3]"/>
+        <Inst InstId="4" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[4]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[4]"/>
+        <Inst InstId="5" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[5]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[5]"/>
+        <Inst InstId="6" GroupId="0" Name="一母A相电流" DesName="ApiAnglogRms[6]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[6]"/>
+        <Inst InstId="7" GroupId="0" Name="一母A相电流" DesName="ApiAnglogRms[7]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[7]"/>
+        <Inst InstId="8" GroupId="0" Name="一母A相电流" DesName="ApiAnglogRms[8]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[8]"/>
+        <Inst InstId="9" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[9]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[9]"/>
+        <Inst InstId="10" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[10]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[10]"/>
+        <Inst InstId="11" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[11]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[11]"/>
+        <Inst InstId="12" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[12]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[12]"/>
+        <Inst InstId="13" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[13]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[13]"/>
+        <Inst InstId="14" GroupId="0" Name="一母A相电电压" DesName="ApiAnglogRms[14]" sAddr="ApiAnglogRmsGroup[0].ApiAnglogRms[14]"/>
+    </Group>
+    <Group InstId="0" GroupId="9" Name="用户登录" DesName="SjRunRecord" IoType="EIOT_SJRecord" IoTypeIndex="9" InstNum="0"/>
+    <Group InstId="0" GroupId="10" Name="FwGroupPub" DesName="FwGroupPub" IoType="EIOT_FrRecord" IoTypeIndex="10" InstNum="10">
+        <Inst InstId="0" GroupId="0" Name="test1" DesName="test1" sAddr="FwGroupPub.test1"/>
+        <Inst InstId="1" GroupId="0" Name="test2" DesName="test2" sAddr="FwGroupPub.test2"/>
+        <Inst InstId="2" GroupId="0" Name="test3" DesName="test3" sAddr="FwGroupPub.test3"/>
+        <Inst InstId="3" GroupId="0" Name="test4" DesName="test4" sAddr="FwGroupPub.test4"/>
+        <Inst InstId="4" GroupId="0" Name="atest1" DesName="atest1" sAddr="FwGroupPub.atest1"/>
+        <Inst InstId="5" GroupId="0" Name="atest2" DesName="atest2" sAddr="FwGroupPub.atest2"/>
+        <Inst InstId="6" GroupId="0" Name="atest3" DesName="atest3" sAddr="FwGroupPub.atest3"/>
+        <Inst InstId="7" GroupId="0" Name="atest4" DesName="atest4" sAddr="FwGroupPub.atest4"/>
+        <Inst InstId="8" GroupId="0" Name="etest1" DesName="etest1" sAddr="FwGroupPub.etest1"/>
+        <Inst InstId="9" GroupId="0" Name="etest2" DesName="etest2" sAddr="FwGroupPub.etest2"/>
+    </Group>
+    <Group InstId="1" GroupId="10" Name="FwGroupPrivate" DesName="FwGroupPrivate" IoType="EIOT_FrRecord" IoTypeIndex="10" InstNum="3">
+        <Inst InstId="0" GroupId="1" Name="test7" DesName="test7" sAddr="FwGroupPrivate.test7"/>
+        <Inst InstId="1" GroupId="1" Name="etest3" DesName="etest3" sAddr="FwGroupPrivate.etest3"/>
+        <Inst InstId="2" GroupId="1" Name="etest4" DesName="etest4" sAddr="FwGroupPrivate.etest4"/>
+    </Group>
+</Ied>

@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/ApiPara.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">ApiPara.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef APIPARA_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define APIPARA_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">namespace </span>spt</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>{</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classspt_1_1_api_para_group.html">    9</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_sal_para_group.html">SalParaGroup</a></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        uint32 <a class="code hl_function" href="classspt_1_1_api_para_group.html#adeab05f03eb4f9e3a5b5a93b7ac6d383">GetCrc</a>(uint16 Zone);<span class="comment">//获取定值CRC</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        uint16 CurZone();<span class="comment">//获取当前组号,由0开始</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_para_group.html#a00af0e591916dfda9400bb62b23d7d4c">PowerUpIni</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, uint16 CurZone, uint16 MaxZone, uint16 ElementNum);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_para_group.html#a00af0e591916dfda9400bb62b23d7d4c">PowerUpIni</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, uint16 ElementNum);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        int32 CheckStatus();<span class="comment">//1 is ok,others is error.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        int32 CheckStatus(uint16 Zone);<span class="comment">//1 is ok,others is error.</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        int32 DefaultData();<span class="comment">//默认定值</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        uint16 DataChangeCnt();<span class="comment">//定值更新标志，1~255，每次定值存储，该值加一(所有定值公用)</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        uint16 DataChangeCnt(uint16 Zone);<span class="comment">//定值更新标志，1~255，每次定值存储，该值加一</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"></span>        bool8 <a class="code hl_function" href="classspt_1_1_api_para_group.html#a308fd9e9719b71b6fab081207554048d">UpdateForUse</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keyword">const</span> <a class="code hl_struct" href="structspt_1_1st_app_flags.html">stAppFlags</a>* AppFlags()<span class="keyword">const</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        int32 <a class="code hl_function" href="classspt_1_1_api_para_group.html#ab61f233d9554bd98e2b04a03dba796bf">GetSaveStepFlag</a>(uint32 Zone);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        int32 <a class="code hl_function" href="classspt_1_1_api_para_group.html#a31f700e8ca0dd81707c9729d73a3ed4e">LoadBakParaForUse</a>(int32 ZoneNum);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    };</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classspt_1_1_api_para.html">   63</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_para.html">ApiPara</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_sal_para.html">SalPara</a></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_para.html#a485ee69567ef03a0a497de1a72f745be">PowerUpIni</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Min, int32 Default, int32 Max, uint8 DotNum, <span class="keyword">const</span> <a class="code hl_class" href="classspt_1_1_var_units.html">VarUnits</a>&amp; Units);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_para.html#a485ee69567ef03a0a497de1a72f745be">PowerUpIni</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Min, int32 Default, int32 Max, uint8 DotNum, <span class="keyword">const</span> <a class="code hl_class" href="classspt_1_1_var_units.html">VarUnits</a>&amp; Units, int32 ExInfo);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordtype">void</span> SetRange(int32 Max, int32 Min);<span class="comment">//设置定值上下限</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordtype">void</span> SetDisp(bool8 Disp);<span class="comment">//设置定值是否对外展示</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        int32 Int32();<span class="comment">//当前组定值数值，定点数</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        float32 Float32();<span class="comment">//当前组定值数值，浮点数</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="comment">//Bool型定值</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordtype">void</span> BlPowerUpIni(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Default);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        bool8 Bool();</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="comment">//字符型定值</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="comment">// MaxLen 最大值为40</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keywordtype">void</span> StrPowerUpIni(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, <span class="keyword">const</span> <span class="keywordtype">char</span>* DefName);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">const</span> <span class="keywordtype">char</span>* StrData();<span class="comment">//当前组定值数值</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="comment">//只读型定值，例如定值区号</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordtype">void</span> ZonePowerUpIni(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Min, int32 Default, int32 Max, uint8 DotNum, <span class="keyword">const</span> <a class="code hl_class" href="classspt_1_1_var_units.html">VarUnits</a>&amp; Units);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="comment">//枚举型定值，默认值填写的是枚举的序号，不是枚举的值</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordtype">void</span> EnumPowerUpIni(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Default, <a class="code hl_struct" href="structspt_1_1_sal_enum_des.html">SalEnumDes</a>* Enum, uint8 EnumNum, <span class="keyword">const</span> <a class="code hl_class" href="classspt_1_1_var_units.html">VarUnits</a>&amp; Units);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        int32 EnumIndex();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        int32 EnumVal();</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="comment">//CT二次值</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordtype">void</span> CTEnumPowerUpIni(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Default);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        int32 CtValue();</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="comment">//关联CT二次值的电流型定值,该类定值仅在编辑时，将最大最小值乘以ct二次值处理,最大值、最小值，按照1A填写，默认值填写1A与5A都能适应的中间值</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="keywordtype">void</span> RelatedCTPowerUpIni(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Min, int32 Default, int32 Max, uint8 DotNum, <span class="keyword">const</span> <a class="code hl_class" href="classspt_1_1_var_units.html">VarUnits</a>&amp; Units, <a class="code hl_class" href="classspt_1_1_api_para.html">ApiPara</a>&amp; SecondCt);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="comment">//间隔投退</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordtype">void</span> UnitOnOffPowerUpIni(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, int32 Default);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_para.html#a515d84f7a9374fb44a3a5ee955047685">BitOnOffPowerUpIni</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, uint32 Min, uint32 Default, uint32 Max, uint32 ByteNum, <a class="code hl_struct" href="structspt_1_1_sal_bit_des.html">SalBitDes</a>* Des);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_para.html#a0d2d5c90cf00d051e438627d27733810">HexPowerUpIni</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, uint32 Min, uint32 Default, uint32 Max, uint32 ByteNum);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_para.html#ad1301fe6c772618b28ba8a3579b1379c">UInt32PowerUpIni</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, <span class="keyword">const</span> <span class="keywordtype">char</span>* DesName, <span class="keyword">class</span> <a class="code hl_class" href="classspt_1_1_api_para_group.html">ApiParaGroup</a>&amp; Group, uint32 Min, uint32 Default, uint32 Max, uint8 DotNum, <span class="keyword">const</span> <a class="code hl_class" href="classspt_1_1_var_units.html">VarUnits</a>&amp; Units, int32 ExInfo);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        uint32 Uint32();</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    };</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>}</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#endif </span><span class="comment">// !APIPARA_H</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="ttc" id="aclassspt_1_1_api_para_group_html"><div class="ttname"><a href="classspt_1_1_api_para_group.html">spt::ApiParaGroup</a></div><div class="ttdoc">参数管理组</div><div class="ttdef"><b>Definition:</b> ApiPara.h:10</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_group_html_a00af0e591916dfda9400bb62b23d7d4c"><div class="ttname"><a href="classspt_1_1_api_para_group.html#a00af0e591916dfda9400bb62b23d7d4c">spt::ApiParaGroup::PowerUpIni</a></div><div class="ttdeci">void PowerUpIni(const char *Name, const char *DesName, uint16 CurZone, uint16 MaxZone, uint16 ElementNum)</div><div class="ttdoc">初始化定值组</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:18</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_group_html_a308fd9e9719b71b6fab081207554048d"><div class="ttname"><a href="classspt_1_1_api_para_group.html#a308fd9e9719b71b6fab081207554048d">spt::ApiParaGroup::UpdateForUse</a></div><div class="ttdeci">bool8 UpdateForUse()</div><div class="ttdoc">将定值更新至应用使用区 每次定值更新后，应用需要主动更新</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:63</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_group_html_a31f700e8ca0dd81707c9729d73a3ed4e"><div class="ttname"><a href="classspt_1_1_api_para_group.html#a31f700e8ca0dd81707c9729d73a3ed4e">spt::ApiParaGroup::LoadBakParaForUse</a></div><div class="ttdeci">int32 LoadBakParaForUse(int32 ZoneNum)</div><div class="ttdoc">将备用参数转为正式参数并使用</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:78</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_group_html_ab61f233d9554bd98e2b04a03dba796bf"><div class="ttname"><a href="classspt_1_1_api_para_group.html#ab61f233d9554bd98e2b04a03dba796bf">spt::ApiParaGroup::GetSaveStepFlag</a></div><div class="ttdeci">int32 GetSaveStepFlag(uint32 Zone)</div><div class="ttdoc">获取存储过程参数</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:73</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_group_html_adeab05f03eb4f9e3a5b5a93b7ac6d383"><div class="ttname"><a href="classspt_1_1_api_para_group.html#adeab05f03eb4f9e3a5b5a93b7ac6d383">spt::ApiParaGroup::GetCrc</a></div><div class="ttdeci">uint32 GetCrc(uint16 Zone)</div><div class="ttdoc">获取参数CRC校验和</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:4</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_html"><div class="ttname"><a href="classspt_1_1_api_para.html">spt::ApiPara</a></div><div class="ttdoc">参数元素</div><div class="ttdef"><b>Definition:</b> ApiPara.h:64</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_html_a0d2d5c90cf00d051e438627d27733810"><div class="ttname"><a href="classspt_1_1_api_para.html#a0d2d5c90cf00d051e438627d27733810">spt::ApiPara::HexPowerUpIni</a></div><div class="ttdeci">void HexPowerUpIni(const char *Name, const char *DesName, class ApiParaGroup &amp;Group, uint32 Min, uint32 Default, uint32 Max, uint32 ByteNum)</div><div class="ttdoc">Hex型定值</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:227</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_html_a485ee69567ef03a0a497de1a72f745be"><div class="ttname"><a href="classspt_1_1_api_para.html#a485ee69567ef03a0a497de1a72f745be">spt::ApiPara::PowerUpIni</a></div><div class="ttdeci">void PowerUpIni(const char *Name, const char *DesName, class ApiParaGroup &amp;Group, int32 Min, int32 Default, int32 Max, uint8 DotNum, const VarUnits &amp;Units)</div><div class="ttdoc">通用型定值（INT32）</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:84</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_html_a515d84f7a9374fb44a3a5ee955047685"><div class="ttname"><a href="classspt_1_1_api_para.html#a515d84f7a9374fb44a3a5ee955047685">spt::ApiPara::BitOnOffPowerUpIni</a></div><div class="ttdeci">void BitOnOffPowerUpIni(const char *Name, const char *DesName, class ApiParaGroup &amp;Group, uint32 Min, uint32 Default, uint32 Max, uint32 ByteNum, SalBitDes *Des)</div><div class="ttdoc">比特型定值</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:197</div></div>
+<div class="ttc" id="aclassspt_1_1_api_para_html_ad1301fe6c772618b28ba8a3579b1379c"><div class="ttname"><a href="classspt_1_1_api_para.html#ad1301fe6c772618b28ba8a3579b1379c">spt::ApiPara::UInt32PowerUpIni</a></div><div class="ttdeci">void UInt32PowerUpIni(const char *Name, const char *DesName, class ApiParaGroup &amp;Group, uint32 Min, uint32 Default, uint32 Max, uint8 DotNum, const VarUnits &amp;Units, int32 ExInfo)</div><div class="ttdoc">无符号32位整型，例如PTCT系数</div><div class="ttdef"><b>Definition:</b> ApiPara.cpp:242</div></div>
+<div class="ttc" id="aclassspt_1_1_sal_para_group_html"><div class="ttname"><a href="classspt_1_1_sal_para_group.html">spt::SalParaGroup</a></div><div class="ttdef"><b>Definition:</b> SalPara.h:39</div></div>
+<div class="ttc" id="aclassspt_1_1_sal_para_html"><div class="ttname"><a href="classspt_1_1_sal_para.html">spt::SalPara</a></div><div class="ttdef"><b>Definition:</b> SalPara.h:103</div></div>
+<div class="ttc" id="aclassspt_1_1_var_units_html"><div class="ttname"><a href="classspt_1_1_var_units.html">spt::VarUnits</a></div><div class="ttdef"><b>Definition:</b> SalUnits.h:37</div></div>
+<div class="ttc" id="astructspt_1_1_sal_bit_des_html"><div class="ttname"><a href="structspt_1_1_sal_bit_des.html">spt::SalBitDes</a></div><div class="ttdoc">bit型数据描述 Bit值从零开始，必须是连续的数值，不能跳跃，必须是8的倍数</div><div class="ttdef"><b>Definition:</b> SalTypes.h:204</div></div>
+<div class="ttc" id="astructspt_1_1_sal_enum_des_html"><div class="ttname"><a href="structspt_1_1_sal_enum_des.html">spt::SalEnumDes</a></div><div class="ttdef"><b>Definition:</b> SalTypes.h:195</div></div>
+<div class="ttc" id="astructspt_1_1st_app_flags_html"><div class="ttname"><a href="structspt_1_1st_app_flags.html">spt::stAppFlags</a></div><div class="ttdef"><b>Definition:</b> SptAppFlags.h:7</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

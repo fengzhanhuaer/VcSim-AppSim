@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: spt::SalParaEditGroup类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>spt</b></li><li class="navelem"><a class="el" href="classspt_1_1_sal_para_edit_group.html">SalParaEditGroup</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="#pro-attribs">Protected 属性</a> &#124;
+<a href="classspt_1_1_sal_para_edit_group-members.html">所有成员列表</a>  </div>
+  <div class="headertitle"><div class="title">spt::SalParaEditGroup类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>定值参数编辑类，提供一个修改定值的临时缓冲区 该类仅能在HMI/61850等线程中调用，禁止在应用中断中调用  
+ <a href="classspt_1_1_sal_para_edit_group.html#details">更多...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_sal_para_8h_source.html">SalPara.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:a658f6c105500153abe099ac7074d9f5f"><td class="memItemLeft" align="right" valign="top"><a id="a658f6c105500153abe099ac7074d9f5f" name="a658f6c105500153abe099ac7074d9f5f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PowerUpIni</b> (uint32 ElementNum)</td></tr>
+<tr class="separator:a658f6c105500153abe099ac7074d9f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ac4d79085f90e9ffc78e6f24053c600"><td class="memItemLeft" align="right" valign="top"><a id="a1ac4d79085f90e9ffc78e6f24053c600" name="a1ac4d79085f90e9ffc78e6f24053c600"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>EditCellNum</b> ()</td></tr>
+<tr class="separator:a1ac4d79085f90e9ffc78e6f24053c600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82287e3ed9af7a82dea4e0948346da0a"><td class="memItemLeft" align="right" valign="top"><a id="a82287e3ed9af7a82dea4e0948346da0a" name="a82287e3ed9af7a82dea4e0948346da0a"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>CurEditCellNum</b> ()</td></tr>
+<tr class="separator:a82287e3ed9af7a82dea4e0948346da0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b9d203e7b28e85610f8edfcdc9e052e"><td class="memItemLeft" align="right" valign="top"><a id="a7b9d203e7b28e85610f8edfcdc9e052e" name="a7b9d203e7b28e85610f8edfcdc9e052e"></a>
+<a class="el" href="classspt_1_1_sal_para_edit_cell.html">SalParaEditCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>EditCell</b> (uint32 No)</td></tr>
+<tr class="separator:a7b9d203e7b28e85610f8edfcdc9e052e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3a4b4d24319fcd0f407cb4164746202"><td class="memItemLeft" align="right" valign="top"><a id="ad3a4b4d24319fcd0f407cb4164746202" name="ad3a4b4d24319fcd0f407cb4164746202"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>Set</b> (<a class="el" href="classspt_1_1_sal_para_group.html">SalParaGroup</a> *Group, uint32 Zone)</td></tr>
+<tr class="separator:ad3a4b4d24319fcd0f407cb4164746202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2792339942f471b1a7e069c8f58f732e"><td class="memItemLeft" align="right" valign="top"><a id="a2792339942f471b1a7e069c8f58f732e" name="a2792339942f471b1a7e069c8f58f732e"></a>
+const <a class="el" href="classspt_1_1_sal_para_group.html">SalParaGroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Group</b> ()</td></tr>
+<tr class="separator:a2792339942f471b1a7e069c8f58f732e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3727fc3102b30e1464a2b89e6f30b4b"><td class="memItemLeft" align="right" valign="top">int32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspt_1_1_sal_para_edit_group.html#ae3727fc3102b30e1464a2b89e6f30b4b">UpdateEditValue</a> ()</td></tr>
+<tr class="memdesc:ae3727fc3102b30e1464a2b89e6f30b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">用使用值更新操作缓冲区  <a href="classspt_1_1_sal_para_edit_group.html#ae3727fc3102b30e1464a2b89e6f30b4b">更多...</a><br /></td></tr>
+<tr class="separator:ae3727fc3102b30e1464a2b89e6f30b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c549254f8b13ee241b16808a24e1383"><td class="memItemLeft" align="right" valign="top">int32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspt_1_1_sal_para_edit_group.html#a2c549254f8b13ee241b16808a24e1383">SavePara</a> ()</td></tr>
+<tr class="memdesc:a2c549254f8b13ee241b16808a24e1383"><td class="mdescLeft">&#160;</td><td class="mdescRight">该函数仅能在HMI/61850等线程中调用，禁止在应用中断中调用  <a href="classspt_1_1_sal_para_edit_group.html#a2c549254f8b13ee241b16808a24e1383">更多...</a><br /></td></tr>
+<tr class="separator:a2c549254f8b13ee241b16808a24e1383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected 属性</h2></td></tr>
+<tr class="memitem:a646aee2117ea06a8e837fe8ab086c3a1"><td class="memItemLeft" align="right" valign="top"><a id="a646aee2117ea06a8e837fe8ab086c3a1" name="a646aee2117ea06a8e837fe8ab086c3a1"></a>
+<a class="el" href="classspt_1_1_sal_para_edit_cell.html">SalParaEditCell</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>editCellBuf</b></td></tr>
+<tr class="separator:a646aee2117ea06a8e837fe8ab086c3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf3a68952b1eee01a15fe3679b811b85"><td class="memItemLeft" align="right" valign="top"><a id="aaf3a68952b1eee01a15fe3679b811b85" name="aaf3a68952b1eee01a15fe3679b811b85"></a>
+<a class="el" href="classspt_1_1_array_buf.html">ArrayBuf</a>&#160;</td><td class="memItemRight" valign="bottom"><b>editBuf</b></td></tr>
+<tr class="separator:aaf3a68952b1eee01a15fe3679b811b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66a32401d98c68a0e8ec82329b844a04"><td class="memItemLeft" align="right" valign="top"><a id="a66a32401d98c68a0e8ec82329b844a04" name="a66a32401d98c68a0e8ec82329b844a04"></a>
+<a class="el" href="classspt_1_1_sal_para_group.html">SalParaGroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>group</b></td></tr>
+<tr class="separator:a66a32401d98c68a0e8ec82329b844a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab17eeed074747fa08447f7cd5a0ceda5"><td class="memItemLeft" align="right" valign="top"><a id="ab17eeed074747fa08447f7cd5a0ceda5" name="ab17eeed074747fa08447f7cd5a0ceda5"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>zoneNum</b></td></tr>
+<tr class="separator:ab17eeed074747fa08447f7cd5a0ceda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd0552e3b40b189dbb5d1059ac6a7d3c"><td class="memItemLeft" align="right" valign="top"><a id="acd0552e3b40b189dbb5d1059ac6a7d3c" name="acd0552e3b40b189dbb5d1059ac6a7d3c"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>curEditCellNum</b></td></tr>
+<tr class="separator:acd0552e3b40b189dbb5d1059ac6a7d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae13a10db5d9c6d6d4898853ef7badc51"><td class="memItemLeft" align="right" valign="top"><a id="ae13a10db5d9c6d6d4898853ef7badc51" name="ae13a10db5d9c6d6d4898853ef7badc51"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>elementNum</b></td></tr>
+<tr class="separator:ae13a10db5d9c6d6d4898853ef7badc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">详细描述</h2>
+<div class="textblock"><p >定值参数编辑类，提供一个修改定值的临时缓冲区 该类仅能在HMI/61850等线程中调用，禁止在应用中断中调用 </p>
+</div><h2 class="groupheader">成员函数说明</h2>
+<a id="a2c549254f8b13ee241b16808a24e1383" name="a2c549254f8b13ee241b16808a24e1383"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c549254f8b13ee241b16808a24e1383">&#9670;&nbsp;</a></span>SavePara()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32 spt::SalParaEditGroup::SavePara </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>该函数仅能在HMI/61850等线程中调用，禁止在应用中断中调用 </p>
+<dl class="section return"><dt>返回</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae3727fc3102b30e1464a2b89e6f30b4b" name="ae3727fc3102b30e1464a2b89e6f30b4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3727fc3102b30e1464a2b89e6f30b4b">&#9670;&nbsp;</a></span>UpdateEditValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32 spt::SalParaEditGroup::UpdateEditValue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>用使用值更新操作缓冲区 </p>
+<dl class="section return"><dt>返回</dt><dd></dd></dl>
+
+</div>
+</div>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/<a class="el" href="_sal_para_8h_source.html">SalPara.h</a></li>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/SalPara.cpp</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

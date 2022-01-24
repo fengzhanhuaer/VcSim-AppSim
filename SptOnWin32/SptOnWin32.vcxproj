@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ApiAio.cpp" />
+    <ClCompile Include="src\ApiAppCfg.cpp" />
+    <ClCompile Include="src\ApiAppTask.cpp" />
+    <ClCompile Include="src\ApiBoard.cpp" />
+    <ClCompile Include="src\ApiCmm.cpp" />
+    <ClCompile Include="src\ApiDio.cpp" />
+    <ClCompile Include="src\ApiEvent.cpp" />
+    <ClCompile Include="src\ApiFaultRecord.cpp" />
+    <ClCompile Include="src\ApiHmiDialog.cpp" />
+    <ClCompile Include="src\ApiHmiGridWnd.cpp" />
+    <ClCompile Include="src\ApiHmiLed.cpp" />
+    <ClCompile Include="src\ApiHmiSptInfo.cpp" />
+    <ClCompile Include="src\ApiHmiTextWnd.cpp" />
+    <ClCompile Include="src\ApiMenu.cpp" />
+    <ClCompile Include="src\ApiPara.cpp" />
+    <ClCompile Include="src\ApiResource.cpp" />
+    <ClCompile Include="src\ApiSjRecord.cpp" />
+    <ClCompile Include="src\ApiSysCfg.cpp" />
+    <ClCompile Include="src\ApiVersion.cpp" />
+    <ClCompile Include="src\DbgCmm.cpp" />
+    <ClCompile Include="src\DbgServer.cpp" />
+    <ClCompile Include="src\DbgTools.cpp" />
+    <ClCompile Include="src\HalBoardIo.cpp" />
+    <ClCompile Include="src\HalFactoryTools.cpp" />
+    <ClCompile Include="src\HmiCmm.cpp" />
+    <ClCompile Include="src\HmiDialog.cpp" />
+    <ClCompile Include="src\HmiGridWnd.cpp" />
+    <ClCompile Include="src\HmiKey.cpp" />
+    <ClCompile Include="src\HmiLedStatus.cpp" />
+    <ClCompile Include="src\HmiMenu.cpp" />
+    <ClCompile Include="src\HmiProject.cpp" />
+    <ClCompile Include="src\HmiStatusBar.cpp" />
+    <ClCompile Include="src\HmiTextWnd.cpp" />
+    <ClCompile Include="src\HmiVirLcdLayer.cpp" />
+    <ClCompile Include="src\HmiWidgets.cpp" />
+    <ClCompile Include="src\SalAccount.cpp" />
+    <ClCompile Include="src\SalAdt.cpp" />
+    <ClCompile Include="src\SalAnglogRms.cpp" />
+    <ClCompile Include="src\SalCfgData.cpp" />
+    <ClCompile Include="src\SalCfgFile.cpp" />
+    <ClCompile Include="src\SalClassicFunc.cpp" />
+    <ClCompile Include="src\SalCmm.cpp" />
+    <ClCompile Include="src\SalDateTime.cpp" />
+    <ClCompile Include="src\SalEvent.cpp" />
+    <ClCompile Include="src\SalFaultRecord.cpp" />
+    <ClCompile Include="src\SalFile.cpp" />
+    <ClCompile Include="src\SalFpgaMsgProc.cpp" />
+    <ClCompile Include="src\SalGmSsl.cpp" />
+    <ClCompile Include="src\SalInstObject.cpp" />
+    <ClCompile Include="src\SalLib.cpp" />
+    <ClCompile Include="src\SalMath.cpp" />
+    <ClCompile Include="src\SalPara.cpp" />
+    <ClCompile Include="src\SalPrinter.cpp" />
+    <ClCompile Include="src\SalSampIntCmm.cpp" />
+    <ClCompile Include="src\SalSjRecord.cpp" />
+    <ClCompile Include="src\SalSocket.cpp" />
+    <ClCompile Include="src\SalString.cpp" />
+    <ClCompile Include="src\SalTask.cpp" />
+    <ClCompile Include="src\SalTimer.cpp" />
+    <ClCompile Include="src\SalTypes.cpp" />
+    <ClCompile Include="src\SalUnits.cpp" />
+    <ClCompile Include="src\SalVersion.cpp" />
+    <ClCompile Include="src\SptAio.cpp" />
+    <ClCompile Include="src\SptAppFlags.cpp" />
+    <ClCompile Include="src\SptAppIo.cpp" />
+    <ClCompile Include="src\SptAppTask.cpp" />
+    <ClCompile Include="src\SptCheckTask.cpp" />
+    <ClCompile Include="src\SptCmmTask.cpp" />
+    <ClCompile Include="src\SptDio.cpp" />
+    <ClCompile Include="src\SptLog.cpp" />
+    <ClCompile Include="src\SptMain.cpp" />
+    <ClCompile Include="src\SptMsInt.cpp" />
+    <ClCompile Include="src\SptSampInt.cpp" />
+    <ClCompile Include="src\SptT860Interface.cpp" />
+    <ClCompile Include="src\SptTaskMonitor.cpp" />
+    <ClCompile Include="src\SylixOsFlash.cpp" />
+    <ClCompile Include="src\tinyxml2\tinyxml2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ApiAio.h" />
+    <ClInclude Include="src\ApiAppCfg.h" />
+    <ClInclude Include="src\ApiAppFlags.h" />
+    <ClInclude Include="src\ApiAppTask.h" />
+    <ClInclude Include="src\ApiBoard.h" />
+    <ClInclude Include="src\ApiCfgPara.h" />
+    <ClInclude Include="src\ApiCmm.h" />
+    <ClInclude Include="src\ApiDio.h" />
+    <ClInclude Include="src\ApiEvent.h" />
+    <ClInclude Include="src\ApiFaultRecord.h" />
+    <ClInclude Include="src\ApiHmiDialog.h" />
+    <ClInclude Include="src\ApiHmiGridWnd.h" />
+    <ClInclude Include="src\ApiHmiLed.h" />
+    <ClInclude Include="src\ApiHmiSptInfo.h" />
+    <ClInclude Include="src\ApiHmiTextWnd.h" />
+    <ClInclude Include="src\ApiMenu.h" />
+    <ClInclude Include="src\ApiPara.h" />
+    <ClInclude Include="src\ApiProject.h" />
+    <ClInclude Include="src\ApiResource.h" />
+    <ClInclude Include="src\ApiSjRecord.h" />
+    <ClInclude Include="src\ApiSysCfg.h" />
+    <ClInclude Include="src\ApiVersion.h" />
+    <ClInclude Include="src\DbgCmm.h" />
+    <ClInclude Include="src\DbgServer.h" />
+    <ClInclude Include="src\DbgTools.h" />
+    <ClInclude Include="src\HalBoardIo.h" />
+    <ClInclude Include="src\HalFactoryTools.h" />
+    <ClInclude Include="src\HalProject.h" />
+    <ClInclude Include="src\HmiCmm.h" />
+    <ClInclude Include="src\HmiDialog.h" />
+    <ClInclude Include="src\HmiGridWnd.h" />
+    <ClInclude Include="src\HmiKey.h" />
+    <ClInclude Include="src\HmiLedStatus.h" />
+    <ClInclude Include="src\HmiMenu.h" />
+    <ClInclude Include="src\HmiProject.h" />
+    <ClInclude Include="src\HmiStatusBar.h" />
+    <ClInclude Include="src\HmiTextWnd.h" />
+    <ClInclude Include="src\HmiVirLcdLayer.h" />
+    <ClInclude Include="src\HmiWidgets.h" />
+    <ClInclude Include="src\LcdFontPixel.h" />
+    <ClInclude Include="src\SalAccount.h" />
+    <ClInclude Include="src\SalAdt.h" />
+    <ClInclude Include="src\SalAnglogRms.h" />
+    <ClInclude Include="src\SalAppCmm.h" />
+    <ClInclude Include="src\SalCfgData.h" />
+    <ClInclude Include="src\SalCfgFile.h" />
+    <ClInclude Include="src\SalClassicFunc.h" />
+    <ClInclude Include="src\SalCmm.h" />
+    <ClInclude Include="src\SalDateTime.h" />
+    <ClInclude Include="src\SalEvent.h" />
+    <ClInclude Include="src\SalFaultRecord.h" />
+    <ClInclude Include="src\SalFile.h" />
+    <ClInclude Include="src\SalFpgaMsgProc.h" />
+    <ClInclude Include="src\SalGmSsl.h" />
+    <ClInclude Include="src\SalInstObject.h" />
+    <ClInclude Include="src\SalLib.h" />
+    <ClInclude Include="src\SalMacro.h" />
+    <ClInclude Include="src\SalMath.h" />
+    <ClInclude Include="src\SalPara.h" />
+    <ClInclude Include="src\SalPrinter.h" />
+    <ClInclude Include="src\SalProject.h" />
+    <ClInclude Include="src\SalSampIntCmm.h" />
+    <ClInclude Include="src\SalSjRecord.h" />
+    <ClInclude Include="src\SalSocket.h" />
+    <ClInclude Include="src\SalString.h" />
+    <ClInclude Include="src\SalTask.h" />
+    <ClInclude Include="src\SalTimer.h" />
+    <ClInclude Include="src\SalTypes.h" />
+    <ClInclude Include="src\SalUnits.h" />
+    <ClInclude Include="src\SalVersion.h" />
+    <ClInclude Include="src\SptAio.h" />
+    <ClInclude Include="src\SptAppFlags.h" />
+    <ClInclude Include="src\SptAppIo.h" />
+    <ClInclude Include="src\SptAppTask.h" />
+    <ClInclude Include="src\SptCheckTask.h" />
+    <ClInclude Include="src\SptCmmTask.h" />
+    <ClInclude Include="src\SptDio.h" />
+    <ClInclude Include="src\SptLog.h" />
+    <ClInclude Include="src\SptMain.h" />
+    <ClInclude Include="src\SptMsInt.h" />
+    <ClInclude Include="src\SptPlatform.h" />
+    <ClInclude Include="src\SptProject.h" />
+    <ClInclude Include="src\SptSampInt.h" />
+    <ClInclude Include="src\SptT860InterFace.h" />
+    <ClInclude Include="src\SptTaskMonitor.h" />
+    <ClInclude Include="src\tinyxml2\tinyxml2.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <TargetFrameworkVersion>
+    </TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <ProjectGuid>{4c52c0a7-7c46-4aa7-8654-331f7397cc55}</ProjectGuid>
+    <RootNamespace>SptOnWin32</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="SptOnWin32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="SptOnWin32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="SptOnWin32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="SptOnWin32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CopyLocalDeploymentContent>false</CopyLocalDeploymentContent>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <NoEntryPoint>true</NoEntryPoint>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)openssl\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

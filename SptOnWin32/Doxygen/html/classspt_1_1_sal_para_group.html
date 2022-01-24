@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: spt::SalParaGroup类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>spt</b></li><li class="navelem"><a class="el" href="classspt_1_1_sal_para_group.html">SalParaGroup</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public 类型</a> &#124;
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="#pro-methods">Protected 成员函数</a> &#124;
+<a href="#pro-attribs">Protected 属性</a> &#124;
+<a href="#friends">友元</a> &#124;
+<a href="classspt_1_1_sal_para_group-members.html">所有成员列表</a>  </div>
+  <div class="headertitle"><div class="title">spt::SalParaGroup类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+类 spt::SalParaGroup 继承关系图:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classspt_1_1_sal_para_group.png" usemap="#spt::SalParaGroup_map" alt=""/>
+  <map id="spt::SalParaGroup_map" name="spt::SalParaGroup_map">
+<area href="classspt_1_1_inst_object_group.html" alt="spt::InstObjectGroup" shape="rect" coords="0,56,125,80"/>
+<area href="classspt_1_1_inst_object.html" alt="spt::InstObject" shape="rect" coords="0,0,125,24"/>
+<area href="classspt_1_1_api_para_group.html" title="参数管理组" alt="spt::ApiParaGroup" shape="rect" coords="0,168,125,192"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public 类型</h2></td></tr>
+<tr class="memitem:af33f13cb5cced6797e8467b7a1d2d10e"><td class="memItemLeft" align="right" valign="top"><a id="af33f13cb5cced6797e8467b7a1d2d10e" name="af33f13cb5cced6797e8467b7a1d2d10e"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>E_SaveStep</b> { <b>E_SaveNull</b>
+, <b>E_SaveStart</b>
+, <b>E_SaveOver</b>
+ }</td></tr>
+<tr class="separator:af33f13cb5cced6797e8467b7a1d2d10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaebe916f8a0ee14bf06becb04295daf8"><td class="memItemLeft" align="right" valign="top"><a id="aaebe916f8a0ee14bf06becb04295daf8" name="aaebe916f8a0ee14bf06becb04295daf8"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>E_ParaStatus</b> { <br />
+&#160;&#160;<b>E_NonIni</b>
+, <b>E_OK</b>
+, <b>E_HeaderNotMatch</b>
+, <b>E_DataNotExist</b>
+, <br />
+&#160;&#160;<b>E_DataCrcIsErr</b>
+, <b>E_DataOverRange</b>
+<br />
+ }</td></tr>
+<tr class="separator:aaebe916f8a0ee14bf06becb04295daf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a757f5050fe8c08c39a4ac8117df26b5c"><td class="memItemLeft" align="right" valign="top"><a id="a757f5050fe8c08c39a4ac8117df26b5c" name="a757f5050fe8c08c39a4ac8117df26b5c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>E_SaveType</b> { <br />
+&#160;&#160;<b>E_LoadAll</b>
+, <b>E_LoadZone</b>
+, <b>E_SaveDataAll</b>
+, <b>E_SaveSingleZone</b>
+, <br />
+&#160;&#160;<b>E_ChangeZone</b>
+<br />
+ }</td></tr>
+<tr class="separator:a757f5050fe8c08c39a4ac8117df26b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:a992fae65324498834b1689a7dabb5a7e"><td class="memItemLeft" align="right" valign="top"><a id="a992fae65324498834b1689a7dabb5a7e" name="a992fae65324498834b1689a7dabb5a7e"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>GetCrc</b> (uint8 Zone)</td></tr>
+<tr class="separator:a992fae65324498834b1689a7dabb5a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9ace331331f0fbaa5e151945b3d61e3"><td class="memItemLeft" align="right" valign="top"><a id="af9ace331331f0fbaa5e151945b3d61e3" name="af9ace331331f0fbaa5e151945b3d61e3"></a>
+bool8&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateForUse</b> ()</td></tr>
+<tr class="separator:af9ace331331f0fbaa5e151945b3d61e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4910e8ce9c441887cf1ab0934492b25"><td class="memItemLeft" align="right" valign="top"><a id="ab4910e8ce9c441887cf1ab0934492b25" name="ab4910e8ce9c441887cf1ab0934492b25"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>PowerUpIni</b> (const char *Name, const char *DesName, uint16 CurZone, uint16 MaxZone, uint16 ElementNum)</td></tr>
+<tr class="separator:ab4910e8ce9c441887cf1ab0934492b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8094887fd6857d4f6804fa408514c8"><td class="memItemLeft" align="right" valign="top"><a id="a1d8094887fd6857d4f6804fa408514c8" name="a1d8094887fd6857d4f6804fa408514c8"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultData</b> ()</td></tr>
+<tr class="separator:a1d8094887fd6857d4f6804fa408514c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1890498833960196524ec27d92db5724"><td class="memItemLeft" align="right" valign="top"><a id="a1890498833960196524ec27d92db5724" name="a1890498833960196524ec27d92db5724"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>CheckStatus</b> ()</td></tr>
+<tr class="separator:a1890498833960196524ec27d92db5724"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75716af2cd38f0453306f2575617cf1d"><td class="memItemLeft" align="right" valign="top"><a id="a75716af2cd38f0453306f2575617cf1d" name="a75716af2cd38f0453306f2575617cf1d"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>ElementSize</b> ()</td></tr>
+<tr class="separator:a75716af2cd38f0453306f2575617cf1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad80c72a617b389586a3d29b78da7cd48"><td class="memItemLeft" align="right" valign="top"><a id="ad80c72a617b389586a3d29b78da7cd48" name="ad80c72a617b389586a3d29b78da7cd48"></a>
+<a class="el" href="classspt_1_1_para_group_data_all.html">ParaGroupDataAll</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>DataGroup</b> ()</td></tr>
+<tr class="separator:ad80c72a617b389586a3d29b78da7cd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf2258a1c4f3757415e38dcba660d775"><td class="memItemLeft" align="right" valign="top"><a id="aaf2258a1c4f3757415e38dcba660d775" name="aaf2258a1c4f3757415e38dcba660d775"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>SavePara</b> (void *Buf, int32 BufLen, int32 Zone)</td></tr>
+<tr class="separator:aaf2258a1c4f3757415e38dcba660d775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65c8d76f44a398974f89e6a0f3619e9f"><td class="memItemLeft" align="right" valign="top"><a id="a65c8d76f44a398974f89e6a0f3619e9f" name="a65c8d76f44a398974f89e6a0f3619e9f"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeZone</b> (int32 Zone)</td></tr>
+<tr class="separator:a65c8d76f44a398974f89e6a0f3619e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d71727751ecf286f3ee58b28742160b"><td class="memItemLeft" align="right" valign="top"><a id="a2d71727751ecf286f3ee58b28742160b" name="a2d71727751ecf286f3ee58b28742160b"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>LoadPara</b> (int32 Para, int32 ZoneNum)</td></tr>
+<tr class="separator:a2d71727751ecf286f3ee58b28742160b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad1b06a310be8475bc6de08a8427333e"><td class="memItemLeft" align="right" valign="top"><a id="aad1b06a310be8475bc6de08a8427333e" name="aad1b06a310be8475bc6de08a8427333e"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>DataChanCnt</b> ()</td></tr>
+<tr class="separator:aad1b06a310be8475bc6de08a8427333e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b2afd5181e6e125bf675524ae97c5b1"><td class="memItemLeft" align="right" valign="top"><a id="a3b2afd5181e6e125bf675524ae97c5b1" name="a3b2afd5181e6e125bf675524ae97c5b1"></a>
+const int32 *&#160;</td><td class="memItemRight" valign="bottom"><b>UsingData</b> (uint32 Zone)</td></tr>
+<tr class="separator:a3b2afd5181e6e125bf675524ae97c5b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbaff609da80a1acb5710a8491f4a46e"><td class="memItemLeft" align="right" valign="top"><a id="adbaff609da80a1acb5710a8491f4a46e" name="adbaff609da80a1acb5710a8491f4a46e"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>UsingZone</b> ()</td></tr>
+<tr class="separator:adbaff609da80a1acb5710a8491f4a46e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80a0728a389ecac53b6de6e3e595368a"><td class="memItemLeft" align="right" valign="top"><a id="a80a0728a389ecac53b6de6e3e595368a" name="a80a0728a389ecac53b6de6e3e595368a"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>MaxZone</b> ()</td></tr>
+<tr class="separator:a80a0728a389ecac53b6de6e3e595368a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abeefd5539fcb1565ccc286ebc4d4de65"><td class="memItemLeft" align="right" valign="top"><a id="abeefd5539fcb1565ccc286ebc4d4de65" name="abeefd5539fcb1565ccc286ebc4d4de65"></a>
+class <a class="el" href="classspt_1_1_sal_para.html">SalPara</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDes</b> (uint32 No)</td></tr>
+<tr class="separator:abeefd5539fcb1565ccc286ebc4d4de65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23b689c08af38dc8528557c9250fc797"><td class="memItemLeft" align="right" valign="top"><a id="a23b689c08af38dc8528557c9250fc797" name="a23b689c08af38dc8528557c9250fc797"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>GetDataOffSet</b> (uint32 dwsize)</td></tr>
+<tr class="separator:a23b689c08af38dc8528557c9250fc797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a378e6271a8c816036982db74f25a6447"><td class="memItemLeft" align="right" valign="top"><a id="a378e6271a8c816036982db74f25a6447" name="a378e6271a8c816036982db74f25a6447"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>DataOffSet</b> ()</td></tr>
+<tr class="separator:a378e6271a8c816036982db74f25a6447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac66c56876c8f3d838c887a651a594872"><td class="memItemLeft" align="right" valign="top"><a id="ac66c56876c8f3d838c887a651a594872" name="ac66c56876c8f3d838c887a651a594872"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>CheckEditZoneRange</b> (int32 *AddrBase)</td></tr>
+<tr class="separator:ac66c56876c8f3d838c887a651a594872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a809e870a72a4a0a379108fe5d5924cb5"><td class="memItemLeft" align="right" valign="top"><a id="a809e870a72a4a0a379108fe5d5924cb5" name="a809e870a72a4a0a379108fe5d5924cb5"></a>
+const struct <a class="el" href="structspt_1_1st_app_flags.html">stAppFlags</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>AppFlags</b> () const</td></tr>
+<tr class="separator:a809e870a72a4a0a379108fe5d5924cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classspt_1_1_inst_object_group"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspt_1_1_inst_object_group')"><img src="closed.png" alt="-"/>&#160;Public 成员函数 继承自 <a class="el" href="classspt_1_1_inst_object_group.html">spt::InstObjectGroup</a></td></tr>
+<tr class="memitem:ac3e1f4feb5a24b3c0f2819563a019486 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="ac3e1f4feb5a24b3c0f2819563a019486" name="ac3e1f4feb5a24b3c0f2819563a019486"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PowerUpIni</b> (const char *Name, const char *DesName, uint32 IOTYPE, uint32 ElementNum)</td></tr>
+<tr class="separator:ac3e1f4feb5a24b3c0f2819563a019486 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56193b4872bf634b4d3f084321a4291e inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="a56193b4872bf634b4d3f084321a4291e" name="a56193b4872bf634b4d3f084321a4291e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RgsObject</b> (<a class="el" href="classspt_1_1_inst_object.html">InstObject</a> *Object)</td></tr>
+<tr class="separator:a56193b4872bf634b4d3f084321a4291e inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2adae7d41c55d1eed93502a5e50d7765 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="a2adae7d41c55d1eed93502a5e50d7765" name="a2adae7d41c55d1eed93502a5e50d7765"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RgsSignleDirObject</b> (<a class="el" href="classspt_1_1_inst_object.html">InstObject</a> *Object)</td></tr>
+<tr class="separator:a2adae7d41c55d1eed93502a5e50d7765 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5919bc9eadcc3dc3f0dc86d6eaccd4f8 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="a5919bc9eadcc3dc3f0dc86d6eaccd4f8" name="a5919bc9eadcc3dc3f0dc86d6eaccd4f8"></a>
+<a class="el" href="classspt_1_1_inst_object.html">InstObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetObject</b> (uint32 InstId)</td></tr>
+<tr class="separator:a5919bc9eadcc3dc3f0dc86d6eaccd4f8 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a387f6c652c28551ac897457f5d917356 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="a387f6c652c28551ac897457f5d917356" name="a387f6c652c28551ac897457f5d917356"></a>
+<a class="el" href="classspt_1_1_inst_object.html">InstObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetObject</b> (const char *sAddr)</td></tr>
+<tr class="separator:a387f6c652c28551ac897457f5d917356 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9d11d667b225d12c7344d75ef6c8840 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="aa9d11d667b225d12c7344d75ef6c8840" name="aa9d11d667b225d12c7344d75ef6c8840"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>InstNum</b> ()</td></tr>
+<tr class="separator:aa9d11d667b225d12c7344d75ef6c8840 inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3006a403d4e4d745035c3de60a9ef7cf inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="a3006a403d4e4d745035c3de60a9ef7cf" name="a3006a403d4e4d745035c3de60a9ef7cf"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>DesBufNum</b> ()</td></tr>
+<tr class="separator:a3006a403d4e4d745035c3de60a9ef7cf inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a241f5d94bb50185f78532a455233a12e inherit pub_methods_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspt_1_1_inst_object_group.html#a241f5d94bb50185f78532a455233a12e">SaveIds</a> (void *Ele)</td></tr>
+<tr class="separator:a241f5d94bb50185f78532a455233a12e inherit pub_methods_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classspt_1_1_inst_object"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspt_1_1_inst_object')"><img src="closed.png" alt="-"/>&#160;Public 成员函数 继承自 <a class="el" href="classspt_1_1_inst_object.html">spt::InstObject</a></td></tr>
+<tr class="memitem:a50a1fa3f9051c9915de1f7e619e9c230 inherit pub_methods_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a50a1fa3f9051c9915de1f7e619e9c230" name="a50a1fa3f9051c9915de1f7e619e9c230"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PowerUpIni</b> (const char *Name, const char *DesName, class <a class="el" href="classspt_1_1_inst_object_group.html">InstObjectGroup</a> *Group, uint32 IOTYPE, uint32 GroupId, uint32 InstId)</td></tr>
+<tr class="separator:a50a1fa3f9051c9915de1f7e619e9c230 inherit pub_methods_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60a6398a7e33334fbd3fd43a2eb6f9de inherit pub_methods_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a60a6398a7e33334fbd3fd43a2eb6f9de" name="a60a6398a7e33334fbd3fd43a2eb6f9de"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PowerUpIni</b> (const char *Name, const char *DesName, class <a class="el" href="classspt_1_1_inst_object_group.html">InstObjectGroup</a> *Group, class <a class="el" href="classspt_1_1_inst_object_group.html">InstObjectGroup</a> *NoDirGroup, uint32 IOTYPE, uint32 GroupId, uint32 InstId)</td></tr>
+<tr class="separator:a60a6398a7e33334fbd3fd43a2eb6f9de inherit pub_methods_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b2e7aecb118e8b2b163359f01d80a10 inherit pub_methods_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a7b2e7aecb118e8b2b163359f01d80a10" name="a7b2e7aecb118e8b2b163359f01d80a10"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>InstObjectType</b> () const</td></tr>
+<tr class="separator:a7b2e7aecb118e8b2b163359f01d80a10 inherit pub_methods_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c5130a9143614a5ed21057c0d5c055 inherit pub_methods_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="ab0c5130a9143614a5ed21057c0d5c055" name="ab0c5130a9143614a5ed21057c0d5c055"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>GroupId</b> () const</td></tr>
+<tr class="separator:ab0c5130a9143614a5ed21057c0d5c055 inherit pub_methods_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae48a294498d2c2219b06a6182d11b3b9 inherit pub_methods_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="ae48a294498d2c2219b06a6182d11b3b9" name="ae48a294498d2c2219b06a6182d11b3b9"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>InstId</b> () const</td></tr>
+<tr class="separator:ae48a294498d2c2219b06a6182d11b3b9 inherit pub_methods_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a111982a68f5974c386f06e3c8e0ce865 inherit pub_methods_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a111982a68f5974c386f06e3c8e0ce865" name="a111982a68f5974c386f06e3c8e0ce865"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b> () const</td></tr>
+<tr class="separator:a111982a68f5974c386f06e3c8e0ce865 inherit pub_methods_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1553bfe409e73c88193bdf04d36bb630 inherit pub_methods_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a1553bfe409e73c88193bdf04d36bb630" name="a1553bfe409e73c88193bdf04d36bb630"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>DesName</b> () const</td></tr>
+<tr class="separator:a1553bfe409e73c88193bdf04d36bb630 inherit pub_methods_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected 成员函数</h2></td></tr>
+<tr class="memitem:a00e0ea55ce877df96595ac91f989d708"><td class="memItemLeft" align="right" valign="top"><a id="a00e0ea55ce877df96595ac91f989d708" name="a00e0ea55ce877df96595ac91f989d708"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>SavePara</b> (<a class="el" href="classspt_1_1_sal_para_group.html">SalParaGroup</a> *Group, int32 Type, int32 ZoneNum)</td></tr>
+<tr class="separator:a00e0ea55ce877df96595ac91f989d708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc7f43054b17c5d0444903ff2eafc78b"><td class="memItemLeft" align="right" valign="top"><a id="afc7f43054b17c5d0444903ff2eafc78b" name="afc7f43054b17c5d0444903ff2eafc78b"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>loadBakParaForUse</b> (int32 ZoneNum)</td></tr>
+<tr class="separator:afc7f43054b17c5d0444903ff2eafc78b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29a7a966ce2d9fc669e4dceaaf2d6215"><td class="memItemLeft" align="right" valign="top"><a id="a29a7a966ce2d9fc669e4dceaaf2d6215" name="a29a7a966ce2d9fc669e4dceaaf2d6215"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>getSaveStepFlag</b> (uint32 Zone)</td></tr>
+<tr class="separator:a29a7a966ce2d9fc669e4dceaaf2d6215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected 属性</h2></td></tr>
+<tr class="memitem:a6d7322d6a4b3512242fd85687ad67827"><td class="memItemLeft" align="right" valign="top"><a id="a6d7322d6a4b3512242fd85687ad67827" name="a6d7322d6a4b3512242fd85687ad67827"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>dataElementNum</b></td></tr>
+<tr class="separator:a6d7322d6a4b3512242fd85687ad67827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ddd73ea479d3d3e7c2031514f84edcd"><td class="memItemLeft" align="right" valign="top"><a id="a1ddd73ea479d3d3e7c2031514f84edcd" name="a1ddd73ea479d3d3e7c2031514f84edcd"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>curZone</b></td></tr>
+<tr class="separator:a1ddd73ea479d3d3e7c2031514f84edcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e03e3e3f65fcad9c25b8a1ac1e46686"><td class="memItemLeft" align="right" valign="top"><a id="a8e03e3e3f65fcad9c25b8a1ac1e46686" name="a8e03e3e3f65fcad9c25b8a1ac1e46686"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>maxZone</b></td></tr>
+<tr class="separator:a8e03e3e3f65fcad9c25b8a1ac1e46686"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ffa390d8f68d1e71cf6f11c74f74726"><td class="memItemLeft" align="right" valign="top"><a id="a4ffa390d8f68d1e71cf6f11c74f74726" name="a4ffa390d8f68d1e71cf6f11c74f74726"></a>
+E_ParaStatus&#160;</td><td class="memItemRight" valign="bottom"><b>status</b></td></tr>
+<tr class="separator:a4ffa390d8f68d1e71cf6f11c74f74726"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06f4abff69e44ec14c4daf5ff0e95a07"><td class="memItemLeft" align="right" valign="top"><a id="a06f4abff69e44ec14c4daf5ff0e95a07" name="a06f4abff69e44ec14c4daf5ff0e95a07"></a>
+<a class="el" href="classspt_1_1_para_group_data_all.html">ParaGroupDataAll</a>&#160;</td><td class="memItemRight" valign="bottom"><b>usingData</b></td></tr>
+<tr class="separator:a06f4abff69e44ec14c4daf5ff0e95a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8ea274bcc1d49ef4d070761c0eb4b9e"><td class="memItemLeft" align="right" valign="top"><a id="aa8ea274bcc1d49ef4d070761c0eb4b9e" name="aa8ea274bcc1d49ef4d070761c0eb4b9e"></a>
+<a class="el" href="classspt_1_1_para_group_data_all.html">ParaGroupDataAll</a>&#160;</td><td class="memItemRight" valign="bottom"><b>editData</b></td></tr>
+<tr class="separator:aa8ea274bcc1d49ef4d070761c0eb4b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d97fbbfe1ce1ed5169a41f45453e96"><td class="memItemLeft" align="right" valign="top"><a id="a05d97fbbfe1ce1ed5169a41f45453e96" name="a05d97fbbfe1ce1ed5169a41f45453e96"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>dataChanCnt</b></td></tr>
+<tr class="separator:a05d97fbbfe1ce1ed5169a41f45453e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fcddef4cb063cd509363063ee0df585"><td class="memItemLeft" align="right" valign="top"><a id="a7fcddef4cb063cd509363063ee0df585" name="a7fcddef4cb063cd509363063ee0df585"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>dataOffSet</b></td></tr>
+<tr class="separator:a7fcddef4cb063cd509363063ee0df585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa10671e627162287953882ff3fbf6380"><td class="memItemLeft" align="right" valign="top"><a id="aa10671e627162287953882ff3fbf6380" name="aa10671e627162287953882ff3fbf6380"></a>
+const struct <a class="el" href="structspt_1_1st_app_flags.html">stAppFlags</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>appFlags</b></td></tr>
+<tr class="separator:aa10671e627162287953882ff3fbf6380"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classspt_1_1_inst_object_group"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classspt_1_1_inst_object_group')"><img src="closed.png" alt="-"/>&#160;Protected 属性 继承自 <a class="el" href="classspt_1_1_inst_object_group.html">spt::InstObjectGroup</a></td></tr>
+<tr class="memitem:a78cb62054868c8fc23c998b3530fe5e5 inherit pro_attribs_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="a78cb62054868c8fc23c998b3530fe5e5" name="a78cb62054868c8fc23c998b3530fe5e5"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>instNum</b></td></tr>
+<tr class="separator:a78cb62054868c8fc23c998b3530fe5e5 inherit pro_attribs_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a629e19a8d82c224ae7bf3d2425bfadf7 inherit pro_attribs_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="a629e19a8d82c224ae7bf3d2425bfadf7" name="a629e19a8d82c224ae7bf3d2425bfadf7"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>elementNum</b></td></tr>
+<tr class="separator:a629e19a8d82c224ae7bf3d2425bfadf7 inherit pro_attribs_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae909105b3ae2e0270471b95fdd55a1ca inherit pro_attribs_classspt_1_1_inst_object_group"><td class="memItemLeft" align="right" valign="top"><a id="ae909105b3ae2e0270471b95fdd55a1ca" name="ae909105b3ae2e0270471b95fdd55a1ca"></a>
+<a class="el" href="classspt_1_1_array_buf.html">ArrayBuf</a>&#160;</td><td class="memItemRight" valign="bottom"><b>desBuf</b></td></tr>
+<tr class="separator:ae909105b3ae2e0270471b95fdd55a1ca inherit pro_attribs_classspt_1_1_inst_object_group"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classspt_1_1_inst_object"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classspt_1_1_inst_object')"><img src="closed.png" alt="-"/>&#160;Protected 属性 继承自 <a class="el" href="classspt_1_1_inst_object.html">spt::InstObject</a></td></tr>
+<tr class="memitem:a2abbde7bdfee5fb19a07711580018939 inherit pro_attribs_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a2abbde7bdfee5fb19a07711580018939" name="a2abbde7bdfee5fb19a07711580018939"></a>
+class <a class="el" href="classspt_1_1_inst_object_group.html">InstObjectGroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>group</b></td></tr>
+<tr class="separator:a2abbde7bdfee5fb19a07711580018939 inherit pro_attribs_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a7e9d861c53adc83245a2cee2b31b9 inherit pro_attribs_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a61a7e9d861c53adc83245a2cee2b31b9" name="a61a7e9d861c53adc83245a2cee2b31b9"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>ioType</b></td></tr>
+<tr class="separator:a61a7e9d861c53adc83245a2cee2b31b9 inherit pro_attribs_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6303bf2bd38a929f1abc57d6aa25328 inherit pro_attribs_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="ab6303bf2bd38a929f1abc57d6aa25328" name="ab6303bf2bd38a929f1abc57d6aa25328"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>groupId</b></td></tr>
+<tr class="separator:ab6303bf2bd38a929f1abc57d6aa25328 inherit pro_attribs_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a244305e1cb7f99d269900c67dc2f90ff inherit pro_attribs_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a244305e1cb7f99d269900c67dc2f90ff" name="a244305e1cb7f99d269900c67dc2f90ff"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>instId</b></td></tr>
+<tr class="separator:a244305e1cb7f99d269900c67dc2f90ff inherit pro_attribs_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab29d74b5731ebd6e46a864e524237082 inherit pro_attribs_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="ab29d74b5731ebd6e46a864e524237082" name="ab29d74b5731ebd6e46a864e524237082"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> [40]</td></tr>
+<tr class="separator:ab29d74b5731ebd6e46a864e524237082 inherit pro_attribs_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678d9526d1cb7bac5456c1dddd9a6e98 inherit pro_attribs_classspt_1_1_inst_object"><td class="memItemLeft" align="right" valign="top"><a id="a678d9526d1cb7bac5456c1dddd9a6e98" name="a678d9526d1cb7bac5456c1dddd9a6e98"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>desName</b> [40]</td></tr>
+<tr class="separator:a678d9526d1cb7bac5456c1dddd9a6e98 inherit pro_attribs_classspt_1_1_inst_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+友元</h2></td></tr>
+<tr class="memitem:a7dfdaaf866a6ae81ae8cd9da7c830564"><td class="memItemLeft" align="right" valign="top"><a id="a7dfdaaf866a6ae81ae8cd9da7c830564" name="a7dfdaaf866a6ae81ae8cd9da7c830564"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>SalParaGroupSaveTask</b></td></tr>
+<tr class="separator:a7dfdaaf866a6ae81ae8cd9da7c830564"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/<a class="el" href="_sal_para_8h_source.html">SalPara.h</a></li>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/SalPara.cpp</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

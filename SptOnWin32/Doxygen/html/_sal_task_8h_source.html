@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/SalTask.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">SalTask.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;SalTypes.h&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#ifndef SALTASK_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#define SALTASK_H</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span>spt</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>{</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="structspt_1_1_task_run_info.html">    7</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_task_run_info.html">TaskRunInfo</a></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        uint32 status;<span class="comment">//Task::Status</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        uint32 realTimeLoad;<span class="comment">//实时负载</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        uint32 realTimePeriod;<span class="comment">//实时周期</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        uint32 maxHourLoad;<span class="comment">//小时负载情况</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        uint32 maxDayLoad;<span class="comment">//天负载情况</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        uint32 maxAllLoad;<span class="comment">//负载情况</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        uint32 minHourLoad;<span class="comment">//小时负载情况</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        uint32 minDayLoad;<span class="comment">//天负载情况</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        uint32 minAllLoad;<span class="comment">//负载情况</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        uint32 maxHourPeriod;<span class="comment">//小时周期情况</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        uint32 maxDayPeriod;<span class="comment">//天周期情况</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        uint32 maxAllPeriod;<span class="comment">//周期情况</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        uint32 minHourPeriod;<span class="comment">//小时周期情况</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        uint32 minDayPeriod;<span class="comment">//天周期情况</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        uint32 minAllPeriod;<span class="comment">//周期情况</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        uint32 exInfo1;<span class="comment">//附加信息1(调用者私有信息数据)</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        uint32 exInfo1Max;<span class="comment">//附加信息1最大值</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        uint32 exInfo1Min;<span class="comment">//附加信息1最小值</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        uint64 runCnt;<span class="comment">//运行次数</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_task_run_info.html#a5f85426aebe83a9593f19ded22ac3dc9">RunStart</a>();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_task_run_info.html#adb897338e666d7d8401c7e5ee1e06f4c">RunEnd</a>();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_task_run_info.html#ac7333531587cf36bd33b6a8bb622f6d0">ClearLoadInfo</a>();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_task_run_info.html#a863ac6a172f3f5f61d3bc9b879483311">SetName</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="structspt_1_1_task_run_info.html#a52850508f1d85988c37c12ea464bc58e">Name</a>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="structspt_1_1_task_run_info.html#a52850508f1d85988c37c12ea464bc58e">Name</a>()<span class="keyword">const</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        int32 <a class="code hl_function" href="structspt_1_1_task_run_info.html#a13302aefcdfd7f0122e14a4af857a9e8">Rgs2TaskMonitorRunInfo</a>();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordtype">char</span> name[20];</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        uint32 lastRunInTime;<span class="comment">//单位us</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        uint32 lastRunOutTime;<span class="comment">//单位us</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    };</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">typedef</span> <span class="keywordtype">void</span>* (*TaskFunction)(<span class="keywordtype">void</span>* Para);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classspt_1_1_task.html">   62</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_task.html">Task</a> :<span class="keyword">public</span> <a class="code hl_class" href="classspt_1_1_inst_object.html">InstObject</a></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint8 TaskBasePriority = 150;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint8 RealTimeTaskPriority = 5;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keyword">enum</span> TaskFlag</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            E_T_Default,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            E_T_FLOAT = 0x00000001</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        };</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keyword">enum</span> TaskCore</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            E_DefCore,<span class="comment">//默认核心</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            E_AppCore,<span class="comment">//应用核心</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            E_ServiceCore,<span class="comment">//重要服务核心</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            E_AuxCore,<span class="comment">//辅助功能核心</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        };</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keyword">enum</span> Status</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            E_Default,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            E_IniedAndNotRun,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            E_Running,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            E_Runin,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            E_Runout,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            E_Suspend,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            E_Exited,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            E_Stoped,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        };</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="structspt_1_1_task_1_1run_check_stattus.html">   90</a></span>        <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_task_1_1run_check_stattus.html">runCheckStattus</a></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="structspt_1_1_task_1_1run_check_stattus_1_1_private.html">   92</a></span>            <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_task_1_1run_check_stattus_1_1_private.html">Private</a></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_ms_period_timer.html">MsPeriodTimer</a> hourTimer;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_ms_period_timer.html">MsPeriodTimer</a> dayTimer;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            }pri;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="structspt_1_1_task_1_1run_check_stattus_1_1_out.html">   97</a></span>            <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_task_1_1run_check_stattus_1_1_out.html">Out</a></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                uint32 status;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                uint32 realTimeLoad;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                uint32 realTimePeriod;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                uint32 lastRunInTime;<span class="comment">//单位us</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                uint32 lastRunOutTime;<span class="comment">//单位us</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                uint32 maxHourLoad;<span class="comment">//小时负载情况</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                uint32 maxDayLoad;<span class="comment">//天负载情况</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                uint32 maxAllLoad;<span class="comment">//负载情况</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                uint32 minHourLoad;<span class="comment">//小时负载情况</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                uint32 minDayLoad;<span class="comment">//天负载情况</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                uint32 minAllLoad;<span class="comment">//负载情况</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                uint32 maxHourPeriod;<span class="comment">//小时周期情况</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                uint32 maxDayPeriod;<span class="comment">//天周期情况</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                uint32 maxAllPeriod;<span class="comment">//周期情况</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                uint32 minHourPeriod;<span class="comment">//小时周期情况</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                uint32 minDayPeriod;<span class="comment">//天周期情况</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                uint32 minAllPeriod;<span class="comment">//周期情况</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                uint64 runCnt;<span class="comment">//运行次数</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            }output;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        };</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <a class="code hl_class" href="classspt_1_1_task.html">Task</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, uint32 Priority, uint32 StackSize, uint32 Flag, TaskCore Core);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        int32 Start();</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        int32 Suspend();</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        int32 Exit();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordtype">void</span> ClearRunCalInfo();</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keyword">const</span> <a class="code hl_struct" href="structspt_1_1_task_run_info.html">TaskRunInfo</a>* RunInfo();</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keyword">virtual</span> int32 Do();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keyword">virtual</span> int32 DoOnce();</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">virtual</span> int32 PowerUpIni(int32 Para);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keyword">virtual</span> int32 OneLoop();</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keywordtype">void</span> MsSleep(uint32 Ms);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> SaveIds(<span class="keywordtype">void</span>* Ele);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordtype">void</span> CheckLoadStart();</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keywordtype">void</span> CheckLoadEnd();</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keyword">static</span> <span class="keywordtype">void</span>* TaskRunEntry(<span class="keywordtype">void</span>* Para);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        uint32 core;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        uint32 status;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        uint32 taskStep;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        uint32 taskLastStep;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keywordtype">char</span> name[40];</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        uint32 priority;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        uint32 stackSize;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        uint32 flag;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <span class="keywordtype">void</span>* taskHandle;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <a class="code hl_struct" href="structspt_1_1_task_run_info.html">TaskRunInfo</a> runInfo;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    };</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classspt_1_1_task_group.html">  149</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_task_group.html">TaskGroup</a> :<span class="keyword">public</span> <a class="code hl_class" href="classspt_1_1_inst_object_group.html">InstObjectGroup</a></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        M_Singleton(<a class="code hl_class" href="classspt_1_1_task_group.html">TaskGroup</a>);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        int32 PowerUpIni(int32 Para);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <a class="code hl_class" href="classspt_1_1_task_group.html">TaskGroup</a>();</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    };</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordtype">void</span>* StartTask(<span class="keyword">const</span> <span class="keywordtype">char</span>* Name, TaskFunction Func, <span class="keywordtype">void</span>* Para, <span class="keywordtype">unsigned</span> Priority, <span class="keywordtype">unsigned</span> StackSize, <span class="keywordtype">unsigned</span> Flag, <span class="keywordtype">unsigned</span> Core);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordtype">void</span> SetProcessRunAt(uint32 Kernel);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordtype">void</span> SetTaskRunAt(<span class="keywordtype">void</span>* Handle, uint32 Kernel);</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>}</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">#endif </span><span class="comment">// !SALTASK_H</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="ttc" id="aclassspt_1_1_inst_object_group_html"><div class="ttname"><a href="classspt_1_1_inst_object_group.html">spt::InstObjectGroup</a></div><div class="ttdef"><b>Definition:</b> SalInstObject.h:44</div></div>
+<div class="ttc" id="aclassspt_1_1_inst_object_html"><div class="ttname"><a href="classspt_1_1_inst_object.html">spt::InstObject</a></div><div class="ttdef"><b>Definition:</b> SalInstObject.h:24</div></div>
+<div class="ttc" id="aclassspt_1_1_ms_period_timer_html"><div class="ttname"><a href="classspt_1_1_ms_period_timer.html">spt::MsPeriodTimer</a></div><div class="ttdef"><b>Definition:</b> SalTimer.h:35</div></div>
+<div class="ttc" id="aclassspt_1_1_task_group_html"><div class="ttname"><a href="classspt_1_1_task_group.html">spt::TaskGroup</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:150</div></div>
+<div class="ttc" id="aclassspt_1_1_task_html"><div class="ttname"><a href="classspt_1_1_task.html">spt::Task</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:63</div></div>
+<div class="ttc" id="astructspt_1_1_task_1_1run_check_stattus_1_1_out_html"><div class="ttname"><a href="structspt_1_1_task_1_1run_check_stattus_1_1_out.html">spt::Task::runCheckStattus::Out</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:98</div></div>
+<div class="ttc" id="astructspt_1_1_task_1_1run_check_stattus_1_1_private_html"><div class="ttname"><a href="structspt_1_1_task_1_1run_check_stattus_1_1_private.html">spt::Task::runCheckStattus::Private</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:93</div></div>
+<div class="ttc" id="astructspt_1_1_task_1_1run_check_stattus_html"><div class="ttname"><a href="structspt_1_1_task_1_1run_check_stattus.html">spt::Task::runCheckStattus</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:91</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html"><div class="ttname"><a href="structspt_1_1_task_run_info.html">spt::TaskRunInfo</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:8</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html_a13302aefcdfd7f0122e14a4af857a9e8"><div class="ttname"><a href="structspt_1_1_task_run_info.html#a13302aefcdfd7f0122e14a4af857a9e8">spt::TaskRunInfo::Rgs2TaskMonitorRunInfo</a></div><div class="ttdeci">int32 Rgs2TaskMonitorRunInfo()</div><div class="ttdoc">注册至监视任务</div><div class="ttdef"><b>Definition:</b> SalTask.cpp:407</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html_a52850508f1d85988c37c12ea464bc58e"><div class="ttname"><a href="structspt_1_1_task_run_info.html#a52850508f1d85988c37c12ea464bc58e">spt::TaskRunInfo::Name</a></div><div class="ttdeci">const char * Name() const</div><div class="ttdoc">名称</div><div class="ttdef"><b>Definition:</b> SalTask.cpp:402</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html_a5f85426aebe83a9593f19ded22ac3dc9"><div class="ttname"><a href="structspt_1_1_task_run_info.html#a5f85426aebe83a9593f19ded22ac3dc9">spt::TaskRunInfo::RunStart</a></div><div class="ttdeci">void RunStart()</div><div class="ttdoc">运行开始</div><div class="ttdef"><b>Definition:</b> SalTask.cpp:265</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html_a863ac6a172f3f5f61d3bc9b879483311"><div class="ttname"><a href="structspt_1_1_task_run_info.html#a863ac6a172f3f5f61d3bc9b879483311">spt::TaskRunInfo::SetName</a></div><div class="ttdeci">void SetName(const char *Name)</div><div class="ttdoc">设置名称</div><div class="ttdef"><b>Definition:</b> SalTask.cpp:397</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html_ac7333531587cf36bd33b6a8bb622f6d0"><div class="ttname"><a href="structspt_1_1_task_run_info.html#ac7333531587cf36bd33b6a8bb622f6d0">spt::TaskRunInfo::ClearLoadInfo</a></div><div class="ttdeci">void ClearLoadInfo()</div><div class="ttdoc">清空统计信息</div><div class="ttdef"><b>Definition:</b> SalTask.cpp:378</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html_adb897338e666d7d8401c7e5ee1e06f4c"><div class="ttname"><a href="structspt_1_1_task_run_info.html#adb897338e666d7d8401c7e5ee1e06f4c">spt::TaskRunInfo::RunEnd</a></div><div class="ttdeci">void RunEnd()</div><div class="ttdoc">运行结束</div><div class="ttdef"><b>Definition:</b> SalTask.cpp:321</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

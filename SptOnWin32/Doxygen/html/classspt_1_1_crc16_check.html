@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: spt::Crc16Check类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>spt</b></li><li class="navelem"><a class="el" href="classspt_1_1_crc16_check.html">Crc16Check</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="classspt_1_1_crc16_check-members.html">所有成员列表</a>  </div>
+  <div class="headertitle"><div class="title">spt::Crc16Check类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:add0f76c1150ea3fb072cf168fd363097"><td class="memItemLeft" align="right" valign="top"><a id="add0f76c1150ea3fb072cf168fd363097" name="add0f76c1150ea3fb072cf168fd363097"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Crc16Check</b> (uint16 IniValue, uint16 Xorvalue, uint16 Outxorvalue, bool8 RightFirst)</td></tr>
+<tr class="separator:add0f76c1150ea3fb072cf168fd363097"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91bdbb783d7e5f728c6ee1c093059f3c"><td class="memItemLeft" align="right" valign="top"><a id="a91bdbb783d7e5f728c6ee1c093059f3c" name="a91bdbb783d7e5f728c6ee1c093059f3c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Crc16Check</b> (uint16(*table)[256], uint16 IniValue, uint16 Xorvalue, uint16 Outxorvalue, bool8 RightFirst)</td></tr>
+<tr class="separator:a91bdbb783d7e5f728c6ee1c093059f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab6efff8b0686654aed3a6b75985ac8a"><td class="memItemLeft" align="right" valign="top"><a id="aab6efff8b0686654aed3a6b75985ac8a" name="aab6efff8b0686654aed3a6b75985ac8a"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>CalCrc</b> (const void *data, uint32 ByteLen)</td></tr>
+<tr class="separator:aab6efff8b0686654aed3a6b75985ac8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8888fb34966a2de994af0b46e37a1c1"><td class="memItemLeft" align="right" valign="top"><a id="ab8888fb34966a2de994af0b46e37a1c1" name="ab8888fb34966a2de994af0b46e37a1c1"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>CalCrc</b> (uint16 Crc, const void *data, uint32 ByteLen)</td></tr>
+<tr class="separator:ab8888fb34966a2de994af0b46e37a1c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b29281595b8604982c5c4752b018f5e"><td class="memItemLeft" align="right" valign="top"><a id="a1b29281595b8604982c5c4752b018f5e" name="a1b29281595b8604982c5c4752b018f5e"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>AddCrc</b> (void *data, uint32 BufLen)</td></tr>
+<tr class="separator:a1b29281595b8604982c5c4752b018f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d094480256aef66c0bf9661b0719b95"><td class="memItemLeft" align="right" valign="top"><a id="a3d094480256aef66c0bf9661b0719b95" name="a3d094480256aef66c0bf9661b0719b95"></a>
+bool8&#160;</td><td class="memItemRight" valign="bottom"><b>IsCrcOk</b> (const void *data, uint32 ByteLen)</td></tr>
+<tr class="separator:a3d094480256aef66c0bf9661b0719b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/<a class="el" href="_sal_classic_func_8h_source.html">SalClassicFunc.h</a></li>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/SalClassicFunc.cpp</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

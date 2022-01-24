@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/ApiAppTask.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">ApiAppTask.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef ApiAppTask_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define ApiAppTask_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span>spt</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>{</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classspt_1_1_api_samp_app_task.html">    7</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_samp_app_task.html">ApiSampAppTask</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_samp_app_task.html">SampAppTask</a></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        <span class="comment">/*</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">        *TaskName应用程序名称</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">        *CallBack回调函数</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">        *Period调用周期,单位为采样点数</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">        */</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        <a class="code hl_class" href="classspt_1_1_api_samp_app_task.html">ApiSampAppTask</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* TaskName, AppTaskCallBack CallBack, bool8 <a class="code hl_function" href="classspt_1_1_api_samp_app_task.html#aa642fd0d01c5096ef5589bc97c6f688f">Enable</a>, uint32 Period);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        uint64 <a class="code hl_function" href="classspt_1_1_api_samp_app_task.html#a728daad20b1b4777126bdf8e75426539">RunCnt</a>();</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        bool8 <a class="code hl_function" href="classspt_1_1_api_samp_app_task.html#a3d384af9b22db1edef88c7bc8936b7b5">IsEnable</a>();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        bool8 <a class="code hl_function" href="classspt_1_1_api_samp_app_task.html#aa642fd0d01c5096ef5589bc97c6f688f">Enable</a>(bool8 En);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_samp_app_task.html#aa0b799f3c2f56f77a41e725fd37e2268">ClearLoadInfo</a>();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classspt_1_1_api_samp_app_task.html#a46d613a6f478ef6eeb16731279110839">   40</a></span>        <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="classspt_1_1_api_samp_app_task.html#a46d613a6f478ef6eeb16731279110839">Name</a>() { <span class="keywordflow">return</span> name; };</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classspt_1_1_api_samp_app_task.html#a6bdfa0f946566dc9e5ae9f77bc1dee3e">   44</a></span>        <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_task_run_info.html">TaskRunInfo</a>&amp; <a class="code hl_function" href="classspt_1_1_api_samp_app_task.html#a6bdfa0f946566dc9e5ae9f77bc1dee3e">RunInfo</a>() { <span class="keywordflow">return</span> runInfo; }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    };</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif </span><span class="comment">// !ApiAppTask_H</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="ttc" id="aclassspt_1_1_api_samp_app_task_html"><div class="ttname"><a href="classspt_1_1_api_samp_app_task.html">spt::ApiSampAppTask</a></div><div class="ttdef"><b>Definition:</b> ApiAppTask.h:8</div></div>
+<div class="ttc" id="aclassspt_1_1_api_samp_app_task_html_a3d384af9b22db1edef88c7bc8936b7b5"><div class="ttname"><a href="classspt_1_1_api_samp_app_task.html#a3d384af9b22db1edef88c7bc8936b7b5">spt::ApiSampAppTask::IsEnable</a></div><div class="ttdeci">bool8 IsEnable()</div><div class="ttdoc">中断是否使能</div><div class="ttdef"><b>Definition:</b> ApiAppTask.cpp:16</div></div>
+<div class="ttc" id="aclassspt_1_1_api_samp_app_task_html_a46d613a6f478ef6eeb16731279110839"><div class="ttname"><a href="classspt_1_1_api_samp_app_task.html#a46d613a6f478ef6eeb16731279110839">spt::ApiSampAppTask::Name</a></div><div class="ttdeci">const char * Name()</div><div class="ttdoc">名称</div><div class="ttdef"><b>Definition:</b> ApiAppTask.h:40</div></div>
+<div class="ttc" id="aclassspt_1_1_api_samp_app_task_html_a6bdfa0f946566dc9e5ae9f77bc1dee3e"><div class="ttname"><a href="classspt_1_1_api_samp_app_task.html#a6bdfa0f946566dc9e5ae9f77bc1dee3e">spt::ApiSampAppTask::RunInfo</a></div><div class="ttdeci">const struct TaskRunInfo &amp; RunInfo()</div><div class="ttdoc">运行信息</div><div class="ttdef"><b>Definition:</b> ApiAppTask.h:44</div></div>
+<div class="ttc" id="aclassspt_1_1_api_samp_app_task_html_a728daad20b1b4777126bdf8e75426539"><div class="ttname"><a href="classspt_1_1_api_samp_app_task.html#a728daad20b1b4777126bdf8e75426539">spt::ApiSampAppTask::RunCnt</a></div><div class="ttdeci">uint64 RunCnt()</div><div class="ttdoc">运行次数,每次调用中断加一</div><div class="ttdef"><b>Definition:</b> ApiAppTask.cpp:12</div></div>
+<div class="ttc" id="aclassspt_1_1_api_samp_app_task_html_aa0b799f3c2f56f77a41e725fd37e2268"><div class="ttname"><a href="classspt_1_1_api_samp_app_task.html#aa0b799f3c2f56f77a41e725fd37e2268">spt::ApiSampAppTask::ClearLoadInfo</a></div><div class="ttdeci">void ClearLoadInfo()</div><div class="ttdoc">清空统计信息</div><div class="ttdef"><b>Definition:</b> ApiAppTask.cpp:25</div></div>
+<div class="ttc" id="aclassspt_1_1_api_samp_app_task_html_aa642fd0d01c5096ef5589bc97c6f688f"><div class="ttname"><a href="classspt_1_1_api_samp_app_task.html#aa642fd0d01c5096ef5589bc97c6f688f">spt::ApiSampAppTask::Enable</a></div><div class="ttdeci">bool8 Enable(bool8 En)</div><div class="ttdoc">使能中断</div><div class="ttdef"><b>Definition:</b> ApiAppTask.cpp:20</div></div>
+<div class="ttc" id="aclassspt_1_1_samp_app_task_html"><div class="ttname"><a href="classspt_1_1_samp_app_task.html">spt::SampAppTask</a></div><div class="ttdef"><b>Definition:</b> SptAppTask.h:10</div></div>
+<div class="ttc" id="astructspt_1_1_task_run_info_html"><div class="ttname"><a href="structspt_1_1_task_run_info.html">spt::TaskRunInfo</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:8</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/ApiDialog.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_07d561b9cbdc88667ee2dc9d047729bd.html">SptOnWin32</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">ApiDialog.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef APIDIALOG_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define APIDIALOG_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">namespace </span>spt</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>{</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    int32 <a class="code hl_function" href="group___api_hmi_dialog.html#gae0433b95dae1ca50621de88ffa8b1f4d">DispProcess</a>(<span class="keywordtype">int</span> Step, <span class="keyword">const</span> <span class="keywordtype">char</span>* info);</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    int32 <a class="code hl_function" href="group___api_hmi_dialog.html#gadffde29d7703aa5f33fc5482763d5f10">DispPressAnyKey</a>();</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classspt_1_1_api_info_dialog.html">   20</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_info_dialog.html">ApiInfoDialog</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_info_dialog.html">HmiInfoDialog</a></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="comment">//Str 显示内容</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <a class="code hl_class" href="classspt_1_1_api_info_dialog.html">ApiInfoDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str1, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str2, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str3, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str4, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str5);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        int32 <a class="code hl_function" href="classspt_1_1_api_info_dialog.html#a33c21f918d8f66fe474d9bc1e63abad5">Show</a>();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    };</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classspt_1_1_api_warn_dialog.html">   36</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_warn_dialog.html">ApiWarnDialog</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_warn_dialog.html">HmiWarnDialog</a></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="comment">//Str 显示内容</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <a class="code hl_class" href="classspt_1_1_api_warn_dialog.html">ApiWarnDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str1, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str2, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str3, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str4, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str5);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        int32 <a class="code hl_function" href="classspt_1_1_api_warn_dialog.html#aeefe01912ca13c8672a87d626873ebbf">Show</a>();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    };</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classspt_1_1_api_select_dialog.html">   54</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_select_dialog.html">ApiSelectDialog</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_select_dialog.html">HmiSelectDialog</a></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment">//Str 显示内容</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <a class="code hl_class" href="classspt_1_1_api_select_dialog.html">ApiSelectDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str1, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str2, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str3, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str4, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str5);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        int32 <a class="code hl_function" href="classspt_1_1_api_select_dialog.html#a67ad22658f6f0eaee268d98ff560e3a9">Show</a>();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    };</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classspt_1_1_api_assic_input_diglog.html">   72</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_assic_input_diglog.html">ApiAssicInputDiglog</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_assic_input_dialog.html">HmiAssicInputDialog</a></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <a class="code hl_class" href="classspt_1_1_api_assic_input_diglog.html">ApiAssicInputDiglog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Default, E_Mode Mode, uint32 MaxLen);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        int32 <a class="code hl_function" href="classspt_1_1_api_assic_input_diglog.html#a0ffc11ea4110abe80fef679e7357cbe1">Show</a>();</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keyword">const</span> <span class="keywordtype">char</span>* Str();</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    };</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_str_edit_dialog.html">   90</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_str_edit_dialog.html">ApiHmiStrEditDialog</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_str_edit_dialog.html">HmiStrEditDialog</a></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="comment">//Str Title</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="comment">//MaxInputLen 最大输入长度</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <a class="code hl_class" href="classspt_1_1_api_hmi_str_edit_dialog.html">ApiHmiStrEditDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str1, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str2, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str3, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str4, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str5, uint32 MaxInputLen);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="comment">//设置默认值</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordtype">void</span> SetText(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str1, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str2, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str3, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str4, <span class="keyword">const</span> <span class="keywordtype">char</span>* Str5);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="comment">//设置是否可以编辑</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordtype">void</span> SetEditAble(bool8 EditAble1, bool8 EditAble2, bool8 EditAble3, bool8 EditAble4, bool8 EditAble5);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_str_edit_dialog.html#a266443e8b026d14d86f9a9261f52dc55">Show</a>();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keyword">const</span> <a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>* GetText(uint32 Index);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    };</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_date_edit_dialog.html">  116</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_date_edit_dialog.html">ApiHmiDateEditDialog</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_time_edit_dialog.html">HmiTimeEditDialog</a></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="comment">//Str Title</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="comment">//MaxInputLen 最大输入长度</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <a class="code hl_class" href="classspt_1_1_api_hmi_date_edit_dialog.html">ApiHmiDateEditDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title, <a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_date_edit_dialog.html#a6ee2a28f0ba0a25dfaa51f870aa96528">Show</a>();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp();</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    };</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_u_int32_edit_dialog.html">  138</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_u_int32_edit_dialog.html">ApiHmiUInt32EditDialog</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_u_int32_data_dialog.html">HmiUInt32DataDialog</a></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        <a class="code hl_function" href="classspt_1_1_api_hmi_u_int32_edit_dialog.html#ac741ce2217f5cafdcd50d758ac27373b">ApiHmiUInt32EditDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title, uint32 Min, uint32 Def, uint32 DotNum, uint32 Max);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_u_int32_edit_dialog.html#ad1a0ad55ec531d554591aea4a55846bc">Show</a>();</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        uint32 Value();</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    };</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_int32_edit_dialog.html">  164</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_int32_edit_dialog.html">ApiHmiInt32EditDialog</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_int32_data_dialog.html">HmiInt32DataDialog</a></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <a class="code hl_function" href="classspt_1_1_api_hmi_int32_edit_dialog.html#ab048058221afb09a4687d2eb56c17843">ApiHmiInt32EditDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title, int32 Min, int32 Def, int32 DotNum, int32 Max);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_int32_edit_dialog.html#a2d623f8ec71a283c053a7e5a92410c3a">Show</a>();</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        int32 Value();</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    };</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_hex32_edit_dialog.html">  190</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_hex32_edit_dialog.html">ApiHmiHex32EditDialog</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_hex32_data_dialog.html">HmiHex32DataDialog</a></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        <a class="code hl_function" href="classspt_1_1_api_hmi_hex32_edit_dialog.html#a2efba53dfc35968520b354bef9f4b087">ApiHmiHex32EditDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title, int32 Min, int32 Def, int32 Max);</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_hex32_edit_dialog.html#af427a34a2ab65d91dea9aced6ff87555">Show</a>();</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        uint32 Value();</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    };</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_bit32_edit_dialog.html">  215</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_bit32_edit_dialog.html">ApiHmiBit32EditDialog</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_bit32_data_dialog.html">HmiBit32DataDialog</a></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    {</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <a class="code hl_function" href="classspt_1_1_api_hmi_bit32_edit_dialog.html#abf05d6983af2da201c5e8eb21bf25711">ApiHmiBit32EditDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title, int32 Min, int32 Def, int32 Max, <a class="code hl_struct" href="structspt_1_1_sal_bit_des.html">SalBitDes</a>* Des, uint8 BitLen);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_bit32_edit_dialog.html#a3a66792c0ff64a95d6d14fdfd513fec2">Show</a>();</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        uint32 Value();</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    };</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_enum32_edit_dialog.html">  242</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_enum32_edit_dialog.html">ApiHmiEnum32EditDialog</a> : <span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_enum32_data_dialog.html">HmiEnum32DataDialog</a></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    {</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        <a class="code hl_function" href="classspt_1_1_api_hmi_enum32_edit_dialog.html#af6a4285366db874d462b8eea843c4ebe">ApiHmiEnum32EditDialog</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title, int32 Min, int32 Def, int32 Max, <a class="code hl_struct" href="structspt_1_1_sal_enum_des.html">SalEnumDes</a>* Des);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_enum32_edit_dialog.html#affa8d81d32eb72d3ef595793b9ec3bab">Show</a>();</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        uint32 Value();</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    }; <span class="comment">// end of ApiHmiDialog</span></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>}</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="preprocessor">#endif </span><span class="comment">// !APIDIALOG_H</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="ttc" id="aclassspt_1_1_api_assic_input_diglog_html"><div class="ttname"><a href="classspt_1_1_api_assic_input_diglog.html">spt::ApiAssicInputDiglog</a></div><div class="ttdoc">ASSIC码输入框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:73</div></div>
+<div class="ttc" id="aclassspt_1_1_api_assic_input_diglog_html_a0ffc11ea4110abe80fef679e7357cbe1"><div class="ttname"><a href="classspt_1_1_api_assic_input_diglog.html#a0ffc11ea4110abe80fef679e7357cbe1">spt::ApiAssicInputDiglog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:61</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_bit32_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_api_hmi_bit32_edit_dialog.html">spt::ApiHmiBit32EditDialog</a></div><div class="ttdoc">Bit32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:216</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_bit32_edit_dialog_html_a3a66792c0ff64a95d6d14fdfd513fec2"><div class="ttname"><a href="classspt_1_1_api_hmi_bit32_edit_dialog.html#a3a66792c0ff64a95d6d14fdfd513fec2">spt::ApiHmiBit32EditDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:191</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_bit32_edit_dialog_html_abf05d6983af2da201c5e8eb21bf25711"><div class="ttname"><a href="classspt_1_1_api_hmi_bit32_edit_dialog.html#abf05d6983af2da201c5e8eb21bf25711">spt::ApiHmiBit32EditDialog::ApiHmiBit32EditDialog</a></div><div class="ttdeci">ApiHmiBit32EditDialog(const char *Title, int32 Min, int32 Def, int32 Max, SalBitDes *Des, uint8 BitLen)</div><div class="ttdoc">Bit32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:186</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_date_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_api_hmi_date_edit_dialog.html">spt::ApiHmiDateEditDialog</a></div><div class="ttdoc">时间编辑对话框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:117</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_date_edit_dialog_html_a6ee2a28f0ba0a25dfaa51f870aa96528"><div class="ttname"><a href="classspt_1_1_api_hmi_date_edit_dialog.html#a6ee2a28f0ba0a25dfaa51f870aa96528">spt::ApiHmiDateEditDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:129</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_enum32_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_api_hmi_enum32_edit_dialog.html">spt::ApiHmiEnum32EditDialog</a></div><div class="ttdoc">Enum32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:243</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_enum32_edit_dialog_html_af6a4285366db874d462b8eea843c4ebe"><div class="ttname"><a href="classspt_1_1_api_hmi_enum32_edit_dialog.html#af6a4285366db874d462b8eea843c4ebe">spt::ApiHmiEnum32EditDialog::ApiHmiEnum32EditDialog</a></div><div class="ttdeci">ApiHmiEnum32EditDialog(const char *Title, int32 Min, int32 Def, int32 Max, SalEnumDes *Des)</div><div class="ttdoc">Enum32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:201</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_enum32_edit_dialog_html_affa8d81d32eb72d3ef595793b9ec3bab"><div class="ttname"><a href="classspt_1_1_api_hmi_enum32_edit_dialog.html#affa8d81d32eb72d3ef595793b9ec3bab">spt::ApiHmiEnum32EditDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:206</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_hex32_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_api_hmi_hex32_edit_dialog.html">spt::ApiHmiHex32EditDialog</a></div><div class="ttdoc">Hex32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:191</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_hex32_edit_dialog_html_a2efba53dfc35968520b354bef9f4b087"><div class="ttname"><a href="classspt_1_1_api_hmi_hex32_edit_dialog.html#a2efba53dfc35968520b354bef9f4b087">spt::ApiHmiHex32EditDialog::ApiHmiHex32EditDialog</a></div><div class="ttdeci">ApiHmiHex32EditDialog(const char *Title, int32 Min, int32 Def, int32 Max)</div><div class="ttdoc">Hex32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:171</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_hex32_edit_dialog_html_af427a34a2ab65d91dea9aced6ff87555"><div class="ttname"><a href="classspt_1_1_api_hmi_hex32_edit_dialog.html#af427a34a2ab65d91dea9aced6ff87555">spt::ApiHmiHex32EditDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:176</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_int32_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_api_hmi_int32_edit_dialog.html">spt::ApiHmiInt32EditDialog</a></div><div class="ttdoc">Int32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:165</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_int32_edit_dialog_html_a2d623f8ec71a283c053a7e5a92410c3a"><div class="ttname"><a href="classspt_1_1_api_hmi_int32_edit_dialog.html#a2d623f8ec71a283c053a7e5a92410c3a">spt::ApiHmiInt32EditDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:161</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_int32_edit_dialog_html_ab048058221afb09a4687d2eb56c17843"><div class="ttname"><a href="classspt_1_1_api_hmi_int32_edit_dialog.html#ab048058221afb09a4687d2eb56c17843">spt::ApiHmiInt32EditDialog::ApiHmiInt32EditDialog</a></div><div class="ttdeci">ApiHmiInt32EditDialog(const char *Title, int32 Min, int32 Def, int32 DotNum, int32 Max)</div><div class="ttdoc">Int32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:155</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_str_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_api_hmi_str_edit_dialog.html">spt::ApiHmiStrEditDialog</a></div><div class="ttdoc">字符串编辑对话框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:91</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_str_edit_dialog_html_a266443e8b026d14d86f9a9261f52dc55"><div class="ttname"><a href="classspt_1_1_api_hmi_str_edit_dialog.html#a266443e8b026d14d86f9a9261f52dc55">spt::ApiHmiStrEditDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:109</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_u_int32_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_api_hmi_u_int32_edit_dialog.html">spt::ApiHmiUInt32EditDialog</a></div><div class="ttdoc">Uint32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:139</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_u_int32_edit_dialog_html_ac741ce2217f5cafdcd50d758ac27373b"><div class="ttname"><a href="classspt_1_1_api_hmi_u_int32_edit_dialog.html#ac741ce2217f5cafdcd50d758ac27373b">spt::ApiHmiUInt32EditDialog::ApiHmiUInt32EditDialog</a></div><div class="ttdeci">ApiHmiUInt32EditDialog(const char *Title, uint32 Min, uint32 Def, uint32 DotNum, uint32 Max)</div><div class="ttdoc">Uint32 编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:140</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_u_int32_edit_dialog_html_ad1a0ad55ec531d554591aea4a55846bc"><div class="ttname"><a href="classspt_1_1_api_hmi_u_int32_edit_dialog.html#ad1a0ad55ec531d554591aea4a55846bc">spt::ApiHmiUInt32EditDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:145</div></div>
+<div class="ttc" id="aclassspt_1_1_api_info_dialog_html"><div class="ttname"><a href="classspt_1_1_api_info_dialog.html">spt::ApiInfoDialog</a></div><div class="ttdoc">信息框 显示完立即返回</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:21</div></div>
+<div class="ttc" id="aclassspt_1_1_api_info_dialog_html_a33c21f918d8f66fe474d9bc1e63abad5"><div class="ttname"><a href="classspt_1_1_api_info_dialog.html#a33c21f918d8f66fe474d9bc1e63abad5">spt::ApiInfoDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:221</div></div>
+<div class="ttc" id="aclassspt_1_1_api_select_dialog_html"><div class="ttname"><a href="classspt_1_1_api_select_dialog.html">spt::ApiSelectDialog</a></div><div class="ttdoc">选择框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:55</div></div>
+<div class="ttc" id="aclassspt_1_1_api_select_dialog_html_a67ad22658f6f0eaee268d98ff560e3a9"><div class="ttname"><a href="classspt_1_1_api_select_dialog.html#a67ad22658f6f0eaee268d98ff560e3a9">spt::ApiSelectDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:87</div></div>
+<div class="ttc" id="aclassspt_1_1_api_warn_dialog_html"><div class="ttname"><a href="classspt_1_1_api_warn_dialog.html">spt::ApiWarnDialog</a></div><div class="ttdoc">告警框</div><div class="ttdef"><b>Definition:</b> ApiDialog.h:37</div></div>
+<div class="ttc" id="aclassspt_1_1_api_warn_dialog_html_aeefe01912ca13c8672a87d626873ebbf"><div class="ttname"><a href="classspt_1_1_api_warn_dialog.html#aeefe01912ca13c8672a87d626873ebbf">spt::ApiWarnDialog::Show</a></div><div class="ttdeci">int32 Show()</div><div class="ttdoc">显示编辑框</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:76</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_assic_input_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_assic_input_dialog.html">spt::HmiAssicInputDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:59</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_bit32_data_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_bit32_data_dialog.html">spt::HmiBit32DataDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:181</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_enum32_data_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_enum32_data_dialog.html">spt::HmiEnum32DataDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:169</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_hex32_data_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_hex32_data_dialog.html">spt::HmiHex32DataDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:156</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_info_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_info_dialog.html">spt::HmiInfoDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:24</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_int32_data_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_int32_data_dialog.html">spt::HmiInt32DataDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:122</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_select_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_select_dialog.html">spt::HmiSelectDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:48</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_str_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_str_edit_dialog.html">spt::HmiStrEditDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:88</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_time_edit_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_time_edit_dialog.html">spt::HmiTimeEditDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:193</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_u_int32_data_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_u_int32_data_dialog.html">spt::HmiUInt32DataDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:139</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_warn_dialog_html"><div class="ttname"><a href="classspt_1_1_hmi_warn_dialog.html">spt::HmiWarnDialog</a></div><div class="ttdef"><b>Definition:</b> HmiDialog.h:37</div></div>
+<div class="ttc" id="aclassspt_1_1_sal_string_html"><div class="ttname"><a href="classspt_1_1_sal_string.html">spt::SalString</a></div><div class="ttdef"><b>Definition:</b> SalString.h:7</div></div>
+<div class="ttc" id="agroup___api_hmi_dialog_html_gadffde29d7703aa5f33fc5482763d5f10"><div class="ttname"><a href="group___api_hmi_dialog.html#gadffde29d7703aa5f33fc5482763d5f10">spt::DispPressAnyKey</a></div><div class="ttdeci">int32 DispPressAnyKey()</div><div class="ttdoc">等待任意键按下</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:18</div></div>
+<div class="ttc" id="agroup___api_hmi_dialog_html_gae0433b95dae1ca50621de88ffa8b1f4d"><div class="ttname"><a href="group___api_hmi_dialog.html#gae0433b95dae1ca50621de88ffa8b1f4d">spt::DispProcess</a></div><div class="ttdeci">int32 DispProcess(int Step, const char *info)</div><div class="ttdoc">异步调用液晶显示单行文本</div><div class="ttdef"><b>Definition:</b> ApiDialog.cpp:5</div></div>
+<div class="ttc" id="astructspt_1_1_sal_bit_des_html"><div class="ttname"><a href="structspt_1_1_sal_bit_des.html">spt::SalBitDes</a></div><div class="ttdoc">bit型数据描述 Bit值从零开始，必须是连续的数值，不能跳跃，必须是8的倍数</div><div class="ttdef"><b>Definition:</b> SalTypes.h:203</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html">spt::SalDateStamp</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:30</div></div>
+<div class="ttc" id="astructspt_1_1_sal_enum_des_html"><div class="ttname"><a href="structspt_1_1_sal_enum_des.html">spt::SalEnumDes</a></div><div class="ttdef"><b>Definition:</b> SalTypes.h:194</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

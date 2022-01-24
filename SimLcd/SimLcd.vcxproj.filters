@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SimLcd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LcdWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ApiProject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DbgCmm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DbgLcdCmm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DbgServer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DbgTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HalProject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HmiCmm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HmiKey.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HmiLedStatus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HmiProject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HmiVirLcdLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LcdFontPixel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LcdHal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LcdHalLcdDriver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LcdMain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalAdt.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalCfgData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalCfgFile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalClassicFunc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalCmm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalFile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalGmSsl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalInstObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalLib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalMacro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalMath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalProject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalSocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalString.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalTask.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalTimer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalTypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SalVersion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SptMain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SptMsInt.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SptPlatform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SptProject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LcdBitmap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SimLcd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LcdWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DbgCmm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DbgLcdCmm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DbgTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HmiCmm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HmiKey.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HmiVirLcdLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HwMsInt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HwProject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LcdFontPixel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LcdHal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LcdHalLcdDriver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LcdMain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalAdt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalCfgData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalCfgFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalClassicFunc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalGmSsl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalLib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalSocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalString.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalTask.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SptMsInt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SalCmm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LcdBitmap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

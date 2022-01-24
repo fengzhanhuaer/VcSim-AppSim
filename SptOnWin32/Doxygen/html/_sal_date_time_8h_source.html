@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/SalDateTime.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">SalDateTime.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef SALDATETIME_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define SALDATETIME_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">struct </span>tm;</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span>spt</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="unionspt_1_1_sal_date_q.html">    8</a></span>    <span class="keyword">union </span><a class="code hl_union" href="unionspt_1_1_sal_date_q.html">SalDateQ</a></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        <span class="keyword">struct</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>            uint32 isLeap : 1;<span class="comment">//闰秒</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            uint32 isNegLeap : 1;<span class="comment">//负闰秒</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            uint32 res : 3;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            <span class="comment">//以下8位为标准的UTC的q的一部分,出自61850-7-2：5.5.3.7.3.2 FractionOfSecond</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            uint32 isSyncErr : 1;<span class="comment">//是否同步失败</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            uint32 isClockErr : 1;<span class="comment">//时钟故障</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            uint32 isLeapSecondKnown : 1;<span class="comment">//是否处理了闰秒</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="comment">//上面的8位，在本地的事项中进行记录</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            uint32 TimeAccuracy : 5;<span class="comment">//时钟精度，1/TimeAccuracy，单位为秒</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        }bits;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        uint32 q;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    };</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_std_utc_stamp.html">   27</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_sal_std_utc_stamp.html">SalStdUtcStamp</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        uint32 uSec;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        uint32 u_Fra_Q;<span class="comment">//小数部分单位为us</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    };</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_date_stamp.html">   36</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        uint32 usL;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        uint32 usH;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <a class="code hl_union" href="unionspt_1_1_sal_date_q.html">SalDateQ</a> q;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <a class="code hl_union" href="unionspt_1_1_sal_date_q.html">SalDateQ</a> Q() { <span class="keywordflow">return</span> q; };</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        int64 Us()<span class="keyword">const</span>;<span class="comment">//获取us时标</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordtype">void</span> Set(int64 us);<span class="comment">//设置时标</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordtype">void</span> Now();<span class="comment">//用系统时间更新时标</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"></span>        int64 <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#abbd8d640fc9ecad13c1135b88d7c840f">toUtcSec</a>();</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        int64 <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#ac121ebaf86d48cb308a071b2ba8df9be">fromUtcSec</a>(int64 Sec);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordtype">void</span> toUtcCode(uint32&amp; Sec, uint32&amp; fractionAndQ);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordtype">void</span> fromUtcCode(uint32 Sec, uint32 fractionAndQ);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordtype">void</span> toPriUtcCode(uint32&amp; Sec, uint32&amp; fractionAndQ);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordtype">void</span> fromPriUtcCode(uint32 Sec, uint32 fractionAndQ);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordtype">void</span> Set(<span class="keyword">struct</span> <a class="code hl_struct" href="structspt_1_1_sal_rtc.html">SalRtc</a>* Rtc);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a39a2e31c7cde0bcfcb1349ccf6e7bb91">FromStrFmt1</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#aa2168daa8e25a3a19d12abb01978e79a">FromStrFmt2</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#ab6041359a89e7618b0b11a53ec7832d2">ToStrFmt1</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a79e90833ec296b81aaa31f9df0a02f56">ToStrFmt2</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a48fcbd997d3cf3df8251be1a9fd7c66b">ToStrFmt22</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a2fa201999a5291b778fce2d97e407f9c">ToStrFmt3</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a812e883007834898dbf50748b96790d0">ToStrHzFmt1</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#ab39c299f037bd520aceb18dfcf427cb0">ToStrHzFmt2</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#ad9f495871c46cc24a1356ebea79e4790">ToStrHzFmt3</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a2b6675fb03fe4f6d593d52cecf15aaf6">ToStrFmt40</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#af235305aa7d77597d3144a2eb258db1d">ToStrFmt41</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a0b7f958d979e7c39a58513a6b46938aa">ToStrFmt42</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#afdfe347759dd39a966be1443e4021a09">ToStrFmt43</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a2d631b41fbd3d25bf8156da9fb594aef">FromStrHzFmt1</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#af4f756da445e9bfb7bcf4d1e7a146ca2">FromStrHzFmt2</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#aa5add1d97032578cb7a3c407ebc79ee6">FromStrHzFmt3</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="keywordtype">void</span> ToSNTPV4(uint32&amp; sec, uint32&amp; fraction);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordtype">void</span> FromSNTPV4(uint32 sec, uint32 fraction);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_date_stamp.html#a78e004c4762d27f31e7c6b41477ac973">FromStrBuild</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Date, <span class="keyword">const</span> <span class="keywordtype">char</span>* Time);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint32 Dt1MicroSecond = 1;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint32 Dt1MilliSecond = 1000 * Dt1MicroSecond;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint32 Dt1Second = 1000 * Dt1MilliSecond;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint32 Dt1Minute = Dt1Second * 60;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint32 Dt1Hour = Dt1Minute * 60;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint64 Dt1Day = (uint64)Dt1Hour * 24;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint64 UTCBASE = 62135596800000000;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keyword">static</span> <span class="keyword">const</span> uint64 SNTPV4BASE = 59926608000000000;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    };</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html">  159</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_sal_rtc.html">SalRtc</a></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        uint8 q;<span class="comment">//本地Utc的品质的低8位</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        uint8 month;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html#a112bfd0e0e49c545db06046b17d215fe">  163</a></span>        uint8 <a class="code hl_variable" href="structspt_1_1_sal_rtc.html#a112bfd0e0e49c545db06046b17d215fe">day</a>;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html#aa8691a43c263ac08ca539c32de4dfa55">  164</a></span>        uint8 <a class="code hl_variable" href="structspt_1_1_sal_rtc.html#aa8691a43c263ac08ca539c32de4dfa55">hour</a>;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html#a6856de1d57753a001ae417e2d8e08179">  165</a></span>        uint8 <a class="code hl_variable" href="structspt_1_1_sal_rtc.html#a6856de1d57753a001ae417e2d8e08179">minute</a>;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html#ad906d115cd5ba4f1297b753374d60f9e">  166</a></span>        uint8 <a class="code hl_variable" href="structspt_1_1_sal_rtc.html#ad906d115cd5ba4f1297b753374d60f9e">second</a>;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html#a3ef14f21ee165df4ffe5e3e67b804945">  167</a></span>        uint16 <a class="code hl_variable" href="structspt_1_1_sal_rtc.html#a3ef14f21ee165df4ffe5e3e67b804945">year</a>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html#aa1f0fa66423e85aa038d44457997944d">  168</a></span>        uint16 <a class="code hl_variable" href="structspt_1_1_sal_rtc.html#aa1f0fa66423e85aa038d44457997944d">ms</a>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="structspt_1_1_sal_rtc.html#aefcaee0b3402a92109b100e83126f2cb">  169</a></span>        uint16 <a class="code hl_variable" href="structspt_1_1_sal_rtc.html#aefcaee0b3402a92109b100e83126f2cb">us</a>;</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        <span class="comment">// 获取当前时标</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_rtc.html#a8214410298858d3ce898e627bb476876">Now</a>();</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordtype">void</span> FromTm(<span class="keyword">const</span> <span class="keyword">struct</span> tm* t);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordtype">void</span> ToTm(<span class="keyword">struct</span> tm* t);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        int64 Stamp(); <span class="comment">//公元1年1月1日 00:00 : 00至今的时间戳</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="keywordtype">void</span> FromStamp(uint64 Us);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keywordtype">void</span> FromStamp(<span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>* t);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="comment">//Fmt is 2021/03/02 13:06:08</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="keywordtype">void</span> FromStrFmt1(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="comment">//Fmt is 2021-03-02 13:06:08</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordtype">void</span> FromStrFmt2(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        <span class="comment">//Fmt is Jan 1 2021 13:06:08</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordtype">void</span> FromStrBuild(<span class="keyword">const</span> <span class="keywordtype">char</span>* Date, <span class="keyword">const</span> <span class="keywordtype">char</span>* Time);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="comment">//Fmt is 2021/03/02 13:06:08</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        <span class="keywordtype">void</span> ToStrFmt1(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        <span class="comment">//Fmt is 2021/03/02 13:06:08.123</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordtype">void</span> ToStrFmt2(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structspt_1_1_sal_rtc.html#a31ad02492664bec8804b29c743d5994d">ToStrFmt22</a>(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="comment">//Fmt is 2021/03/02 13:06:08.123.456</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        <span class="keywordtype">void</span> ToStrFmt3(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="comment">//Fmt is 20210302</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        <span class="keywordtype">void</span> ToStrFmt40(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        <span class="comment">//Fmt is 130608</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="keywordtype">void</span> ToStrFmt41(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <span class="comment">//Fmt is 20210302.130608</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        <span class="keywordtype">void</span> ToStrFmt42(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        <span class="comment">//Fmt is 20210302_130608_789</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="keywordtype">void</span> ToStrFmt43(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        <span class="comment">// Fmt is 2021年03月02日 13:06:08</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        <span class="keywordtype">void</span> ToStrHzFmt1(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        <span class="comment">//Fmt is 2021年03月02日 13:06:08.123</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="keywordtype">void</span> ToStrHzFmt2(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <span class="comment">//Fmt is 2021年03月02日 13:06:08.123.456</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordtype">void</span> ToStrHzFmt3(<a class="code hl_class" href="classspt_1_1_sal_string.html">SalString</a>&amp; Str);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="comment">//Fmt is 2021年03月02日 13:06:08</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordtype">void</span> FromStrHzFmt1(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="comment">//Fmt is 2021年03月02日 13:06:08.123</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        <span class="keywordtype">void</span> FromStrHzFmt2(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="comment">//Fmt is 2021年03月02日 13:06:08.123.456</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordtype">void</span> FromStrHzFmt3(<span class="keyword">const</span> <span class="keywordtype">char</span>* Str);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="keywordtype">void</span> Check();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    };</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="classspt_1_1_date_para.html">  217</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_date_para.html">DatePara</a> : <a class="code hl_class" href="classspt_1_1_cfg_file.html">CfgFile</a></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    {</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keyword">enum</span> E_MODE</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        {</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>            E_LocalRun = 0,<span class="comment">//本地守时</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>            E_SNTP,<span class="comment">//SNTP</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            E_ELE_IRIG_B,<span class="comment">//电B码</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            E_LIGHT_IRIG_B,<span class="comment">//光B码</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>            E_SubBoard,<span class="comment">//从板卡</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            E_Total,<span class="comment">//</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        };</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keyword">static</span> <a class="code hl_struct" href="structspt_1_1_sal_enum_des.html">SalEnumDes</a> Mode[E_Total];</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        int32 PowerUpIni(int32 Para);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        M_Singleton(<a class="code hl_class" href="classspt_1_1_date_para.html">DatePara</a>);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        <a class="code hl_class" href="classspt_1_1_cfg_uint32.html">CfgUint32</a> AdJustMode;<span class="comment">//校时方式</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <a class="code hl_class" href="classspt_1_1_cfg_uint32.html">CfgUint32</a> IrigB_Precision;<span class="comment">//B码时钟精度</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <a class="code hl_class" href="classspt_1_1_cfg_uint32.html">CfgUint32</a> IrigB_Delay;<span class="comment">//B码时钟额定延时</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <a class="code hl_class" href="classspt_1_1_cfg_uint32.html">CfgUint32</a> IrigB_AckCnt;<span class="comment">//B码时钟同步确认时间</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <a class="code hl_class" href="classspt_1_1_cfg_uint32.html">CfgUint32</a> IrigB_UnSynCnt;<span class="comment">//B码时钟失步确认时间</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <a class="code hl_class" href="classspt_1_1_cfg_int32.html">CfgInt32</a> IrigB_CheckCode;<span class="comment">//B码校验方式</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <a class="code hl_class" href="classspt_1_1_cfg_int32.html">CfgInt32</a> IrigB_HostContDif;<span class="comment">//B码帧跳变阈值</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        <a class="code hl_class" href="classspt_1_1_cfg_uint32.html">CfgUint32</a> IrigB_ReSyncDif;<span class="comment">//B码再同步阈值</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        <a class="code hl_class" href="classspt_1_1_cfg_int32.html">CfgInt32</a> TimeZone;<span class="comment">//本地时区-12~12</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keyword">virtual</span> <a class="code hl_class" href="classspt_1_1_cfg_data_base.html">PCfgDataBase</a>* CfgPool() { <span class="keywordflow">return</span> pool; };</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keyword">virtual</span> uint32 CfgPoolSize() { <span class="keywordflow">return</span> M_ArrLen(pool); };</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <a class="code hl_class" href="classspt_1_1_date_para.html">DatePara</a>();</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <a class="code hl_class" href="classspt_1_1_cfg_data_base.html">PCfgDataBase</a> pool[60];</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    };</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    bool8 IsLeapYear(uint16 Year);</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="classspt_1_1_date_update.html">  251</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_date_update.html">DateUpdate</a></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    {</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="unionspt_1_1_date_update_1_1_update_fpga_frame_cfg.html">  255</a></span>        <span class="keyword">union </span><a class="code hl_union" href="unionspt_1_1_date_update_1_1_update_fpga_frame_cfg.html">UpdateFpgaFrameCfg</a></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        {</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>            <span class="keyword">struct</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>            {</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                uint8 LightOrEle : 1;<span class="comment">//0光对时、1电对时</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                uint8 DisableIrigB : 1;<span class="comment">//禁止B码对时</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                uint8 CheckMode : 2;<span class="comment">//00无校验，01 奇校验，10偶校验</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>            }bits;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>            uint8 u8;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        };</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="structspt_1_1_date_update_1_1_update_fpga_frame.html">  265</a></span>        <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_date_update_1_1_update_fpga_frame.html">UpdateFpgaFrame</a></div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        {</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>            uint16 FrmNo;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>            uint8 UpdateFlag;<span class="comment">//0xAA:CPU更新FPGA时间-只更新秒信息0x55:CPU更新FPGA时间-更新秒及毫秒信息0x00:FPGA继续维护时间</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>            uint8 FeedDog;<span class="comment">//0xAA:CPU指示FPGA喂狗  0x00:CPU指示FPGA终止喂狗</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>            uint8 Cfg;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>            uint8 UtcSec[4];</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>            uint8 UtcUs_Q[4];</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            uint8 Bcd_Sec;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            uint8 Sum_L;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            uint8 Sum_H;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        };</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        <span class="comment">//DLT 1100.1-2009 电力系统的时间同步系统 第1部分：技术规范</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno"><a class="line" href="unionspt_1_1_date_update_1_1_fpga_time_frame.html">  278</a></span>        <span class="keyword">union </span><a class="code hl_union" href="unionspt_1_1_date_update_1_1_fpga_time_frame.html">FpgaTimeFrame</a></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno"><a class="line" href="structspt_1_1_date_update_1_1_fpga_time_frame_1_1_fpga_mu_time_frame.html">  280</a></span>            <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_date_update_1_1_fpga_time_frame_1_1_fpga_mu_time_frame.html">FpgaMuTimeFrame</a></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            {</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                uint16 frmNo;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                uint16 SvSyn;<span class="comment">//SV同步标志</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>                uint8 utcSec[4];</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>                uint8 utcFrq_Q[4];</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>                uint8 irigb_Stat;<span class="comment">//bit 0 校验错误</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>                uint8 irigb[16];</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>                uint8 res[8];</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            }muframe;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            uint8 buf[256];</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        };</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="structspt_1_1_date_update_1_1_out_put.html">  292</a></span>        <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_date_update_1_1_out_put.html">OutPut</a></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        {</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            uint64 recFrameNum;<span class="comment">//接收到的帧数</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            uint8 Irig_B_precision;<span class="comment">//B码精度</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            bool8 HostBCodeCheckAlarm;<span class="comment">//B码校验异常</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>            bool8 HostBCodePrecisionAlarm;<span class="comment">//B码精度异常</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>            bool8 HostTPortAlarm;<span class="comment">//对时信号状态</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            bool8 HostTSrvAlarm;<span class="comment">//对时服务状态</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>            bool8 HostContAlarm;<span class="comment">//帧跳变异常</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        };</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno"><a class="line" href="structspt_1_1_date_update_1_1_state.html">  302</a></span>        <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_date_update_1_1_state.html">State</a></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        {</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>            bool8 recMoudlePowerInied;<span class="comment">//接收模块初始化完毕</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>            bool8 frmDateUpdate;<span class="comment">//收到FPGA更新帧</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>            bool8 frmDownFpgaTimeUpdate;<span class="comment">//下发FPGA时间帧</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>            bool8 frmFpgaTimeInied;<span class="comment">//FPGA时间初始化标志</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>            bool8 frmFpgaForceUpdateSec;<span class="comment">//强制更新FPGA时间</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>            bool8 IrigBSynOk;<span class="comment">//B码同步成功</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>            bool8 IrigBPowerUpSynOk;<span class="comment">//B码曾经同步成功</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>            uint8 IrigBProcessRecOkCnt;<span class="comment">//B码接收同步过程中正确计数</span></div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>            bool8 isHmiSetStamp;<span class="comment">//Hmi更新时间标志</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>            bool8 isSntpSetStamp;<span class="comment">//Sntp更新时间标志</span></div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>            uint8 forceSetStampDelay;<span class="comment">//设置系统时间后延时使用FPGA时间</span></div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>            uint8 IrigBContAlmCnt;<span class="comment">//帧跳变告警连续计数</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>            uint8 IrigBContRevertCnt;<span class="comment">//帧跳变复归连续计数</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>            bool8 IrigBHasLost;<span class="comment">//B码有丢失</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>        };</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInMsInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp) {};</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInSampInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp) {};</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInTask(SalDateStamp&amp; Stamp) {};</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> GetHwTime(SalDateStamp&amp; Stamp);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> SetHwTime(SalDateStamp&amp; Stamp);</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> RecFpgaMsg(uint8* buf, uint32 MsgLen);</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        bool8 HmiSetDateTime(<span class="keyword">const</span> SalDateStamp&amp; Stamp);</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>        <span class="keyword">const</span> <span class="keyword">struct </span>OutPut&amp; Output();</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>        DateUpdate();</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>        UpdateFpgaFrame updateFrame;</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        FpgaTimeFrame frmDate;</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        State state;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>        MsTimer localIrigBLostTimer;<span class="comment">//B码丢失时间</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>        MsTimer localIrigBCheckPortErr;<span class="comment">//（从未收到过B码时）B码接收异常</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>        MsTimer localIrigBCheckPortOk;<span class="comment">//（从未收到过B码时）B码接收异常</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        MsTimer localIrigBCheckSrvErr;<span class="comment">//（从未收到过B码时）B码接收异常</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>        MsStampTimer localIrigBCheckLost;<span class="comment">// 检查B码是否出现中断</span></div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>        MsStampTimer localIrigBCheckCont;<span class="comment">// 检查B码是否连续</span></div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        OutPut output;</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        SalDateStamp hmiSetStamp;<span class="comment">//Hmi设置时间</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        SalDateStamp sntpSetStamp;<span class="comment">//sntp设置时间</span></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        SalRtc realTimeIrigBRtc;<span class="comment">//实时B码</span></div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        SalStdUtcStamp realTimerFpgaUtc;<span class="comment">//实时FpgaUtc</span></div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>        SalDateStamp lastTimeIrigBStamp;<span class="comment">//上次收到的B码时标</span></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    };</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno"><a class="line" href="classspt_1_1_gzk_tools_date_update.html">  348</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_gzk_tools_date_update.html">GzkToolsDateUpdate</a> :<span class="keyword">public</span> <a class="code hl_class" href="classspt_1_1_date_update.html">DateUpdate</a></div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    {</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>        <span class="keywordtype">void</span> UpdateFromIrigB(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        <span class="keywordtype">void</span> UpdateFromSntp(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInMsInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInSampInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    };</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno"><a class="line" href="classspt_1_1_pc_sim_date_update.html">  357</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_pc_sim_date_update.html">PcSimDateUpdate</a> :<span class="keyword">public</span> <a class="code hl_class" href="classspt_1_1_gzk_tools_date_update.html">GzkToolsDateUpdate</a></div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    {</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInTask(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    };</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno"><a class="line" href="classspt_1_1_gzk35k_v_date_update.html">  364</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_gzk35k_v_date_update.html">Gzk35kVDateUpdate</a> :<span class="keyword">public</span> <a class="code hl_class" href="classspt_1_1_gzk_tools_date_update.html">GzkToolsDateUpdate</a></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    {</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>        <a class="code hl_class" href="classspt_1_1_gzk35k_v_date_update.html">Gzk35kVDateUpdate</a>(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>* SysStamp);</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInMsInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInSampInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> SetHwTime(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        <span class="keywordtype">void</span> SetStampInMsInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        <a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>* SysStamp;</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    };</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno"><a class="line" href="classspt_1_1_gzk_sau_date_update.html">  376</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_gzk_sau_date_update.html">GzkSauDateUpdate</a> :<span class="keyword">public</span> <a class="code hl_class" href="classspt_1_1_gzk_tools_date_update.html">GzkToolsDateUpdate</a></div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    {</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> SetHwTime(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        <span class="keyword">virtual</span> <span class="keywordtype">void</span> UpdateTimeInSampInt(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        <span class="keywordtype">void</span> UpdateFpgaTime();</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        <span class="keywordtype">void</span> UpdateMainBoard(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        <span class="keywordtype">void</span> UpdateSubBoard(<a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    };</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno"><a class="line" href="classspt_1_1_spt_date_task.html">  389</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_spt_date_task.html">SptDateTask</a> :<span class="keyword">public</span> <a class="code hl_class" href="classspt_1_1_task.html">Task</a></div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    {</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>        <span class="keyword">static</span> <a class="code hl_class" href="classspt_1_1_spt_date_task.html">SptDateTask</a>&amp; Instance();</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>        <span class="keywordtype">void</span> UpdateTimeInMsInt();</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>        <span class="keywordtype">void</span> UpdateTimeInSampInt();</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>        <span class="keyword">virtual</span> int32 PowerUpIni(int32 Para);</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>        <span class="keyword">const</span> <a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Now();</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>        <span class="keywordtype">void</span> RecFpgaMsg(uint8* buf, uint32 MsgLen);</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>        bool8 HmiSetDateTime(<span class="keyword">const</span> <a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a>&amp; Stamp);</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>        <span class="keywordtype">void</span> ForceUpdateHwRtc();</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>        <span class="keywordtype">void</span> ForceGetRtcFromHw();</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        <a class="code hl_class" href="classspt_1_1_date_update.html">DateUpdate</a>* UpdateHandle() { <span class="keywordflow">return</span> update; };</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>        <span class="keyword">virtual</span> int32 OneLoop();</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>        <a class="code hl_class" href="classspt_1_1_spt_date_task.html">SptDateTask</a>();</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>        <span class="keywordtype">void</span> UpdateStatus();</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        bool8 forceUpdateHwRtc;</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        <a class="code hl_struct" href="structspt_1_1_sal_date_stamp.html">SalDateStamp</a> localStamp;</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        <a class="code hl_class" href="classspt_1_1_date_update.html">DateUpdate</a>* update;</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>        <a class="code hl_class" href="classspt_1_1_ms_timer.html">MsTimer</a> localRtcSetMsTimer;</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    };</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>}</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><span class="preprocessor">#endif </span><span class="comment">// !SALDATETIME_H</span></div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
+<div class="ttc" id="aclassspt_1_1_cfg_data_base_html"><div class="ttname"><a href="classspt_1_1_cfg_data_base.html">spt::CfgDataBase</a></div><div class="ttdef"><b>Definition:</b> SalCfgData.h:7</div></div>
+<div class="ttc" id="aclassspt_1_1_cfg_file_html"><div class="ttname"><a href="classspt_1_1_cfg_file.html">spt::CfgFile</a></div><div class="ttdef"><b>Definition:</b> SalCfgFile.h:10</div></div>
+<div class="ttc" id="aclassspt_1_1_cfg_int32_html"><div class="ttname"><a href="classspt_1_1_cfg_int32.html">spt::CfgInt32</a></div><div class="ttdef"><b>Definition:</b> SalCfgData.h:113</div></div>
+<div class="ttc" id="aclassspt_1_1_cfg_uint32_html"><div class="ttname"><a href="classspt_1_1_cfg_uint32.html">spt::CfgUint32</a></div><div class="ttdef"><b>Definition:</b> SalCfgData.h:89</div></div>
+<div class="ttc" id="aclassspt_1_1_date_para_html"><div class="ttname"><a href="classspt_1_1_date_para.html">spt::DatePara</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:218</div></div>
+<div class="ttc" id="aclassspt_1_1_date_update_html"><div class="ttname"><a href="classspt_1_1_date_update.html">spt::DateUpdate</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:252</div></div>
+<div class="ttc" id="aclassspt_1_1_gzk35k_v_date_update_html"><div class="ttname"><a href="classspt_1_1_gzk35k_v_date_update.html">spt::Gzk35kVDateUpdate</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:365</div></div>
+<div class="ttc" id="aclassspt_1_1_gzk_sau_date_update_html"><div class="ttname"><a href="classspt_1_1_gzk_sau_date_update.html">spt::GzkSauDateUpdate</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:377</div></div>
+<div class="ttc" id="aclassspt_1_1_gzk_tools_date_update_html"><div class="ttname"><a href="classspt_1_1_gzk_tools_date_update.html">spt::GzkToolsDateUpdate</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:349</div></div>
+<div class="ttc" id="aclassspt_1_1_ms_timer_html"><div class="ttname"><a href="classspt_1_1_ms_timer.html">spt::MsTimer</a></div><div class="ttdef"><b>Definition:</b> SalTimer.h:8</div></div>
+<div class="ttc" id="aclassspt_1_1_pc_sim_date_update_html"><div class="ttname"><a href="classspt_1_1_pc_sim_date_update.html">spt::PcSimDateUpdate</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:358</div></div>
+<div class="ttc" id="aclassspt_1_1_sal_string_html"><div class="ttname"><a href="classspt_1_1_sal_string.html">spt::SalString</a></div><div class="ttdef"><b>Definition:</b> SalString.h:7</div></div>
+<div class="ttc" id="aclassspt_1_1_spt_date_task_html"><div class="ttname"><a href="classspt_1_1_spt_date_task.html">spt::SptDateTask</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:390</div></div>
+<div class="ttc" id="aclassspt_1_1_task_html"><div class="ttname"><a href="classspt_1_1_task.html">spt::Task</a></div><div class="ttdef"><b>Definition:</b> SalTask.h:63</div></div>
+<div class="ttc" id="astructspt_1_1_date_update_1_1_fpga_time_frame_1_1_fpga_mu_time_frame_html"><div class="ttname"><a href="structspt_1_1_date_update_1_1_fpga_time_frame_1_1_fpga_mu_time_frame.html">spt::DateUpdate::FpgaTimeFrame::FpgaMuTimeFrame</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:281</div></div>
+<div class="ttc" id="astructspt_1_1_date_update_1_1_out_put_html"><div class="ttname"><a href="structspt_1_1_date_update_1_1_out_put.html">spt::DateUpdate::OutPut</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:293</div></div>
+<div class="ttc" id="astructspt_1_1_date_update_1_1_state_html"><div class="ttname"><a href="structspt_1_1_date_update_1_1_state.html">spt::DateUpdate::State</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:303</div></div>
+<div class="ttc" id="astructspt_1_1_date_update_1_1_update_fpga_frame_html"><div class="ttname"><a href="structspt_1_1_date_update_1_1_update_fpga_frame.html">spt::DateUpdate::UpdateFpgaFrame</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:266</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html">spt::SalDateStamp</a></div><div class="ttdoc">本地系统时间戳 精确到us，起始于公元1年1月1日 00:00:00</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:37</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a0b7f958d979e7c39a58513a6b46938aa"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a0b7f958d979e7c39a58513a6b46938aa">spt::SalDateStamp::ToStrFmt42</a></div><div class="ttdeci">void ToStrFmt42(SalString &amp;Str)</div><div class="ttdoc">Fmt is 20210302.130608</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:217</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a2b6675fb03fe4f6d593d52cecf15aaf6"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a2b6675fb03fe4f6d593d52cecf15aaf6">spt::SalDateStamp::ToStrFmt40</a></div><div class="ttdeci">void ToStrFmt40(SalString &amp;Str)</div><div class="ttdoc">Fmt is 20210302</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:203</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a2d631b41fbd3d25bf8156da9fb594aef"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a2d631b41fbd3d25bf8156da9fb594aef">spt::SalDateStamp::FromStrHzFmt1</a></div><div class="ttdeci">void FromStrHzFmt1(const char *Str)</div><div class="ttdoc">Fmt is 2021年03月02日 13:06:08</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:231</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a2fa201999a5291b778fce2d97e407f9c"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a2fa201999a5291b778fce2d97e407f9c">spt::SalDateStamp::ToStrFmt3</a></div><div class="ttdeci">void ToStrFmt3(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021/03/02 13:06:08.123.456</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:175</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a39a2e31c7cde0bcfcb1349ccf6e7bb91"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a39a2e31c7cde0bcfcb1349ccf6e7bb91">spt::SalDateStamp::FromStrFmt1</a></div><div class="ttdeci">void FromStrFmt1(const char *Str)</div><div class="ttdoc">Fmt is 2021/03/02 13:06:08</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:140</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a48fcbd997d3cf3df8251be1a9fd7c66b"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a48fcbd997d3cf3df8251be1a9fd7c66b">spt::SalDateStamp::ToStrFmt22</a></div><div class="ttdeci">void ToStrFmt22(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021-03-02 13:06:08:123</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:168</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a78e004c4762d27f31e7c6b41477ac973"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a78e004c4762d27f31e7c6b41477ac973">spt::SalDateStamp::FromStrBuild</a></div><div class="ttdeci">void FromStrBuild(const char *Date, const char *Time)</div><div class="ttdoc">Fmt is Jan 1 2021 13:06:08</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:273</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a79e90833ec296b81aaa31f9df0a02f56"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a79e90833ec296b81aaa31f9df0a02f56">spt::SalDateStamp::ToStrFmt2</a></div><div class="ttdeci">void ToStrFmt2(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021/03/02 13:06:08.123</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:161</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_a812e883007834898dbf50748b96790d0"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#a812e883007834898dbf50748b96790d0">spt::SalDateStamp::ToStrHzFmt1</a></div><div class="ttdeci">void ToStrHzFmt1(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021年03月02日 13:06:08</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:182</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_aa2168daa8e25a3a19d12abb01978e79a"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#aa2168daa8e25a3a19d12abb01978e79a">spt::SalDateStamp::FromStrFmt2</a></div><div class="ttdeci">void FromStrFmt2(const char *Str)</div><div class="ttdoc">Fmt is 2021-03-02 13:06:08</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:147</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_aa5add1d97032578cb7a3c407ebc79ee6"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#aa5add1d97032578cb7a3c407ebc79ee6">spt::SalDateStamp::FromStrHzFmt3</a></div><div class="ttdeci">void FromStrHzFmt3(const char *Str)</div><div class="ttdoc">Fmt is 2021年03月02日 13:06:08.123.456</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:245</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_ab39c299f037bd520aceb18dfcf427cb0"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#ab39c299f037bd520aceb18dfcf427cb0">spt::SalDateStamp::ToStrHzFmt2</a></div><div class="ttdeci">void ToStrHzFmt2(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021年03月02日 13:06:08.123</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:189</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_ab6041359a89e7618b0b11a53ec7832d2"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#ab6041359a89e7618b0b11a53ec7832d2">spt::SalDateStamp::ToStrFmt1</a></div><div class="ttdeci">void ToStrFmt1(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021/03/02 13:06:08</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:154</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_abbd8d640fc9ecad13c1135b88d7c840f"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#abbd8d640fc9ecad13c1135b88d7c840f">spt::SalDateStamp::toUtcSec</a></div><div class="ttdeci">int64 toUtcSec()</div><div class="ttdoc">time_t: seconds since the Epoch 00:00:00 UTC, Jan 1, 1970)</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:53</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_ac121ebaf86d48cb308a071b2ba8df9be"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#ac121ebaf86d48cb308a071b2ba8df9be">spt::SalDateStamp::fromUtcSec</a></div><div class="ttdeci">int64 fromUtcSec(int64 Sec)</div><div class="ttdoc">time_t: seconds since the Epoch 00:00:00 UTC, Jan 1, 1970)</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:59</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_ad9f495871c46cc24a1356ebea79e4790"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#ad9f495871c46cc24a1356ebea79e4790">spt::SalDateStamp::ToStrHzFmt3</a></div><div class="ttdeci">void ToStrHzFmt3(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021年03月02日 13:06:08.123.456</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:196</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_af235305aa7d77597d3144a2eb258db1d"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#af235305aa7d77597d3144a2eb258db1d">spt::SalDateStamp::ToStrFmt41</a></div><div class="ttdeci">void ToStrFmt41(SalString &amp;Str)</div><div class="ttdoc">Fmt is 130608</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:210</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_af4f756da445e9bfb7bcf4d1e7a146ca2"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#af4f756da445e9bfb7bcf4d1e7a146ca2">spt::SalDateStamp::FromStrHzFmt2</a></div><div class="ttdeci">void FromStrHzFmt2(const char *Str)</div><div class="ttdoc">Fmt is 2021年03月02日 13:06:08.123</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:238</div></div>
+<div class="ttc" id="astructspt_1_1_sal_date_stamp_html_afdfe347759dd39a966be1443e4021a09"><div class="ttname"><a href="structspt_1_1_sal_date_stamp.html#afdfe347759dd39a966be1443e4021a09">spt::SalDateStamp::ToStrFmt43</a></div><div class="ttdeci">void ToStrFmt43(SalString &amp;Str)</div><div class="ttdoc">Fmt is 20210302_130608_789</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:224</div></div>
+<div class="ttc" id="astructspt_1_1_sal_enum_des_html"><div class="ttname"><a href="structspt_1_1_sal_enum_des.html">spt::SalEnumDes</a></div><div class="ttdef"><b>Definition:</b> SalTypes.h:195</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html"><div class="ttname"><a href="structspt_1_1_sal_rtc.html">spt::SalRtc</a></div><div class="ttdoc">本地时间RTC</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:160</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_a112bfd0e0e49c545db06046b17d215fe"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#a112bfd0e0e49c545db06046b17d215fe">spt::SalRtc::day</a></div><div class="ttdeci">uint8 day</div><div class="ttdoc">1~12</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:163</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_a31ad02492664bec8804b29c743d5994d"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#a31ad02492664bec8804b29c743d5994d">spt::SalRtc::ToStrFmt22</a></div><div class="ttdeci">void ToStrFmt22(SalString &amp;Str)</div><div class="ttdoc">Fmt is 2021-03-02 13:06:08:123</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:525</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_a3ef14f21ee165df4ffe5e3e67b804945"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#a3ef14f21ee165df4ffe5e3e67b804945">spt::SalRtc::year</a></div><div class="ttdeci">uint16 year</div><div class="ttdoc">0~60</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:167</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_a6856de1d57753a001ae417e2d8e08179"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#a6856de1d57753a001ae417e2d8e08179">spt::SalRtc::minute</a></div><div class="ttdeci">uint8 minute</div><div class="ttdoc">0~23</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:165</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_a8214410298858d3ce898e627bb476876"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#a8214410298858d3ce898e627bb476876">spt::SalRtc::Now</a></div><div class="ttdeci">void Now()</div><div class="ttdoc">0~999</div><div class="ttdef"><b>Definition:</b> SalDateTime.cpp:281</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_aa1f0fa66423e85aa038d44457997944d"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#aa1f0fa66423e85aa038d44457997944d">spt::SalRtc::ms</a></div><div class="ttdeci">uint16 ms</div><div class="ttdoc">0~65535</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:168</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_aa8691a43c263ac08ca539c32de4dfa55"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#aa8691a43c263ac08ca539c32de4dfa55">spt::SalRtc::hour</a></div><div class="ttdeci">uint8 hour</div><div class="ttdoc">1~31</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:164</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_ad906d115cd5ba4f1297b753374d60f9e"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#ad906d115cd5ba4f1297b753374d60f9e">spt::SalRtc::second</a></div><div class="ttdeci">uint8 second</div><div class="ttdoc">0~59</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:166</div></div>
+<div class="ttc" id="astructspt_1_1_sal_rtc_html_aefcaee0b3402a92109b100e83126f2cb"><div class="ttname"><a href="structspt_1_1_sal_rtc.html#aefcaee0b3402a92109b100e83126f2cb">spt::SalRtc::us</a></div><div class="ttdeci">uint16 us</div><div class="ttdoc">0~999</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:169</div></div>
+<div class="ttc" id="astructspt_1_1_sal_std_utc_stamp_html"><div class="ttname"><a href="structspt_1_1_sal_std_utc_stamp.html">spt::SalStdUtcStamp</a></div><div class="ttdoc">标准UTC时间戳</div><div class="ttdef"><b>Definition:</b> SalDateTime.h:28</div></div>
+<div class="ttc" id="aunionspt_1_1_date_update_1_1_fpga_time_frame_html"><div class="ttname"><a href="unionspt_1_1_date_update_1_1_fpga_time_frame.html">spt::DateUpdate::FpgaTimeFrame</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:279</div></div>
+<div class="ttc" id="aunionspt_1_1_date_update_1_1_update_fpga_frame_cfg_html"><div class="ttname"><a href="unionspt_1_1_date_update_1_1_update_fpga_frame_cfg.html">spt::DateUpdate::UpdateFpgaFrameCfg</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:256</div></div>
+<div class="ttc" id="aunionspt_1_1_sal_date_q_html"><div class="ttname"><a href="unionspt_1_1_sal_date_q.html">spt::SalDateQ</a></div><div class="ttdef"><b>Definition:</b> SalDateTime.h:9</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

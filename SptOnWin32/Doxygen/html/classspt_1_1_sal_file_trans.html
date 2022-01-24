@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: spt::SalFileTrans类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>spt</b></li><li class="navelem"><a class="el" href="classspt_1_1_sal_file_trans.html">SalFileTrans</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="#pro-attribs">Protected 属性</a> &#124;
+<a href="classspt_1_1_sal_file_trans-members.html">所有成员列表</a>  </div>
+  <div class="headertitle"><div class="title">spt::SalFileTrans类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+类 spt::SalFileTrans 继承关系图:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classspt_1_1_sal_file_trans.png" usemap="#spt::SalFileTrans_map" alt=""/>
+  <map id="spt::SalFileTrans_map" name="spt::SalFileTrans_map">
+<area href="classspt_1_1_sal_trans_protocol.html" alt="spt::SalTransProtocol" shape="rect" coords="0,0,131,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:a6181264e28cead2bb1d27630053a6bf1"><td class="memItemLeft" align="right" valign="top"><a id="a6181264e28cead2bb1d27630053a6bf1" name="a6181264e28cead2bb1d27630053a6bf1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SalFileTrans</b> (<a class="el" href="structspt_1_1_adt_buf_des.html">AdtBufDes</a> &amp;recMsg, <a class="el" href="classspt_1_1_sal_cmm_channel.html">SalCmmChannel</a> *Cmm, uint16 Dst, struct <a class="el" href="structspt_1_1_cmm_msg_driver.html">CmmMsgDriver</a> *Driver)</td></tr>
+<tr class="separator:a6181264e28cead2bb1d27630053a6bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8608bf8b0bf2d420adfe842004d1f5d9"><td class="memItemLeft" align="right" valign="top"><a id="a8608bf8b0bf2d420adfe842004d1f5d9" name="a8608bf8b0bf2d420adfe842004d1f5d9"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>Recv</b> (struct <a class="el" href="structspt_1_1_cmm_msg_driver.html">CmmMsgDriver</a> *Driver, <a class="el" href="structspt_1_1_sal_cmm_msg_header.html">SalCmmMsgHeader</a> *Header)</td></tr>
+<tr class="separator:a8608bf8b0bf2d420adfe842004d1f5d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95ec8d83f8223d7b3a8b266e8a7c6bde"><td class="memItemLeft" align="right" valign="top"><a id="a95ec8d83f8223d7b3a8b266e8a7c6bde" name="a95ec8d83f8223d7b3a8b266e8a7c6bde"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>Send</b> (int32(*Process)(int32 Step, const char *info), const char *SurFile, const char *DstFile)</td></tr>
+<tr class="separator:a95ec8d83f8223d7b3a8b266e8a7c6bde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46b29e22526413baeb2b3d71a1791413"><td class="memItemLeft" align="right" valign="top"><a id="a46b29e22526413baeb2b3d71a1791413" name="a46b29e22526413baeb2b3d71a1791413"></a>
+<a class="el" href="classspt_1_1_sal_string.html">SalString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>DstFile</b> ()</td></tr>
+<tr class="separator:a46b29e22526413baeb2b3d71a1791413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classspt_1_1_sal_trans_protocol"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classspt_1_1_sal_trans_protocol')"><img src="closed.png" alt="-"/>&#160;Public 成员函数 继承自 <a class="el" href="classspt_1_1_sal_trans_protocol.html">spt::SalTransProtocol</a></td></tr>
+<tr class="memitem:ade840aa3d398d806ed936e071fc3ac14 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="ade840aa3d398d806ed936e071fc3ac14" name="ade840aa3d398d806ed936e071fc3ac14"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SalTransProtocol</b> (<a class="el" href="structspt_1_1_adt_buf_des.html">AdtBufDes</a> &amp;recMsg, <a class="el" href="classspt_1_1_sal_cmm_channel.html">SalCmmChannel</a> *Cmm, uint16 Dst, struct <a class="el" href="structspt_1_1_cmm_msg_driver.html">CmmMsgDriver</a> *Driver)</td></tr>
+<tr class="separator:ade840aa3d398d806ed936e071fc3ac14 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7d97f5fb48ead0188e87e50237cb349 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="ad7d97f5fb48ead0188e87e50237cb349" name="ad7d97f5fb48ead0188e87e50237cb349"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>Recv</b> (struct <a class="el" href="structspt_1_1_cmm_msg_driver.html">CmmMsgDriver</a> *Driver, <a class="el" href="structspt_1_1_sal_cmm_msg_header.html">SalCmmMsgHeader</a> *Header)</td></tr>
+<tr class="separator:ad7d97f5fb48ead0188e87e50237cb349 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada3e6b8cd12b9380b581d6093b01fa88 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="ada3e6b8cd12b9380b581d6093b01fa88" name="ada3e6b8cd12b9380b581d6093b01fa88"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>SendMsg</b> (uint16 DataLen, void *Data)</td></tr>
+<tr class="separator:ada3e6b8cd12b9380b581d6093b01fa88 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dbd9bfecb8a3c751cf142320e0393c8 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a4dbd9bfecb8a3c751cf142320e0393c8" name="a4dbd9bfecb8a3c751cf142320e0393c8"></a>
+enum Process&#160;</td><td class="memItemRight" valign="bottom"><b>GetProcess</b> ()</td></tr>
+<tr class="separator:a4dbd9bfecb8a3c751cf142320e0393c8 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d09dfca72fce4b2f9ac8ba5ad68b557 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a0d09dfca72fce4b2f9ac8ba5ad68b557" name="a0d09dfca72fce4b2f9ac8ba5ad68b557"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>GetRusult</b> ()</td></tr>
+<tr class="separator:a0d09dfca72fce4b2f9ac8ba5ad68b557 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6dad98823462dbff63361b30ae8a254 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="ad6dad98823462dbff63361b30ae8a254" name="ad6dad98823462dbff63361b30ae8a254"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>Dst</b> ()</td></tr>
+<tr class="separator:ad6dad98823462dbff63361b30ae8a254 inherit pub_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected 属性</h2></td></tr>
+<tr class="memitem:ac64f3e40f64615e676166c8a1b8876f1"><td class="memItemLeft" align="right" valign="top"><a id="ac64f3e40f64615e676166c8a1b8876f1" name="ac64f3e40f64615e676166c8a1b8876f1"></a>
+<a class="el" href="classspt_1_1_static_string.html">String100B</a>&#160;</td><td class="memItemRight" valign="bottom"><b>surFile</b></td></tr>
+<tr class="separator:ac64f3e40f64615e676166c8a1b8876f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e92878034ea8e4936f502642b2133c1"><td class="memItemLeft" align="right" valign="top"><a id="a6e92878034ea8e4936f502642b2133c1" name="a6e92878034ea8e4936f502642b2133c1"></a>
+<a class="el" href="classspt_1_1_static_string.html">String100B</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dstFile</b></td></tr>
+<tr class="separator:a6e92878034ea8e4936f502642b2133c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fdb27e85ff29e37ad38828010caaae4"><td class="memItemLeft" align="right" valign="top"><a id="a8fdb27e85ff29e37ad38828010caaae4" name="a8fdb27e85ff29e37ad38828010caaae4"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>fileSize</b></td></tr>
+<tr class="separator:a8fdb27e85ff29e37ad38828010caaae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classspt_1_1_sal_trans_protocol"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classspt_1_1_sal_trans_protocol')"><img src="closed.png" alt="-"/>&#160;Protected 属性 继承自 <a class="el" href="classspt_1_1_sal_trans_protocol.html">spt::SalTransProtocol</a></td></tr>
+<tr class="memitem:aa1e6e6a1ee266dc473c447c061f24c02 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="aa1e6e6a1ee266dc473c447c061f24c02" name="aa1e6e6a1ee266dc473c447c061f24c02"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>logStep</b></td></tr>
+<tr class="separator:aa1e6e6a1ee266dc473c447c061f24c02 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87392dff6256e1bb710b12dada3bbe4 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="ab87392dff6256e1bb710b12dada3bbe4" name="ab87392dff6256e1bb710b12dada3bbe4"></a>
+int32(*&#160;</td><td class="memItemRight" valign="bottom"><b>infoFunc</b> )(int32 Step, const char *info)</td></tr>
+<tr class="separator:ab87392dff6256e1bb710b12dada3bbe4 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14a33e6430dd3505d0c9c25cc0d421a1 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a14a33e6430dd3505d0c9c25cc0d421a1" name="a14a33e6430dd3505d0c9c25cc0d421a1"></a>
+<a class="el" href="structspt_1_1_adt_buf_des.html">AdtBufDes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>recMsg</b></td></tr>
+<tr class="separator:a14a33e6430dd3505d0c9c25cc0d421a1 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6750c2e30e125f4f2f28b4dee2eef757 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a6750c2e30e125f4f2f28b4dee2eef757" name="a6750c2e30e125f4f2f28b4dee2eef757"></a>
+bool8&#160;</td><td class="memItemRight" valign="bottom"><b>recOk</b></td></tr>
+<tr class="separator:a6750c2e30e125f4f2f28b4dee2eef757 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a256093aebc1fd71e2bb13fac6123e3c0 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a256093aebc1fd71e2bb13fac6123e3c0" name="a256093aebc1fd71e2bb13fac6123e3c0"></a>
+<a class="el" href="classspt_1_1_sal_trans_cmm.html">SalTransCmm</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>cmm</b></td></tr>
+<tr class="separator:a256093aebc1fd71e2bb13fac6123e3c0 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04948e62a586495e336e9ff513a73e9a inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a04948e62a586495e336e9ff513a73e9a" name="a04948e62a586495e336e9ff513a73e9a"></a>
+uint16&#160;</td><td class="memItemRight" valign="bottom"><b>dst</b></td></tr>
+<tr class="separator:a04948e62a586495e336e9ff513a73e9a inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201f9b0290cb8c20e0d47d6a20c67943 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a201f9b0290cb8c20e0d47d6a20c67943" name="a201f9b0290cb8c20e0d47d6a20c67943"></a>
+struct <a class="el" href="structspt_1_1_cmm_msg_driver.html">CmmMsgDriver</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>driver</b></td></tr>
+<tr class="separator:a201f9b0290cb8c20e0d47d6a20c67943 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8172db65e0d57cd4758127afd4daa56a inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a8172db65e0d57cd4758127afd4daa56a" name="a8172db65e0d57cd4758127afd4daa56a"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>result</b></td></tr>
+<tr class="separator:a8172db65e0d57cd4758127afd4daa56a inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0769fb574acf3f9ce104832f5d485be6 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a0769fb574acf3f9ce104832f5d485be6" name="a0769fb574acf3f9ce104832f5d485be6"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>process</b></td></tr>
+<tr class="separator:a0769fb574acf3f9ce104832f5d485be6 inherit pro_attribs_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+额外继承的成员函数</h2></td></tr>
+<tr class="inherit_header pub_types_classspt_1_1_sal_trans_protocol"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classspt_1_1_sal_trans_protocol')"><img src="closed.png" alt="-"/>&#160;Public 类型 继承自 <a class="el" href="classspt_1_1_sal_trans_protocol.html">spt::SalTransProtocol</a></td></tr>
+<tr class="memitem:a1d7deff0ea79723d14f71895f53f0482 inherit pub_types_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a1d7deff0ea79723d14f71895f53f0482" name="a1d7deff0ea79723d14f71895f53f0482"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Type</b> { <b>E_FileTrans</b> = 0x0101
+, <b>E_ParaTrans</b> = 0x0102
+, <b>E_MsgTrans</b> = 0x0103
+ }</td></tr>
+<tr class="separator:a1d7deff0ea79723d14f71895f53f0482 inherit pub_types_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d79e78b69e1f6b83c30457af48d9ab5 inherit pub_types_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a9d79e78b69e1f6b83c30457af48d9ab5" name="a9d79e78b69e1f6b83c30457af48d9ab5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Result</b> { <br />
+&#160;&#160;<b>E_SendOk</b> = 0
+, <b>E_SendErr</b> = -1
+, <b>E_NoExist</b> = -2
+, <b>E_TooLarge</b> = -3
+, <br />
+&#160;&#160;<b>E_InfoErr</b> = -4
+, <b>E_ReadLenErr</b> = -5
+, <b>E_RecvOk</b> = 0
+, <b>E_RecvErr</b> = -10000
+, <br />
+&#160;&#160;<b>E_CheckErr</b> = -10001
+, <b>E_RecvOverTime</b> = -1000000
+<br />
+ }</td></tr>
+<tr class="separator:a9d79e78b69e1f6b83c30457af48d9ab5 inherit pub_types_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a731129bc7dbef00e5caf413c9c68e945 inherit pub_types_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a731129bc7dbef00e5caf413c9c68e945" name="a731129bc7dbef00e5caf413c9c68e945"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Process</b> { <br />
+&#160;&#160;<b>E_Begin</b>
+, <b>E_SendStart</b>
+, <b>E_SendStartAck</b>
+, <b>E_Trans</b>
+, <br />
+&#160;&#160;<b>E_TransAck</b>
+, <b>E_TransErr</b>
+, <b>E_TransErrAck</b>
+, <b>E_Check</b>
+, <br />
+&#160;&#160;<b>E_CheckAck</b>
+, <b>E_SendEnd</b> = 1000000
+<br />
+ }</td></tr>
+<tr class="separator:a731129bc7dbef00e5caf413c9c68e945 inherit pub_types_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classspt_1_1_sal_trans_protocol"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classspt_1_1_sal_trans_protocol')"><img src="closed.png" alt="-"/>&#160;Protected 成员函数 继承自 <a class="el" href="classspt_1_1_sal_trans_protocol.html">spt::SalTransProtocol</a></td></tr>
+<tr class="memitem:a30e60328b25a4f9900d2105563e87d6b inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a30e60328b25a4f9900d2105563e87d6b" name="a30e60328b25a4f9900d2105563e87d6b"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>WaitMsg</b> (uint32 Type, int32 Ms)</td></tr>
+<tr class="separator:a30e60328b25a4f9900d2105563e87d6b inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af020ea569d97bba214223c2b5ad41fd0 inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="af020ea569d97bba214223c2b5ad41fd0" name="af020ea569d97bba214223c2b5ad41fd0"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>WaitMsgOk</b> (uint32 Type, int32 Ms)</td></tr>
+<tr class="separator:af020ea569d97bba214223c2b5ad41fd0 inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda2c6e6c3aaa9a75659ae65c8233b0d inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="acda2c6e6c3aaa9a75659ae65c8233b0d" name="acda2c6e6c3aaa9a75659ae65c8233b0d"></a>
+int32&#160;</td><td class="memItemRight" valign="bottom"><b>WaitMsgOk</b> (uint32 Type, int32 *&amp;Info, int32 Ms)</td></tr>
+<tr class="separator:acda2c6e6c3aaa9a75659ae65c8233b0d inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ea2d5eaee255429a8eb39649e744032 inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memItemLeft" align="right" valign="top"><a id="a0ea2d5eaee255429a8eb39649e744032" name="a0ea2d5eaee255429a8eb39649e744032"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>LogInfo</b> (<a class="el" href="classspt_1_1_sal_string.html">SalString</a> &amp;Info, bool8 toPrc, bool8 toPrt)</td></tr>
+<tr class="separator:a0ea2d5eaee255429a8eb39649e744032 inherit pro_methods_classspt_1_1_sal_trans_protocol"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/<a class="el" href="_sal_cmm_8h_source.html">SalCmm.h</a></li>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/SalCmm.cpp</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

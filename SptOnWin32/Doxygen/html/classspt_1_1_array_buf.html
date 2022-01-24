@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: spt::ArrayBuf类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>spt</b></li><li class="navelem"><a class="el" href="classspt_1_1_array_buf.html">ArrayBuf</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="#pro-attribs">Protected 属性</a> &#124;
+<a href="classspt_1_1_array_buf-members.html">所有成员列表</a>  </div>
+  <div class="headertitle"><div class="title">spt::ArrayBuf类 参考</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+类 spt::ArrayBuf 继承关系图:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classspt_1_1_array_buf.png" usemap="#spt::ArrayBuf_map" alt=""/>
+  <map id="spt::ArrayBuf_map" name="spt::ArrayBuf_map">
+<area href="classspt_1_1_para_group_data_all.html" alt="spt::ParaGroupDataAll" shape="rect" coords="0,56,211,80"/>
+<area href="classspt_1_1_ring_buf.html" alt="spt::RingBuf" shape="rect" coords="221,56,432,80"/>
+<area href="classspt_1_1_ring_char_buf.html" alt="spt::RingCharBuf" shape="rect" coords="442,56,653,80"/>
+<area href="classspt_1_1_single_char_buf.html" alt="spt::SingleCharBuf" shape="rect" coords="663,56,874,80"/>
+<area href="classspt_1_1_single_stack_buf.html" alt="spt::SingleStackBuf" shape="rect" coords="1326,56,1537,80"/>
+<area href="classspt_1_1_sal_printer.html" alt="spt::SalPrinter" shape="rect" coords="442,112,653,136"/>
+<area href="classspt_1_1_static_single_char_buf.html" alt="spt::StaticSingleCharBuf&lt; BufLen &gt;" shape="rect" coords="663,112,874,136"/>
+<area href="classspt_1_1_sal_fw_act_cfg_array.html" alt="spt::SalFwActCfgArray" shape="rect" coords="884,112,1095,136"/>
+<area href="classspt_1_1_sal_fw_analog_cfg_array.html" alt="spt::SalFwAnalogCfgArray" shape="rect" coords="1105,112,1316,136"/>
+<area href="classspt_1_1_sal_fw_digital_cfg_array.html" alt="spt::SalFwDigitalCfgArray" shape="rect" coords="1326,112,1537,136"/>
+<area href="classspt_1_1_sal_fw_fault_info_cfg_array.html" alt="spt::SalFwFaultInfoCfgArray" shape="rect" coords="1547,112,1758,136"/>
+<area href="classspt_1_1_sal_string.html" alt="spt::SalString" shape="rect" coords="1768,112,1979,136"/>
+<area href="classspt_1_1_sal_table_printer.html" alt="spt::SalTablePrinter" shape="rect" coords="663,168,874,192"/>
+<area href="classspt_1_1_sal_text_printer.html" alt="spt::SalTextPrinter" shape="rect" coords="663,224,874,248"/>
+<area href="classspt_1_1_static_string.html" alt="spt::StaticString&lt; 100 &gt;" shape="rect" coords="1989,168,2200,192"/>
+<area href="classspt_1_1_static_string.html" alt="spt::StaticString&lt; 40 &gt;" shape="rect" coords="1989,224,2200,248"/>
+<area href="classspt_1_1_static_string.html" alt="spt::StaticString&lt; 5000 &gt;" shape="rect" coords="1989,280,2200,304"/>
+<area href="classspt_1_1_static_string.html" alt="spt::StaticString&lt; 2000 &gt;" shape="rect" coords="1989,336,2200,360"/>
+<area href="classspt_1_1_static_string.html" alt="spt::StaticString&lt; 65 &gt;" shape="rect" coords="1989,392,2200,416"/>
+<area href="classspt_1_1_static_string.html" alt="spt::StaticString&lt; BufLen &gt;" shape="rect" coords="1989,448,2200,472"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:aaeedbcd0a62c0cd3024033903dc547e9"><td class="memItemLeft" align="right" valign="top"><a id="aaeedbcd0a62c0cd3024033903dc547e9" name="aaeedbcd0a62c0cd3024033903dc547e9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ArrayBuf</b> (void *Buf, uint32 ElementSize, uint32 ElementNum)</td></tr>
+<tr class="separator:aaeedbcd0a62c0cd3024033903dc547e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14167f31f96e645612423cd6cad88ea4"><td class="memItemLeft" align="right" valign="top"><a id="a14167f31f96e645612423cd6cad88ea4" name="a14167f31f96e645612423cd6cad88ea4"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>Alloc</b> (uint32 ElementSize, uint32 ElementNum)</td></tr>
+<tr class="separator:a14167f31f96e645612423cd6cad88ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a071d5be720173b58f77f550e9e870f90"><td class="memItemLeft" align="right" valign="top"><a id="a071d5be720173b58f77f550e9e870f90" name="a071d5be720173b58f77f550e9e870f90"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBuf</b> (void *Buf, uint32 ElementSize, uint32 ElementNum)</td></tr>
+<tr class="separator:a071d5be720173b58f77f550e9e870f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affd39a28a76f72a136a42a605b627018"><td class="memItemLeft" align="right" valign="top"><a id="affd39a28a76f72a136a42a605b627018" name="affd39a28a76f72a136a42a605b627018"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBuf</b> (<a class="el" href="classspt_1_1_alloc_buf.html">AllocBuf</a> *Buf)</td></tr>
+<tr class="separator:affd39a28a76f72a136a42a605b627018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad09c7c9e0480236caba630a28a19a68b"><td class="memItemLeft" align="right" valign="top"><a id="ad09c7c9e0480236caba630a28a19a68b" name="ad09c7c9e0480236caba630a28a19a68b"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>GetElement</b> (uint32 No)</td></tr>
+<tr class="separator:ad09c7c9e0480236caba630a28a19a68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a011861e85d2b612c0db8b2b7d98b5857"><td class="memItemLeft" align="right" valign="top"><a id="a011861e85d2b612c0db8b2b7d98b5857" name="a011861e85d2b612c0db8b2b7d98b5857"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>GetElement</b> (uint32 No, void *Buf)</td></tr>
+<tr class="separator:a011861e85d2b612c0db8b2b7d98b5857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a089f033fd48530a3a4c44e2fb7a951ae"><td class="memItemLeft" align="right" valign="top"><a id="a089f033fd48530a3a4c44e2fb7a951ae" name="a089f033fd48530a3a4c44e2fb7a951ae"></a>
+bool8&#160;</td><td class="memItemRight" valign="bottom"><b>SetElement</b> (uint32 No, void *Buf)</td></tr>
+<tr class="separator:a089f033fd48530a3a4c44e2fb7a951ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae795b76c87cb729ac30d4e0adf4ec95b"><td class="memItemLeft" align="right" valign="top"><a id="ae795b76c87cb729ac30d4e0adf4ec95b" name="ae795b76c87cb729ac30d4e0adf4ec95b"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>ElementSize</b> ()</td></tr>
+<tr class="separator:ae795b76c87cb729ac30d4e0adf4ec95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5962fbf024f68aa3959e56245d6f26e"><td class="memItemLeft" align="right" valign="top"><a id="af5962fbf024f68aa3959e56245d6f26e" name="af5962fbf024f68aa3959e56245d6f26e"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>ElementNum</b> ()</td></tr>
+<tr class="separator:af5962fbf024f68aa3959e56245d6f26e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0918bad6789f8bc78d45c56895fdae42"><td class="memItemLeft" align="right" valign="top"><a id="a0918bad6789f8bc78d45c56895fdae42" name="a0918bad6789f8bc78d45c56895fdae42"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>BufSize</b> ()</td></tr>
+<tr class="separator:a0918bad6789f8bc78d45c56895fdae42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a062bcb6ba152291eb20c47cd97835be4"><td class="memItemLeft" align="right" valign="top"><a id="a062bcb6ba152291eb20c47cd97835be4" name="a062bcb6ba152291eb20c47cd97835be4"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>BufBase</b> ()</td></tr>
+<tr class="separator:a062bcb6ba152291eb20c47cd97835be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58cd81840e8c42926293f313619f0248"><td class="memItemLeft" align="right" valign="top"><a id="a58cd81840e8c42926293f313619f0248" name="a58cd81840e8c42926293f313619f0248"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>GetAddrElement</b> (uint32 No)</td></tr>
+<tr class="separator:a58cd81840e8c42926293f313619f0248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bc127f2c17ae305e83c884ed89c6b83"><td class="memItemLeft" align="right" valign="top"><a id="a0bc127f2c17ae305e83c884ed89c6b83" name="a0bc127f2c17ae305e83c884ed89c6b83"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>GetAddrElement</b> (uint32 No, void *&amp;Buf)</td></tr>
+<tr class="separator:a0bc127f2c17ae305e83c884ed89c6b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4cd0c04313f7a4595f00dddb420fba7"><td class="memItemLeft" align="right" valign="top"><a id="ae4cd0c04313f7a4595f00dddb420fba7" name="ae4cd0c04313f7a4595f00dddb420fba7"></a>
+bool8&#160;</td><td class="memItemRight" valign="bottom"><b>SetAddrElement</b> (uint32 No, void *Buf)</td></tr>
+<tr class="separator:ae4cd0c04313f7a4595f00dddb420fba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected 属性</h2></td></tr>
+<tr class="memitem:ada1d60ca22fc95c5e87324fc9408c692"><td class="memItemLeft" align="right" valign="top"><a id="ada1d60ca22fc95c5e87324fc9408c692" name="ada1d60ca22fc95c5e87324fc9408c692"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>bufBase</b></td></tr>
+<tr class="separator:ada1d60ca22fc95c5e87324fc9408c692"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac86f464017853a1b794e9edc093eb5d9"><td class="memItemLeft" align="right" valign="top"><a id="ac86f464017853a1b794e9edc093eb5d9" name="ac86f464017853a1b794e9edc093eb5d9"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>elementSize</b></td></tr>
+<tr class="separator:ac86f464017853a1b794e9edc093eb5d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb1b04bcc5d178433310b60a20de1fef"><td class="memItemLeft" align="right" valign="top"><a id="afb1b04bcc5d178433310b60a20de1fef" name="afb1b04bcc5d178433310b60a20de1fef"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>elementNum</b></td></tr>
+<tr class="separator:afb1b04bcc5d178433310b60a20de1fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/<a class="el" href="_sal_adt_8h_source.html">SalAdt.h</a></li>
+<li>D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/SalAdt.cpp</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

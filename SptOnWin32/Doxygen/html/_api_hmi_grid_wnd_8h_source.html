@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Spt: D:/Everything/Process/SVN/2.Platform/Programs/VcSim/AppSim/SptOnWin32/src/ApiHmiGridWnd.h 源文件</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Spt
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.9.2 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','搜索');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">ApiHmiGridWnd.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef APIHMIGRIDWND_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define APIHMIGRIDWND_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">namespace </span>spt</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>{</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classspt_1_1_api_hmi_grid_wnd.html">   10</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classspt_1_1_api_hmi_grid_wnd.html">ApiHmiGridWnd</a> :<span class="keyword">protected</span> <a class="code hl_class" href="classspt_1_1_hmi_grid_wnd.html">HmiGridWnd</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <a class="code hl_class" href="classspt_1_1_api_hmi_grid_wnd.html">ApiHmiGridWnd</a>();</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <a class="code hl_class" href="classspt_1_1_api_hmi_grid_wnd.html">ApiHmiGridWnd</a>(HmiGridWndUpdateData UpdateData);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_hmi_grid_wnd.html#ac465c66f8a9f67e823882e216cfa9327">SetInfo</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title, uint32 Crc, uint32 CrcLen);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="comment">//设置行标题</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keywordtype">void</span> SetColTitle(<span class="keyword">const</span> <span class="keywordtype">char</span>* Title1, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title2, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title3, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title4, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title5, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title6, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title7, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title8, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title9, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title10);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keyword">struct </span><a class="code hl_struct" href="structspt_1_1_hmi_grid_wnd_data_map_row.html">HmiGridWndDataMapRow</a>* <a class="code hl_function" href="classspt_1_1_api_hmi_grid_wnd.html#a3437fa0894148bac9e846acf0d8c6346">CreatRow</a>();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classspt_1_1_api_hmi_grid_wnd.html#ae53580e6bd87b0a75038ecc7488ac60f">Show</a>();</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        int32 <a class="code hl_function" href="classspt_1_1_api_hmi_grid_wnd.html#aae8719ca129bcee1e7a0354a480ceef3">Edit</a>();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        bool8 <a class="code hl_function" href="classspt_1_1_api_hmi_grid_wnd.html#a5c4d723e0ff2a2021d7ae3d3236b939d">IsEditData</a>();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        bool8 <a class="code hl_function" href="classspt_1_1_api_hmi_grid_wnd.html#a0d75a65e3e5631087526f23bf15029b9">IsDataChange</a>();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }; <span class="comment">// end of ApiHmiDisp</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif </span><span class="comment">// !APIHMIGRIDWND_H</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_grid_wnd_html"><div class="ttname"><a href="classspt_1_1_api_hmi_grid_wnd.html">spt::ApiHmiGridWnd</a></div><div class="ttdef"><b>Definition:</b> ApiHmiGridWnd.h:11</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_grid_wnd_html_a0d75a65e3e5631087526f23bf15029b9"><div class="ttname"><a href="classspt_1_1_api_hmi_grid_wnd.html#a0d75a65e3e5631087526f23bf15029b9">spt::ApiHmiGridWnd::IsDataChange</a></div><div class="ttdeci">bool8 IsDataChange()</div><div class="ttdoc">是否编辑了数据，数据发生了变化</div><div class="ttdef"><b>Definition:</b> ApiHmiGridWnd.cpp:52</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_grid_wnd_html_a3437fa0894148bac9e846acf0d8c6346"><div class="ttname"><a href="classspt_1_1_api_hmi_grid_wnd.html#a3437fa0894148bac9e846acf0d8c6346">spt::ApiHmiGridWnd::CreatRow</a></div><div class="ttdeci">struct HmiGridWndDataMapRow * CreatRow()</div><div class="ttdoc">建立新行，用于显示</div><div class="ttdef"><b>Definition:</b> ApiHmiGridWnd.cpp:27</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_grid_wnd_html_a5c4d723e0ff2a2021d7ae3d3236b939d"><div class="ttname"><a href="classspt_1_1_api_hmi_grid_wnd.html#a5c4d723e0ff2a2021d7ae3d3236b939d">spt::ApiHmiGridWnd::IsEditData</a></div><div class="ttdeci">bool8 IsEditData()</div><div class="ttdoc">是否发生了数据编辑，数据不一定改变</div><div class="ttdef"><b>Definition:</b> ApiHmiGridWnd.cpp:47</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_grid_wnd_html_aae8719ca129bcee1e7a0354a480ceef3"><div class="ttname"><a href="classspt_1_1_api_hmi_grid_wnd.html#aae8719ca129bcee1e7a0354a480ceef3">spt::ApiHmiGridWnd::Edit</a></div><div class="ttdeci">int32 Edit()</div><div class="ttdoc">编辑数据</div><div class="ttdef"><b>Definition:</b> ApiHmiGridWnd.cpp:42</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_grid_wnd_html_ac465c66f8a9f67e823882e216cfa9327"><div class="ttname"><a href="classspt_1_1_api_hmi_grid_wnd.html#ac465c66f8a9f67e823882e216cfa9327">spt::ApiHmiGridWnd::SetInfo</a></div><div class="ttdeci">void SetInfo(const char *Title, uint32 Crc, uint32 CrcLen)</div><div class="ttdoc">设置窗口信息</div><div class="ttdef"><b>Definition:</b> ApiHmiGridWnd.cpp:16</div></div>
+<div class="ttc" id="aclassspt_1_1_api_hmi_grid_wnd_html_ae53580e6bd87b0a75038ecc7488ac60f"><div class="ttname"><a href="classspt_1_1_api_hmi_grid_wnd.html#ae53580e6bd87b0a75038ecc7488ac60f">spt::ApiHmiGridWnd::Show</a></div><div class="ttdeci">void Show()</div><div class="ttdoc">展示数据</div><div class="ttdef"><b>Definition:</b> ApiHmiGridWnd.cpp:37</div></div>
+<div class="ttc" id="aclassspt_1_1_hmi_grid_wnd_html"><div class="ttname"><a href="classspt_1_1_hmi_grid_wnd.html">spt::HmiGridWnd</a></div><div class="ttdef"><b>Definition:</b> HmiGridWnd.h:221</div></div>
+<div class="ttc" id="astructspt_1_1_hmi_grid_wnd_data_map_row_html"><div class="ttname"><a href="structspt_1_1_hmi_grid_wnd_data_map_row.html">spt::HmiGridWndDataMapRow</a></div><div class="ttdoc">表格显示单行数据映射结构</div><div class="ttdef"><b>Definition:</b> HmiGridWnd.h:73</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+</small></address>
+</body>
+</html>

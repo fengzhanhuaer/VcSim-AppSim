@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ComSur\IES_IMDC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMDI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMDO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMFlag.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMInit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMPub.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMRec.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMSam.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComSur\IES_IMSrc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Com\IES_IMCom.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Com.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_DC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Flag.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_IO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Para.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Pub.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Rec.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Sam.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAngIn.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAngOut.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAppCmm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAppFlags.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstDispCfg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstEvent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstHmiLed.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstInterFace.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuCcdDisp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuDebug.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuEventDisp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuGlyMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuInfoView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuParaSet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuPrint.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuPub.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuSjyMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstPara.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstResource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstSjRecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstStateIn.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstStateOut.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstT860Scl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\SptApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\InterFace\IES_IMInterFace.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Logic\IES_IMLogic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstCheck.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ComSur\IES_IMDC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMDI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMDO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMFlag.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMInit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMPub.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMRec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMSam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMSrc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ComSur\IES_IMtypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Com\IES_IMCom.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Com.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_DC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Flag.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_IO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Para.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Pub.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Rec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Sam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAngIn.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAngOut.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAppCmm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAppFlags.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstDispCfg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstHmiLed.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstInterFace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuCcdDisp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuDebug.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuEventDisp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuGlyMenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuInfoView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuParaSet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuPrint.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuPub.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuSjyMenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstPara.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstResource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstSjRecord.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstStateIn.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstStateOut.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstT860Scl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\InterFace\IES_IMInterFace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Logic\IES_IMLogic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstCheck.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
