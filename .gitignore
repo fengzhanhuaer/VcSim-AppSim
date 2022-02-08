@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SptOnWin32/Doxygen/html
+/SptOnWin32/Doxygen/Spt.chm

@@ -12,7 +12,7 @@ namespace spt
 #elif defined(SYLIX_GZK)
 #define CN_FILE_DivFlag	"/"
 #define CN_SYS_PATH	  "/yaffs2"
-#define CN_DATA_PATH	 "/media"
+#define CN_DATA_PATH	 "/media/sdcard0"
 #define CN_UPDATE1_FILE_ROOT "/media/sdcard1/Update"
 #define CN_CUR_ROOT	"/yaffs2/flash1/apps"
 #endif // WIN32_SIM
