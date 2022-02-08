@@ -46,10 +46,11 @@ namespace spt
 			int32 value;
 			uint32 q;
 			uint32 adcoe;
+			uint32 addcadjust;
 			uint32 adadjust;
 			void* cellPtr;
 		};
-		struct QDownPara
+		struct QDownParaHeader
 		{
 			uint16 frmNO;
 			uint16 frmNum;
@@ -64,6 +65,7 @@ namespace spt
 		const ElmentInfo* CellPara(uint32 Index);
 		void SetOutCoe(uint32 Index, uint32 Value);
 		void SetOutADAdjust(uint32 Index, uint32 Value);
+		void SetAdDcAdJust(uint32 Index, int32 Value);
 		uint32 AdNum();
 		void RgsProcIn(class SptSvInDataSet* Board);
 	protected:
@@ -73,9 +75,11 @@ namespace spt
 		bool8 qUpdate;
 		bool8 adCoeUpdate;
 		bool8 adadjustUpdate;
-		QDownPara qDownPara;
-		QDownPara coeDownPara;
-		QDownPara adAdjustDownPara;
+		bool8 addcadjustUpdate;
+		QDownParaHeader qDownPara;
+		QDownParaHeader coeDownPara;
+		QDownParaHeader adAdjustDownPara;
+		QDownParaHeader addcAdjustDownPara;
 		uint32 adNum;
 		uint8 adNodeNum;
 		uint16 lastSampCnt;

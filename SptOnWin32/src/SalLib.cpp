@@ -56,17 +56,17 @@ void MkGbkTable()
 	String5000B str;
 	uint16 min = 0XFFFF;
 	uint16 max = 0;
-	for (uint32 i = 0x81; i <0xff ; i++)
+	for (uint32 i = 0x81; i < 0xff; i++)
 	{
 		str.Clear();
 		str << "	{";
-	
+
 		for (uint32 j = 0x40; j < 0xff; j++)
 		{
 			buf[0] = (char)i;
 			buf[1] = (char)j;
 			buf[2] = (char)0;
-			if(0 >= MultiByteToWideChar(CP_ACP, 0, buf, -1, (wchar_t*)dst, sizeof(dst) / 2))
+			if (0 >= MultiByteToWideChar(CP_ACP, 0, buf, -1, (wchar_t*)dst, sizeof(dst) / 2))
 			{
 				dst[0] = '?';
 				dst[1] = 0;

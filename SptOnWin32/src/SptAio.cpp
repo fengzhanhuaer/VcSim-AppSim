@@ -226,7 +226,7 @@ int32 spt::SptAngVirInputBoard::ProcOut()
 	{
 		adCoeUpdate = 0;
 		coeDownPara.frmNO++;
-		uint32 endLoop = adNum * 8;
+		uint32 endLoop = adNum * adNodeNum;
 		coeDownPara.frmNum = adNum;
 		CpuFpgaCmmMsgBuf msg;
 		msg.Write(&coeDownPara, sizeof(coeDownPara));
@@ -250,10 +250,27 @@ int32 spt::SptAngVirInputBoard::ProcOut()
 		uint32 endLoop = adNum * 2;
 		for (uint32 i = 0; i < endLoop; i++)
 		{
-			q = (uint32)((ElmentInfo*)realDataMap.GetElement(i))->adadjust;
+			q = (uint16)((ElmentInfo*)realDataMap.GetElement(i))->adadjust;
 			msg.Write(&q, sizeof(q));
 		}
 		msg.IntSend(0, FpgaMsgProc::E_CPU_FPGA_ADADJUST);
+		LogMsg.Stamp() << "Fpga AD adjust download.\n";
+	}
+	if (addcadjustUpdate)
+	{
+		addcadjustUpdate = 0;
+		addcAdjustDownPara.frmNO++;
+		addcAdjustDownPara.frmNum = adNum;
+		CpuFpgaCmmMsgBuf msg;
+		msg.Write(&adAdjustDownPara, sizeof(adAdjustDownPara));
+		uint32 q;
+		uint32 endLoop = adNum * adNodeNum;
+		for (uint32 i = 0; i < endLoop; i++)
+		{
+			q = (uint32)((ElmentInfo*)realDataMap.GetElement(i))->addcadjust;
+			msg.Write(&q, sizeof(q));
+		}
+		msg.IntSend(0, FpgaMsgProc::E_CPU_FPGA_ADDCADJUST);
 		LogMsg.Stamp() << "Fpga AD adjust download.\n";
 	}
 	return 0;
@@ -286,6 +303,16 @@ void spt::SptAngVirInputBoard::SetOutADAdjust(uint32 Index, uint32 Value)
 		ElmentInfo* para = (ElmentInfo*)realDataMap.GetElement(Index);
 		para->adadjust = Value;
 		adadjustUpdate = 1;
+	}
+}
+
+void spt::SptAngVirInputBoard::SetAdDcAdJust(uint32 Index, int32 Value)
+{
+	if (Index < AdNum() * adNodeNum)
+	{
+		ElmentInfo* para = (ElmentInfo*)realDataMap.GetElement(Index);
+		para->addcadjust = Value;
+		addcadjustUpdate = 1;
 	}
 }
 

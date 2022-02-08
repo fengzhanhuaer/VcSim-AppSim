@@ -43,12 +43,17 @@ void spt::ApiBoardAngFrameIn::SetOutCoe(uint32 Index, uint32 Value)
 
 void spt::ApiBoardAngFrameIn::SetOutCoe(uint32 ADIndex, uint32 AdNode, uint32 Value)
 {
-	SptAngVirInputBoard::SetOutCoe(ADIndex * 8 + AdNode, Value);
+	SptAngVirInputBoard::SetOutCoe(ADIndex * adNodeNum + AdNode, Value);
 }
 
 void spt::ApiBoardAngFrameIn::SetADAdJust(uint32 AdNo, uint32 Index, uint32 Value)
 {
 	SptAngVirInputBoard::SetOutADAdjust(AdNo * 2 + Index, Value);
+}
+
+void spt::ApiBoardAngFrameIn::SetAdDcAdJust(uint32 AdNo, uint32 Index, int32 Value)
+{
+	SptAngVirInputBoard::SetAdDcAdJust(AdNo * adNodeNum + Index, Value);
 }
 
 void spt::ApiBoardAngFrameIn::SetOutQ(uint32 Index, uint32 Value)

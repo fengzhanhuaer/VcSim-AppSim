@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="GB2312"?>
-<Ied Ser="33755" Stamp="3375563778378040000000">
+<Ied Ser="10128" Stamp="1012863778787656000000">
     <Group InstId="0" GroupId="1" Name="软件平台状态量" DesName="ApiStatusGroup" IoType="EIOT_STATUS" IoTypeIndex="1" InstNum="14">
         <Inst InstId="0" GroupId="0" Name="液晶通讯异常" DesName="E_SAS_LcdCmmErr" sAddr="ApiStatusGroup.E_SAS_LcdCmmErr"/>
         <Inst InstId="1" GroupId="0" Name="虚拟液晶通讯异常" DesName="E_SAS_VirLcdCmmErr" sAddr="ApiStatusGroup.E_SAS_VirLcdCmmErr"/>
@@ -28,7 +28,7 @@
     <Group InstId="1" GroupId="3" Name="保护定值" DesName="ProtParaGroup" IoType="EIOT_PARA" IoTypeIndex="3" InstNum="7">
         <Inst InstId="0" GroupId="1" Name="测试1" DesName="E_PP_test1" Max="1" Def="0" Min="-50" DotNum="0" DataOffSet="0" ValueType="0" Units="A" sAddr="ProtParaGroup.E_PP_test1"/>
         <Inst InstId="1" GroupId="1" Name="测试2" DesName="E_PP_test2" Max="100" Def="50" Min="50" DotNum="0" DataOffSet="1" ValueType="0" Units="" sAddr="ProtParaGroup.E_PP_test2"/>
-        <Inst InstId="2" GroupId="1" Name="装置名称" DesName="UnitName" Max="32" Def="7456216" Min="0" DotNum="0" DataOffSet="2" ValueType="3" Units="" sAddr="ProtParaGroup.UnitName"/>
+        <Inst InstId="2" GroupId="1" Name="装置名称" DesName="UnitName" Max="32" Def="16049624" Min="0" DotNum="0" DataOffSet="2" ValueType="3" Units="" sAddr="ProtParaGroup.UnitName"/>
         <Inst InstId="3" GroupId="1" Name="CT二次值" DesName="E_PP_Ct" Max="1" Def="0" Min="0" DotNum="0" DataOffSet="10" ValueType="2" Units="A" sAddr="ProtParaGroup.E_PP_Ct"/>
         <Inst InstId="4" GroupId="1" Name="电流值" DesName="E_PP_Current" Max="20000" Def="12345" Min="50" DotNum="3" DataOffSet="11" ValueType="0" Units="A" sAddr="ProtParaGroup.E_PP_Current"/>
         <Inst InstId="5" GroupId="1" Name="跳闸矩阵" DesName="E_PP_Bit" Max="65535" Def="15" Min="0" DotNum="0" DataOffSet="12" ValueType="9" Units="" sAddr="ProtParaGroup.E_PP_Bit"/>

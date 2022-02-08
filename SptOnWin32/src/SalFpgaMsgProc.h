@@ -49,6 +49,7 @@ namespace spt
 			E_CPU_FPGA_CfgCtrl = 0x2202,//配置发送控制信息
 			E_CPU_FPGA_ADCOE = 0x2203,//AD校准系数
 			E_CPU_FPGA_ADADJUST = 0x2204,//AD微调系数
+			E_CPU_FPGA_ADDCADJUST = 0x2205,//AD直流系数
 			E_CPU_FPGA_SVSUB = 0x2210,//SV订阅信息
 			E_CPU_FPGA_SVSELECT = 0x2211,//SV挑数信息
 			E_CPU_FPGA_GOSUB1 = 0x2220,//GO订阅信息
@@ -88,7 +89,7 @@ namespace spt
 		virtual int32 PowerUpIni(int32 Para);
 		virtual int32 SendProc();
 		virtual int32 RecvProc();
-		virtual int32 RtSend(uint32 No,void* Buf, int32 MsgLen);
+		virtual int32 RtSend(uint32 No, void* Buf, int32 MsgLen);
 		virtual int32 RtRecv(uint32 No, void* Buf, int32 BufLen);
 		int32 IntSend(void* Buf, int32 MsgLen);
 		int32 IntRecv(void* Buf, int32 BufLen);

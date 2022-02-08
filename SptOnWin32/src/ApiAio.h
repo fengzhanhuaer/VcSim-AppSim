@@ -49,6 +49,13 @@ namespace spt
 		/// <param name="Value"></param>
 		void SetADAdJust(uint32 AdNo, uint32 Index, uint32 Value);
 		/// <summary>
+		/// 设置AD直流微调系数
+		/// </summary>
+		/// <param name="AdNo"></param>
+		/// <param name="Index"></param>
+		/// <param name="Value"></param>
+		void SetAdDcAdJust(uint32 AdNo, uint32 Index, int32 Value);
+		/// <summary>
 		/// 设置发送的Q值
 		/// </summary>
 		/// <param name="Index"></param>
