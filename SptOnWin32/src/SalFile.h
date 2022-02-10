@@ -32,7 +32,7 @@ namespace spt
 #define CN_T860_CFG_FILE_ROOT CN_T860_FILE_ROOT CN_FILE_DivFlag "Public" CN_FILE_DivFlag "configuration"
 #define CN_T860_COMTRADE_FILE_ROOT CN_T860_FILE_ROOT CN_FILE_DivFlag "Public" CN_FILE_DivFlag "COMTRADE"
 #define CN_T860_Private_FILE_ROOT CN_T860_FILE_ROOT CN_FILE_DivFlag "Private" 
-#define CN_BAK_FILE_ROOT	CN_USING_PATH CN_FILE_DivFlag "Bakup"
+#define CN_BAK_FILE_ROOT	CN_DATA_PATH CN_FILE_DivFlag "Bakup"
 #define CN_BAK_FLASH_FILE_ROOT	CN_BAK_FILE_ROOT CN_FILE_DivFlag "Flash"
 #define CN_UPDATE_FILE_ROOT	 CN_DATA_PATH CN_FILE_DivFlag "Update"
 

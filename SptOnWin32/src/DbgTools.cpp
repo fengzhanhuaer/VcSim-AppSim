@@ -199,7 +199,7 @@ int32 spt::DbgToolsServer::OneLoop()
 						{
 						case E_VirLcd:
 						{
-							if (HmiLcdCmm::Instance().StartServer(0, 33002, signIn.RemoteIp().u32, 33003) == 0)
+							if (HmiLcdCmm::Instance().StartServer(InetAddr(DbgSimCfg::Instance().ServerIp.StrData()), 33002, signIn.RemoteIp().u32, 33003) == 0)
 							{
 								taskStep = E_CheckClient;
 								const char* msginfo = "VirLcd connected .\n";
@@ -222,7 +222,7 @@ int32 spt::DbgToolsServer::OneLoop()
 								taskStep = E_CheckClient;
 								return 0;
 							}
-							DbgServer::Instance().SetLocalIp("0.0.0.0");
+							DbgServer::Instance().SetLocalIp(DbgSimCfg::Instance().ServerIp.StrData());
 							DbgServer::Instance().Instance().SetLocalPort(33004);
 							DbgServer::Instance().SetRemoteIp(signIn.RemoteIp().u32);
 							DbgServer::Instance().SetRemotePort(33005);
@@ -248,7 +248,6 @@ int32 spt::DbgToolsServer::OneLoop()
 							taskStep = E_IniServer;
 							break;
 						}
-
 					}
 					else if (len <= 0)
 					{

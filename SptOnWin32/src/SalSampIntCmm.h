@@ -3,7 +3,7 @@
 //本模块不具有线程安全性，建议在单线程环境中使用
 namespace spt
 {
-#define CN_SAMPINTMSG_DATA_LEN	(1024*3-22)
+	const uint32  CN_SAMPINTMSG_DATA_LEN = (1024 * 3 - 22);
 	struct SampIntMsg
 	{
 		uint8 dstMac[6];

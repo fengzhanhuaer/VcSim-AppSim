@@ -20,11 +20,18 @@ enum E_ProtPara
 	E_PP_Total,
 };
 
-extern ApiPara ProtPara[E_PP_Total];
+class AppPara :public ApiPara
+{
+public:
+	void MyPowerUpIni(uint32 Para);
+	uint32 myPara;
+};
+
+extern AppPara ProtPara[E_PP_Total];
 extern ApiParaGroup SoftRelayEnGroup;
 extern ApiParaGroup ProtParaGroup;
 extern SalParaEditGroup HmiParaEditGroup;
-extern ApiPara PtctPara[2];
+extern AppPara PtctPara[2];
 extern ApiParaGroup PtctParaGroup;
 
 void AppParaPowerUpIni();

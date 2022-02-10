@@ -54,6 +54,9 @@
     <ClCompile Include="src\HmiTextWnd.cpp" />
     <ClCompile Include="src\HmiVirLcdLayer.cpp" />
     <ClCompile Include="src\HmiWidgets.cpp" />
+    <ClCompile Include="src\LcdBitmap.cpp" />
+    <ClCompile Include="src\LcdFontPixel.cpp" />
+    <ClCompile Include="src\LcdHalDriver.cpp" />
     <ClCompile Include="src\SalAccount.cpp" />
     <ClCompile Include="src\SalAdt.cpp" />
     <ClCompile Include="src\SalAnglogRms.cpp" />
@@ -138,7 +141,9 @@
     <ClInclude Include="src\HmiTextWnd.h" />
     <ClInclude Include="src\HmiVirLcdLayer.h" />
     <ClInclude Include="src\HmiWidgets.h" />
+    <ClInclude Include="src\LcdBitmap.h" />
     <ClInclude Include="src\LcdFontPixel.h" />
+    <ClInclude Include="src\LcdHalDriver.h" />
     <ClInclude Include="src\SalAccount.h" />
     <ClInclude Include="src\SalAdt.h" />
     <ClInclude Include="src\SalAnglogRms.h" />

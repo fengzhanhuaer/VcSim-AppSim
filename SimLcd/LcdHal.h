@@ -1,7 +1,7 @@
 #ifndef LCDHAL_H
 #define LCDHAL_H
 
-#include"LcdHalLcdDriver.h"
+#include"LcdHalDriver.h"
 
 namespace spt
 {

@@ -543,7 +543,10 @@ int32 spt::SptGooseFrameIn::ProcIni()
 			{
 				if (gcell->IsPos())
 				{
-					PosElementBuf.Push(&gcell);
+					if (!gcell->TNode().isLinked)
+					{
+						PosElementBuf.Push(&gcell);
+					}
 				}
 				else
 				{
@@ -552,6 +555,27 @@ int32 spt::SptGooseFrameIn::ProcIni()
 			}
 		}
 	}
+	posNotWithTCellNum = PosElementBuf.Top();
+	for (uint32 i = 0; i < instNum; i++)
+	{
+		inst = GetIoCell(i);
+		if (inst)
+		{
+			SptGooseData* gcell;
+			gcell = (SptGooseData*)inst;
+			if (gcell->QNode().isLinked || gcell->TNode().isLinked || gcell->VNode().isLinked)
+			{
+				if (gcell->IsPos())
+				{
+					if (gcell->TNode().isLinked)
+					{
+						PosElementBuf.Push(&gcell);
+					}
+				}
+			}
+		}
+	}
+	posCellNum = PosElementBuf.Top();
 	static uint16 num = 0;
 	{
 		CpuFpgaCmmMsgBuf msg;
@@ -561,10 +585,12 @@ int32 spt::SptGooseFrameIn::ProcIni()
 		uint16 u16temp;
 		u16temp = 0xff11;
 		msg.Write(&u16temp, sizeof(u16temp));
-		u16temp = (uint16)PosElementBuf.Top();
+		u16temp = (uint16)posCellNum;
+		msg.Write(&u16temp, sizeof(u16temp));
+		u16temp =  (uint16)posNotWithTCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
 
-		uint16 endloop = (uint16)PosElementBuf.Top();
+		uint16 endloop = (uint16)posCellNum;
 		SptGooseData* gcell;
 		for (uint32 i = 0; i < endloop; i++)
 		{
@@ -625,10 +651,12 @@ int32 spt::SptGooseFrameIn::ProcIni()
 		uint16 u16temp;
 		u16temp = 0xff11;
 		msg.Write(&u16temp, sizeof(u16temp));
-		u16temp = (uint16)PosElementBuf.Top();
+		u16temp = (uint16)posCellNum;
+		msg.Write(&u16temp, sizeof(u16temp));
+		u16temp =  (uint16)posNotWithTCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
 
-		uint16 endloop = (uint16)PosElementBuf.Top();
+		uint16 endloop = (uint16)posCellNum;
 		SptGooseData* gcell;
 		for (uint32 i = 0; i < endloop; i++)
 		{
@@ -684,10 +712,12 @@ int32 spt::SptGooseFrameIn::ProcIni()
 		uint16 u16temp;
 		u16temp = 0xff11;
 		msg.Write(&u16temp, sizeof(u16temp));
-		u16temp = (uint16)PosElementBuf.Top();
+		u16temp = (uint16)posCellNum;
+		msg.Write(&u16temp, sizeof(u16temp));
+		u16temp =  (uint16)posNotWithTCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
 
-		uint16 endloop = (uint16)PosElementBuf.Top();
+		uint16 endloop = (uint16)posCellNum;
 		SptGooseData* gcell;
 		for (uint32 i = 0; i < endloop; i++)
 		{
@@ -776,7 +806,6 @@ void spt::SptGooseFrameIn::RecGoInCbCheckStateMsg(void* Buf, uint32 BufLen)
 
 void spt::SptGooseFrameIn::RecPosMsg(void* Buf, uint32 BufLen)
 {
-	ostatus.recvFrameOkCnt++;
 	posFrameNum++;
 	uint32 MaxLen = PosElementBuf.Top() * 10 + 4;
 	if (MaxLen < BufLen)
@@ -788,6 +817,19 @@ void spt::SptGooseFrameIn::RecPosMsg(void* Buf, uint32 BufLen)
 	b += sizeof(frameno);
 	uint16 cellNum = GetLittleEndian16Bit(b);
 	b += sizeof(cellNum);
+	if (cellNum != posCellNum)
+	{
+		ostatus.recvFrameErrCnt++;
+		return;
+	}
+	uint16 cellNotTNum = GetLittleEndian16Bit(b);
+	b += sizeof(cellNotTNum);
+	if (cellNotTNum != posNotWithTCellNum)
+	{
+		ostatus.recvFrameErrCnt++;
+		return;
+	}
+	ostatus.recvFrameOkCnt++;
 	uint32 sec, fraq;
 	sec = GetLittleEndian32Bit(b);
 	b += sizeof(sec);
@@ -795,9 +837,16 @@ void spt::SptGooseFrameIn::RecPosMsg(void* Buf, uint32 BufLen)
 	b += sizeof(fraq);
 	stamp.fromPriUtcCode(sec, fraq);
 	uint16 state;
-	SalDateStamp date;
+	SalDateStamp date = stamp;
 	uint32 q;
 	for (uint32 i = 0; i < cellNum; i++)
+	{
+		state = GetLittleEndian16Bit(b);
+		b += sizeof(state);
+		q = state >> 2;
+		((SptGooseData*)PosElementBuf.GetAddrElement(i))->SetValue(state & 0x03, &q, &date);
+	}
+	for (uint32 i = cellNotTNum; i < cellNum; i++)
 	{
 		state = GetLittleEndian16Bit(b);
 		b += sizeof(state);
@@ -1507,8 +1556,8 @@ void spt::SptGoSvStateBoard::RecBoardState(uint8* Buf, uint32 Len)
 	}
 	progRunState = GetLittleEndian16Bit(b);
 	b += sizeof(uint16);
-	ostatus.Version1.ProgDate = GetLittleEndian16Bit(b);
-	b += sizeof(uint16);
+	ostatus.Version1.ProgDate = GetLittleEndian32Bit(b);
+	b += sizeof(uint32);
 	ostatus.Version1.ProgVersion = GetLittleEndian16Bit(b);
 	b += sizeof(uint16);
 	ostatus.Version1.ProgCrc = GetLittleEndian32Bit(b);
@@ -1527,6 +1576,8 @@ void spt::SptGoSvStateBoard::RecBoardState(uint8* Buf, uint32 Len)
 	b += sizeof(goRecTypeCfgState);
 	MemCpy(goRecMapCfgState, b, sizeof(goRecMapCfgState));
 	b += sizeof(goRecMapCfgState);
+	MemCpy(&clkCntPps, b, sizeof(clkCntPps));
+	b += sizeof(clkCntPps);
 	infoOk = 1;
 }
 

@@ -1,4 +1,4 @@
-#include "LcdMain.h"
+#include "SptProject.h"
 using namespace spt;
 
 uint8 lcdBufbits[HalLcdDriver::MaxPixelOfHeight][(HalLcdDriver::MaxPixelOfWidth * HalLcdDriver::BitsOfOnePixel + 7) / 8];
@@ -35,7 +35,7 @@ uint32 spt::HalLcdDriver::GetPixel(int16 x, int16 y)
 }
 void spt::HalLcdDriver::Update()
 {
-	LcdWriteDispBuf(0, 0, MaxPixelOfWidth, MaxPixelOfHeight, lcdBufbits, M_ArrLen(lcdBufbits[0]), M_ArrLen(lcdBufbits));
+
 	update = 1;
 }
 void spt::HalLcdDriver::Update(int16 x, int16 y, int16 w, int16 h)
@@ -48,7 +48,7 @@ void spt::HalLcdDriver::Update(int16 x, int16 y, int16 w, int16 h)
 	{
 		return;
 	}
-	LcdWriteDispBuf(x, y, w, h, lcdBufbits, M_ArrLen(lcdBufbits[0]), M_ArrLen(lcdBufbits));
+
 	update = 1;
 }
 void spt::HalLcdDriver::OneLoop()
@@ -73,8 +73,6 @@ void spt::HalLcdDriver::OneLoop()
 	}
 	update = 0;
 	flush.Restart();
-	LcdWriteDispBuf(0, 0, PixelOfWidth(), PixelOfHeight(), lcdBufbits, M_ArrLen(lcdBufbits[0]), M_ArrLen(lcdBufbits));
-
 }
 bool8 spt::HalLcdDriver::IsOkPos(int16 x, int16 y)
 {

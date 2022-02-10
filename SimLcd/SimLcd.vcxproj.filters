@@ -60,7 +60,7 @@
     <ClInclude Include="LcdHal.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="LcdHalLcdDriver.h">
+    <ClInclude Include="LcdHalDriver.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="LcdMain.h">
@@ -173,7 +173,7 @@
     <ClCompile Include="LcdHal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LcdHalLcdDriver.cpp">
+    <ClCompile Include="LcdHalDriver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="LcdMain.cpp">

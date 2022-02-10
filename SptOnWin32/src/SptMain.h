@@ -29,6 +29,14 @@
 * -# AppCmd=FactoryMode为工厂模式，该模式用于进行CPU板卡BSP、文件系统等的初始化，该模式下，平台不进行文件的写操作\n
 * </tr>
 * <tr><td>2021/11/15  <td>1.0    <td>0.93   <td>冯占华  <td>修改采集装置集成测试问题 </tr>
+* <tr><td>2022/02/10  <td>1.0    <td>0.94.0   <td>冯占华  <td>
+* -# 新一代装置文件夹更新\n
+*	应用程序及AppStartUp.cfg放在flash/apps下面；\n
+*	应用运行数据均在media/using\n
+*	T860配置文件在media/using/T860/Public/configuration\n
+*	备份数据在media/Bukup\n
+*	程序升级在media/Update
+* </tr>
 * </table>
 **********************************************************************************
 */

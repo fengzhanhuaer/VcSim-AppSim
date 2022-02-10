@@ -97,7 +97,7 @@ spt::ApiVersionInfo::ApiVersionInfo()
 	apiVersion.progOk = 0x5a5a5a5aa5a5a5a5;
 	apiVersion.preamble = 0x12fa990;
 	apiVersion.major = 0;
-	apiVersion.minor = 93;
+	apiVersion.minor = 94;
 	apiVersion.reversion = 0;
 	StrNCpy(apiVersion.publisher, "fengzhanhua", sizeof(apiVersion.publisher));
 	StrNCpy(apiVersion.programName, "Software Platform", sizeof(apiVersion.programName));

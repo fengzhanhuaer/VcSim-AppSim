@@ -166,7 +166,7 @@
     <ClInclude Include="LcdBitmap.h" />
     <ClInclude Include="LcdFontPixel.h" />
     <ClInclude Include="LcdHal.h" />
-    <ClInclude Include="LcdHalLcdDriver.h" />
+    <ClInclude Include="LcdHalDriver.h" />
     <ClInclude Include="LcdMain.h" />
     <ClInclude Include="LcdWnd.h" />
     <ClInclude Include="SalAdt.h" />
@@ -205,7 +205,7 @@
     <ClCompile Include="LcdBitmap.cpp" />
     <ClCompile Include="LcdFontPixel.cpp" />
     <ClCompile Include="LcdHal.cpp" />
-    <ClCompile Include="LcdHalLcdDriver.cpp" />
+    <ClCompile Include="LcdHalDriver.cpp" />
     <ClCompile Include="LcdMain.cpp" />
     <ClCompile Include="LcdWnd.cpp" />
     <ClCompile Include="SalAdt.cpp" />

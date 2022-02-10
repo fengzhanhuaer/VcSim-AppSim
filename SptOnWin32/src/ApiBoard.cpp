@@ -30,3 +30,8 @@ uint32 spt::ApiSmartBoardInfo::GoRecCfgRecState(uint32 FPGAIndex, uint32 StateIn
 {
 	return goRecCfgState[StateIndex];
 }
+
+uint32 spt::ApiSmartBoardInfo::FpgaClkPps()
+{
+	return clkCntPps;
+}

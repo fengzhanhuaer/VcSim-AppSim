@@ -51,6 +51,11 @@ namespace spt
 		/// <param name="FPGAIndex"></param>
 		/// <returns></returns>
 		uint32 GoRecCfgRecState(uint32 FPGAIndex, uint32 StateIndex);
+		/// <summary>
+		/// FPGA每秒钟时钟计数
+		/// </summary>
+		/// <returns></returns>
+		uint32 FpgaClkPps();
 	private:
 
 	};

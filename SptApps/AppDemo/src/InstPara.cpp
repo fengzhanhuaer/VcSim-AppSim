@@ -1,12 +1,12 @@
 #include "InstResource.h"
 
-ApiPara SoftRelayEn[E_SRE_Total];
+AppPara SoftRelayEn[E_SRE_Total];
 ApiParaGroup SoftRelayEnGroup;
 
-ApiPara ProtPara[E_PP_Total];
+AppPara ProtPara[E_PP_Total];
 ApiParaGroup ProtParaGroup;
 
-ApiPara PtctPara[2];
+AppPara PtctPara[2];
 ApiParaGroup PtctParaGroup;
 
 SalParaEditGroup HmiParaEditGroup;
@@ -35,6 +35,7 @@ void AppParaPowerUpIni()
 	SoftRelayEn[E_SRE_test1].BlPowerUpIni("测试1", "E_SRE_test1", SoftRelayEnGroup, 0);
 	SoftRelayEn[E_SRE_test2].BlPowerUpIni("测试2", "E_SRE_test2", SoftRelayEnGroup, 0);
 	ProtPara[E_PP_Zone].ZonePowerUpIni("定值区号", "E_PP_Zone", SoftRelayEnGroup, 1, 1, 16, 0, Unit_NULL);
+	ProtPara[E_PP_Zone].MyPowerUpIni(2 * 10);
 	SoftRelayEnGroup.UpdateForUse();
 	//由于字符型参数占用多个定值位置，因此，含有字符参数参数组的参数数目多于实际数目，每个参数为4个字节，每个字符参数应根据(最大长度/4)+2开辟内存空间
 	int32 Zone = ProtPara[E_PP_Zone].Int32();
@@ -74,4 +75,9 @@ void AppParaPowerUpIni()
 		}
 	}
 
+}
+
+void AppPara::MyPowerUpIni(uint32 Para)
+{
+	myPara = Para;
 }

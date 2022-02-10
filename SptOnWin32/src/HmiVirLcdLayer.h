@@ -3,6 +3,7 @@
 
 #include "LcdFontPixel.h"
 #include "LcdBitmap.h"
+#include "LcdHalDriver.h"
 namespace spt
 {
 	struct HmiPos

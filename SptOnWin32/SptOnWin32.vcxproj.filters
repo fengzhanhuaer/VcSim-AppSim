@@ -249,6 +249,15 @@
     <ClCompile Include="src\SalFontCode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\LcdBitmap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LcdFontPixel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LcdHalDriver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ApiAio.h">
@@ -507,6 +516,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\SalPrinter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LcdHalDriver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LcdBitmap.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

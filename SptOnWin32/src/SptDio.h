@@ -137,12 +137,13 @@ namespace spt
 		void RecPosMsg(void* Buf, uint32 BufLen);
 		void RecAngMsg(void* Buf, uint32 BufLen);
 	protected:
+		uint32 posCellNum;
+		uint32 posNotWithTCellNum;
 		uint32 posFrameNum;
 		uint32 angFrameNum;
 		SingleStackBuf PosElementBuf;
 		SingleStackBuf U32ElementBuf;
 		SingleStackBuf ProcInBuf;
-
 	};
 	class SptGooseFrameOut :public SptStateBoard
 	{
@@ -267,6 +268,7 @@ namespace spt
 		uint8 goRecCfgState[5];
 		uint8 goRecTypeCfgState[5];
 		uint8 goRecMapCfgState[2];
+		uint32 clkCntPps;
 		bool8 infoOk;
 	};
 }

@@ -849,7 +849,7 @@ int32 spt::SptCcdFile::ParseGooseSubGoCbDataSet(const tinyxml2::XMLElement* node
 										{
 											Info->dataInstId[num][Info->dataLinkedNum[num]] = 0xffff;
 											Info->sAddrErr = 1;
-											LogErr << "ParseGoosePubGoCbDataSet element not find inst sAddr is" << saddr->Value() << "\n";
+											LogErr << "ParseGoosePubGoCbDataSet element not find inst sAddr is " << saddr->Value() << "\n";
 										}
 									}
 								}
