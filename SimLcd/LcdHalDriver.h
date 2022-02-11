@@ -18,6 +18,8 @@ namespace spt
 		void Update(int16 x, int16 y, int16 w, int16 h);
 		void OneLoop();
 		bool8 IsOkPos(int16 x, int16 y);
+		void SetBuf(int16 x, int16 y, void* Buf, int16 W);
+		void* GetBuf(int16 x, int16 y);
 		//platform function interface
 	public:
 		static HalLcdDriver& Instance();

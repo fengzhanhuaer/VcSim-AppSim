@@ -596,7 +596,8 @@ int32 spt::DbgTcpGmClient::Recv(void* buf, int32 bufLen, uint32 flags)
 #else 
 	return DbgGmSslRead(gmSock, buf, bufLen);
 #endif
-	}
+	return 0;
+}
 
 void spt::DbgTcpGmClient::Close()
 {

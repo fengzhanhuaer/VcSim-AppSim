@@ -82,6 +82,14 @@ bool8 spt::HalLcdDriver::IsOkPos(int16 x, int16 y)
 	}
 	return 1;
 }
+void* spt::HalLcdDriver::GetBuf(int16 x, int16 y)
+{
+	if (!IsOkPos(x, y))
+	{
+		return lcdBufbits;
+	}
+	return &lcdBufbits[y][x];
+}
 void spt::HalLcdDriver::PowerUpIni(int32 Para)
 {
 

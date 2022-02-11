@@ -27,6 +27,11 @@ namespace spt
 	class GraphicDevice
 	{
 	public:
+		enum Mode
+		{
+			E_Protocol = 0x01,
+			E_PicMode = 0x02,
+		};
 		enum  Color
 		{
 			E_Null,
@@ -43,11 +48,14 @@ namespace spt
 		uint16 LcdWidth();
 		uint16 LcdLineMaxFont();
 		uint16 SpaceOfFont();
+		uint32 DrawMode() { return drawMode; };
 	public:
 		static GraphicDevice& Instance();
+		void SetDrawMode(Mode mode);
 		void DrawAssic(int16 x, int16 y, int16 Color, const char* str);
 		void DrawStr(int16 x, int16 y, int16 Color, const char* str);
 		void DrawLine(int16 x, int16 y, int16 Color, int16 w, int16 h);
+		void DrawLine(int16 sx, int16 sy, int16 ex, int16 ey, int16 Color, int16 w);
 		void DrawRect(int16 x, int16 y, int16 Color, int16 w, int16 h);
 		void DrawBitMap(int16 x, int16 y, int16 BitMapCode, int16 Color);
 		void ClearAll();
@@ -57,12 +65,15 @@ namespace spt
 		void Update(const HmiRect& rect);
 		void Update();
 	public:
+		void UpdateLcd();
 		uint32 GetColor(int16 cor);
 		int32 PowerUpIni(int32 Para);
 	protected:
 		GraphicDevice();
 	private:
-		class HalLcdDriver* driver;
+		MsPeriodTimer lcdUpdateTimer;
+		uint32 drawMode;
+		class HalLcdDriver* lcddriver;
 		class HmiLcdCmm* hmidriver;
 		uint16 lcdheight;
 		uint16 lcdwidth;

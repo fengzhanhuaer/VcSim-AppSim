@@ -2,16 +2,16 @@
 
 using namespace spt;
 
-#ifndef WIN32_LCD_SIM
 #include"ApiProject.h"
-#else 
-#include "LcdMain.h"
-#endif // !LCDMAIN_H
 
 GraphicDevice& spt::GraphicDevice::Instance()
 {
 	static GraphicDevice inst;
 	return inst;
+}
+void spt::GraphicDevice::SetDrawMode(GraphicDevice::Mode mode)
+{
+	drawMode = mode;
 }
 uint16 spt::GraphicDevice::FontHeight()
 {
@@ -39,227 +39,282 @@ uint16 spt::GraphicDevice::SpaceOfFont()
 }
 void spt::GraphicDevice::DrawAssic(int16 X, int16 Y, int16 Color, const char* str)
 {
-#ifdef WIN32_LCD_SIM
-
 	if (!str)
 	{
 		return;
 	}
-	uint32 cor = GetColor(Color);
-	const uint8* bitmap;
-	uint8 data;
-	int16 x = X;
-	int16 y = Y;
-	while (data = *str)
+	if (drawMode & E_PicMode)
 	{
-		if (data == '\r')
+		uint32 cor = GetColor(Color);
+		const uint8* bitmap;
+		uint8 data;
+		int16 x = X;
+		int16 y = Y;
+		while (data = *str)
 		{
-			x = X;
-			y += CN_FONT16_HEIGHT;
-			str++;
-			if (*str == '\n')
+			if (data == '\r')
 			{
+				x = X;
+				y += CN_FONT16_HEIGHT;
+				str++;
+				if (*str == '\n')
+				{
+					str++;
+				}
+			}
+			else if (data == '\n')
+			{
+				x = X;
+				y += CN_FONT16_HEIGHT;
+				str++;
+			}
+			else
+			{
+				bitmap = gASSIC16[*str];
+				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
+				{
+					for (uint8 j = 0; j < CN_FONT16_WIDTH; j++)
+					{
+						if (GetBit(*bitmap, 7 - j))
+						{
+							lcddriver->SetPixel(x + j, y + i, cor);
+						}
+					}
+					bitmap++;
+				}
+				x += CN_FONT16_WIDTH;
 				str++;
 			}
 		}
-		else if (data == '\n')
-		{
-			x = X;
-			y += CN_FONT16_HEIGHT;
-			str++;
-		}
-		else
-		{
-			bitmap = gASSIC16[*str];
-			for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
-			{
-				for (uint8 j = 0; j < CN_FONT16_WIDTH; j++)
-				{
-					if (GetBit(*bitmap, 7 - j))
-					{
-						driver->SetPixel(x + j, y + i, cor);
-					}
-				}
-				bitmap++;
-			}
-			x += CN_FONT16_WIDTH;
-			str++;
-		}
 	}
-
-#else 
-
-	if (!str)
+	if (drawMode & E_Protocol)
 	{
-		return;
+		LcdDrawAssicMsg msg;
+		msg.type = E_DrawAssic;
+		msg.x = (uint16)X;
+		msg.y = (uint16)Y;
+		msg.color = Color;
+		msg.len = (uint16)(StrLen(str) + sizeof(msg) - sizeof(msg.msg) + 1);
+		MemCpy(msg.msg, str, msg.len);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
 	}
-	LcdDrawAssicMsg msg;
-	msg.type = E_DrawAssic;
-	msg.x = (uint16)X;
-	msg.y = (uint16)Y;
-	msg.color = Color;
-	msg.len = (uint16)(StrLen(str) + sizeof(msg) - sizeof(msg.msg) + 1);
-	MemCpy(msg.msg, str, msg.len);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
 
-#endif
 }
 void spt::GraphicDevice::DrawStr(int16 X, int16 Y, int16 Color, const char* Str)
 {
-#ifdef WIN32_LCD_SIM
-	if (!Str)
+	if (drawMode & E_PicMode)
 	{
-		return;
-	}
-	uint32 cor = GetColor(Color);
-	const uint8* bitmap;
-	uint8 data;
-	int16 x = X;
-	int16 y = Y;
-	uint8 sec;
-	uint8 loc;
-	uint32 seek;
-	const uint8* str = (const uint8*)Str;
-	while (data = *str)
-	{
-		if (data == '\r')
+		if (!Str)
 		{
-			x = X;
-			y += CN_FONT16_HEIGHT;
-			str++;
-			if (*str == '\n')
+			return;
+		}
+		uint32 cor = GetColor(Color);
+		const uint8* bitmap;
+		uint8 data;
+		int16 x = X;
+		int16 y = Y;
+		uint8 sec;
+		uint8 loc;
+		uint32 seek;
+		const uint8* str = (const uint8*)Str;
+		while (data = *str)
+		{
+			if (data == '\r')
 			{
+				x = X;
+				y += CN_FONT16_HEIGHT;
+				str++;
+				if (*str == '\n')
+				{
+					str++;
+				}
+			}
+			else if (data == '\n')
+			{
+				x = X;
+				y += CN_FONT16_HEIGHT;
 				str++;
 			}
-		}
-		else if (data == '\n')
-		{
-			x = X;
-			y += CN_FONT16_HEIGHT;
-			str++;
-		}
-		else if (data < 128)
-		{
-			bitmap = gASSIC16[*str];
-			for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
+			else if (data < 128)
 			{
-				for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
+				bitmap = gASSIC16[*str];
+				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
 				{
-					if (GetBit(*bitmap, 7 - j))
+					for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
 					{
-						driver->SetPixel(x + j, y + i, cor);
-					}
+						if (GetBit(*bitmap, 7 - j))
+						{
+							lcddriver->SetPixel(x + j, y + i, cor);
+						}
 
-				}
-				bitmap++;
-			}
-			x += CN_FONT16_WIDTH;
-			str++;
-		}
-		else if (str[1] >= 128)
-		{
-			sec = str[0];
-			sec -= 0xa1;
-			loc = str[1];
-			loc -= 0xa1;
-			seek = (94 * sec + loc) * sizeof(g_HZK16[0]);
-			if (seek > g_HZK16Len)
-			{
-				return;
-			}
-			seek = (94 * sec + loc);
-			bitmap = &g_HZK16[seek][0];
-			for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
-			{
-				for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
-				{
-					if (GetBit(*bitmap, 7 - j))
-					{
-						driver->SetPixel(x + j, y + i, cor);
 					}
+					bitmap++;
 				}
-				bitmap++;
+				x += CN_FONT16_WIDTH;
+				str++;
 			}
-			x += CN_FONT16_WIDTH;
-			bitmap = &g_HZK16[seek][CN_FONT16_HEIGHT];
-			for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
+			else if (str[1] >= 128)
 			{
-				for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
+				sec = str[0];
+				sec -= 0xa1;
+				loc = str[1];
+				loc -= 0xa1;
+				seek = (94 * sec + loc) * sizeof(g_HZK16[0]);
+				if (seek > g_HZK16Len)
 				{
-					if (GetBit(*bitmap, 7 - j))
-					{
-						driver->SetPixel(x + j, y + i, cor);
-					}
+					return;
 				}
-				bitmap++;
+				seek = (94 * sec + loc);
+				bitmap = &g_HZK16[seek][0];
+				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
+				{
+					for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
+					{
+						if (GetBit(*bitmap, 7 - j))
+						{
+							lcddriver->SetPixel(x + j, y + i, cor);
+						}
+					}
+					bitmap++;
+				}
+				x += CN_FONT16_WIDTH;
+				bitmap = &g_HZK16[seek][CN_FONT16_HEIGHT];
+				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
+				{
+					for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
+					{
+						if (GetBit(*bitmap, 7 - j))
+						{
+							lcddriver->SetPixel(x + j, y + i, cor);
+						}
+					}
+					bitmap++;
+				}
+				x += CN_FONT16_WIDTH;
+				str += 2;
 			}
-			x += CN_FONT16_WIDTH;
-			str += 2;
-		}
-		else
-		{
-			break;
+			else
+			{
+				break;
+			}
 		}
 	}
-
-#else 
-
-	if (!Str)
+	if (drawMode & E_Protocol)
 	{
-		return;
-	}
-	LcdDrawAssicMsg msg;
-	msg.type = E_DrawStr;
-	msg.x = (uint16)X;
-	msg.y = (uint16)Y;
-	msg.color = Color;
-	msg.len = (uint16)(StrLen(Str) + sizeof(msg) - sizeof(msg.msg) + 1);
-	MemCpy(msg.msg, Str, msg.len);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
 
-#endif
+		if (!Str)
+		{
+			return;
+		}
+		LcdDrawAssicMsg msg;
+		msg.type = E_DrawStr;
+		msg.x = (uint16)X;
+		msg.y = (uint16)Y;
+		msg.color = Color;
+		msg.len = (uint16)(StrLen(Str) + sizeof(msg) - sizeof(msg.msg) + 1);
+		MemCpy(msg.msg, Str, msg.len);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
 }
 void spt::GraphicDevice::DrawLine(int16 x, int16 y, int16 Color, int16 w, int16 h)
 {
-#ifdef WIN32_LCD_SIM
-	uint32 cor = GetColor(Color);
-	for (int16 i = 0; i < h; i++)
+	if (drawMode & E_PicMode)
 	{
-		for (int16 j = 0; j < w; j++)
+		uint32 cor = GetColor(Color);
+		for (int16 i = 0; i < h; i++)
 		{
-			driver->SetPixel(x + j, y + i, cor);
+			for (int16 j = 0; j < w; j++)
+			{
+				lcddriver->SetPixel(x + j, y + i, cor);
+			}
 		}
 	}
-#else 
-	LcdDrawRect msg;
-	msg.type = E_DrawLine;
-	msg.x = (uint16)x;
-	msg.y = (uint16)y;
-	msg.color = Color;
-	msg.w = (uint16)w;
-	msg.h = (uint16)h;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
-#endif
+	if (drawMode & E_Protocol)
+	{
+		LcdDrawRect msg;
+		msg.type = E_DrawLine;
+		msg.x = (uint16)x;
+		msg.y = (uint16)y;
+		msg.color = Color;
+		msg.w = (uint16)w;
+		msg.h = (uint16)h;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
+}
+void spt::GraphicDevice::DrawLine(int16 sx, int16 sy, int16 ex, int16 ey, int16 Color, int16 w)
+{
+	if (drawMode & E_PicMode)
+	{
+		uint32 cor = GetColor(Color);
+		if (sx == ex)
+		{
+			for (int16 i = sy; i < ey; i++)
+			{
+				for (int16 j = 0; j < w; j++)
+				{
+					lcddriver->SetPixel(sx + j, i, cor);
+				}
+			}
+		}
+		else if (sy == ey)
+		{
+			for (int16 i = sx; i < ex; i++)
+			{
+				for (int16 j = 0; j < w; j++)
+				{
+					lcddriver->SetPixel(i, sy + j, cor);
+				}
+			}
+		}
+		else
+		{
+			float32 dydx = (float32)(ey - sy) / (ex - sx);
+			for (int32 i = sx; i < ex; i++)
+			{
+				int16 y = (int16)(sy + (sx - i) * dydx + 0.5);
+				for (int16 k = 0; k < w; k++)
+				{
+					lcddriver->SetPixel(i + k, y, cor);
+				}
+			}
+		}
+	}
+	if (drawMode & E_Protocol)
+	{
+		LcdDrawLine2 msg;
+		msg.type = E_DrawLine2;
+		msg.sx = (uint16)sx;
+		msg.sy = (uint16)sy;
+		msg.ex = (uint16)ex;
+		msg.ey = (uint16)ey;
+		msg.color = Color;
+		msg.w = (uint16)w;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
 }
 void spt::GraphicDevice::DrawRect(int16 x, int16 y, int16 Color, int16 w, int16 h)
 {
-#ifdef WIN32_LCD_SIM
-	DrawLine(x, y, Color, w, 1);
-	DrawLine(x, y + h - 1, Color, w, 1);
-	DrawLine(x, y, Color, 1, h);
-	DrawLine(x + w - 1, y, Color, 1, h);
-#else 
-	LcdDrawRect msg;
-	msg.type = E_DrawRect;
-	msg.x = (uint16)x;
-	msg.y = (uint16)y;
-	msg.color = Color;
-	msg.w = (uint16)w;
-	msg.h = (uint16)h;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
-#endif
+	if (drawMode & E_PicMode)
+	{
+		DrawLine(x, y, Color, w, 1);
+		DrawLine(x, y + h - 1, Color, w, 1);
+		DrawLine(x, y, Color, 1, h);
+		DrawLine(x + w - 1, y, Color, 1, h);
+	}
+	if (drawMode & E_Protocol)
+	{
+		LcdDrawRect msg;
+		msg.type = E_DrawRect;
+		msg.x = (uint16)x;
+		msg.y = (uint16)y;
+		msg.color = Color;
+		msg.w = (uint16)w;
+		msg.h = (uint16)h;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
 }
 void spt::GraphicDevice::DrawBitMap(int16 x, int16 y, int16 BitMapCode, int16 Color)
 {
@@ -267,98 +322,133 @@ void spt::GraphicDevice::DrawBitMap(int16 x, int16 y, int16 BitMapCode, int16 Co
 	{
 		return;
 	}
-	LcdDrawBitMap msg;
-	msg.type = E_DrawBitMap;
-	msg.x = (uint16)x;
-	msg.y = (uint16)y;
-	msg.color = Color;
-	msg.code = BitMapCode;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	if (drawMode == E_PicMode)
+	{
+		uint32 cor = GetColor(Color);
+		const struct BitMapDes* des = &BitMapInst[BitMapCode];
+		const uint8* bitmap;
+		for (int16 i = 0; i < des->height; i++)
+		{
+			for (int16 j = 0; j < des->widthOfByte; j++)
+			{
+				bitmap = des->buf + des->widthOfByte * i + j;
+				for (int16 k = 0; k < 8; k++)
+				{
+					if (GetBit(*bitmap, 7 - k))
+					{
+						lcddriver->SetPixel(x + j * 8 + k, y + i, cor);
+					}
+				}
+			}
+		}
+	}
+	else if (drawMode == E_Protocol)
+	{
+		LcdDrawBitMap msg;
+		msg.type = E_DrawBitMap;
+		msg.x = (uint16)x;
+		msg.y = (uint16)y;
+		msg.color = Color;
+		msg.code = BitMapCode;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
 }
 void spt::GraphicDevice::ClearAll()
 {
-#ifdef LCDMAIN_H
-	uint32 cor = GetColor(Color::E_Yellow);
-	for (int16 i = 0; i < lcdheight; i++)
+	if (drawMode & E_PicMode)
 	{
-		for (int16 j = 0; j < lcdwidth; j++)
+		uint32 cor = GetColor(Color::E_Yellow);
+		for (int16 i = 0; i < lcdheight; i++)
 		{
-			driver->SetPixel(j, i, cor);
+			for (int16 j = 0; j < lcdwidth; j++)
+			{
+				lcddriver->SetPixel(j, i, cor);
+			}
 		}
 	}
-#else 
-	LcdDrawCmd msg;
-	msg.type = E_ClearAll;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
-#endif
+	if (drawMode & E_Protocol)
+	{
+		LcdDrawCmd msg;
+		msg.type = E_ClearAll;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
 }
 void spt::GraphicDevice::ClearRect(int16 x, int16 y, int16 Color, int16 w, int16 h)
 {
-#ifdef WIN32_LCD_SIM
-	uint32 cor = GetColor(Color);
-
-	for (int16 i = 0; i < h; i++)
+	if (drawMode & E_PicMode)
 	{
-		for (int16 j = 0; j < w; j++)
+		uint32 cor = GetColor(Color);
+
+		for (int16 i = 0; i < h; i++)
 		{
-			driver->SetPixel(x + j, y + i, cor);
+			for (int16 j = 0; j < w; j++)
+			{
+				lcddriver->SetPixel(x + j, y + i, cor);
+			}
 		}
 	}
-#else 
-	LcdDrawRect msg;
-	msg.type = E_ClearRect;
-	msg.x = (uint16)x;
-	msg.y = (uint16)y;
-	msg.color = Color;
-	msg.w = (uint16)w;
-	msg.h = (uint16)h;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
-#endif
+	if (drawMode & E_Protocol)
+	{
+		LcdDrawRect msg;
+		msg.type = E_ClearRect;
+		msg.x = (uint16)x;
+		msg.y = (uint16)y;
+		msg.color = Color;
+		msg.w = (uint16)w;
+		msg.h = (uint16)h;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
 }
 void spt::GraphicDevice::DrawUint32(int16 x, int16 y, int16 Color, uint32 data, uint32 FraBit, bool8 FromRight)
 {
-#ifdef WIN32_LCD_SIM
-	char buf[100];
-	sprintf(buf, "%u", data);
-	if (FromRight)
+	if (drawMode & E_PicMode)
 	{
-		DrawAssic(x - StrLen(buf), y, Color, buf);
+		String100B str;
+		str.Format(data, FraBit);
+		if (FromRight)
+		{
+			DrawAssic(x - StrLen(str.Str()), y, Color, str.Str());
+		}
+		else
+		{
+			DrawAssic(x, y, Color, str.Str());
+		}
 	}
-	else
+	if (drawMode & E_Protocol)
 	{
-		DrawAssic(x, y, Color, buf);
+		LcdDrawData msg;
+		msg.type = E_ClearRect;
+		msg.x = (uint16)x;
+		msg.y = (uint16)y;
+		msg.color = Color;
+		msg.data = data;
+		msg.fraBit = FraBit;
+		msg.isRight = (uint16)FromRight;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
 	}
-#else 
-	LcdDrawData msg;
-	msg.type = E_ClearRect;
-	msg.x = (uint16)x;
-	msg.y = (uint16)y;
-	msg.color = Color;
-	msg.data = data;
-	msg.fraBit = FraBit;
-	msg.isRight = (uint16)FromRight;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
-#endif
 }
 void spt::GraphicDevice::Update(int16 x, int16 y, int16 w, int16 h)
 {
-#ifdef WIN32_LCD_SIM
-	driver->Update(x, y, w, h);
-#else 
-	LcdDrawRect msg;
-	msg.type = E_UpdateRect;
-	msg.x = (uint16)x;
-	msg.y = (uint16)y;
-	msg.color = 0;
-	msg.w = (uint16)w;
-	msg.h = (uint16)h;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
-#endif
+	if (drawMode & E_PicMode)
+	{
+		lcddriver->Update(x, y, w, h);
+	}
+	if (drawMode & E_Protocol)
+	{
+		LcdDrawRect msg;
+		msg.type = E_UpdateRect;
+		msg.x = (uint16)x;
+		msg.y = (uint16)y;
+		msg.color = 0;
+		msg.w = (uint16)w;
+		msg.h = (uint16)h;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
 }
 void spt::GraphicDevice::Update(const HmiRect& rect)
 {
@@ -366,18 +456,64 @@ void spt::GraphicDevice::Update(const HmiRect& rect)
 }
 void spt::GraphicDevice::Update()
 {
-#ifdef WIN32_LCD_SIM
-	driver->Update();
-#else 
-	LcdDrawCmd msg;
-	msg.type = E_UpdateAll;
-	msg.len = (uint16)sizeof(msg);
-	HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
-#endif
+	if (drawMode & E_PicMode)
+	{
+		lcddriver->Update();
+	}
+	if (drawMode & E_Protocol)
+	{
+		LcdDrawCmd msg;
+		msg.type = E_UpdateAll;
+		msg.len = (uint16)sizeof(msg);
+		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
+	}
+}
+void spt::GraphicDevice::UpdateLcd()
+{
+	if (drawMode & E_PicMode)
+	{
+		if (!lcdUpdateTimer.Status())
+		{
+			if (!lcdUpdateTimer.IsEnable())
+			{
+				lcdUpdateTimer.UpCnt(200);
+				lcdUpdateTimer.Enable(1);
+			}
+			return;
+		}
+		LcdPicMode msg;
+		uint16 w = lcdwidth / 8;
+		uint16 linn = 8;
+
+		for (uint16 i = 0; i < lcdheight; i += linn)
+		{
+			msg.type = E_DrawPicLine;
+			msg.len = sizeof(msg) - sizeof(msg.data) + linn * w;
+			msg.x = 0;
+			msg.y = i;
+			msg.w = w;
+			msg.h = linn;
+			for (uint16 j = 0; j < linn; j++)
+			{
+				MemCpy(msg.data + j * w, lcddriver->GetBuf(0, i + j), w);
+			}
+			HmiLcdCmm::Instance().Send((LcdPicMode*)&msg);
+		}
+		msg.type = E_DrawPicUpdate;
+		msg.len = sizeof(msg) - sizeof(msg.data);
+		msg.x = 0;
+		msg.y = 0;
+		msg.w = w;
+		msg.h = lcdheight;
+		HmiLcdCmm::Instance().Send((LcdPicMode*)&msg);
+	}
+	else
+	{
+		return;
+	}
 }
 uint32 spt::GraphicDevice::GetColor(int16 cor)
 {
-
 	switch (cor)
 	{
 	case spt::GraphicDevice::E_Null:
@@ -417,10 +553,6 @@ uint32 spt::GraphicDevice::GetColor(int16 cor)
 }
 int32 spt::GraphicDevice::PowerUpIni(int32 Para)
 {
-#ifdef WIN32_LCD_SIM
-	lcdheight = driver->PixelOfHeight();
-	lcdwidth = driver->PixelOfWidth();
-#else 
 	const ApiAppCfg* appcfg = SptMain::Instance().AppCfg();
 	if (appcfg)
 	{
@@ -433,6 +565,7 @@ int32 spt::GraphicDevice::PowerUpIni(int32 Para)
 		{
 			lcdheight = 240;
 			lcdwidth = 320;
+			SetDrawMode(E_PicMode);
 			break;
 		}
 		case EH_GZKCK:
@@ -440,28 +573,26 @@ int32 spt::GraphicDevice::PowerUpIni(int32 Para)
 		{
 			lcdheight = 272;
 			lcdwidth = 480;
+			SetDrawMode(E_PicMode);
 			break;
 		}
 		default:
 			lcdheight = 240;
 			lcdwidth = 320;
+			SetDrawMode(E_PicMode);
 			break;
 		}
 	}
 	else
 	{
+		SetDrawMode(E_PicMode);
 		lcdheight = 240;
 		lcdwidth = 320;
 	}
-
-#endif
 	return 0;
 }
 spt::GraphicDevice::GraphicDevice()
 {
-#ifdef WIN32_LCD_SIM
-	driver = &HalLcdDriver::Instance();
-#else 
+	lcddriver = &HalLcdDriver::Instance();
 	hmidriver = &HmiLcdCmm::Instance();
-#endif
 }

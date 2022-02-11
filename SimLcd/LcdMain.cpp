@@ -11,11 +11,12 @@ extern uint16 __checksum;
 #endif
 int32 spt::LcdMain::PowerUpIni(int32 Para)
 {
-	version = 90;
-	progDate = 0x20211013;
+	version = 91;
+	progDate = 0x20220211;
 	progCrc = 0xFFFF;
 	checkCrc = 0xFFFF;
 	LcdHalPowerUpIni();
+	HmiLcdCmm::Instance().PowerUpIni(0);
 	GraphicDevice::Instance().PowerUpIni(0);
 	SptMsInt::Instance().PowerUpIni(1);
 #ifdef WIN32_LCD_SIM

@@ -8,6 +8,7 @@ namespace spt
 		E_DrawAssic = 0x0101,
 		E_DrawStr = 0x0111,
 		E_DrawLine = 0x0121,
+		E_DrawLine2 = 0x0122,
 		E_DrawRect = 0x0131,
 		E_ClearRect = 0x0141,
 		E_ClearAll = 0x0142,
@@ -22,9 +23,12 @@ namespace spt
 		E_LedInfoVal = 0x0404,
 		E_SockClose = 0x0405,
 		E_DrawBitMap = 0x0501,
+		E_DrawPicLine = 0x0601,
+		E_DrawPicRect = 0x0602,
+		E_DrawPicUpdate = 0x0603,
 	};
 
-	typedef SalCmmMsg<512> LcdMsg;
+	typedef SalCmmMsg<1024> LcdMsg;
 
 	struct LcdMsgContext
 	{
@@ -60,6 +64,17 @@ namespace spt
 		uint16 color;
 		uint16 w;
 		uint16 h;
+	};
+	struct LcdDrawLine2
+	{
+		uint16 type;
+		uint16 len;
+		uint16 sx;
+		uint16 sy;
+		uint16 ex;
+		uint16 ey;
+		uint16 color;
+		uint16 w;
 	};
 	struct LcdDrawCmd
 	{
@@ -101,6 +116,16 @@ namespace spt
 		uint16 ledNum;
 		uint16 cor;
 		char data[100];
+	};
+	struct LcdPicMode
+	{
+		uint16 type;
+		uint16 len;
+		uint16 x;
+		uint16 y;
+		uint16 w;
+		uint16 h;
+		char data[800];
 	};
 	class HmiTcpCmmChannel :public SalCmmChannel
 	{
@@ -167,6 +192,7 @@ namespace spt
 	public:
 		void Unpack(LcdMsgContext* Msg);
 		void Send(LcdMsgContext* Msg);
+		void Send(LcdPicMode* Msg);
 		bool8 IsVirLcdCmmOk();
 	protected:
 		HmiLcdCmm();
@@ -181,10 +207,6 @@ namespace spt
 		MsDelayTimer virHeartBeatCheck;
 		MsTimer heartBeat;
 	};
-
-
-
-
 }
 
 

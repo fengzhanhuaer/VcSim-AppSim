@@ -22,9 +22,12 @@ namespace spt
 		E_LedInfoVal = 0x0404,
 		E_SockClose = 0x0405,
 		E_DrawBitMap = 0x0501,
+		E_DrawPicLine = 0x0601,
+		E_DrawPicRect = 0x0602,
+		E_DrawPicUpdate = 0x0603,
 	};
 
-	typedef SalCmmMsg<512> LcdMsg;
+	typedef SalCmmMsg<1024> LcdMsg;
 
 	struct LcdMsgContext
 	{
@@ -101,6 +104,16 @@ namespace spt
 		uint16 ledNum;
 		uint16 cor;
 		char data[100];
+	};
+	struct LcdPicMode
+	{
+		uint16 type;
+		uint16 len;
+		uint16 x;
+		uint16 y;
+		uint16 w;
+		uint16 h;
+		char data[800];
 	};
 #ifdef WIN32_SIM
 	class HmiTcpCmmChannel :public SalCmmChannel

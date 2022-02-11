@@ -13,10 +13,10 @@ HmiLcdCmm& spt::HmiLcdCmm::Instance()
 
 int32 spt::HmiLcdCmm::PowerUpIni(int32 Para)
 {
-#ifdef GZK_LCD
-
+#ifdef WIN32_SIM
+	HmiTcpCmmChannel::PowerUpIni(0);
 #else
-	tcpCmm.PowerUpIni(0);
+	HmiSerialCmmChannel::PowerUpIni(0);
 #endif
 	return 0;
 }
@@ -251,6 +251,21 @@ int32 spt::HmiLcdCmm::Unpack(LcdMsgContext* msg)
 		gd.DrawBitMap(msg1->x, msg1->y, msg1->code, msg1->color);
 		break;
 	}
+	case E_DrawPicLine:
+	{
+		LcdPicMode* msg1 = (LcdPicMode*)msg;
+		for (uint16 i = 0; i < msg1->h; i++)
+		{
+			HalLcdDriver::Instance().SetBuf(msg1->x, msg1->y + i, msg1->data + i * msg1->w, msg1->w);
+		}
+		break;
+	}
+	case E_DrawPicUpdate:
+	{
+		LcdPicMode* msg1 = (LcdPicMode*)msg;
+		gd.Update(msg1->x, msg1->y, msg1->w, msg1->h);
+		break;
+	}
 	default:
 		break;
 	}
@@ -348,6 +363,17 @@ bool8 spt::HmiLcdCmm::IsLcdCmmOk()
 #ifdef WIN32_SIM
 int32 spt::HmiTcpCmmChannel::PowerUpIni(int32 Para)
 {
+	frmHeader.header = 0xd555;
+	frmHeader.sur = 33003;
+	frmHeader.dst = 33002;
+	frmHeader.type = SCT_LCD;
+	driver = 0;
+	driverNum = 0;
+	frameBufLen = 1024;
+	appSendMsgPool.PowerUpIni(256, frameBufLen);
+	appRecMsgPool.PowerUpIni(16, frameBufLen);
+	halSendPool.Alloc(1, frameBufLen * 32);
+	halRecvPool.Alloc(1, frameBufLen * 32);
 	return 0;
 }
 
@@ -568,22 +594,24 @@ int32 spt::HmiTcpCmmChannel::CheckStatus()
 }
 spt::HmiTcpCmmChannel::HmiTcpCmmChannel()
 {
+
+}
+#endif
+int32 spt::HmiSerialCmmChannel::PowerUpIni(int32 Para)
+{
+	cmmOk = 0;
 	frmHeader.header = 0xd555;
 	frmHeader.sur = 33003;
 	frmHeader.dst = 33002;
 	frmHeader.type = SCT_LCD;
 	driver = 0;
 	driverNum = 0;
-	frameBufLen = 256;
-	appSendMsgPool.PowerUpIni(128, frameBufLen);
-	appRecMsgPool.PowerUpIni(128, frameBufLen);
-	halSendPool.Alloc(1, frameBufLen * 32);
-	halRecvPool.Alloc(1, frameBufLen * 32);
-}
-#endif
-int32 spt::HmiSerialCmmChannel::PowerUpIni(int32 Para)
-{
-	return int32();
+	frameBufLen = 128;
+	static char sendbuf[512];
+	static char recbuf[1024 * 16];
+	halSendPool.SetBuf(sendbuf, 1, sizeof(sendbuf));
+	halRecvPool.SetBuf(recbuf, 1, sizeof(recbuf));
+	return 0;
 }
 
 int32 spt::HmiSerialCmmChannel::SendMsg(void* Data, uint16 DataLen)
@@ -739,21 +767,5 @@ int32 spt::HmiSerialCmmChannel::CheckStatus()
 }
 spt::HmiSerialCmmChannel::HmiSerialCmmChannel()
 {
-	cmmOk = 0;
-	frmHeader.header = 0xd555;
-	frmHeader.sur = 33003;
-	frmHeader.dst = 33002;
-	frmHeader.type = SCT_LCD;
-	driver = 0;
-	driverNum = 0;
-	frameBufLen = 128;
-#ifndef GZK_LCD
-	static char sendbuf[5120];
-	static char recbuf[1024 * 20];
-#else 
-	static char sendbuf[512];
-	static char recbuf[1024 * 2];
-#endif
-	halSendPool.SetBuf(sendbuf, 1, sizeof(sendbuf));
-	halRecvPool.SetBuf(recbuf, 1, sizeof(recbuf));
+
 }

@@ -1,7 +1,6 @@
 #include "SptProject.h"
 using namespace spt;
 
-
 int32 spt::HmiStatusBar::Show()
 {
 	if (updateTimer.Status())

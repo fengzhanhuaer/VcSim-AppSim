@@ -1,4 +1,4 @@
-#include "SptProject.h"
+#include "LcdMain.h"
 using namespace spt;
 
 uint8 lcdBufbits[HalLcdDriver::MaxPixelOfHeight][(HalLcdDriver::MaxPixelOfWidth * HalLcdDriver::BitsOfOnePixel + 7) / 8];
@@ -83,6 +83,18 @@ bool8 spt::HalLcdDriver::IsOkPos(int16 x, int16 y)
 		return 0;
 	}
 	return 1;
+}
+void spt::HalLcdDriver::SetBuf(int16 x, int16 y, void* Buf, int16 W)
+{
+	if ((x >= PixelOfWidth()) || (y >= PixelOfHeight()))
+	{
+		return;
+	}
+	MemCpy(&lcdBufbits[y][x / 8], Buf,W );
+}
+void* spt::HalLcdDriver::GetBuf(int16 x, int16 y)
+{
+	return nullptr;
 }
 void spt::HalLcdDriver::PowerUpIni(int32 Para)
 {
