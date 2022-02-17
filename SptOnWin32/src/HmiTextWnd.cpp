@@ -65,6 +65,7 @@ HmiTextWndPage* spt::HmiTextWnd::GetWndPage(uint32 Page)
 
 void spt::HmiTextWnd::ShowSelf()
 {
+	uint32 dispMaxLine = DispMaxCtxLine();
 	if (mode == E_SinglePage)
 	{
 		if ((isUpdate || (lastPage != page)))
@@ -73,6 +74,17 @@ void spt::HmiTextWnd::ShowSelf()
 			if (wndpage)
 			{
 				ClearCtx();
+				SalString& str = wndpage->String();
+				TransString ts;
+				ts.SetBuf(str.Str());
+				String100B substr;
+				uint32 ln = 0;
+				while ((ts.GetLine(substr)) && (ln < dispMaxLine))
+				{
+					SetText(ln, 0, substr.Str());
+					ln++;
+					substr.Clear();
+				}
 			}
 			else
 			{
@@ -82,11 +94,105 @@ void spt::HmiTextWnd::ShowSelf()
 	}
 	else if (mode == E_ScrollPage)
 	{
-
+		if ((isUpdate || (lastPage != page)))
+		{
+			HmiTextWndPage* wndpage = GetWndPage(page);
+			if (wndpage)
+			{
+				ClearCtx();
+				SalString& str = wndpage->String();
+				TransString ts;
+				ts.SetBuf(str.Str());
+				String100B substr;
+				uint32 pag = 1;
+				for (uint32 i = 0; i < dispMaxLine; i++)
+				{
+					if ((ts.GetLine(substr)))
+					{
+						SetText(i, 0, substr.Str());
+						substr.Clear();
+					}
+					else
+					{
+						HmiTextWndPage* wndpage = GetWndPage(page + pag);
+						if (wndpage)
+						{
+							pag++;
+							ts.SetBuf(wndpage->String().Str());
+							if ((ts.GetLine(substr)))
+							{
+								SetText(i, 0, substr.Str());
+								substr.Clear();
+							}
+							else
+							{
+								break;
+							}
+						}
+						else
+						{
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				ClearCtx();
+			}
+		}
 	}
 	else if (mode == E_ContinuePage)
 	{
-
+		if ((isUpdate || (lastPage != page) || ((lastLine != line))))
+		{
+			HmiTextWndPage* wndpage = GetWndPage(page);
+			if (wndpage)
+			{
+				ClearCtx();
+				HmiTextWndPage* wndpage = GetWndPage(page);
+				if (wndpage)
+				{
+					if (lastPage != page)
+					{
+						line = 0;
+						totalLine = 0;
+						SalString& str = wndpage->String();
+						TransString ts;
+						ts.SetBuf(str.Str());
+						String100B substr;
+						while (ts.GetLine(substr))
+						{
+							totalLine++;
+						}
+					}
+					SalString& str = wndpage->String();
+					TransString ts;
+					ts.SetBuf(str.Str());
+					String100B substr;
+					for (uint32 i = 0; i < line; i++)
+					{
+						ts.GetLine(substr);
+						substr.Clear();
+					}
+					uint32 ln = 0;
+					while ((ts.GetLine(substr)) && (ln < dispMaxLine))
+					{
+						SetText(ln, 0, substr.Str());
+						ln++;
+						substr.Clear();
+					}
+				}
+				else
+				{
+					ClearCtx();
+				}
+			}
+			else
+			{
+				ClearCtx();
+			}
+		}
 	}
 	WidTextWnd::ShowSelf();
 }
@@ -101,6 +207,7 @@ void spt::HmiTextWnd::ShowSinglePage()
 		key.Key1 = 0;
 		updateFunc(*this, 0, totalPage, key);
 	}
+	uint32 page = this->page;
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -168,7 +275,7 @@ void spt::HmiTextWnd::ShowSinglePage()
 					break;
 				case spt::EK_DOWN:
 					step = 1;
-					page = totalPage + step;
+					page = page + step;
 					if (page >= totalPage)
 					{
 						page = 0;
@@ -201,6 +308,7 @@ void spt::HmiTextWnd::ShowSinglePage()
 				}
 				HmiMain::Instance().MsSleep(50);
 			}
+			WidTextWnd::SetPage(page);
 		}
 		else
 		{
@@ -223,6 +331,7 @@ void spt::HmiTextWnd::ShowScrollPage()
 		key.Key1 = 0;
 		updateFunc(*this, 0, totalPage, key);
 	}
+	uint32 page = this->page;
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -324,6 +433,7 @@ void spt::HmiTextWnd::ShowScrollPage()
 				}
 				HmiMain::Instance().MsSleep(50);
 			}
+			WidTextWnd::SetPage(page);
 		}
 		else
 		{
@@ -346,6 +456,8 @@ void spt::HmiTextWnd::ShowContinuePage()
 		key.Key1 = 0;
 		updateFunc(*this, 0, totalPage, key);
 	}
+	uint32 page = this->page;
+	uint32 line = this->line;
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -368,6 +480,7 @@ void spt::HmiTextWnd::ShowContinuePage()
 					{
 						page = 0;
 					}
+					line = 0;
 					if (updateFunc)
 					{
 						updateFunc(*this, page, totalPage, key);
@@ -401,6 +514,7 @@ void spt::HmiTextWnd::ShowContinuePage()
 					{
 						page = totalPage - 1;
 					}
+					line = 0;
 					if (updateFunc)
 					{
 						updateFunc(*this, page, totalPage, key);
@@ -444,6 +558,8 @@ void spt::HmiTextWnd::ShowContinuePage()
 				}
 				HmiMain::Instance().MsSleep(50);
 			}
+			WidTextWnd::SetPage(page);
+			WidTextWnd::SetLine(line);
 		}
 		else
 		{

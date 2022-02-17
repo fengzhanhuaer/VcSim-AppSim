@@ -1036,6 +1036,7 @@ spt::WidObject::WidObject()
 	nextObject = 0;
 	parent = 0;
 	clientData = 0;
+	isInied = 0;
 	periodUpdateTimer.Enable(0);
 	color = gd->E_Black;
 	backcolor = gd->E_White;
@@ -1297,11 +1298,19 @@ spt::WidTextWnd::WidTextWnd()
 {
 	maxCtxLine = 0;
 	maxCtxW = 0;
+	lastPage = 0xffff;
+	lastLine = 0xffff;
+	page = 0;
+	line = 0;
+	totalLine = 0;
+	totalPage = 0;
 }
 
 void spt::WidTextWnd::SetInfo(const char* Title)
 {
 	StrNCpy(title, Title, sizeof(title));
+	isUpdateTitle = 1;
+	SetUpdateSelf(1);
 }
 
 void spt::WidTextWnd::SetInfo(const char* Title, uint32 Crc, uint32 CrcLen, uint32 Page, uint32 TotalPage)
@@ -1311,23 +1320,28 @@ void spt::WidTextWnd::SetInfo(const char* Title, uint32 Crc, uint32 CrcLen, uint
 	crcLen = CrcLen;
 	page = Page;
 	totalPage = TotalPage;
-	lastPage = 0xffff;
-	lastLine = 0xffff;
+	isUpdateTitle = 1;
 	SetUpdateSelf(1);
 }
 
 void spt::WidTextWnd::SetPage(uint16 Page)
 {
+	if (page != Page)
+	{
+		isUpdateTitle = 1;
+		SetUpdateSelf(1);
+	}
 	page = Page;
-	isUpdateTitle = 1;
-	SetUpdateSelf(1);
 }
 
 void spt::WidTextWnd::SetLine(uint16 Line)
 {
+	if (line != Line)
+	{
+		isUpdateTitle = 1;
+		SetUpdateSelf(1);
+	}
 	line = Line;
-	isUpdateTitle = 1;
-	SetUpdateSelf(1);
 }
 
 void spt::WidTextWnd::SetTotalPage(uint16 Page)
@@ -1384,6 +1398,7 @@ void spt::WidTextWnd::SetText(uint32 Row, uint32 Col, const char* Text)
 				buf[i] = *Text;
 				ctxUpdate[Row] = 1;
 				isUpdateCtx = 1;
+				SetUpdateSelf(1);
 			}
 			Text++;
 		}
@@ -1438,17 +1453,17 @@ void spt::WidTextWnd::ShowSelf()
 			}
 			ReDrawRect();
 			gd->DrawRect(rect.x, rect.y, color, rect.w, rect.h);
-			gd->DrawLine(titleRect.x, titleRect.y + titleRect.h, titleRect.x + titleRect.w, titleRect.y + titleRect.h, color);
+			gd->DrawLine(titleRect.x, titleRect.y + titleRect.h, color, titleRect.w, 1);
 		}
 		String40B pagestr;
-		pagestr << page << "/" << totalPage;
+		pagestr << (page + 1) << "/" << totalPage;
 		if (totalLine)
 		{
-			pagestr << " Ò³ " << line << "/" << totalLine << " ÐÐ";
+			pagestr << " Ò³ " << (line + 1) << "/" << totalLine << " ÐÐ";
 		}
-		uint16 totalLen = rect.w / gd->FontWidth() - 2;
+		uint16 totalLen = rect.w / gd->FontWidth() - 1;
 		totalLen -= pagestr.StrLen();
-		String40B titlestr;
+		String100B titlestr;
 		titlestr.Format(title, totalLen, 1, ' ');
 		titlestr << pagestr;
 		gd->ClearRect(titleRect.x + gd->SpaceOfFont(), titleRect.y + gd->SpaceOfFont(), backcolor, titleRect.w - gd->FontWidth(), gd->FontHeight());
@@ -1470,6 +1485,8 @@ void spt::WidTextWnd::ShowSelf()
 			}
 		}
 	}
+	lastPage = page;
+	lastLine = line;
 	isUpdateCtx = 0;
 	isUpdateTitle = 0;
 	isUpdateSelf = 0;

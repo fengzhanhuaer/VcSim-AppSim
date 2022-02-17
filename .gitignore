@@ -363,3 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 /SptOnWin32/Doxygen/html
 /SptOnWin32/Doxygen/Spt.chm
+/SptApps/AppDemo/SptSim/Bakup/SptSim/Using
+/SptApps/AppDemo/SptSim/Using
+/SptApps/AppTest/SptSim/Bakup/SptSim/Using
+/SptApps/AppTest/SptSim/Using

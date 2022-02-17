@@ -217,10 +217,8 @@ int32 AppSend2SubBoardMsgAndWaitAck(uint32 Type, int32 Paras, uint8* SendBuf, ui
 			Driver.SendPtr = 0;
 			Driver.sendMutex = 0;
 			return SalMsgTrans::E_RecvOverTime;
-
 		}
-
-		int32 min = Min((int32)RecvBufLen, Msg->msgLen);
+		int32 min = Min((int32)RecvBufLen, (int32)Msg->msgLen);
 		if (min)
 		{
 			MemCpy(RecvBuf, Msg->data, min);
@@ -240,7 +238,7 @@ int32 AppSend2SubBoardMsgAndWaitAck(uint32 Type, int32 Paras, uint8* SendBuf, ui
 			Driver.sendMutex = 0;
 			return SalMsgTrans::E_RecvOverTime;
 		}
-		int32 min = Min(RecvBufLen, Msg->msgLen);
+		int32 min = Min((int32)RecvBufLen, (int32)Msg->msgLen);
 		if (min)
 		{
 			MemCpy(RecvBuf, Msg->data, min);
