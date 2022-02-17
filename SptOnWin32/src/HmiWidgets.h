@@ -256,6 +256,140 @@ namespace spt
 		HmiWidTitleLine title;
 		HmiWidContextArea context;
 	};
+	class WidObject
+	{
+	public:
+		WidObject();
+	public:
+		virtual void Show();
+		const HmiRect& Rect() { return rect; };
+		bool8 SetRect(const HmiRect& Rect);
+		bool8 SetRect(int16 x, int16 y, int16 w, int16 h);
+		bool8 SetPos(int16 x, int16 y);
+		bool8 IsInied() { return isInied; }
+		bool8 IsUpdate() { return isUpdate; }
+		bool8 IsUpdateSelf() { return isUpdateSelf; }
+		bool8 IsUpdateChild() { return isUpdateChild; }
+		bool8 IsCanBeSelect() { return isCanBeSelect; }
+		bool8 IsSelected() { return isSelected; }
+		bool8 IsEnable() { return isEnable; };
+		bool8 SetInied(bool8 is);
+		bool8 SetUpdate(bool8 is);
+		bool8 SetUpdateSelf(bool8 is);
+		bool8 SetUpdateChild(bool8 is);
+		bool8 SetPeriodUpdate(bool8 isEnable, uint32 Period);
+		bool8 SetCanBeSelect(bool8 is);
+		bool8 SetSelected(bool8 is);
+		GraphicDevice::Color& Color() { return color; };
+		GraphicDevice::Color& Backcolor() { return backcolor; };
+		void*& ClientData() { return clientData; };
+		bool8 AddChild(class WidObject* Object);
+		void ReDrawRect();
+	protected:
+		virtual void ShowSelf();
+		virtual void ShowChild();
+		virtual void ShowPeriod();
+	protected:
+		static GraphicDevice* gd;
+		static HmiKeyService* key;
+		HmiRect rect;
+		bool8 isInied;
+		bool8 isUpdate;
+		bool8 isUpdateSelf;
+		bool8 isUpdateChild;
+		bool8 isCanBeSelect;
+		bool8 isSelected;
+		bool8 isEnable;
+		GraphicDevice::Color color;
+		GraphicDevice::Color backcolor;
+		MsPeriodTimer periodUpdateTimer;
+		class WidObject* childList;
+		class WidObject* childListEnd;
+		class WidObject* lastObject;
+		class WidObject* nextObject;
+		class WidObject* parent;
+		void* clientData;
+		friend  void HmiMainFramePowerUpIni();
+	};
+	class WidLine :public WidObject
+	{
+	public:
+		void SetStartPos(int16 x, int16 y);
+		void SetEndPos(int16 x, int16 y);
+		void SetWidth(int16 Width);
+		const HmiPos& StartPos() { return startPos; };
+		const HmiPos& EndPos() { return endPos; };
+	protected:
+		virtual void ShowSelf();
+	protected:
+		HmiPos startPos;
+		HmiPos endPos;
+		int16 w;
+	};
+	class WidRect :public WidObject
+	{
+	public:
+
+	protected:
+		virtual void ShowSelf();
+	protected:
+
+	};
+	class WidTextLine :public WidObject
+	{
+	public:
+		WidTextLine();
+		bool8 SetText(const char* Text);
+	protected:
+		virtual void ShowSelf();
+	protected:
+		String100B text;
+	};
+	class WidTextLineRect :public WidObject
+	{
+	public:
+	protected:
+		virtual void ShowSelf();
+	protected:
+		String100B text;
+	};
+	class WidTextWnd :public WidObject
+	{
+	public:
+		WidTextWnd();
+		void SetInfo(const char* Title);
+		void SetInfo(const char* Title, uint32 crc, uint32 crcLen, uint32  page, uint32 TotalPage);
+		void SetPage(uint16 page);
+		void SetLine(uint16 line);
+		void SetTotalPage(uint16 page);
+		void SetTotalLine(uint16 line);
+		uint16 DispMaxCtxLine();
+		uint16 DispMaxCtxWidth();
+		uint16 Page() { return page; };
+		void SetText(uint32 Row, uint32 Col, const char* Text);
+		void ClearCtx();
+		void ClearCtxLine(uint32 LineNum);
+	protected:
+		virtual void ShowSelf();
+	protected:
+		char title[30];
+		char ctx[20][60];
+		char ctxUpdate[40];
+		HmiRect titleRect;
+		HmiRect ctxRect;
+		bool8 isUpdateTitle;
+		bool8 isUpdateCtx;
+		uint8 crcLen;
+		uint16 maxCtxLine;
+		uint16 maxCtxW;
+		uint32 crc;
+		uint16 line;
+		uint16 totalLine;
+		uint16 lastLine;
+		uint16 page;
+		uint16 totalPage;
+		uint16 lastPage;
+	};
 	void HmiMainFramePowerUpIni();
 }
 

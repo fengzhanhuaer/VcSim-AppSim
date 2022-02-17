@@ -2,21 +2,22 @@
 #define HMITEXTWND_H
 namespace spt
 {
-	class HmiTextWndCell :public HmiWidContextAreaMultiTextLine
+	class HmiTextWndPage
 	{
 	public:
-		virtual void ShowSelf(ShowType Type);
-		uint16 DispPageNum();
-		//…Ë÷√±æ“≥µƒ“≥¬Î
-		void SetDispPageNum(uint16 Page);
-		uint16 FirstDispLine();
-		uint16 SetFirstDispLine(uint16 FirstDispLine);
+		uint16 Page();
+		void SetPage(uint32 Page, const char* Text);
+		void Clear();
+		void SetUpdate();
+		SalString& String() { return ctx; };
 	protected:
+		String5000B ctx;
 		uint16 dispPageNum;
 		uint16 firstDispLine;
+		bool8 isctxupdate;
 	};
 	typedef int32(*UpdateHmiTextWnd)(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage, HmiKey key);
-	class HmiTextWnd :public HmiWidSinglePage
+	class HmiTextWnd :public WidTextWnd
 	{
 	public:
 		static const uint32 CN_Max_WndCell = 20;
@@ -31,22 +32,17 @@ namespace spt
 		void SetPage(uint32 Page, const char* Text);
 		void Show();
 		void IniAllPage();
-		HmiTextWndCell* GetWndCell(uint32 Index);
-		void SetFirstTextPage(uint16 Page);
-		uint16 FirstTextPage();
+		HmiTextWndPage* GetWndCell(uint32 Index);
+		HmiTextWndPage* GetWndPage(uint32 Page);
 	protected:
-		void AutoLayerOut();
+		virtual void ShowSelf();
 		void ShowSinglePage();
 		void ShowScrollPage();
 		void ShowContinuePage();
 	protected:
 		UpdateHmiTextWnd updateFunc;
-		uint16 firstTextPage;
-		uint16 curLine;
-		uint16 totalLine;
 		DispType mode;
-		HmiTextWndCell scrollPage;
-		static HmiTextWndCell text[CN_Max_WndCell];
+		static HmiTextWndPage text[CN_Max_WndCell];
 	};
 }
 

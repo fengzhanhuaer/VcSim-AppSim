@@ -305,8 +305,11 @@ int32 spt::GzkFpgaMsgSau31::RecvProc()
 		writer++;
 		if (!msgptr->IsSumOk())
 		{
-			LogErr.Stamp() << "GzkFpgaMsgSau31 " << msgptr->frameType << " Crc Err\n";
-			continue;
+			if (msgptr->frameType != E_Board_Cmm_F2C)
+			{
+				LogErr.Stamp() << "GzkFpgaMsgSau31 " << msgptr->frameType << " Crc Err\n";
+				continue;
+			}
 		}
 		switch (msgptr->frameType)
 		{

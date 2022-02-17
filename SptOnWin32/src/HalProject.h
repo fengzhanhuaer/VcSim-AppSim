@@ -10,7 +10,7 @@
 extern"C" void SetMsInt(void(*MsIntFunc)(), char Enable);
 extern"C" void SetSampInt(void(*MsIntFunc)(), char Enable, unsigned int Us);
 void SetMsNormalInt(void(*MsIntFunc)(), char Enable);
-extern "C" unsigned int HwUsCnt();//硬件层提供微秒计数器
+extern"C" unsigned int HwUsCnt();//硬件层提供微秒计数器
 extern"C"  int SptSendEmacData(int EmacNo, unsigned char* Txbuf, int TxLen);
 extern"C"  int SptRecEmacData(int EmacNo, void* Buf, int BufLen);
 extern"C"  int SptSetEthnetPara(int NetNo, char* Ip, char* Mask, char* Gate, char* Mac, char* Flag);
@@ -24,9 +24,23 @@ enum HalSerialPortNo
 	E_HSPN_PRINT_CMM,
 	E_SerialNum,
 };
+enum HalSerialParaType
+{
+	E_HSPT_Null,
+	E_HSPT_BaudRate,//波特率
+	E_HSPT_DataLen,//数据长度
+	E_HSPT_Parity,//奇偶校验
+	E_HSPT_StopBit,//停止位
+	E_HSPT_AppPara,//应用设置的上述参数
+	E_HSPT_EnableSend,//发送使能
+	E_HSPT_EnableRec,//接收使能
+	E_HSPT_Num,
+};
 extern"C"  int SptSendSerialData(unsigned int No, void* Sur, int MsgLen);
 extern"C"  int SptReadSerialData(unsigned int No, void* Sur, int MsgLen);
 extern"C" int SptSetSerial(unsigned int No, unsigned int baudrate, unsigned int dataLen, unsigned int par, unsigned int stop);
+extern"C"	int SptSetSerialPara(unsigned int No, HalSerialParaType Type, unsigned int Para);
+extern"C"	int SptGetSerialPara(unsigned int No, HalSerialParaType Type, unsigned int* Para);
 enum HwParaType
 {
 	E_HPT_GetBegin,

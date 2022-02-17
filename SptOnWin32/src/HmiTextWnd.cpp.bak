@@ -51,34 +51,11 @@ HmiTextWndPage* spt::HmiTextWnd::GetWndCell(uint32 Index)
 	return 0;
 }
 
-HmiTextWndPage* spt::HmiTextWnd::GetWndPage(uint32 Page)
-{
-	for (uint32 i = 0; i < M_ArrLen(text); i++)
-	{
-		if (text[i].Page() == Page)
-		{
-			return &text[i];
-		}
-	}
-	return 0;
-}
-
 void spt::HmiTextWnd::ShowSelf()
 {
 	if (mode == E_SinglePage)
 	{
-		if ((isUpdate || (lastPage != page)))
-		{
-			HmiTextWndPage* wndpage = GetWndPage(page);
-			if (wndpage)
-			{
-				ClearCtx();
-			}
-			else
-			{
-				ClearCtx();
-			}
-		}
+
 	}
 	else if (mode == E_ScrollPage)
 	{
@@ -88,7 +65,6 @@ void spt::HmiTextWnd::ShowSelf()
 	{
 
 	}
-	WidTextWnd::ShowSelf();
 }
 
 void spt::HmiTextWnd::ShowSinglePage()
@@ -134,7 +110,6 @@ void spt::HmiTextWnd::ShowSinglePage()
 					SetUpdate(1);
 					break;
 				case spt::EK_UP:
-					step = 1;
 					if (page >= step)
 					{
 						page = page - step;
@@ -155,7 +130,6 @@ void spt::HmiTextWnd::ShowSinglePage()
 					{
 						step = 1;
 					}
-					page = page + step;
 					if (page >= totalPage)
 					{
 						page = totalPage - 1;
@@ -253,10 +227,8 @@ void spt::HmiTextWnd::ShowScrollPage()
 					{
 						updateFunc(*this, page, totalPage, key);
 					}
-					SetUpdate(1);
 					break;
 				case spt::EK_UP:
-					step = 1;
 					if (page >= step)
 					{
 						page = page - step;
@@ -269,7 +241,6 @@ void spt::HmiTextWnd::ShowScrollPage()
 					{
 						updateFunc(*this, page, totalPage, key);
 					}
-					SetUpdate(1);
 					break;
 				case spt::EK_RIGHT:
 					step = totalPage / 10;
@@ -277,7 +248,6 @@ void spt::HmiTextWnd::ShowScrollPage()
 					{
 						step = 1;
 					}
-					page = page + step;
 					if (page >= totalPage)
 					{
 						page = totalPage - 1;
@@ -286,52 +256,68 @@ void spt::HmiTextWnd::ShowScrollPage()
 					{
 						updateFunc(*this, page, totalPage, key);
 					}
-					SetUpdate(1);
 					break;
 				case spt::EK_DOWN:
 					step = 1;
 					page = page + step;
-					if (page >= totalPage)
+					if (page >= total)
 					{
 						page = 0;
 					}
+					title.SetPage(page, total);
+					first = 1;
 					if (updateFunc)
 					{
-						updateFunc(*this, page, totalPage, key);
+						updateFunc(*this, page, total, key);
 					}
-					SetUpdate(1);
 					break;
 				case spt::EK_ESC:
-					ReDrawRect();
+					UnShow();
 					gd->Update(rect);
 					return;
 				case spt::EK_MD_STOP:
-					ReDrawRect();
+					UnShow();
 					gd->Update(rect);
 					return;
 				default:
 
 					break;
 				}
-				HmiMain::Instance().MsSleep(20);
 			}
 			else if (updateFunc)
 			{
+				total = title.TotalPage();
+				page = title.Page();
 				if (key.Key1 == EK1_ASSIC)
 				{
-					updateFunc(*this, page, totalPage, key);
-					SetUpdate(1);
+					updateFunc(*this, page, total, key);
+					first = 1;
 				}
-				HmiMain::Instance().MsSleep(50);
 			}
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(100);
+			HmiMain::Instance().MsSleep(50);
 		}
-		WidTextWnd::Show();
+		if (timer.Status(100))
+		{
+			if (first)
+			{
+				first = 0;
+				AutoLayerOut();
+				HmiWidSinglePage::Show(E_AllFrame);
+				gd->Update(rect);
+				timer.StartTimer();
+			}
+			else if (timer.Status(2000))
+			{
+				HmiWidSinglePage::Show(E_Update);
+				gd->Update(rect);
+				timer.StartTimer();
+			}
+		}
 	}
-	ReDrawRect();
+	UnShow();
 	gd->Update(rect);
 	return;
 }
@@ -339,13 +325,19 @@ void spt::HmiTextWnd::ShowScrollPage()
 void spt::HmiTextWnd::ShowContinuePage()
 {
 	HmiKey key;
-	SetPeriodUpdate(1, 200);
+	bool8 first = 1;
+	MsStampTimer timer;
+	timer.Enable(1);
+	uint32 total;
 	uint32 step;
+	uint32 page;
 	if (updateFunc)
 	{
 		key.Key1 = 0;
-		updateFunc(*this, 0, totalPage, key);
+		updateFunc(*this, 0, title.TotalPage(), key);
 	}
+	totalLine = text[0].LineNum();
+	curLine = 0;
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -356,10 +348,16 @@ void spt::HmiTextWnd::ShowContinuePage()
 				switch (k2)
 				{
 				case spt::EK_ENTER:
-					SetUpdate(1);
+					first = 1;
 					break;
 				case spt::EK_LEFT:
+					total = title.TotalPage();
 					step = 1;
+					if (!step)
+					{
+						step = 1;
+					}
+					page = title.Page();
 					if (page > step)
 					{
 						page = page - step;
@@ -368,92 +366,176 @@ void spt::HmiTextWnd::ShowContinuePage()
 					{
 						page = 0;
 					}
+					curLine = 0;
+					title.SetPage(page, total);
+					first = 1;
 					if (updateFunc)
 					{
-						updateFunc(*this, page, totalPage, key);
+						updateFunc(*this, page, total, key);
 					}
-					SetUpdate(1);
+					AutoLayerOut();
 					break;
 				case spt::EK_UP:
-					step = DispMaxCtxLine() - 1;
-					if (line >= step)
+					total = title.TotalPage();
+					step = context.MaxDispRowNum() - 1;
+					page = title.Page();
+					if (curLine >= step)
 					{
-						line = line - step;
+						curLine = curLine - step;
 					}
 					else
 					{
-						line = 0;
+						curLine = 0;
 					}
-					if (updateFunc)
-					{
-						updateFunc(*this, page, totalPage, key);
-					}
-					SetUpdate(1);
+					title.SetLine(curLine, totalLine);
+					title.SetPage(page, total);
+					first = 1;
+					AutoLayerOut();
 					break;
 				case spt::EK_RIGHT:
+					total = title.TotalPage();
 					step = 1;
 					if (!step)
 					{
 						step = 1;
 					}
-					page = page + step;
-					if (page >= totalPage)
+					page = title.Page() + step;
+					if (page >= total)
 					{
-						page = totalPage - 1;
+						page = total - 1;
 					}
+					curLine = 0;
+					title.SetPage(page, total);
+					first = 1;
 					if (updateFunc)
 					{
-						updateFunc(*this, page, totalPage, key);
+						updateFunc(*this, page, total, key);
 					}
-					SetUpdate(1);
+					AutoLayerOut();
 					break;
 				case spt::EK_DOWN:
-					step = DispMaxCtxLine() - 1;
+					total = title.TotalPage();
+					step = context.MaxDispRowNum() - 1;
+					page = title.Page();
 					uint32 c;
-					c = line + step;
+					c = curLine + step;
 					if (c < totalLine)
 					{
-						line = c;
+						curLine = c;
 					}
-					if (updateFunc)
-					{
-						updateFunc(*this, page, totalPage, key);
-					}
-					SetUpdate(1);
+					title.SetLine(curLine, totalLine);
+					title.SetPage(page, total);
+					first = 1;
+					AutoLayerOut();
 					break;
 				case spt::EK_ESC:
-					ReDrawRect();
+					UnShow();
 					gd->Update(rect);
 					return;
 				case spt::EK_MD_STOP:
-					ReDrawRect();
+					UnShow();
 					gd->Update(rect);
 					return;
 				default:
 
 					break;
 				}
-				HmiMain::Instance().MsSleep(20);
 			}
 			else if (updateFunc)
 			{
+				total = title.TotalPage();
+				page = title.Page();
 				if (key.Key1 == EK1_ASSIC)
 				{
-					updateFunc(*this, page, totalPage, key);
-					SetUpdate(1);
+					updateFunc(*this, page, total, key);
+					first = 1;
 				}
-				HmiMain::Instance().MsSleep(50);
 			}
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(100);
+			HmiMain::Instance().MsSleep(50);
 		}
-		WidTextWnd::Show();
+		if (timer.Status(100))
+		{
+			if (first)
+			{
+				AutoLayerOut();
+				first = 0;
+				HmiWidSinglePage::Show(E_AllFrame);
+				gd->Update(rect);
+				timer.StartTimer();
+			}
+			else if (timer.Status(2000))
+			{
+				HmiWidSinglePage::Show(E_Update);
+				gd->Update(rect);
+				timer.StartTimer();
+			}
+		}
 	}
-	ReDrawRect();
+	UnShow();
 	gd->Update(rect);
 	return;
+}
+
+void spt::HmiTextWndCell::ShowSelf(ShowType Type)
+{
+	if (isVisible && isEnable)
+	{
+
+	}
+	else
+	{
+		return;
+	}
+	uint32 row = 0;
+	if (IsHmiWidContextParent())
+	{
+		HmiWidContextArea* p = (HmiWidContextArea*)parent;
+		TransString ts;
+		ts.SetBuf(text.Str());
+		String100B str;
+		uint16 y = Row;
+		while (!ts.IsEnd())
+		{
+			str.Clear();
+			if (ts.GetLine(str))
+			{
+				row++;
+				if (row < firstDispLine)
+				{
+					continue;
+				}
+				p->SetText(y, Col, str.Str());
+				y++;
+				if (y >= p->MaxDispRowNum())
+				{
+					break;
+				}
+			}
+		}
+	}
+}
+
+uint16 spt::HmiTextWndCell::DispPageNum()
+{
+	return dispPageNum;
+}
+
+void spt::HmiTextWndCell::SetDispPageNum(uint16 page)
+{
+	dispPageNum = page;
+}
+
+uint16 spt::HmiTextWndCell::FirstDispLine()
+{
+	return firstDispLine;
+}
+
+uint16 spt::HmiTextWndCell::SetFirstDispLine(uint16 FirstDispLine)
+{
+	return firstDispLine = FirstDispLine;
 }
 
 uint16 spt::HmiTextWndPage::Page()

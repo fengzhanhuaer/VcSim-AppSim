@@ -73,11 +73,14 @@ void spt::GraphicDevice::DrawAssic(int16 X, int16 Y, int16 Color, const char* st
 				bitmap = gASSIC16[*str];
 				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
 				{
-					for (uint8 j = 0; j < CN_FONT16_WIDTH; j++)
+					if (*bitmap)
 					{
-						if (GetBit(*bitmap, 7 - j))
+						for (uint8 j = 0; j < CN_FONT16_WIDTH; j++)
 						{
-							lcddriver->SetPixel(x + j, y + i, cor);
+							if (GetBit(*bitmap, 7 - j))
+							{
+								lcddriver->SetPixel(x + j, y + i, cor);
+							}
 						}
 					}
 					bitmap++;
@@ -140,13 +143,15 @@ void spt::GraphicDevice::DrawStr(int16 X, int16 Y, int16 Color, const char* Str)
 				bitmap = gASSIC16[*str];
 				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
 				{
-					for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
+					if (*bitmap)
 					{
-						if (GetBit(*bitmap, 7 - j))
+						for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
 						{
-							lcddriver->SetPixel(x + j, y + i, cor);
+							if (GetBit(*bitmap, 7 - j))
+							{
+								lcddriver->SetPixel(x + j, y + i, cor);
+							}
 						}
-
 					}
 					bitmap++;
 				}
@@ -168,11 +173,14 @@ void spt::GraphicDevice::DrawStr(int16 X, int16 Y, int16 Color, const char* Str)
 				bitmap = &g_HZK16[seek][0];
 				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
 				{
-					for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
+					if (*bitmap)
 					{
-						if (GetBit(*bitmap, 7 - j))
+						for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
 						{
-							lcddriver->SetPixel(x + j, y + i, cor);
+							if (GetBit(*bitmap, 7 - j))
+							{
+								lcddriver->SetPixel(x + j, y + i, cor);
+							}
 						}
 					}
 					bitmap++;
@@ -181,11 +189,14 @@ void spt::GraphicDevice::DrawStr(int16 X, int16 Y, int16 Color, const char* Str)
 				bitmap = &g_HZK16[seek][CN_FONT16_HEIGHT];
 				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
 				{
-					for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
+					if (*bitmap)
 					{
-						if (GetBit(*bitmap, 7 - j))
+						for (uint8 j = 0; j < sizeof(*bitmap) * 8; j++)
 						{
-							lcddriver->SetPixel(x + j, y + i, cor);
+							if (GetBit(*bitmap, 7 - j))
+							{
+								lcddriver->SetPixel(x + j, y + i, cor);
+							}
 						}
 					}
 					bitmap++;
@@ -484,7 +495,6 @@ void spt::GraphicDevice::UpdateLcd()
 		LcdPicMode msg;
 		uint16 w = lcdwidth / 8;
 		uint16 linn = 8;
-
 		for (uint16 i = 0; i < lcdheight; i += linn)
 		{
 			msg.type = E_DrawPicLine;
@@ -595,4 +605,13 @@ spt::GraphicDevice::GraphicDevice()
 {
 	lcddriver = &HalLcdDriver::Instance();
 	hmidriver = &HmiLcdCmm::Instance();
+}
+
+bool8 spt::HmiRect::SetRect(int16 x, int16 y, int16 w, int16 h)
+{
+	this->x = x;
+	this->y = y;
+	this->w = w;
+	this->h = h;
+	return 1;
 }

@@ -265,8 +265,8 @@ namespace spt
 		uint16 svRecCfgState;
 		uint16 svSendCfgState;
 		NetState netState[16];
-		uint8 goRecCfgState[5];
-		uint8 goRecTypeCfgState[5];
+		uint8 goRecCfgState[6];
+		uint8 goRecTypeCfgState[6];
 		uint8 goRecMapCfgState[2];
 		uint32 clkCntPps;
 		bool8 infoOk;

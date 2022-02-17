@@ -1027,3 +1027,450 @@ void spt::HmiWidContextAreaDataLine::ShowSelf(ShowType Type)
 		}
 	}
 }
+GraphicDevice* WidObject::gd = 0;
+HmiKeyService* WidObject::key = 0;
+spt::WidObject::WidObject()
+{
+	childList = 0;
+	lastObject = 0;
+	nextObject = 0;
+	parent = 0;
+	clientData = 0;
+	periodUpdateTimer.Enable(0);
+	color = gd->E_Black;
+	backcolor = gd->E_White;
+}
+void spt::WidObject::Show()
+{
+	if (isInied)
+	{
+		if (isUpdate)
+		{
+			if (isUpdateSelf)
+			{
+				ShowSelf();
+			}
+			if (isUpdateChild)
+			{
+				ShowChild();
+			}
+			isUpdate = 0;
+		}
+		else if (periodUpdateTimer.Status())
+		{
+			ShowPeriod();
+		}
+	}
+	else
+	{
+		ShowSelf();
+		ShowChild();
+		isInied = 1;
+	}
+}
+
+bool8 spt::WidObject::SetRect(const HmiRect& Rect)
+{
+	rect = Rect;
+	SetUpdate(1);
+	return 1;
+}
+
+bool8 spt::WidObject::SetRect(int16 x, int16 y, int16 w, int16 h)
+{
+	rect.x = x;
+	rect.y = y;
+	rect.w = w;
+	rect.h = h;
+	SetUpdate(1);
+	return 1;
+}
+
+bool8 spt::WidObject::SetPos(int16 x, int16 y)
+{
+	rect.x = x;
+	rect.y = y;
+	SetUpdate(1);
+	return 1;
+}
+
+bool8 spt::WidObject::SetInied(bool8 is)
+{
+	return isInied = is;
+}
+
+bool8 spt::WidObject::SetUpdate(bool8 is)
+{
+	if (is)
+	{
+		isUpdateSelf = 1;
+		if (childList)
+		{
+			isUpdateChild = 1;
+		}
+		if (parent)
+		{
+			parent->SetUpdateChild(is);
+		}
+	}
+	return isUpdate = is;
+}
+
+bool8 spt::WidObject::SetUpdateSelf(bool8 is)
+{
+	if (is)
+	{
+		if (parent)
+		{
+			parent->SetUpdateChild(is);
+		}
+		isUpdate = 1;
+	}
+	return isUpdateSelf = is;
+}
+
+bool8 spt::WidObject::SetUpdateChild(bool8 is)
+{
+	if (is)
+	{
+		if (parent)
+		{
+			parent->SetUpdateChild(is);
+		}
+		if (childList)
+		{
+			isUpdateChild = 1;
+		}
+		isUpdate = 1;
+	}
+	return 1;
+}
+
+bool8 spt::WidObject::SetPeriodUpdate(bool8 isEnable, uint32 Period)
+{
+	periodUpdateTimer.UpCnt(Period);
+	periodUpdateTimer.Enable(isEnable);
+	return 1;
+}
+
+bool8 spt::WidObject::SetCanBeSelect(bool8 is)
+{
+	return isCanBeSelect = is;
+}
+
+bool8 spt::WidObject::SetSelected(bool8 is)
+{
+	return isSelected = is;
+}
+
+bool8 spt::WidObject::AddChild(WidObject* Object)
+{
+	if (Object)
+	{
+		Object->parent = this;
+		if (childList && childListEnd)
+		{
+			childListEnd->nextObject = Object;
+			Object->lastObject = childListEnd;
+			Object->nextObject = 0;
+			childListEnd = Object;
+		}
+		else
+		{
+			childListEnd = childList = Object;
+			Object->nextObject = 0;
+			Object->lastObject = 0;
+		}
+	}
+	return 1;
+}
+
+void spt::WidObject::ReDrawRect()
+{
+	gd->ClearRect(rect.x, rect.y, backcolor, rect.w, rect.h);
+	SetUpdate(1);
+}
+
+void spt::WidObject::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return;
+	}
+	isUpdateSelf = 0;
+}
+
+void spt::WidObject::ShowChild()
+{
+	if (!isUpdateChild)
+	{
+		return;
+	}
+	if (childList)
+	{
+		WidObject* now = childList;
+		while (now)
+		{
+			now->Show();
+			now = now->nextObject;
+		}
+	}
+	isUpdateChild = 0;
+}
+
+void spt::WidObject::ShowPeriod()
+{
+
+}
+
+void spt::WidLine::SetStartPos(int16 x, int16 y)
+{
+	startPos.x = x;
+	startPos.y = y;
+	SetUpdate(1);
+}
+
+void spt::WidLine::SetEndPos(int16 x, int16 y)
+{
+	endPos.x = x;
+	endPos.y = y;
+	SetUpdate(1);
+}
+
+void spt::WidLine::SetWidth(int16 Width)
+{
+	w = Width;
+}
+
+void spt::WidLine::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return;
+	}
+	isUpdateSelf = 0;
+	gd->DrawLine(startPos.x, startPos.y, endPos.x, endPos.y, color, w);
+}
+
+void spt::WidRect::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return;
+	}
+	isUpdateSelf = 0;
+	gd->DrawRect(rect.x, rect.y, color, rect.w, rect.h);
+}
+
+spt::WidTextLine::WidTextLine()
+{
+
+}
+
+bool8 spt::WidTextLine::SetText(const char* Text)
+{
+	return bool8();
+}
+
+void spt::WidTextLine::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return;
+	}
+	isUpdateSelf = 0;
+	gd->DrawStr(rect.x, rect.y, color, text.Str());
+}
+
+void spt::WidTextLineRect::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return;
+	}
+	isUpdateSelf = 0;
+	gd->DrawRect(rect.x, rect.y, color, rect.w, rect.h);
+	gd->DrawStr(rect.x + gd->SpaceOfFont(), rect.y + gd->SpaceOfFont(), color, text.Str());
+}
+
+spt::WidTextWnd::WidTextWnd()
+{
+	maxCtxLine = 0;
+	maxCtxW = 0;
+}
+
+void spt::WidTextWnd::SetInfo(const char* Title)
+{
+	StrNCpy(title, Title, sizeof(title));
+}
+
+void spt::WidTextWnd::SetInfo(const char* Title, uint32 Crc, uint32 CrcLen, uint32 Page, uint32 TotalPage)
+{
+	StrNCpy(title, Title, sizeof(title));
+	crc = Crc;
+	crcLen = CrcLen;
+	page = Page;
+	totalPage = TotalPage;
+	lastPage = 0xffff;
+	lastLine = 0xffff;
+	SetUpdateSelf(1);
+}
+
+void spt::WidTextWnd::SetPage(uint16 Page)
+{
+	page = Page;
+	isUpdateTitle = 1;
+	SetUpdateSelf(1);
+}
+
+void spt::WidTextWnd::SetLine(uint16 Line)
+{
+	line = Line;
+	isUpdateTitle = 1;
+	SetUpdateSelf(1);
+}
+
+void spt::WidTextWnd::SetTotalPage(uint16 Page)
+{
+	totalPage = Page;
+	isUpdateTitle = 1;
+	SetUpdateSelf(1);
+}
+
+void spt::WidTextWnd::SetTotalLine(uint16 Line)
+{
+	totalLine = Line;
+	isUpdateTitle = 1;
+	SetUpdateSelf(1);
+}
+
+uint16 spt::WidTextWnd::DispMaxCtxLine()
+{
+	if (!isInied)
+	{
+		titleRect.SetRect(rect.x, rect.y, rect.w, gd->FontHeight() + 2 * gd->SpaceOfFont());
+		ctxRect.SetRect(titleRect.x, titleRect.y + titleRect.h, titleRect.w, rect.h - titleRect.h);
+		maxCtxLine = ctxRect.h / (gd->FontHeight() + gd->SpaceOfFont());
+		maxCtxW = ctxRect.w / (gd->FontWidth()) - 1;
+	}
+	return maxCtxLine;
+}
+
+uint16 spt::WidTextWnd::DispMaxCtxWidth()
+{
+	if (!isInied)
+	{
+		titleRect.SetRect(rect.x, rect.y, rect.w, gd->FontHeight() + 2 * gd->SpaceOfFont());
+		ctxRect.SetRect(titleRect.x, titleRect.y + titleRect.h, titleRect.w, rect.h - titleRect.h);
+		maxCtxLine = ctxRect.h / (gd->FontHeight() + gd->SpaceOfFont());
+		maxCtxW = ctxRect.w / (gd->FontWidth()) - 1;
+	}
+	return maxCtxW;
+}
+
+void spt::WidTextWnd::SetText(uint32 Row, uint32 Col, const char* Text)
+{
+	if (Row >= M_ArrLen(ctx))
+	{
+		return;
+	}
+	char* buf = ctx[Row];
+	for (uint32 i = Col; i < M_ArrLen(ctx[0]); i++)
+	{
+		if (*Text)
+		{
+			if (*Text != buf[i])
+			{
+				buf[i] = *Text;
+				ctxUpdate[Row] = 1;
+				isUpdateCtx = 1;
+			}
+			Text++;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+void spt::WidTextWnd::ClearCtx()
+{
+	for (uint32 i = 0; i < M_ArrLen(ctx); i++)
+	{
+		ClearCtxLine(i);
+	}
+}
+
+void spt::WidTextWnd::ClearCtxLine(uint32 LineNum)
+{
+	if (LineNum >= M_ArrLen(ctx))
+	{
+		return;
+	}
+	char* buf = ctx[LineNum];
+	for (uint32 i = 0; i < M_ArrLen(ctx[0]); i++)
+	{
+		buf[i] = ' ';
+	}
+	buf[M_ArrLen(ctx[0]) - 1] = 0;
+	ctxUpdate[LineNum] = 1;
+	isUpdateCtx = 1;
+}
+
+void spt::WidTextWnd::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return;
+	}
+	if (isUpdateTitle)
+	{
+		if (!isInied)
+		{
+			titleRect.SetRect(rect.x, rect.y, rect.w, gd->FontHeight() + 2 * gd->SpaceOfFont());
+			ctxRect.SetRect(titleRect.x, titleRect.y + titleRect.h, titleRect.w, rect.h - titleRect.h);
+			maxCtxLine = ctxRect.h / (gd->FontHeight() + gd->SpaceOfFont());
+			maxCtxW = ctxRect.w / (gd->FontWidth()) - 1;
+			if (maxCtxW >= M_ArrLen(ctx[0]))
+			{
+				maxCtxW = M_ArrLen(ctx[0]) - 1;
+			}
+			ReDrawRect();
+			gd->DrawRect(rect.x, rect.y, color, rect.w, rect.h);
+			gd->DrawLine(titleRect.x, titleRect.y + titleRect.h, titleRect.x + titleRect.w, titleRect.y + titleRect.h, color);
+		}
+		String40B pagestr;
+		pagestr << page << "/" << totalPage;
+		if (totalLine)
+		{
+			pagestr << " Ò³ " << line << "/" << totalLine << " ÐÐ";
+		}
+		uint16 totalLen = rect.w / gd->FontWidth() - 2;
+		totalLen -= pagestr.StrLen();
+		String40B titlestr;
+		titlestr.Format(title, totalLen, 1, ' ');
+		titlestr << pagestr;
+		gd->ClearRect(titleRect.x + gd->SpaceOfFont(), titleRect.y + gd->SpaceOfFont(), backcolor, titleRect.w - gd->FontWidth(), gd->FontHeight());
+		gd->DrawStr(titleRect.x + gd->SpaceOfFont(), titleRect.y + gd->SpaceOfFont(), color, titlestr.Str());
+	}
+	if (isUpdateCtx)
+	{
+		uint16 rowh = gd->FontHeight() + gd->SpaceOfFont();
+		uint16 rowx = ctxRect.x + gd->SpaceOfFont();
+		uint16 rowy = ctxRect.y + gd->SpaceOfFont();
+		for (uint32 i = 0; i < maxCtxLine; i++)
+		{
+			if (ctxUpdate[i])
+			{
+				ctx[i][maxCtxW] = 0;
+				gd->ClearRect(rowx, rowy + i * rowh, backcolor, ctxRect.w - gd->FontWidth(), gd->FontHeight());
+				gd->DrawStr(rowx, rowy + i * rowh, color, ctx[i]);
+				ctxUpdate[i] = 0;
+			}
+		}
+	}
+	isUpdateCtx = 0;
+	isUpdateTitle = 0;
+	isUpdateSelf = 0;
+}

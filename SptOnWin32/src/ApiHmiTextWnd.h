@@ -21,6 +21,12 @@ namespace spt
 		/// <param name="TotalPage"></param>
 		void SetTitle(const char* Title, uint32 TotalPage);
 		/// <summary>
+		/// 设置标题，总页数
+		/// </summary>
+		/// <param name="Title"></param>
+		/// <param name="TotalPage"></param>
+		void SetTotalPage(uint32 TotalPage);
+		/// <summary>
 		/// 页缓冲区大小
 		/// </summary>
 		/// <returns></returns>

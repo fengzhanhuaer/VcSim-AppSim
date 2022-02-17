@@ -87,5 +87,7 @@ void spt::HmiMainFramePowerUpIni()
 	GraphicDevice::Instance().PowerUpIni(0);
 	HmiWidObject::gd = &GraphicDevice::Instance();
 	HmiWidObject::key = &HmiKeyService::Instance();
+	WidObject::gd = &GraphicDevice::Instance();
+	WidObject::key = &HmiKeyService::Instance();
 	HmiMain::Instance().PowerUpIni(0);
 }

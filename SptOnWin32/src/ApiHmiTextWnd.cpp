@@ -3,12 +3,17 @@ using namespace spt;
 
 void spt::ApiHmiTextWnd::SetTitle(const char* Title)
 {
-	this->Title().SetTitle(Title);
+	HmiTextWnd::SetInfo(Title);
 }
 
 void spt::ApiHmiTextWnd::SetTitle(const char* Title, uint32 TotalPage)
 {
-	this->Title().SetInfo(Title, 0, 0, 0, TotalPage);
+	HmiTextWnd::SetInfo(Title, 0, 0, 0, TotalPage);
+}
+
+void spt::ApiHmiTextWnd::SetTotalPage(uint32 TotalPage)
+{
+	HmiTextWnd::SetTotalPage(TotalPage);
 }
 
 uint32 spt::ApiHmiTextWnd::MaxPageCache()
@@ -24,7 +29,7 @@ void spt::ApiHmiTextWnd::SetPage(uint32 Page, const char* Text)
 spt::ApiHmiTextWnd::ApiHmiTextWnd(DispType Mode, UpdateHmiTextWnd UpdateFunction)
 	:HmiTextWnd(Mode)
 {
-	Rect() = HmiMenuService::Instance().Rect();
+	SetRect(HmiMenuService::Instance().Rect());
 	updateFunc = UpdateFunction;
 }
 

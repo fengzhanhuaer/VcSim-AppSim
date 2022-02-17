@@ -13,6 +13,7 @@ namespace spt
 	};
 	struct HmiRect
 	{
+		bool8 SetRect(int16 x, int16 y, int16 w, int16 h);
 		void Set(const HmiPos pos) { x = pos.x; y = pos.y; };
 		int16 XStart() { return x; }
 		int16 XEnd() { return x + w; }//²»º¬
