@@ -287,17 +287,17 @@ void spt::HmiTextWnd::ShowSinglePage()
 					SetUpdate(1);
 					break;
 				case spt::EK_ESC:
-					ReDrawRect();
+					ClearRect();
 					gd->Update(rect);
 					return;
 				case spt::EK_MD_STOP:
-					ReDrawRect();
+					ClearRect();
 					gd->Update(rect);
 					return;
 				default:
 					break;
 				}
-				HmiMain::Instance().MsSleep(20);
+				HmiMain::Instance().MsSleep(50);
 			}
 			else if (updateFunc)
 			{
@@ -312,11 +312,11 @@ void spt::HmiTextWnd::ShowSinglePage()
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(100);
+			HmiMain::Instance().MsSleep(200);
 		}
 		WidTextWnd::Show();
 	}
-	ReDrawRect();
+	ClearRect();
 	gd->Update(rect);
 	return;
 }
@@ -411,18 +411,18 @@ void spt::HmiTextWnd::ShowScrollPage()
 					SetUpdate(1);
 					break;
 				case spt::EK_ESC:
-					ReDrawRect();
+					ClearRect();
 					gd->Update(rect);
 					return;
 				case spt::EK_MD_STOP:
-					ReDrawRect();
+					ClearRect();
 					gd->Update(rect);
 					return;
 				default:
 
 					break;
 				}
-				HmiMain::Instance().MsSleep(20);
+				HmiMain::Instance().MsSleep(50);
 			}
 			else if (updateFunc)
 			{
@@ -437,11 +437,11 @@ void spt::HmiTextWnd::ShowScrollPage()
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(100);
+			HmiMain::Instance().MsSleep(200);
 		}
 		WidTextWnd::Show();
 	}
-	ReDrawRect();
+	ClearRect();
 	gd->Update(rect);
 	return;
 }
@@ -536,18 +536,18 @@ void spt::HmiTextWnd::ShowContinuePage()
 					SetUpdate(1);
 					break;
 				case spt::EK_ESC:
-					ReDrawRect();
+					ClearRect();
 					gd->Update(rect);
 					return;
 				case spt::EK_MD_STOP:
-					ReDrawRect();
+					ClearRect();
 					gd->Update(rect);
 					return;
 				default:
 
 					break;
 				}
-				HmiMain::Instance().MsSleep(20);
+				HmiMain::Instance().MsSleep(50);
 			}
 			else if (updateFunc)
 			{
@@ -563,11 +563,11 @@ void spt::HmiTextWnd::ShowContinuePage()
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(100);
+			HmiMain::Instance().MsSleep(200);
 		}
 		WidTextWnd::Show();
 	}
-	ReDrawRect();
+	ClearRect();
 	gd->Update(rect);
 	return;
 }

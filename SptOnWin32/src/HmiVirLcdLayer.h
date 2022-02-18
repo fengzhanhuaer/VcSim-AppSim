@@ -19,7 +19,7 @@ namespace spt
 		int16 XEnd() { return x + w; }//²»º¬
 		int16 YStart() { return y; }
 		int16 YEnd() { return y + h; }//²»º¬
-		HmiPos Pos() { return HmiPos{ x,y }; }
+		HmiPos Pos() const { return HmiPos{ x,y }; }
 		int16 x;
 		int16 y;
 		int16 w;
@@ -72,12 +72,16 @@ namespace spt
 	protected:
 		GraphicDevice();
 	private:
-		MsPeriodTimer lcdUpdateTimer;
+		MsTimer lcdPeriodUpdateTimer;
+		MsTimer lcdForceUpdateTimer;
 		uint32 drawMode;
 		class HalLcdDriver* lcddriver;
 		class HmiLcdCmm* hmidriver;
 		uint16 lcdheight;
 		uint16 lcdwidth;
+		bool8 isupdate;
+		bool8 isRowUpdate[HalLcdDriver::MaxPixelOfHeight];
+		bool8 isCowUpdate[HalLcdDriver::MaxPixelOfWidth];
 	};
 }
 

@@ -289,6 +289,7 @@ bool8 spt::SalStatus::ExternInfoStr(const StatusData& Data, SalString& Str, uint
 		}
 	}
 	uint32 CellTotalLen = NameLen + 1 + DataLen + 1;
+	UnitLen += 1;
 	if (UnitLen)
 	{
 		CellTotalLen += UnitLen;
@@ -303,12 +304,12 @@ bool8 spt::SalStatus::ExternInfoStr(const StatusData& Data, SalString& Str, uint
 	{
 		LineW = 56;
 	}
-	Col = LineW / (CellTotalLen + 1);
+	Col = LineW / (CellTotalLen);
 	if (Col == 0)
 	{
 		Col = 1;
 	}
-	uint32 Space = (LineW - (CellTotalLen + 1) * Col);
+	uint32 Space = (LineW - (CellTotalLen)*Col);
 	if (Col > 1)
 	{
 		Space = Space / (Col - 1);

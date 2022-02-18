@@ -65,7 +65,7 @@ namespace spt
 		friend class HmiMenuService;
 	};
 
-	class HmiMenuService :public HmiWidRect
+	class HmiMenuService :public WidRect
 	{
 	public:
 		enum TaskStep

@@ -146,13 +146,11 @@ void spt::HmiMenuBar::SelectChg()
 	child[currentMenu]->Disp(pos, 1);
 
 	lastMenu = currentMenu;
-	gd.Update(rect);
 }
 
 void spt::HmiMenuBar::UnDisp()
 {
 	gd->ClearRect(rect.x, rect.y, gd->E_White, rect.w, rect.h);
-	gd->Update(rect);
 }
 
 void spt::HmiMenuBar::InsertMenu(HmiMenu* Child)
@@ -264,8 +262,6 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 			return;
 		}
 	}
-	SetVisible(1);
-	HmiWidRect::Show(E_AllFrame);
 	stampTimer.Enable(1);
 	stampTimer.StartTimer();
 	hmiMain = &HmiMain::Instance();
@@ -274,6 +270,7 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 	HmiPos mutp;
 	mutp.x = rect.x + gd->FontWidth() / 2;
 	mutp.y = rect.y + 2;
+	SetUpdateSelf(1);
 	while (1)
 	{
 		switch (taskStep)
@@ -296,24 +293,21 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 				{
 					curMenu->DoFunc();
 					curMenu->AllowExit();
-					HmiWidRect::Show(E_AllFrame);
+					WidRect::Show();
+					gd->Update(rect);
 					return;
 				}
 			}
 			else
 			{
+				WidRect::Show();
+				gd->Update(rect);
 				return;
 			}
 			curMenu->SetPos(mutp);
 			leftMenu = curMenu;
-			HmiMenuBar* now = leftMenu;
-			while (now <= curMenu)
-			{
-				now->Disp();
-				now++;
-			}
-			gd->Update(rect);
 			taskStep = E_DispAll;
+			WidRect::Show();
 			break;
 		}
 		case E_DispAll:
@@ -326,12 +320,12 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 			}
 			gd->Update(rect);
 			taskStep = E_WaitKey;
+			hmiMain->MsSleep(200);
 			break;
 		}
 		case E_WaitKey:
 		{
 			HmiKey key;
-
 			if (ks.Pop(key))
 			{
 				if (key.Key1 == EK1_KEYVALUE)
@@ -378,8 +372,8 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 							{
 								curMenu->DoFunc();
 								curMenu->AllowExit();
-								HmiWidRect::Show(E_AllFrame);
-								gd->Update(rect);
+								WidRect::ClearRect();
+								WidRect::Show();
 								taskStep = E_DispAll;
 							}
 						}
@@ -404,14 +398,14 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 								{
 									if (exitFunction((ApiMenu*)MenuRoot))
 									{
-										HmiWidRect::UnShow();
+										WidRect::ClearRect();
 										gd->Update(rect);
 										return;
 									}
 								}
 								else
 								{
-									HmiWidRect::UnShow();
+									WidRect::ClearRect();
 									gd->Update(rect);
 									return;
 								}
@@ -423,6 +417,7 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 						}
 						else
 						{
+							hmiMain->MsSleep(100);
 							taskStep = E_DispAll;
 						}
 						break;
@@ -430,6 +425,10 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 					default:
 						break;
 					}
+				}
+				else
+				{
+					hmiMain->MsSleep(100);
 				}
 			}
 			else
@@ -439,7 +438,7 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 					taskStep = E_DispAll;
 					stampTimer.StartTimer();
 				}
-				hmiMain->MsSleep(10);
+				hmiMain->MsSleep(200);
 			}
 			break;
 		}
@@ -448,12 +447,15 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 			taskStep = E_WaitKey;
 			curMenu->Disp();
 			gd->Update(curMenu->Rect());
+			hmiMain->MsSleep(200);
 			break;
 		}
 		case E_SelectChg:
 		{
 			taskStep = E_WaitKey;
 			curMenu->SelectChg();
+			gd->Update(curMenu->Rect());
+			hmiMain->MsSleep(200);
 			break;
 		}
 		default:
@@ -461,7 +463,7 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 			break;
 		}
 	}
-	HmiWidRect::UnShow();
+	WidRect::ClearRect();
 	gd->Update(rect);
 	return;
 }

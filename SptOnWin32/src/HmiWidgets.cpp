@@ -1186,7 +1186,7 @@ bool8 spt::WidObject::AddChild(WidObject* Object)
 	return 1;
 }
 
-void spt::WidObject::ReDrawRect()
+void spt::WidObject::ClearRect()
 {
 	gd->ClearRect(rect.x, rect.y, backcolor, rect.w, rect.h);
 	SetUpdate(1);
@@ -1451,7 +1451,7 @@ void spt::WidTextWnd::ShowSelf()
 			{
 				maxCtxW = M_ArrLen(ctx[0]) - 1;
 			}
-			ReDrawRect();
+			ClearRect();
 			gd->DrawRect(rect.x, rect.y, color, rect.w, rect.h);
 			gd->DrawLine(titleRect.x, titleRect.y + titleRect.h, color, titleRect.w, 1);
 		}
@@ -1485,6 +1485,7 @@ void spt::WidTextWnd::ShowSelf()
 			}
 		}
 	}
+	gd->Update(rect);
 	lastPage = page;
 	lastLine = line;
 	isUpdateCtx = 0;

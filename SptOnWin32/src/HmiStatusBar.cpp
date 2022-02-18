@@ -1,36 +1,31 @@
 #include "SptProject.h"
 using namespace spt;
 
-int32 spt::HmiStatusBar::Show()
+void spt::HmiStatusBar::Show()
 {
 	if (updateTimer.Status())
 	{
-		HmiWidLine line;
-		line.SetVisible(1);
-		line.Rect().h = rect.h;
-		line.Rect().w = 1;
-		line.Rect().y = rect.y;
-		line.Rect().x = rect.x;
-		SalDateStamp date;
-		date.Now();
-		//int64 d = date.Us() / date.Dt1Second;
 		SalRtc rtc;
-		rtc.FromStamp(&date);
 		rtc.Now();
 		if (rtc.second != lastSec)
 		{
-			HmiWidRect::Show(E_AllFrame);
+			SetUpdate(1);
+			WidLine line;
+			line.SetRect(rect.x, rect.y, rect.h, 1);
+			WidRect::ClearRect();
+			WidRect::Show();
 			lastSec = rtc.second;
 			String30B str;
 			rtc.ToStrHzFmt1(str);
-			HmiWidTextLine text;
-			text.SetVisible(1);
-			text.SetPos(rect.x + 2, rect.y + 2, str.StrLen());
+			WidTextLine text;
+			text.SetPos(rect.x + 2, rect.y + 2);
 			text.SetText(str.Str());
-			text.Show(E_AllFrame);
-			line.Rect().x = 22 * gd->FontWidth() + 4;
-			line.Show(E_AllFrame);
-			if (date.q.bits.isSyncErr == 0)
+			text.Show();
+			line.SetPos(line.Rect().x + 22 * gd->FontWidth() + 4, line.Rect().y);
+			line.Show();
+			SalDateQ q;
+			q.q = rtc.q;
+			if (q.bits.isSyncErr == 0)
 			{
 				if (DatePara::Instance().AdJustMode.Data() == DatePara::E_LIGHT_IRIG_B)
 				{
@@ -44,20 +39,20 @@ int32 spt::HmiStatusBar::Show()
 				{
 					GraphicDevice::Instance().DrawBitMap(line.Rect().x + 2, line.Rect().y + 2, E_BMT_SNTP_SYN, GraphicDevice::E_Black);
 				}
-
 			}
-			line.Rect().x += gd->FontWidth() * 2 + 4;
-			line.Show(E_AllFrame);
+			line.SetPos(line.Rect().x + gd->FontWidth() * 2 + 4, line.Rect().y);
+			line.Show();
 			gd->Update(rect);
+			updateTimer.Restart();
 		}
 		UpdateHmiLedInfo();
 	}
 	else if (!updateTimer.IsEnable())
 	{
-		updateTimer.UpCnt(200);
+		updateTimer.UpCnt(500);
 		updateTimer.Enable(1);
 	}
-	return 0;
+	return;
 }
 
 spt::HmiStatusBar::HmiStatusBar()
@@ -66,7 +61,6 @@ spt::HmiStatusBar::HmiStatusBar()
 	rect.y = gd->LcdHeight() - gd->FontHeight() - 2 * gd->SpaceOfFont();
 	rect.w = gd->LcdWidth();
 	rect.h = gd->LcdHeight() - rect.y;
-	SetVisible(1);
 	hmiLedGroup = 0;
 	hmiLedOldStatus.Alloc(1, 100);
 	SetSaveBlockPara();
@@ -108,6 +102,7 @@ void spt::HmiStatusBar::UpdateHmiLedInfo()
 			lmc.data[i] = buf[i];
 		}
 		HmiLcdCmm::Instance().Send((LcdMsgContext*)&lmc);
+		updateHmiLedTimer.Restart();
 	}
 	else if (!updateHmiLedTimer.IsEnable())
 	{

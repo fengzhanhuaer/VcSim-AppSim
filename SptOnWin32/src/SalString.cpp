@@ -1260,13 +1260,13 @@ bool8 spt::TransString::GetLine(SalString& data)
 bool8 spt::TransString::GetLine(SalString& data, uint8 StopFlag)
 {
 	uint8 d;
-	uint8 u32 = pos;
+	uint32 u32 = pos;
 	while (pos < len)
 	{
 		d = (uint8)sur[pos++];
 		if ((d == 0))
 		{
-			if (pos == (u32 + 1))
+			if ((uint32)pos == (u32 + 1))
 			{
 				u32 = pos;
 			}
@@ -1291,7 +1291,7 @@ bool8 spt::TransString::GetLine(SalString& data, uint8 StopFlag)
 		}
 		data << (char)d;
 	}
-	return u32 != pos;
+	return u32 != (uint32)pos;
 }
 
 bool8 spt::TransString::IsEnd()

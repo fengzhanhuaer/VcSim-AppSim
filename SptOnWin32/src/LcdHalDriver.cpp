@@ -5,12 +5,12 @@ uint8 lcdBufbits[HalLcdDriver::MaxPixelOfHeight][(HalLcdDriver::MaxPixelOfWidth 
 
 int16 spt::HalLcdDriver::PixelOfWidth()
 {
-	return 480;
+	return MaxPixelOfWidth;
 }
 
 int16 spt::HalLcdDriver::PixelOfHeight()
 {
-	return 272;
+	return MaxPixelOfHeight;
 }
 bool8 spt::HalLcdDriver::SetPixel(int16 x, int16 y, uint32 Color)
 {
@@ -35,8 +35,8 @@ uint32 spt::HalLcdDriver::GetPixel(int16 x, int16 y)
 }
 void spt::HalLcdDriver::Update()
 {
-
 	update = 1;
+	Update(0, 0, MaxPixelOfWidth, MaxPixelOfHeight);
 }
 void spt::HalLcdDriver::Update(int16 x, int16 y, int16 w, int16 h)
 {
@@ -48,8 +48,15 @@ void spt::HalLcdDriver::Update(int16 x, int16 y, int16 w, int16 h)
 	{
 		return;
 	}
-
 	update = 1;
+	for (uint32 i = x; i < (uint32)w; i++)
+	{
+		isCowUpdate[i] = 1;
+	}
+	for (uint32 i = y; i < (uint32)h; i++)
+	{
+		isRowUpdate[i] = 1;
+	}
 }
 void spt::HalLcdDriver::OneLoop()
 {

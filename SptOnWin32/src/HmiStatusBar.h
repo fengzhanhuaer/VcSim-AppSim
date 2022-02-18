@@ -3,12 +3,12 @@
 
 namespace spt
 {
-	class HmiStatusBar :public HmiWidRect
+	class HmiStatusBar :public WidRect
 	{
 	public:
 		M_Singleton(HmiStatusBar);
 	public:
-		int32 Show();
+		void Show();
 		/// <summary>
 		/// ÉèÖÃ´æ´¢×èÈû²ÎÊý
 		/// </summary>
@@ -20,8 +20,8 @@ namespace spt
 		HmiStatusBar();
 		void UpdateHmiLedInfo();
 		int64 lastSec;
-		MsPeriodTimer updateTimer;
-		MsPeriodTimer updateHmiLedTimer;
+		MsTimer updateTimer;
+		MsTimer updateHmiLedTimer;
 		ArrayBuf hmiLedOldStatus;
 	private:
 		HmiLedGroup* hmiLedGroup;

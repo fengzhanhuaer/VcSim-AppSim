@@ -284,7 +284,7 @@ namespace spt
 		GraphicDevice::Color& Backcolor() { return backcolor; };
 		void*& ClientData() { return clientData; };
 		bool8 AddChild(class WidObject* Object);
-		void ReDrawRect();
+		void ClearRect();
 	protected:
 		virtual void ShowSelf();
 		virtual void ShowChild();

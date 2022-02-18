@@ -29,6 +29,8 @@ namespace spt
 	private:
 		bool8 update;
 		bool8 first;
+		bool8 isRowUpdate[MaxPixelOfHeight];
+		bool8 isCowUpdate[MaxPixelOfWidth];
 		MsTimer flush;
 	};
 

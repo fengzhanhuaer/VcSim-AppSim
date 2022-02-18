@@ -50,7 +50,7 @@ void spt::GraphicDevice::DrawAssic(int16 X, int16 Y, int16 Color, const char* st
 		uint8 data;
 		int16 x = X;
 		int16 y = Y;
-		while (data = *str)
+		while ((uint8)(data = *str))
 		{
 			if (data == '\r')
 			{
@@ -70,7 +70,7 @@ void spt::GraphicDevice::DrawAssic(int16 X, int16 Y, int16 Color, const char* st
 			}
 			else
 			{
-				bitmap = gASSIC16[*str];
+				bitmap = gASSIC16[(uint8)*str];
 				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
 				{
 					if (*bitmap)
@@ -120,7 +120,7 @@ void spt::GraphicDevice::DrawStr(int16 X, int16 Y, int16 Color, const char* Str)
 		uint8 loc;
 		uint32 seek;
 		const uint8* str = (const uint8*)Str;
-		while (data = *str)
+		while ((uint8)(data = *str))
 		{
 			if (data == '\r')
 			{
@@ -140,7 +140,7 @@ void spt::GraphicDevice::DrawStr(int16 X, int16 Y, int16 Color, const char* Str)
 			}
 			else if (data < 128)
 			{
-				bitmap = gASSIC16[*str];
+				bitmap = gASSIC16[(uint8)*str];
 				for (uint8 i = 0; i < CN_FONT16_HEIGHT; i++)
 				{
 					if (*bitmap)
@@ -460,6 +460,15 @@ void spt::GraphicDevice::Update(int16 x, int16 y, int16 w, int16 h)
 		msg.len = (uint16)sizeof(msg);
 		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
 	}
+	isupdate = 1;
+	for (uint32 i = x; i < (uint32)w; i++)
+	{
+		isCowUpdate[i] = 1;
+	}
+	for (uint32 i = y; i < (uint32)h; i++)
+	{
+		isRowUpdate[i] = 1;
+	}
 }
 void spt::GraphicDevice::Update(const HmiRect& rect)
 {
@@ -478,44 +487,91 @@ void spt::GraphicDevice::Update()
 		msg.len = (uint16)sizeof(msg);
 		HmiLcdCmm::Instance().Send((LcdMsgContext*)&msg);
 	}
+	isupdate = 1;
+	for (uint32 i = 0; i < HalLcdDriver::MaxPixelOfHeight; i++)
+	{
+		isCowUpdate[i] = 1;
+	}
+	for (uint32 i = 0; i < HalLcdDriver::MaxPixelOfHeight; i++)
+	{
+		isRowUpdate[i] = 1;
+	}
 }
 void spt::GraphicDevice::UpdateLcd()
 {
 	if (drawMode & E_PicMode)
 	{
-		if (!lcdUpdateTimer.Status())
+		if (isupdate)
 		{
-			if (!lcdUpdateTimer.IsEnable())
+			if (lcdForceUpdateTimer.Status())
 			{
-				lcdUpdateTimer.UpCnt(200);
-				lcdUpdateTimer.Enable(1);
+				LcdPicMode msg;
+				uint16 w = lcdwidth / 8;
+				uint16 linn = 8;
+				for (uint16 i = 0; i < lcdheight; i += linn)
+				{
+					msg.type = E_DrawPicLine;
+					msg.len = sizeof(msg) - sizeof(msg.data) + linn * w;
+					msg.x = 0;
+					msg.y = i;
+					msg.w = w;
+					msg.h = linn;
+					for (uint16 j = 0; j < linn; j++)
+					{
+						MemCpy(msg.data + j * w, lcddriver->GetBuf(0, i + j), w);
+					}
+					HmiLcdCmm::Instance().Send((LcdPicMode*)&msg);
+				}
+				msg.type = E_DrawPicUpdate;
+				msg.len = sizeof(msg) - sizeof(msg.data);
+				msg.x = 0;
+				msg.y = 0;
+				msg.w = w;
+				msg.h = lcdheight;
+				HmiLcdCmm::Instance().Send((LcdPicMode*)&msg);
+				lcdForceUpdateTimer.Restart();
+				lcdPeriodUpdateTimer.Restart();
+				isupdate = 0;
 			}
-			return;
+			else if (!lcdForceUpdateTimer.IsEnable())
+			{
+				lcdForceUpdateTimer.UpCnt(200);
+				lcdForceUpdateTimer.Enable(1);
+			}
 		}
-		LcdPicMode msg;
-		uint16 w = lcdwidth / 8;
-		uint16 linn = 8;
-		for (uint16 i = 0; i < lcdheight; i += linn)
+		else if (lcdPeriodUpdateTimer.Status())
 		{
-			msg.type = E_DrawPicLine;
-			msg.len = sizeof(msg) - sizeof(msg.data) + linn * w;
+			LcdPicMode msg;
+			uint16 w = lcdwidth / 8;
+			uint16 linn = 8;
+			for (uint16 i = 0; i < lcdheight; i += linn)
+			{
+				msg.type = E_DrawPicLine;
+				msg.len = sizeof(msg) - sizeof(msg.data) + linn * w;
+				msg.x = 0;
+				msg.y = i;
+				msg.w = w;
+				msg.h = linn;
+				for (uint16 j = 0; j < linn; j++)
+				{
+					MemCpy(msg.data + j * w, lcddriver->GetBuf(0, i + j), w);
+				}
+				HmiLcdCmm::Instance().Send((LcdPicMode*)&msg);
+			}
+			msg.type = E_DrawPicUpdate;
+			msg.len = sizeof(msg) - sizeof(msg.data);
 			msg.x = 0;
-			msg.y = i;
+			msg.y = 0;
 			msg.w = w;
-			msg.h = linn;
-			for (uint16 j = 0; j < linn; j++)
-			{
-				MemCpy(msg.data + j * w, lcddriver->GetBuf(0, i + j), w);
-			}
+			msg.h = lcdheight;
 			HmiLcdCmm::Instance().Send((LcdPicMode*)&msg);
+			lcdPeriodUpdateTimer.Restart();
 		}
-		msg.type = E_DrawPicUpdate;
-		msg.len = sizeof(msg) - sizeof(msg.data);
-		msg.x = 0;
-		msg.y = 0;
-		msg.w = w;
-		msg.h = lcdheight;
-		HmiLcdCmm::Instance().Send((LcdPicMode*)&msg);
+		else if (!lcdPeriodUpdateTimer.IsEnable())
+		{
+			lcdPeriodUpdateTimer.UpCnt(1000);
+			lcdPeriodUpdateTimer.Enable(1);
+		}
 	}
 	else
 	{
