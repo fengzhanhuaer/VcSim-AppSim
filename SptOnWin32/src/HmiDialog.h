@@ -3,7 +3,7 @@
 
 namespace spt
 {
-	class HmiWidDialog :public HmiWidRect
+	class HmiWidDialog :public WidRect
 	{
 	public:
 		enum EditRetValue
@@ -14,8 +14,9 @@ namespace spt
 		};
 	public:
 		HmiWidDialog();
-		virtual int32 EditSelf(HmiKeyMsg key);
 		virtual void AutoLayout();
+	protected:
+
 	protected:
 		uint32 lineCount;
 		uint32 lineWidth;
@@ -31,7 +32,9 @@ namespace spt
 		//return -2 强制退出
 		virtual int32 Edit();
 	protected:
-		HmiWidTextLine title[5];
+		virtual int32 ShowSelf();
+	protected:
+		WidTextLine title[5];
 	};
 	class HmiWarnDialog :public HmiInfoDialog
 	{
@@ -53,6 +56,8 @@ namespace spt
 		//return -2 强制退出
 		virtual int32 Edit();
 	protected:
+		virtual int32 ShowSelf();
+	protected:
 
 	};
 	class HmiAssicInputDialog :public HmiWidDialog
@@ -69,20 +74,21 @@ namespace spt
 		HmiAssicInputDialog(E_Mode Mode);
 		void SetMaxInputLen(uint32 Len);
 		void SetDefault(const char* Def);
-		virtual void Show(ShowType Type);
 		//return 0 编辑正常
 		//return -1 ESC退出
 		//return -2 强制退出
 		virtual int32 Edit();
 		const char* InputStr();
 	protected:
+		virtual int32 ShowSelf();
+	protected:
 		E_Mode mode;
 		uint8 maxTextLine;
 		uint32 inputMaxLen;
 		String100B inputStr;
-		HmiWidTextRect input;
-		HmiWidTextLine text[6];
-		HmiWidCurseText curse;
+		WidTextLineRect input;
+		WidTextLine text[6];
+		WidCurseTextLine curse;
 	};
 	class HmiStrEditDialog :public HmiWidDialog
 	{
@@ -90,7 +96,6 @@ namespace spt
 		void SetTitle(const char* Str1, const char* Str2, const char* Str3, const char* Str4, const char* Str5);
 		void SetText(const char* Str1, const char* Str2, const char* Str3, const char* Str4, const char* Str5);
 		void SetEditAble(bool8 EditAble1, bool8 EditAble2, bool8 EditAble3, bool8 EditAble4, bool8 EditAble5);
-		virtual void Show(ShowType Type);
 		void SetMaxInputLen(uint32 Len);
 		//return 0 编辑正常
 		//return -1 ESC退出
@@ -99,24 +104,28 @@ namespace spt
 		virtual void AutoLayout();
 		const char* InputStr(uint32 Index);
 	protected:
+		virtual int32 ShowSelf();
+	protected:
 		uint32 titleMaxLen;
 		uint32 inputMaxLen;
-		HmiWidTextLine title[5];
-		HmiWidTextLine text[5];
+		WidTextLine title[5];
+		WidTextLine text[5];
 	};
 	class HmiIntDataEditDialog :public HmiWidDialog
 	{
 	public:
 		virtual void AutoLayout();
 	protected:
+		virtual int32 ShowSelf();
+	protected:
 		uint32 titleMaxLen;
 		uint32 inputMaxLen;
 		uint8 selectIndex;
 		uint8 dataNum;
-		HmiWidTextLine title[3];
-		HmiWidTextLine text[3];
-		HmiWidTextLine titleMid;
-		HmiWidCurseText curse;
+		WidTextLine title[3];
+		WidTextLine text[3];
+		WidTextLine titleMid;
+		WidCurseTextLine curse;
 	};
 	class HmiInt32DataDialog :public HmiIntDataEditDialog
 	{
@@ -175,6 +184,8 @@ namespace spt
 		HmiEnum32DataDialog();
 		void Set(const char* Title, uint32 Min, uint32 Def, uint32 Max, SalEnumDes* Des);
 	protected:
+		virtual int32 ShowSelf();
+	protected:
 		SalEnumDes* Des;
 	};
 	class HmiBit32DataDialog :public HmiHex32DataDialog
@@ -187,7 +198,10 @@ namespace spt
 		HmiBit32DataDialog();
 		void Set(const char* Title, uint32 Min, uint32 Def, uint32 Max, SalBitDes* Des, uint8 BitLen);
 	protected:
+		virtual int32 ShowSelf();
+	protected:
 		SalBitDes* Des;
+		uint8 BitNum;
 	};
 	class HmiTimeEditDialog :public HmiWidDialog
 	{
@@ -201,6 +215,7 @@ namespace spt
 		virtual void AutoLayout();
 		HmiTimeEditDialog();
 	protected:
+		virtual int32 ShowSelf();
 		void UpdateDate();
 	protected:
 		SalRtc rtc;
@@ -209,10 +224,10 @@ namespace spt
 		uint32 inputMaxLen;
 		uint8 selectIndex;
 		uint8 dataNum;
-		HmiWidTextLine title[7];
-		HmiWidTextLine text[7];
-		HmiWidDataLine data[7];
-		HmiWidCurseText curse;
+		WidTextLine title[7];
+		WidTextLine text[7];
+		WidDataLine data[7];
+		WidCurseTextLine curse;
 	};
 }
 

@@ -17,6 +17,14 @@ extern"C" int SptSetSerial(unsigned int No, unsigned int baudrate, unsigned int 
 {
 	return 0;
 }
+extern"C"	int SptSetSerialPara(unsigned int No, HalSerialParaType Type, unsigned int Para)
+{
+	return 0;
+}
+extern"C"	int SptGetSerialPara(unsigned int No, HalSerialParaType Type, unsigned int* Para)
+{
+	return 0;
+}
 SampIntMsgPool EmacSendPool[1];
 SampIntMsgPool EmacRecvPool[1];
 

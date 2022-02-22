@@ -2,51 +2,13 @@
 using namespace spt;
 spt::HmiWidDialog::HmiWidDialog()
 {
-	SetVisible(1);
-}
 
-int32 spt::HmiWidDialog::EditSelf(HmiKeyMsg key)
-{
-	E_KEY2 k2 = (E_KEY2)key.key.Key2;
-	if (key.key.Key1 != EK1_KEYVALUE)
-	{
-		key.isDealed = 1;
-		return 0;
-	}
-	switch (k2)
-	{
-	case spt::EK_ENTER:
-		return EditChild(key);
-		break;
-	case spt::EK_ESC:
-		break;
-	case spt::EK_LEFT:
-	case spt::EK_UP:
-		if (selectedChild && selectedChild->Last())
-		{
-			selectedChild = selectedChild->Last();
-		}
-		break;
-	case spt::EK_RIGHT:
-	case spt::EK_DOWN:
-		if (selectedChild && selectedChild->Next())
-		{
-			selectedChild = selectedChild->Next();
-		}
-		break;
-	case spt::EK_MD_STOP:
-		break;
-	default:
-		break;
-	}
-	key.isDealed = 1;
-	return 0;
 }
 
 void spt::HmiWidDialog::AutoLayout()
 {
 	rect.w = (lineWidth + 4) * gd->FontWidth();
-	rect.h = (lineCount + 1) * (gd->FontHeight() + gd->SpaceOfFont());
+	rect.h = (lineCount) * (gd->FontHeight() + 2 * gd->SpaceOfFont()) + 5 * gd->SpaceOfFont();
 	if (gd->LcdWidth() == 480)
 	{
 		rect.x = 440 / 2 - rect.w / 2;
@@ -57,68 +19,55 @@ void spt::HmiWidDialog::AutoLayout()
 		rect.x = 300 / 2 - rect.w / 2;
 		rect.y = 220 / 2 - rect.h / 2;
 	}
+	SetUpdateSelf(1);
 }
 
 void spt::HmiAssicInputDialog::AutoLayout()
 {
 	maxTextLine = 0;
-	curse.Row = 0;
-	curse.Col = 6;
+	curse.SetRow(0);
+	curse.SetCol(6);
 	if (mode == E_Full)
 	{
-		text[0].Text() = "!@#$%^&*()-='?<>";
-		text[1].Text() = "abcdefghijklmn";
-		text[2].Text() = "opqrstuvwxyz_+|\\";
-		text[3].Text() = "0123456789{}[]\x1B";
-		text[4].Text() = "ABCDEFGHIJKLMN`'";
-		text[5].Text() = "OPQRSTUVWXYZ,./~";
+		text[0].SetText("!@#$%^&*()-='?<>");
+		text[1].SetText("abcdefghijklmn");
+		text[2].SetText("opqrstuvwxyz_+|\\");
+		text[3].SetText("0123456789{}[]\x1B");
+		text[4].SetText("ABCDEFGHIJKLMN`'");
+		text[5].SetText("OPQRSTUVWXYZ,./~");
 		maxTextLine = 6;
-		curse.Row = 3;
-		curse.Col = 6;
+		curse.SetRow(3);
+		curse.SetCol(6);
 	}
 	else if (mode == E_HEX)
 	{
-		text[0].Text() = "0123456789.";
-		text[1].Text() = "ABCDEF\x1B";
+		text[0].SetText("0123456789.");
+		text[1].SetText("ABCDEF\x1B");
 		maxTextLine = 2;
 	}
 	else if (mode == E_Number)
 	{
-		text[0].Text() = "0123456789.\x1B";
+		text[0].SetText("0123456789.\x1B");
 		maxTextLine = 1;
 	}
 	lineCount = maxTextLine + 1;
 	lineWidth = inputMaxLen;
 	HmiWidDialog::AutoLayout();
-	input.Rect().x = rect.x + gd->FontWidth();
-	input.Rect().y = rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont();
-	input.Rect().w = (inputMaxLen + 2) * gd->FontWidth();
-	input.Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	input.SetVisible(1);
+	input.SetRect(rect.x + gd->FontWidth(), rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont(), (inputMaxLen + 2) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont() * 2);
 	AddChild(&input);
-	text[0].Rect().w = (text[0].Text().StrLen() + 1) * gd->FontWidth();
-	text[0].Rect().x = rect.x + rect.w / 2 - text[0].Rect().w / 2;
-	text[0].Rect().y = input.Rect().YEnd() + gd->SpaceOfFont();
-	text[0].Rect().h = gd->FontHeight() + gd->SpaceOfFont();
-	text[0].SetVisible(1);
+	text[0].SetRect(rect.x + rect.w / 2 - text[0].Rect().w / 2, input.Rect().YEnd() + gd->SpaceOfFont(), (text[0].Text().StrLen() + 1) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont());
 	AddChild(&text[0]);
 	for (uint32 i = 1; i < maxTextLine; i++)
 	{
-		text[i].Rect().x = text[i - 1].Rect().x;
-		text[i].Rect().y = text[i - 1].Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-		text[i].Rect().w = text[i - 1].Rect().w;
-		text[i].Rect().h = text[i - 1].Rect().h;
-		text[i].SetVisible(1);
+		text[i].SetRect(text[i - 1].Rect().x, text[i - 1].Rect().y + gd->FontHeight() + gd->SpaceOfFont(), text[i - 1].Rect().w, text[i - 1].Rect().h);
 		AddChild(&text[i]);
 	}
-	curse.IsCanBeSelect() = 1;
-	curse.IsSelected() = 1;
+	curse.SetRect(text[curse.Row()].Rect().x, text[curse.Row()].Rect().y, gd->FontWidth(), gd->FontHeight());
+	AddChild(&curse);
 }
 
 spt::HmiAssicInputDialog::HmiAssicInputDialog(E_Mode Mode)
 {
-	isSelected = 1;
-	isCanBeSelect = 1;
 	inputMaxLen = 25;
 	mode = Mode;
 }
@@ -131,33 +80,44 @@ void spt::HmiAssicInputDialog::SetMaxInputLen(uint32 Len)
 void spt::HmiAssicInputDialog::SetDefault(const char* Def)
 {
 	inputStr = Def;
-	maxTextLine = Max(inputMaxLen,(uint32) inputStr.StrLen());
+	maxTextLine = Max(inputMaxLen, (uint32)inputStr.StrLen());
 }
 
-void spt::HmiAssicInputDialog::Show(ShowType Type)
+int32 spt::HmiAssicInputDialog::ShowSelf()
 {
-	input.IsUpdate() = 1;
-	input.SetText(inputStr.Str());
-	input.Text() << "_";
-	curse.Text().Clear();
-	curse.IsUpdate() = 1;
-	curse.Text() << text[curse.Row].Text().Str()[curse.Col];
-	curse.Rect() = text[curse.Row].Rect();
-	curse.Rect().x += curse.Col * gd->FontWidth();
-	curse.Rect().w = gd->FontWidth();
-	HmiWidRect::Show(Type);
-	curse.Show(Type);
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+	}
+	if (isUpdate)
+	{
+		String100B str;
+		str = inputStr.Str();
+		str << "_";
+		input.SetText(str.Str());
+		input.ClearRect();
+		str.Clear();
+		str << text[curse.Row()].Text().Str()[curse.Col()];
+		curse.SetText(str.Str());
+		curse.SetPos(text[curse.Row()].Rect().x + curse.Col() * gd->FontWidth(), text[curse.Row()].Rect().y);
+		for (uint32 i = 0; i < maxTextLine; i++)
+		{
+			text[i].ClearRect();
+			text[i].SetUpdate(1);
+		}
+	}
+	return 0;
 }
 
 int32 spt::HmiAssicInputDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
 	AutoLayout();
 	bool8 virok = HmiLcdCmm::Instance().IsVirLcdCmmOk();
+	uint32 col;
+	uint32 row;
+	FindFirstSelChild();
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -171,7 +131,7 @@ int32 spt::HmiAssicInputDialog::Edit()
 				{
 					if (!virok)
 					{
-						char d = text[curse.Row].Text().Str()[curse.Col];
+						char d = text[curse.Row()].Text().Str()[curse.Col()];
 						if ((d == '\x1B') && (inputStr.StrLen()))
 						{
 							String100B s;
@@ -186,10 +146,11 @@ int32 spt::HmiAssicInputDialog::Edit()
 					}
 					else
 					{
-						UnShow();
-						gd->Update(rect);
+						ClearRect();
+						Update();
 						return E_OK;
 					}
+					SetUpdateSelf(1);
 					break;
 				}
 				case spt::EK_ADD:
@@ -197,52 +158,57 @@ int32 spt::HmiAssicInputDialog::Edit()
 					break;
 				}
 				case spt::EK_ESC:
-					UnShow();
-					gd->Update(rect);
+					ClearRect();
+					Update();
 					return E_ESC;
 					break;
 				case spt::EK_LEFT:
-					if (curse.Col)
+					if (curse.Col())
 					{
-						curse.Col--;
+						curse.SetCol(curse.Col() - 1);
+						SetUpdateSelf(1);
+						text[curse.Row()].SetUpdateSelf(1);
 					}
-					text[curse.Row].IsUpdate() = 1;
 					break;
 				case spt::EK_UP:
-					text[curse.Row].IsUpdate() = 1;
-					if (curse.Row)
+					if (curse.Row())
 					{
-						curse.Row--;
+						text[curse.Row()].SetUpdateSelf(1);
+						curse.SetRow(curse.Row() - 1);
+						if (curse.Col() >= text[curse.Row()].Text().StrLen())
+						{
+							curse.SetCol(text[curse.Row()].Text().StrLen() - 1);
+						}
+						SetUpdateSelf(1);
+						text[curse.Row()].SetUpdateSelf(1);
 					}
-					if (curse.Col >= text[curse.Row].Text().StrLen())
-					{
-						curse.Col = text[curse.Row].Text().StrLen() - 1;
-					}
-					text[curse.Row].IsUpdate() = 1;
 					break;
 				case spt::EK_RIGHT:
-					text[curse.Row].IsUpdate() = 1;
-					curse.Col++;
-					if (curse.Col >= text[curse.Row].Text().StrLen())
+					col = curse.Col() + 1;
+					if ((int32)col < text[curse.Row()].Text().StrLen())
 					{
-						curse.Col = text[curse.Row].Text().StrLen() - 1;
+						text[curse.Row()].SetUpdateSelf(1);
+						curse.SetCol(col);
+						SetUpdateSelf(1);
+						text[curse.Row()].SetUpdateSelf(1);
 					}
 					break;
 				case spt::EK_DOWN:
-					text[curse.Row].IsUpdate() = 1;
-					curse.Row++;
-					if (curse.Row >= maxTextLine)
+					row = curse.Row() + 1;
+					if (row < maxTextLine)
 					{
-						curse.Row--;
+						text[curse.Row()].SetUpdateSelf(1);
+						curse.SetRow(row);
+						if (curse.Col() >= text[curse.Row()].Text().StrLen())
+						{
+							curse.SetCol(text[curse.Row()].Text().StrLen() - 1);
+						}
+						SetUpdateSelf(1);
+						text[curse.Row()].SetUpdateSelf(1);
 					}
-					if (curse.Col >= text[curse.Row].Text().StrLen())
-					{
-						curse.Col = text[curse.Row].Text().StrLen() - 1;
-					}
-					text[curse.Row].IsUpdate() = 1;
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -253,9 +219,8 @@ int32 spt::HmiAssicInputDialog::Edit()
 						s = inputStr.Str();
 						s.Str()[s.StrLen() - 1] = 0;
 						inputStr = s.Str();
+						SetUpdateSelf(1);
 					}
-					UnShow();
-					gd->Update(rect);
 					break;
 				default:
 					break;
@@ -268,20 +233,18 @@ int32 spt::HmiAssicInputDialog::Edit()
 				{
 					inputStr << d;
 				}
+				SetUpdateSelf(1);
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first || timer.Status())
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return -1;
 }
@@ -299,8 +262,8 @@ void spt::HmiStrEditDialog::SetTitle(const char* Str1, const char* Str2, const c
 	if (Str1)
 	{
 		title[lineCount].SetText(Str1);
-		titleMaxLen = Max(title[lineCount].Text().StrLen(),(int32) titleMaxLen);
-		text[lineCount].IsCanBeSelect() = 1;
+		titleMaxLen = Max(title[lineCount].Text().StrLen(), (int32)titleMaxLen);
+		text[lineCount].SetCanBeSelect(1);
 		lineCount++;
 	}
 	else
@@ -310,8 +273,8 @@ void spt::HmiStrEditDialog::SetTitle(const char* Str1, const char* Str2, const c
 	if (Str2)
 	{
 		title[lineCount].SetText(Str2);
-		titleMaxLen = Max(title[lineCount].Text().StrLen(),(int32) titleMaxLen);
-		text[lineCount].IsCanBeSelect() = 1;
+		titleMaxLen = Max(title[lineCount].Text().StrLen(), (int32)titleMaxLen);
+		text[lineCount].SetCanBeSelect(1);
 		lineCount++;
 	}
 	else
@@ -322,7 +285,7 @@ void spt::HmiStrEditDialog::SetTitle(const char* Str1, const char* Str2, const c
 	{
 		title[lineCount].SetText(Str3);
 		titleMaxLen = Max(title[lineCount].Text().StrLen(), (int32)titleMaxLen);
-		text[lineCount].IsCanBeSelect() = 1;
+		text[lineCount].SetCanBeSelect(1);
 		lineCount++;
 	}
 	else
@@ -332,8 +295,8 @@ void spt::HmiStrEditDialog::SetTitle(const char* Str1, const char* Str2, const c
 	if (Str4)
 	{
 		title[lineCount].SetText(Str4);
-		titleMaxLen = Max(title[lineCount].Text().StrLen(),(int32) titleMaxLen);
-		text[lineCount].IsCanBeSelect() = 1;
+		titleMaxLen = Max(title[lineCount].Text().StrLen(), (int32)titleMaxLen);
+		text[lineCount].SetCanBeSelect(1);
 		lineCount++;
 	}
 	else
@@ -343,8 +306,8 @@ void spt::HmiStrEditDialog::SetTitle(const char* Str1, const char* Str2, const c
 	if (Str5)
 	{
 		title[lineCount].SetText(Str5);
-		titleMaxLen = Max(title[lineCount].Text().StrLen(),(int32) titleMaxLen);
-		text[lineCount].IsCanBeSelect() = 1;
+		titleMaxLen = Max(title[lineCount].Text().StrLen(), (int32)titleMaxLen);
+		text[lineCount].SetCanBeSelect(1);
 		lineCount++;
 	}
 	else
@@ -399,16 +362,11 @@ void spt::HmiStrEditDialog::SetText(const char* Str1, const char* Str2, const ch
 
 void spt::HmiStrEditDialog::SetEditAble(bool8 EditAble1, bool8 EditAble2, bool8 EditAble3, bool8 EditAble4, bool8 EditAble5)
 {
-	text[0].IsCanBeSelect() = EditAble1;
-	text[1].IsCanBeSelect() = EditAble2;
-	text[2].IsCanBeSelect() = EditAble3;
-	text[3].IsCanBeSelect() = EditAble4;
-	text[4].IsCanBeSelect() = EditAble5;
-}
-
-void spt::HmiStrEditDialog::Show(ShowType Type)
-{
-	HmiWidRect::Show(Type);
+	text[0].SetCanBeSelect(EditAble1);
+	text[1].SetCanBeSelect(EditAble2);
+	text[2].SetCanBeSelect(EditAble3);
+	text[3].SetCanBeSelect(EditAble4);
+	text[4].SetCanBeSelect(EditAble5);
 }
 
 void spt::HmiStrEditDialog::SetMaxInputLen(uint32 Len)
@@ -419,12 +377,9 @@ void spt::HmiStrEditDialog::SetMaxInputLen(uint32 Len)
 int32 spt::HmiStrEditDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
+	SetPeriodUpdate(1, 200);
 	AutoLayout();
-	SetSelectedChildAt(0);
+	FindFirstSelChild();
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -436,10 +391,10 @@ int32 spt::HmiStrEditDialog::Edit()
 				{
 				case spt::EK_ENTER:
 				{
-					if (selectedChild && selectedChild->IsSelected())
+					if (cursepos && cursepos->IsSelected())
 					{
 						HmiAssicInputDialog dig(HmiAssicInputDialog::E_Full);
-						HmiWidTextLine* cur = (HmiWidTextLine*)selectedChild;
+						WidTextLine* cur = (WidTextLine*)cursepos;
 						dig.SetDefault(cur->Text().Str());
 						dig.AutoLayout();
 						int res = dig.Edit();
@@ -451,29 +406,32 @@ int32 spt::HmiStrEditDialog::Edit()
 						}
 						else
 						{
-							selectedChild->GoToNextCanBeSelected();
+							Go2NextSelChild();
 						}
-						first = 1;
 					}
+					SetInied(0);
+					SetUpdateSelf(1);
 					break;
 				}
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
 				case spt::EK_LEFT:
 					break;
 				case spt::EK_UP:
-					selectedChild->GoToLastCanBeSelected();
+					Go2LastSelChild();
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
 					break;
 				case spt::EK_DOWN:
-					selectedChild->GoToNextCanBeSelected();
+					Go2NextSelChild();
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -481,24 +439,16 @@ int32 spt::HmiStrEditDialog::Edit()
 					break;
 				}
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first)
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
-		if (timer.Status())
-		{
-			Show(E_Update);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return -1;
 }
@@ -507,31 +457,14 @@ void spt::HmiStrEditDialog::AutoLayout()
 {
 	lineWidth = inputMaxLen + 1 + titleMaxLen;
 	HmiWidDialog::AutoLayout();
-	title[0].Rect().x = rect.x + gd->FontWidth();
-	title[0].Rect().y = rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont();
-	title[0].Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	title[0].Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	text[0].Rect().w = (inputMaxLen + 1) * gd->FontWidth();
-	text[0].Rect().x = title[0].Rect().x + title[0].Rect().w;
-	text[0].Rect().h = title[0].Rect().h;
-	text[0].Rect().y = title[0].Rect().y;
-	title[0].SetVisible(1);
-	text[0].SetVisible(1);
+	title[0].SetRect(rect.x + gd->FontWidth(), rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight());
+	text[0].SetRect(title[0].Rect().x + title[0].Rect().w, title[0].Rect().y, (inputMaxLen + 1) * gd->FontWidth(), title[0].Rect().h);
 	AddChild(&title[0]);
 	AddChild(&text[0]);
 	for (uint32 i = 1; i < lineCount; i++)
 	{
-		title[i].Rect().x = title[i - 1].Rect().x;
-		title[i].Rect().y = title[i - 1].Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-		title[i].Rect().w = title[i - 1].Rect().w;
-		title[i].Rect().h = title[i - 1].Rect().h;
-
-		text[i].Rect().w = text[i - 1].Rect().w;
-		text[i].Rect().x = title[0].Rect().x + title[0].Rect().w;
-		text[i].Rect().h = title[0].Rect().h;
-		text[i].Rect().y = title[i].Rect().y;
-		title[i].SetVisible(1);
-		text[i].SetVisible(1);
+		title[i].SetRect(title[i - 1].Rect().x, title[i - 1].Rect().y + gd->FontHeight() + 2 * gd->SpaceOfFont(), title[i - 1].Rect().w, title[i - 1].Rect().h);
+		text[i].SetRect(title[0].Rect().x + title[0].Rect().w, title[i].Rect().y, text[i - 1].Rect().w, title[0].Rect().h);
 		AddChild(&title[i]);
 		AddChild(&text[i]);
 	}
@@ -546,6 +479,36 @@ const char* spt::HmiStrEditDialog::InputStr(uint32 Index)
 	return 0;
 }
 
+int32 spt::HmiStrEditDialog::ShowSelf()
+{
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+		for (uint32 i = 0; i < lineCount; i++)
+		{
+			text[i].SetUpdate(1);
+			title[i].SetUpdate(1);
+		}
+	}
+	if (isUpdate)
+	{
+		for (uint32 i = 0; i < lineCount; i++)
+		{
+			if (text[i].IsSelected() == 1)
+			{
+				gd->ClearRect(text[i].Rect().x, text[i].Rect().y, text[i].Color(), text[i].Rect().w, text[i].Rect().h);
+			}
+			else
+			{
+				gd->ClearRect(text[i].Rect().x, text[i].Rect().y, text[i].Backcolor(), text[i].Rect().w, text[i].Rect().h);
+				text[i].SetUpdate(1);
+			}
+		}
+	}
+	return 0;
+}
+
 void spt::HmiWarnDialog::SetTitle(const char* Str1, const char* Str2, const char* Str3, const char* Str4, const char* Str5)
 {
 	HmiInfoDialog::SetTitle(Str1, Str2, Str3, Str4, Str5, "按任意键继续");
@@ -555,19 +518,13 @@ void spt::HmiInfoDialog::AutoLayout()
 {
 	lineWidth = lineWidth;
 	HmiWidDialog::AutoLayout();
-	title[0].Rect().w = (title[0].Text().StrLen() + 1) * gd->FontWidth();
-	title[0].Rect().x = rect.x + rect.w / 2 - title[0].Rect().w / 2;
-	title[0].Rect().y = rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont();
-	title[0].Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	title[0].SetVisible(1);
+	uint16 w = (title[0].Text().StrLen() + 1) * gd->FontWidth();
+	title[0].SetRect(rect.x + rect.w / 2 - w / 2, rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont(), w, gd->FontHeight() + gd->SpaceOfFont() * 2);
 	AddChild(&title[0]);
 	for (uint32 i = 1; i < lineCount; i++)
 	{
-		title[i].Rect().y = title[i - 1].Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-		title[i].Rect().w = (title[i].Text().StrLen() + 1) * gd->FontWidth();
-		title[i].Rect().h = title[i - 1].Rect().h;
-		title[i].Rect().x = rect.x + rect.w / 2 - title[i].Rect().w / 2;
-		title[i].SetVisible(1);
+		w = (title[i].Text().StrLen() + 1) * gd->FontWidth();
+		title[i].SetRect(rect.x + rect.w / 2 - w / 2, title[i - 1].Rect().y + gd->FontHeight() + 3 * gd->SpaceOfFont(), w, title[i - 1].Rect().h);
 		AddChild(&title[i]);
 	}
 }
@@ -575,10 +532,6 @@ void spt::HmiInfoDialog::AutoLayout()
 int32 spt::HmiWarnDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
 	AutoLayout();
 	while (1)
 	{
@@ -594,17 +547,17 @@ int32 spt::HmiWarnDialog::Edit()
 				case spt::EK_UP:
 				case spt::EK_RIGHT:
 				case spt::EK_DOWN:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_OK;
 					break;
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -612,24 +565,16 @@ int32 spt::HmiWarnDialog::Edit()
 					break;
 				}
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first)
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
-		if (timer.Status())
-		{
-			Show(E_Update);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return -1;
 }
@@ -642,10 +587,7 @@ void spt::HmiSelectDialog::SetTitle(const char* Str1, const char* Str2, const ch
 int32 spt::HmiSelectDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
+	SetPeriodUpdate(1, 200);
 	AutoLayout();
 	while (1)
 	{
@@ -657,17 +599,17 @@ int32 spt::HmiSelectDialog::Edit()
 				switch (k2)
 				{
 				case spt::EK_ENTER:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_OK;
 					break;
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -680,34 +622,33 @@ int32 spt::HmiSelectDialog::Edit()
 		{
 			HmiMain::Instance().MsSleep(10);
 		}
-		if (first)
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
-		if (timer.Status())
-		{
-			Show(E_Update);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return -1;
+}
+
+int32 spt::HmiSelectDialog::ShowSelf()
+{
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+	}
+	HmiWidDialog::ShowSelf();
+	return 0;
 }
 
 int32 spt::HmiTimeEditDialog::Edit()
 {
 	selectIndex = 0;
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
+	SetPeriodUpdate(1, 200);
 	AutoLayout();
 	char d;
-	SetSelectedChildAt(0);
+	FindFirstSelChild();
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -719,14 +660,13 @@ int32 spt::HmiTimeEditDialog::Edit()
 				{
 				case spt::EK_ENTER:
 				{
-					first = 1;
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					UpdateDate();
 					return E_OK;
 				}
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					UpdateDate();
 					return E_ESC;
@@ -748,12 +688,7 @@ int32 spt::HmiTimeEditDialog::Edit()
 							selectIndex--;
 						}
 					}
-					curse.Text().Clear();
-					curse.Text() << text[0].Text().Str()[selectIndex];
-					curse.Rect().x = text[0].Rect().x + gd->FontWidth() * selectIndex;
-					curse.SetUpdate();
-					text[0].SetUpdate();
-					title[0].SetUpdate();
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_UP:
 					d = text[0].Text().Str()[selectIndex];
@@ -790,12 +725,8 @@ int32 spt::HmiTimeEditDialog::Edit()
 							d++;
 						}
 					}
-					text[0].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					curse.SetUpdate();
-					text[0].SetUpdate();
-					title[0].SetUpdate();
+					text[0].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
 					selectIndex++;
@@ -818,12 +749,7 @@ int32 spt::HmiTimeEditDialog::Edit()
 					{
 						selectIndex = text[0].Text().StrLen() - 1;
 					}
-					curse.Text().Clear();
-					curse.Text() << text[0].Text().Str()[selectIndex];
-					curse.Rect().x = text[0].Rect().x + gd->FontWidth() * selectIndex;
-					curse.SetUpdate();
-					text[0].SetUpdate();
-					title[0].SetUpdate();
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_DOWN:
 					d = text[0].Text().Str()[selectIndex];
@@ -860,15 +786,11 @@ int32 spt::HmiTimeEditDialog::Edit()
 							d--;
 						}
 					}
-					text[0].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					curse.SetUpdate();
-					text[0].SetUpdate();
-					title[0].SetUpdate();
+					text[0].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					UpdateDate();
 					return E_FORCE_ESC;
@@ -877,24 +799,16 @@ int32 spt::HmiTimeEditDialog::Edit()
 					break;
 				}
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first)
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
-		if (timer.Status())
-		{
-			Show(E_Update);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return -1;
 }
@@ -941,28 +855,19 @@ void spt::HmiTimeEditDialog::AutoLayout()
 {
 	lineWidth = inputMaxLen + 1 + titleMaxLen;
 	HmiWidDialog::AutoLayout();
-	title[0].Rect().x = rect.x + gd->FontWidth();
-	title[0].Rect().y = rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont();
-	title[0].Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	title[0].Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	text[0].Rect().w = (inputMaxLen + 1) * gd->FontWidth();
-	text[0].Rect().x = title[0].Rect().x + title[0].Rect().w;
-	text[0].Rect().h = title[0].Rect().h;
-	text[0].Rect().y = title[0].Rect().y;
-	text[0].Text().Clear();
-	date.ToStrHzFmt1(text[0].Text());
-	title[0].SetVisible(1);
-	text[0].SetVisible(1);
+	title[0].SetRect(rect.x + gd->FontWidth(), rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont() * 2);
+	text[0].SetRect(title[0].Rect().x + title[0].Rect().w, title[0].Rect().y, (inputMaxLen + 1) * gd->FontWidth(), title[0].Rect().h);
+	String100B str;
+	date.ToStrHzFmt1(str);
+	text[0].SetText(str.Str());
 	AddChild(&title[0]);
 	AddChild(&text[0]);
-	curse.Rect() = text[0].Rect();
-	curse.Rect().w = gd->FontWidth();
+	curse.SetRect(text[0].Rect().x + gd->FontWidth() * selectIndex, text[0].Rect().y, gd->FontWidth(), gd->FontHeight());
 	selectIndex = text[0].Text().StrLen() - 1;
-	curse.Rect().x = text[0].Rect().x + gd->FontWidth() * selectIndex;
-	curse.Text().Clear();
-	curse.Text() << text[0].Text().Str()[selectIndex];
+	str.Clear();
+	str << text[0].Text().Str()[selectIndex];
+	curse.SetText(str.Str());
 	AddChild(&curse);
-	curse.IsSelected() = 1;
 }
 
 spt::HmiTimeEditDialog::HmiTimeEditDialog()
@@ -971,6 +876,23 @@ spt::HmiTimeEditDialog::HmiTimeEditDialog()
 	text[0].SetText("    年  月  日  :  :  ");
 	inputMaxLen = text[0].Text().StrLen();
 	titleMaxLen = 0;
+}
+
+int32 spt::HmiTimeEditDialog::ShowSelf()
+{
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+	}
+	text[0].ClearRect();
+	String10B str;
+	str << text[0].Text().Str()[selectIndex];
+	curse.SetText(str.Str());
+	curse.SetPos(text[0].Rect().x + gd->FontWidth() * selectIndex, curse.Rect().YStart());
+	text[0].SetUpdateSelf(1);
+	HmiWidDialog::ShowSelf();
+	return 0;
 }
 
 void spt::HmiTimeEditDialog::UpdateDate()
@@ -983,10 +905,7 @@ void spt::HmiTimeEditDialog::UpdateDate()
 int32 spt::HmiInt32DataDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
+	SetPeriodUpdate(1, 200);
 	char d = 0;
 	while (1)
 	{
@@ -1005,7 +924,7 @@ int32 spt::HmiInt32DataDialog::Edit()
 					ts.GetFixedInt(Cur, 0, dodd);
 					if ((Cur >= Min) && (Cur <= Max))
 					{
-						UnShow();
+						ClearRect();
 						gd->Update(rect);
 						return E_OK;
 					}
@@ -1020,15 +939,16 @@ int32 spt::HmiInt32DataDialog::Edit()
 						else
 						{
 							Cur = Def;
-							UnShow();
+							ClearRect();
 							gd->Update(rect);
 							return E_OK;
 						}
 					}
+					SetInied(0);
 					break;
 				}
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
@@ -1042,14 +962,10 @@ int32 spt::HmiInt32DataDialog::Edit()
 						}
 						if (text[2].Text().Str()[selectIndex] == ' ')
 						{
-							text[2].Text().Str()[selectIndex] = '0';
+							text[2].SetText(selectIndex, '0');
 						}
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_ADD:
 				case spt::EK_UP:
@@ -1070,11 +986,8 @@ int32 spt::HmiInt32DataDialog::Edit()
 					{
 						d = '0';
 					}
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
 					int32 r;
@@ -1087,11 +1000,7 @@ int32 spt::HmiInt32DataDialog::Edit()
 							selectIndex++;
 						}
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_SUB:
 				case spt::EK_DOWN:
@@ -1112,14 +1021,11 @@ int32 spt::HmiInt32DataDialog::Edit()
 					{
 						d = '9';
 					}
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -1133,26 +1039,20 @@ int32 spt::HmiInt32DataDialog::Edit()
 				char d = key.Key2;
 				if (((d >= '0') && (d <= '9')) || (d == '-') || (d == '+'))
 				{
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 				}
-				text[2].IsUpdate() = 1;
-				curse.IsUpdate() = 1;
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first || timer.Status())
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return 0;
 }
@@ -1168,9 +1068,16 @@ void spt::HmiInt32DataDialog::Set(const char* Title, int32 Min, int32 Def, int32
 	this->DotNum = DotNum;
 	this->Max = Max;
 	titleMid.SetText(Title);
-	text[0].Text().Format(Max, 11, DotNum, 0, ' ');
-	text[1].Text().Format(Min, 11, DotNum, 0, ' ');
-	text[2].Text().Format(Def, 11, DotNum, 0, ' ');
+	String100B str;
+	str.Clear();
+	str.Format(Max, 11, DotNum, 0, ' ');
+	text[0].SetText(str.Str());
+	str.Clear();
+	str.Format(Min, 11, DotNum, 0, ' ');
+	text[1].SetText(str.Str());
+	str.Clear();
+	str.Format(Def, 11, DotNum, 0, ' ');
+	text[2].SetText(str.Str());
 	title[0].SetText("最大值:");
 	title[1].SetText("最小值:");
 	title[2].SetText("当前值:");
@@ -1185,10 +1092,6 @@ int32 spt::HmiInt32DataDialog::Data()
 int32 spt::HmiUInt32DataDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
 	char d = 0;
 	while (1)
 	{
@@ -1207,7 +1110,7 @@ int32 spt::HmiUInt32DataDialog::Edit()
 					ts.GetFixedInt(Cur, 0, dodd);
 					if ((Cur >= Min) && (Cur <= Max))
 					{
-						UnShow();
+						ClearRect();
 						gd->Update(rect);
 						return E_OK;
 					}
@@ -1222,15 +1125,16 @@ int32 spt::HmiUInt32DataDialog::Edit()
 						else
 						{
 							Cur = Def;
-							UnShow();
+							ClearRect();
 							gd->Update(rect);
-							return E_OK;
+							return E_ESC;
 						}
 					}
+					SetInied(0);
 					break;
 				}
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
@@ -1244,14 +1148,10 @@ int32 spt::HmiUInt32DataDialog::Edit()
 						}
 						if (text[2].Text().Str()[selectIndex] == ' ')
 						{
-							text[2].Text().Str()[selectIndex] = '0';
+							text[2].SetText(selectIndex, '0');
 						}
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_ADD:
 				case spt::EK_UP:
@@ -1264,11 +1164,8 @@ int32 spt::HmiUInt32DataDialog::Edit()
 					{
 						d = '0';
 					}
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
 					int32 r;
@@ -1281,11 +1178,7 @@ int32 spt::HmiUInt32DataDialog::Edit()
 							selectIndex++;
 						}
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_SUB:
 				case spt::EK_DOWN:
@@ -1298,14 +1191,11 @@ int32 spt::HmiUInt32DataDialog::Edit()
 					{
 						d = '9';
 					}
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -1318,26 +1208,20 @@ int32 spt::HmiUInt32DataDialog::Edit()
 				d = key.Key2;
 				if (((d >= '0') && (d <= '9')))
 				{
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 				}
-				text[2].IsUpdate() = 1;
-				curse.IsUpdate() = 1;
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first || timer.Status())
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return 0;
 }
@@ -1353,9 +1237,16 @@ void spt::HmiUInt32DataDialog::Set(const char* Title, uint32 Min, uint32 Def, ui
 	this->DotNum = DotNum;
 	this->Max = Max;
 	titleMid.SetText(Title);
-	text[0].Text().Format(Max, 11, DotNum, 0, ' ');
-	text[1].Text().Format(Min, 11, DotNum, 0, ' ');
-	text[2].Text().Format(Def, 11, DotNum, 0, ' ');
+	String100B str;
+	str.Clear();
+	str.Format(Max, 11, DotNum, 0, ' ');
+	text[0].SetText(str.Str());
+	str.Clear();
+	str.Format(Min, 11, DotNum, 0, ' ');
+	text[1].SetText(str.Str());
+	str.Clear();
+	str.Format(Def, 11, DotNum, 0, ' ');
+	text[2].SetText(str.Str());
 	title[0].SetText("最大值:");
 	title[1].SetText("最小值:");
 	title[2].SetText("当前值:");
@@ -1373,60 +1264,49 @@ void spt::HmiIntDataEditDialog::AutoLayout()
 	inputMaxLen = Max(text[0].Text().StrLen(), text[1].Text().StrLen());
 	inputMaxLen = Max((int32)inputMaxLen, text[2].Text().StrLen());
 	lineCount = 4;
-	text[2].IsCanBeSelect() = 1;
+	text[2].SetCanBeSelect(1);
 	lineWidth = inputMaxLen + 1 + titleMaxLen;
 	HmiWidDialog::AutoLayout();
-	titleMid.Rect().x = rect.x + rect.w / 2 - titleMid.Text().StrLen() * gd->FontWidth() / 2;
-	titleMid.Rect().y = rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont();
-	titleMid.Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	titleMid.Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	titleMid.SetVisible(1);
+	titleMid.SetRect(rect.x + rect.w / 2 - titleMid.Text().StrLen() * gd->FontWidth() / 2, rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont() * 2);
 	AddChild(&titleMid);
-	title[0].Rect().x = rect.x + gd->FontWidth();
-	title[0].Rect().y = titleMid.Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-	title[0].Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	title[0].Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	text[0].Rect().w = (inputMaxLen + 1) * gd->FontWidth();
-	text[0].Rect().x = title[0].Rect().x + title[0].Rect().w;
-	text[0].Rect().h = title[0].Rect().h;
-	text[0].Rect().y = title[0].Rect().y;
-	title[0].SetVisible(1);
-	text[0].SetVisible(1);
+	title[0].SetRect(rect.x + gd->FontWidth(), titleMid.Rect().y + gd->FontHeight() + gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont() * 2);
+	text[0].SetRect(title[0].Rect().x + title[0].Rect().w, title[0].Rect().y, (inputMaxLen + 1) * gd->FontWidth(), title[0].Rect().h);
 	AddChild(&title[0]);
 	AddChild(&text[0]);
 	for (uint32 i = 1; i < M_ArrLen(title); i++)
 	{
-		title[i].Rect().x = title[i - 1].Rect().x;
-		title[i].Rect().y = title[i - 1].Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-		title[i].Rect().w = title[i - 1].Rect().w;
-		title[i].Rect().h = title[i - 1].Rect().h;
-
-		text[i].Rect().w = text[i - 1].Rect().w;
-		text[i].Rect().x = title[0].Rect().x + title[0].Rect().w;
-		text[i].Rect().h = title[0].Rect().h;
-		text[i].Rect().y = title[i].Rect().y;
-		title[i].SetVisible(1);
-		text[i].SetVisible(1);
+		title[i].SetRect(title[i - 1].Rect().x, title[i - 1].Rect().y + gd->FontHeight() + gd->SpaceOfFont(), title[i - 1].Rect().w, title[i - 1].Rect().h);
+		text[i].SetRect(title[0].Rect().x + title[0].Rect().w, title[i].Rect().y, text[i - 1].Rect().w, title[0].Rect().h);
 		AddChild(&title[i]);
 		AddChild(&text[i]);
 	}
-	curse.Rect() = text[2].Rect();
-	curse.Rect().w = gd->FontWidth();
-	curse.Text().Clear();
 	selectIndex = text[2].Text().StrLen() - 1;
-	curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-	curse.Text() << text[2].Text().Str()[selectIndex];
+	curse.SetRect(text[2].Rect().x + gd->FontWidth() * selectIndex, text[2].Rect().y, gd->FontWidth(), gd->FontHeight());
 	AddChild(&curse);
-	curse.IsSelected() = 1;
+}
+
+int32 spt::HmiIntDataEditDialog::ShowSelf()
+{
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+	}
+	if (isUpdate)
+	{
+		text[2].ClearRect();
+		curse.SetPosX(text[2].Rect().x + gd->FontWidth() * selectIndex);
+		String10B str;
+		str << text[2].Text().Str()[selectIndex];
+		curse.SetText(str.Str());
+		curse.SetUpdateSelf(1);
+	}
+	return 0;
 }
 
 int32 spt::HmiHex32DataDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
 	char d = 0;
 	uint8 minL = text[2].Text().StrLen() - 8;
 	while (1)
@@ -1445,7 +1325,7 @@ int32 spt::HmiHex32DataDialog::Edit()
 					ts.GetHex(Cur, 0);
 					if ((Cur >= Min) && (Cur <= Max))
 					{
-						UnShow();
+						ClearRect();
 						gd->Update(rect);
 						return E_OK;
 					}
@@ -1460,15 +1340,16 @@ int32 spt::HmiHex32DataDialog::Edit()
 						else
 						{
 							Cur = Def;
-							UnShow();
+							ClearRect();
 							gd->Update(rect);
 							return E_OK;
 						}
 					}
+					SetInied(0);
 					break;
 				}
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
@@ -1481,11 +1362,7 @@ int32 spt::HmiHex32DataDialog::Edit()
 							selectIndex++;
 						}
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_ADD:
 				case spt::EK_UP:
@@ -1506,11 +1383,8 @@ int32 spt::HmiHex32DataDialog::Edit()
 					{
 						d = 'A';
 					}
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
 					int32 r;
@@ -1519,11 +1393,7 @@ int32 spt::HmiHex32DataDialog::Edit()
 					{
 						selectIndex = r;
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_SUB:
 				case spt::EK_DOWN:
@@ -1544,14 +1414,11 @@ int32 spt::HmiHex32DataDialog::Edit()
 					{
 						d = 'F';
 					}
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -1564,38 +1431,29 @@ int32 spt::HmiHex32DataDialog::Edit()
 				d = key.Key2;
 				if ((d >= '0') && (d <= '9'))
 				{
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 				}
 				else if ((d >= 'A') && (d <= 'F'))
 				{
-					text[2].Text().Str()[selectIndex] = d;
-					curse.Text().Clear();
-					curse.Text() << d;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 				}
 				else if ((d >= 'a') && (d <= 'f'))
 				{
-					text[2].Text().Str()[selectIndex] = d - 'a' + 'A';
-					curse.Text().Clear();
-					curse.Text() << d;
+					text[2].SetText(selectIndex, d);
+					SetUpdateSelf(1);
 				}
-				text[2].IsUpdate() = 1;
-				curse.IsUpdate() = 1;
 			}
 		}
 		else
 		{
 			HmiMain::Instance().MsSleep(10);
 		}
-		if (first || timer.Status())
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return 0;
 }
@@ -1611,9 +1469,15 @@ void spt::HmiHex32DataDialog::Set(const char* Title, uint32 Min, uint32 Def, uin
 	Cur = this->Def = Def;
 	this->Max = Max;
 	titleMid.SetText(Title);
-	text[0].Text().FormatHex(Max);
-	text[1].Text().FormatHex(Min);
-	text[2].Text().FormatHex(Def);
+	String100B str;
+	str.FormatHex(Max);
+	text[0].SetText(str.Str());
+	str.Clear();
+	str.FormatHex(Min);
+	text[1].SetText(str.Str());
+	str.Clear();
+	str.FormatHex(Def);
+	text[2].SetText(str.Str());
 	title[0].SetText("最大值:0x");
 	title[1].SetText("最小值:0x");
 	title[2].SetText("当前值:0x");
@@ -1627,14 +1491,13 @@ uint32 spt::HmiHex32DataDialog::Data()
 
 int32 spt::HmiBit32DataDialog::Edit()
 {
+	AutoLayout();
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
+	SetPeriodUpdate(1, 200);
 	char d = 0;
 	uint8 minL = text[2].Text().StrLen() - DotNum;
 	uint8 MaxL = text[2].Text().StrLen() - 1;
+	BitNum = MaxL;
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -1648,7 +1511,7 @@ int32 spt::HmiBit32DataDialog::Edit()
 				{
 					if ((Cur >= Min) && (Cur <= Max))
 					{
-						UnShow();
+						ClearRect();
 						gd->Update(rect);
 						return E_OK;
 					}
@@ -1663,15 +1526,16 @@ int32 spt::HmiBit32DataDialog::Edit()
 						else
 						{
 							Cur = Def;
-							UnShow();
+							ClearRect();
 							gd->Update(rect);
 							return E_OK;
 						}
 					}
+					SetInied(0);
 					break;
 				}
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
@@ -1684,14 +1548,7 @@ int32 spt::HmiBit32DataDialog::Edit()
 							selectIndex++;
 						}
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					text[1].SetText(Des[MaxL - selectIndex].des);
-					text[2].Text().Clear();
-					text[2].Text().FormatBin(Cur);
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_ADD:
 				case spt::EK_UP:
@@ -1703,14 +1560,7 @@ int32 spt::HmiBit32DataDialog::Edit()
 					{
 						SetBit(Cur, MaxL - selectIndex, 1);
 					}
-					text[0].Text().Clear();
-					text[0].Text().FormatHex(Cur);
-					text[2].Text().Clear();
-					text[2].Text().FormatBin(Cur);
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
 					int32 r;
@@ -1719,14 +1569,7 @@ int32 spt::HmiBit32DataDialog::Edit()
 					{
 						selectIndex = r;
 					}
-					curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-					text[1].SetText(Des[MaxL - selectIndex].des);
-					text[2].Text().Clear();
-					text[2].Text().FormatBin(Cur);
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_SUB:
 				case spt::EK_DOWN:
@@ -1738,17 +1581,10 @@ int32 spt::HmiBit32DataDialog::Edit()
 					{
 						SetBit(Cur, MaxL - selectIndex, 1);
 					}
-					text[0].Text().Clear();
-					text[0].Text().FormatHex(Cur);
-					text[2].Text().Clear();
-					text[2].Text().FormatBin(Cur);
-					curse.Text().Clear();
-					curse.Text() << text[2].Text().Str()[selectIndex];
-					text[2].IsUpdate() = 1;
-					curse.IsUpdate() = 1;
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -1767,30 +1603,18 @@ int32 spt::HmiBit32DataDialog::Edit()
 				{
 					SetBit(Cur, MaxL - selectIndex, 1);
 				}
-				text[0].Text().Clear();
-				text[0].Text().FormatHex(Cur);
-				text[2].Text().Clear();
-				text[2].Text().FormatBin(Cur);
-				curse.Text().Clear();
-				curse.Text() << text[2].Text().Str()[selectIndex];
-				text[2].IsUpdate() = 1;
-				curse.IsUpdate() = 1;
-				text[2].IsUpdate() = 1;
-				curse.IsUpdate() = 1;
+				SetUpdateSelf(1);
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first || timer.Status())
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return 0;
 }
@@ -1807,67 +1631,73 @@ void spt::HmiBit32DataDialog::Set(const char* Title, uint32 Min, uint32 Def, uin
 	this->Max = Max;
 	this->DotNum = BitLen;
 	titleMid.SetText(Title);
-	text[0].Text().FormatHex(Def);
-	text[1].Text() << Des[0].des;
-	text[2].Text().FormatBin(Def);
+	String100B str;
+	str.FormatHex(Cur);
+	text[0].SetText(str.Str());
+	text[1].SetText(Des[0].des);
+	str.Clear();
+	str.FormatBin(Cur);
+	text[2].SetText(str.Str());
 	title[0].SetText("当前值:0x");
-	title[1].SetText("比特:");
+	title[1].SetText("比  特:");
 	title[2].SetText("");
 
 	titleMaxLen = 8;
 	inputMaxLen = 21;
 	lineCount = 4;
-	text[2].IsCanBeSelect() = 1;
 	lineWidth = inputMaxLen + 1 + titleMaxLen;
 	HmiWidDialog::AutoLayout();
-	titleMid.Rect().x = rect.x + rect.w / 2 - titleMid.Text().StrLen() * gd->FontWidth() / 2;
-	titleMid.Rect().y = rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont();
-	titleMid.Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	titleMid.Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	titleMid.SetVisible(1);
+	titleMid.SetRect(rect.x + rect.w / 2 - titleMid.Text().StrLen() * gd->FontWidth() / 2, rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont() * 2);
 	AddChild(&titleMid);
-	title[0].Rect().x = rect.x + gd->FontWidth();
-	title[0].Rect().y = titleMid.Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-	title[0].Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	title[0].Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	text[0].Rect().w = (inputMaxLen + 1) * gd->FontWidth();
-	text[0].Rect().x = title[0].Rect().x + title[0].Rect().w;
-	text[0].Rect().h = title[0].Rect().h;
-	text[0].Rect().y = title[0].Rect().y;
-	title[0].SetVisible(1);
-	text[0].SetVisible(1);
+	title[0].SetRect(rect.x + gd->FontWidth(), titleMid.Rect().y + gd->FontHeight() + gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont() * 2);
+	text[0].SetRect(title[0].Rect().x + title[0].Rect().w, title[0].Rect().y, (inputMaxLen + 1) * gd->FontWidth(), title[0].Rect().h);
 	AddChild(&title[0]);
 	AddChild(&text[0]);
-	title[1].Rect().x = title[0].Rect().x;
-	title[1].Rect().y = title[0].Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-	text[1].Rect().y = title[1].Rect().y;
-	text[1].Rect().x = title[1].Rect().x;
-	text[1].SetVisible(1);
+	title[1].SetPos(title[0].Rect().x, title[0].Rect().y + gd->FontHeight() + gd->SpaceOfFont());
+	text[1].SetRect(title[0].Rect().x + title[0].Rect().w, title[1].Rect().y, text[0].Rect().w, text[0].Rect().h);
 	AddChild(&text[1]);
-	title[2].Rect().x = title[1].Rect().x;
-	title[2].Rect().y = title[1].Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-	text[2].Rect().y = title[2].Rect().y;
-	text[2].Rect().x = title[2].Rect().x;
-	text[2].SetVisible(1);
+	title[2].SetPos(title[1].Rect().x, title[1].Rect().y + gd->FontHeight() + gd->SpaceOfFont());
+	text[2].SetRect(title[0].Rect().x + title[0].Rect().w, title[2].Rect().y, text[0].Rect().w, text[0].Rect().h);
 	AddChild(&text[2]);
-	curse.Rect() = text[2].Rect();
-	curse.Rect().w = gd->FontWidth();
-	curse.Rect().h = gd->FontHeight() + gd->SpaceOfFont();
-	curse.Text().Clear();
+	curse.SetRect(text[2].Rect().x, text[2].Rect().y, gd->FontWidth(), gd->FontHeight());
 	selectIndex = text[2].Text().StrLen() - 1;
-	curse.Rect().x = text[2].Rect().x + gd->FontWidth() * selectIndex;
-	curse.Text() << text[2].Text().Str()[selectIndex];
+	curse.SetPosX(text[2].Rect().x + gd->FontWidth() * selectIndex);
+	str.Clear();
+	str << text[2].Text().Str()[selectIndex];
+	curse.SetText(str.Str());
 	AddChild(&curse);
-	curse.IsSelected() = 1;
+}
+
+int32 spt::HmiBit32DataDialog::ShowSelf()
+{
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+	}
+	String100B str;
+	curse.SetPosX(text[2].Rect().x + gd->FontWidth() * selectIndex);
+	str.FormatHex(Cur);
+	text[0].ClearRect();
+	text[1].ClearRect();
+	text[2].ClearRect();
+	text[0].SetUpdateSelf(1);
+	text[1].SetUpdateSelf(1);
+	text[2].SetUpdateSelf(1);
+	text[0].SetText(str.Str());
+	text[1].SetText(Des[BitNum - selectIndex].des);
+	str.Clear();
+	str.FormatBin(Cur);
+	text[2].SetText(str.Str());
+	str.Clear();
+	str << text[2].Text().Str()[selectIndex];
+	curse.SetText(str.Str());
+	return 0;
 }
 
 int32 spt::HmiEnum32DataDialog::Edit()
 {
 	HmiKey key;
-	bool8 first = 1;
-	MsPeriodTimer timer;
-	timer.UpCnt(200);
-	timer.Enable(1);
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -1881,7 +1711,7 @@ int32 spt::HmiEnum32DataDialog::Edit()
 				{
 					if ((Cur >= Min) && (Cur <= Max))
 					{
-						UnShow();
+						ClearRect();
 						gd->Update(rect);
 						return E_OK;
 					}
@@ -1896,15 +1726,16 @@ int32 spt::HmiEnum32DataDialog::Edit()
 						else
 						{
 							Cur = Def;
-							UnShow();
+							ClearRect();
 							gd->Update(rect);
 							return E_OK;
 						}
 					}
+					SetInied(0);
 					break;
 				}
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_ESC;
 					break;
@@ -1917,6 +1748,7 @@ int32 spt::HmiEnum32DataDialog::Edit()
 						Cur++;
 					}
 					text[2].SetText(Des[Cur].des);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
 
@@ -1928,9 +1760,10 @@ int32 spt::HmiEnum32DataDialog::Edit()
 						Cur--;
 					}
 					text[2].SetText(Des[Cur].des);
+					SetUpdateSelf(1);
 					break;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return E_FORCE_ESC;
 					break;
@@ -1938,19 +1771,16 @@ int32 spt::HmiEnum32DataDialog::Edit()
 					break;
 				}
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
-		if (first || timer.Status())
-		{
-			first = 0;
-			Show(E_AllFrame);
-			gd->Update(rect);
-		}
+		HmiWidDialog::Show();
+		Update();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 }
 
@@ -1965,9 +1795,9 @@ void spt::HmiEnum32DataDialog::Set(const char* Title, uint32 Min, uint32 Def, ui
 	Cur = this->Def = Def;
 	this->Max = Max;
 	titleMid.SetText(Title);
-	text[0].Text() = Des[Min].des;
-	text[1].Text() = Des[Max].des;
-	text[2].Text() = Des[Def].des;
+	text[0].SetText(Des[Min].des);
+	text[1].SetText(Des[Max].des);
+	text[2].SetText(Des[Def].des);
 	title[0].SetText("起始值:");
 	title[1].SetText("结束值:");
 	title[2].SetText("当前值:");
@@ -1976,45 +1806,35 @@ void spt::HmiEnum32DataDialog::Set(const char* Title, uint32 Min, uint32 Def, ui
 	inputMaxLen = spt::Max(text[0].Text().StrLen(), text[1].Text().StrLen());
 	inputMaxLen = spt::Max((int32)inputMaxLen, text[2].Text().StrLen());
 	lineCount = 4;
-	text[2].IsCanBeSelect() = 1;
 	lineWidth = inputMaxLen + 1 + titleMaxLen;
 	HmiWidDialog::AutoLayout();
-	titleMid.Rect().x = rect.x + rect.w / 2 - titleMid.Text().StrLen() * gd->FontWidth() / 2;
-	titleMid.Rect().y = rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont();
-	titleMid.Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	titleMid.Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	titleMid.SetVisible(1);
+	titleMid.SetRect(rect.x + rect.w / 2 - titleMid.Text().StrLen() * gd->FontWidth() / 2, rect.y + gd->FontWidth() / 2 + gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight() + gd->SpaceOfFont() * 2);
 	AddChild(&titleMid);
-	title[0].Rect().x = rect.x + gd->FontWidth();
-	title[0].Rect().y = titleMid.Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-	title[0].Rect().w = (titleMaxLen + 1) * gd->FontWidth();
-	title[0].Rect().h = gd->FontHeight() + gd->SpaceOfFont() * 2;
-	text[0].Rect().w = (inputMaxLen + 1) * gd->FontWidth();
-	text[0].Rect().x = title[0].Rect().x + title[0].Rect().w;
-	text[0].Rect().h = title[0].Rect().h;
-	text[0].Rect().y = title[0].Rect().y;
-	title[0].SetVisible(1);
-	text[0].SetVisible(1);
+	title[0].SetRect(rect.x + gd->FontWidth(), titleMid.Rect().y + gd->FontHeight() + 2 * gd->SpaceOfFont(), (titleMaxLen + 1) * gd->FontWidth(), gd->FontHeight());
+	text[0].SetRect(title[0].Rect().x + title[0].Rect().w, title[0].Rect().y, (inputMaxLen)*gd->FontWidth(), title[0].Rect().h);
 	AddChild(&title[0]);
 	AddChild(&text[0]);
 	for (uint32 i = 1; i < M_ArrLen(title); i++)
 	{
-		title[i].Rect().x = title[i - 1].Rect().x;
-		title[i].Rect().y = title[i - 1].Rect().y + gd->FontHeight() + gd->SpaceOfFont();
-		title[i].Rect().w = title[i - 1].Rect().w;
-		title[i].Rect().h = title[i - 1].Rect().h;
-
-		text[i].Rect().w = text[i - 1].Rect().w;
-		text[i].Rect().x = title[0].Rect().x + title[0].Rect().w;
-		text[i].Rect().h = title[0].Rect().h;
-		text[i].Rect().y = title[i].Rect().y;
-		title[i].SetVisible(1);
-		text[i].SetVisible(1);
+		title[i].SetRect(title[i - 1].Rect().x, title[i - 1].Rect().y + gd->FontHeight() + 2 * gd->SpaceOfFont(), title[i - 1].Rect().w, title[i - 1].Rect().h);
+		text[i].SetRect(title[0].Rect().x + title[0].Rect().w, title[i].Rect().y, text[0].Rect().w, text[0].Rect().h);
 		AddChild(&title[i]);
 		AddChild(&text[i]);
 	}
-	text[2].IsSelected() = 1;
-	text[2].Rect().w = text[2].Text().StrLen() * gd->FontWidth();
+	text[2].Backcolor() = curse.Backcolor();
+	text[2].Color() = curse.Color();
+}
+
+int32 spt::HmiEnum32DataDialog::ShowSelf()
+{
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+	}
+	text[2].ClearRect();
+	text[2].SetUpdate(1);
+	return 0;
 }
 
 void spt::HmiInfoDialog::SetTitle(const char* Str1, const char* Str2, const char* Str3, const char* Str4, const char* Str5)
@@ -2048,14 +1868,14 @@ void spt::HmiInfoDialog::SetTitle(const char* Str1, const char* Str2, const char
 	else
 	{
 		title[lineCount].SetText(warn);
-		lineWidth = Max(title[lineCount].Text().StrLen(),(int32) lineWidth);
+		lineWidth = Max(title[lineCount].Text().StrLen(), (int32)lineWidth);
 		lineCount++;
 		return;
 	}
 	if (Str3)
 	{
 		title[lineCount].SetText(Str3);
-		lineWidth = Max(title[lineCount].Text().StrLen(),(int32) lineWidth);
+		lineWidth = Max(title[lineCount].Text().StrLen(), (int32)lineWidth);
 		lineCount++;
 	}
 	else
@@ -2074,7 +1894,7 @@ void spt::HmiInfoDialog::SetTitle(const char* Str1, const char* Str2, const char
 	else
 	{
 		title[lineCount].SetText(warn);
-		lineWidth = Max(title[lineCount].Text().StrLen(),(int32) lineWidth);
+		lineWidth = Max(title[lineCount].Text().StrLen(), (int32)lineWidth);
 		lineCount++;
 		return;
 	}
@@ -2093,7 +1913,19 @@ void spt::HmiInfoDialog::SetTitle(const char* Str1, const char* Str2, const char
 int32 spt::HmiInfoDialog::Edit()
 {
 	AutoLayout();
-	Show(E_Update);
-	gd->Update(rect);
+	ClearRect();
+	HmiWidDialog::Show();
+	Update();
+	return 0;
+}
+
+int32 spt::HmiInfoDialog::ShowSelf()
+{
+	if (!isInied)
+	{
+		ClearRect();
+		WidRect::ShowSelf();
+	}
+	HmiWidDialog::ShowSelf();
 	return 0;
 }

@@ -30,12 +30,12 @@ namespace spt
 	public:
 		HmiTextWnd(DispType Mode);
 		void SetPage(uint32 Page, const char* Text);
-		void Show();
+		int32 Show();
 		void IniAllPage();
 		HmiTextWndPage* GetWndCell(uint32 Index);
 		HmiTextWndPage* GetWndPage(uint32 Page);
 	protected:
-		virtual void ShowSelf();
+		virtual int32 ShowSelf();
 		void ShowSinglePage();
 		void ShowScrollPage();
 		void ShowContinuePage();

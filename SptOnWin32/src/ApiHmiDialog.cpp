@@ -1,18 +1,17 @@
 #include "ApiProject.h"
 using namespace spt;
 
-
 int32 spt::DispProcess(int Step, const char* info)
 {
 	HmiPos pos = spt::HmiMenuService::Instance().Rect().Pos();
 	GraphicDevice& gd = GraphicDevice::Instance();
 	pos.y += Step * (gd.FontHeight() + gd.SpaceOfFont()) + gd.SpaceOfFont();
 	pos.x += gd.FontWidth() / 2;
-	HmiWidTextLine text;
-	text.SetPos(pos.x, pos.y, StrLen(info));
+	WidTextLine text;
+	text.SetRect(pos.x, pos.y, gd.FontWidth() * StrLen(info), gd.FontHeight());
 	text.SetText(info);
-	text.SetVisible(1);
-	text.Show(text.E_AllFrame);
+	text.ClearRect();
+	text.Show();
 	gd.Update(text.Rect());
 	return 0;
 }
@@ -34,7 +33,7 @@ int32 spt::DispPressAnyKey(int32 Ms)
 			}
 			break;
 		}
-		HmiMain::Instance().MsSleep(50);
+		HmiMain::Instance().MsSleep(200);
 	}
 	return 0;
 }

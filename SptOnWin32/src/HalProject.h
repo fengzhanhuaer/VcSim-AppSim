@@ -32,8 +32,9 @@ enum HalSerialParaType
 	E_HSPT_Parity,//奇偶校验
 	E_HSPT_StopBit,//停止位
 	E_HSPT_AppPara,//应用设置的上述参数
-	E_HSPT_EnableSend,//发送使能
-	E_HSPT_EnableRec,//接收使能
+	E_HSPT_EnableTxRx,//接收/发送使能
+	E_HSPT_EnableTx,//发送使能
+	E_HSPT_EnableRx,//接收使能
 	E_HSPT_Num,
 };
 extern"C"  int SptSendSerialData(unsigned int No, void* Sur, int MsgLen);

@@ -15,10 +15,10 @@ namespace spt
 	{
 		bool8 SetRect(int16 x, int16 y, int16 w, int16 h);
 		void Set(const HmiPos pos) { x = pos.x; y = pos.y; };
-		int16 XStart() { return x; }
-		int16 XEnd() { return x + w; }//不含
-		int16 YStart() { return y; }
-		int16 YEnd() { return y + h; }//不含
+		int16 XStart() const { return x; }
+		int16 XEnd()const { return x + w; }//不含
+		int16 YStart()const { return y; }
+		int16 YEnd() const { return y + h; }//不含
 		HmiPos Pos() const { return HmiPos{ x,y }; }
 		int16 x;
 		int16 y;

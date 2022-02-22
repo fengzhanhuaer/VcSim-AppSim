@@ -261,11 +261,13 @@ namespace spt
 	public:
 		WidObject();
 	public:
-		virtual void Show();
+		virtual int32 Show();
 		const HmiRect& Rect() { return rect; };
 		bool8 SetRect(const HmiRect& Rect);
 		bool8 SetRect(int16 x, int16 y, int16 w, int16 h);
 		bool8 SetPos(int16 x, int16 y);
+		bool8 SetPosX(int16 x);
+		bool8 SetPosY(int16 y);
 		bool8 IsInied() { return isInied; }
 		bool8 IsUpdate() { return isUpdate; }
 		bool8 IsUpdateSelf() { return isUpdateSelf; }
@@ -285,10 +287,15 @@ namespace spt
 		void*& ClientData() { return clientData; };
 		bool8 AddChild(class WidObject* Object);
 		void ClearRect();
+		bool8 Update();
 	protected:
-		virtual void ShowSelf();
-		virtual void ShowChild();
-		virtual void ShowPeriod();
+		virtual int32 ShowSelf();
+		virtual int32 ShowChild();
+		virtual int32 ShowPeriod();
+		WidObject* FindFirstSelChild();
+		WidObject* FindLastSelChild();
+		WidObject* Go2LastSelChild();
+		WidObject* Go2NextSelChild();
 	protected:
 		static GraphicDevice* gd;
 		static HmiKeyService* key;
@@ -300,6 +307,9 @@ namespace spt
 		bool8 isCanBeSelect;
 		bool8 isSelected;
 		bool8 isEnable;
+		uint16 page;
+		uint16 row;
+		uint16 col;
 		GraphicDevice::Color color;
 		GraphicDevice::Color backcolor;
 		MsPeriodTimer periodUpdateTimer;
@@ -308,6 +318,7 @@ namespace spt
 		class WidObject* lastObject;
 		class WidObject* nextObject;
 		class WidObject* parent;
+		class WidObject* cursepos;
 		void* clientData;
 		friend  void HmiMainFramePowerUpIni();
 	};
@@ -320,7 +331,7 @@ namespace spt
 		const HmiPos& StartPos() { return startPos; };
 		const HmiPos& EndPos() { return endPos; };
 	protected:
-		virtual void ShowSelf();
+		virtual int32 ShowSelf();
 	protected:
 		HmiPos startPos;
 		HmiPos endPos;
@@ -331,7 +342,7 @@ namespace spt
 	public:
 
 	protected:
-		virtual void ShowSelf();
+		virtual int32 ShowSelf();
 	protected:
 
 	};
@@ -340,16 +351,48 @@ namespace spt
 	public:
 		WidTextLine();
 		bool8 SetText(const char* Text);
+		const SalString& Text() { return text; };
+		bool8 SetText(uint16 Index, char Data);
 	protected:
-		virtual void ShowSelf();
+		virtual int32 ShowSelf();
 	protected:
 		String100B text;
+	};
+	class WidDataLine :public WidObject
+	{
+	public:
+		WidDataLine();
+		void SetData(uint8 Type, u64value Value, bool8 IsFromRight, uint8 Len, uint8 DotLen, bool8 IsAddZero);
+		void SetData(u64value Value);
+		const SalString& Text() { return text; };
+		const st64value& Data() { return data; }
+	protected:
+		virtual int32 ShowSelf();
+	protected:
+		String20B text;
+		st64value data;
+	};
+	class WidCurseTextLine :public WidTextLine
+	{
+	public:
+		WidCurseTextLine();
+		uint16 SetRow(uint16 Row);
+		uint16 SetCol(uint16 Col);
+		uint16 Col() { return col; };
+		uint16 Row() { return row; };
+	protected:
+		virtual int32 ShowSelf();
+	protected:
+		uint16 row;
+		uint16 col;
 	};
 	class WidTextLineRect :public WidObject
 	{
 	public:
+		bool8 SetText(const char* Text);
+		const SalString& Text() { return text; };
 	protected:
-		virtual void ShowSelf();
+		virtual int32 ShowSelf();
 	protected:
 		String100B text;
 	};
@@ -370,7 +413,7 @@ namespace spt
 		void ClearCtx();
 		void ClearCtxLine(uint32 LineNum);
 	protected:
-		virtual void ShowSelf();
+		virtual int32 ShowSelf();
 	protected:
 		char title[30];
 		char ctx[20][60];

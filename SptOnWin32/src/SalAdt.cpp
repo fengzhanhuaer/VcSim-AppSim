@@ -217,17 +217,17 @@ void* spt::ArrayBuf::BufBase()
 	return bufBase;
 }
 
-uint32 spt::ArrayBuf::ElementSize()
+uint32 spt::ArrayBuf::ElementSize()const
 {
 	return elementSize;
 }
 
-uint32 spt::ArrayBuf::ElementNum()
+uint32 spt::ArrayBuf::ElementNum()const
 {
 	return elementNum;
 }
 
-uint32 spt::ArrayBuf::BufSize()
+uint32 spt::ArrayBuf::BufSize()const
 {
 	return elementNum * elementSize;
 }

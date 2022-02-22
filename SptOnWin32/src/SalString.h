@@ -54,8 +54,8 @@ namespace spt
 		void Replace(char oldchar, char newchar);
 		void Reverse();
 		void Clear();
-		int32 StrLen();
-		int32 StrBufLen();
+		int32 StrLen()const;
+		int32 StrBufLen()const;
 	protected:
 		void SetBuf(char* Buf, uint32 BufSize);
 	private:

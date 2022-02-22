@@ -78,9 +78,9 @@ namespace spt
 		void* GetElement(uint32 No);
 		void* GetElement(uint32 No, void* Buf);
 		bool8 SetElement(uint32 No, void* Buf);
-		uint32 ElementSize();
-		uint32 ElementNum();
-		uint32 BufSize();
+		uint32 ElementSize()const;
+		uint32 ElementNum()const;
+		uint32 BufSize()const;
 		void* BufBase();
 		//存储指针型数据专用接口
 		void* GetAddrElement(uint32 No);

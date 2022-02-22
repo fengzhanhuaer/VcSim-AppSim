@@ -1,7 +1,7 @@
 #include "SptProject.h"
 using namespace spt;
 
-void spt::HmiStatusBar::Show()
+int32 spt::HmiStatusBar::Show()
 {
 	if (updateTimer.Status())
 	{
@@ -11,7 +11,9 @@ void spt::HmiStatusBar::Show()
 		{
 			SetUpdate(1);
 			WidLine line;
-			line.SetRect(rect.x, rect.y, rect.h, 1);
+			line.SetWidth(1);
+			line.SetStartPos(rect.x, rect.y);
+			line.SetEndPos(rect.x, rect.y + rect.h);
 			WidRect::ClearRect();
 			WidRect::Show();
 			lastSec = rtc.second;
@@ -21,7 +23,8 @@ void spt::HmiStatusBar::Show()
 			text.SetPos(rect.x + 2, rect.y + 2);
 			text.SetText(str.Str());
 			text.Show();
-			line.SetPos(line.Rect().x + 22 * gd->FontWidth() + 4, line.Rect().y);
+			line.SetStartPos(line.StartPos().x + 22 * gd->FontWidth() + 4, line.StartPos().y);
+			line.SetEndPos(line.EndPos().x + 22 * gd->FontWidth() + 4, line.EndPos().y);
 			line.Show();
 			SalDateQ q;
 			q.q = rtc.q;
@@ -40,7 +43,8 @@ void spt::HmiStatusBar::Show()
 					GraphicDevice::Instance().DrawBitMap(line.Rect().x + 2, line.Rect().y + 2, E_BMT_SNTP_SYN, GraphicDevice::E_Black);
 				}
 			}
-			line.SetPos(line.Rect().x + gd->FontWidth() * 2 + 4, line.Rect().y);
+			line.SetStartPos(line.StartPos().x + gd->FontWidth() * 2 + 4, line.StartPos().y);
+			line.SetEndPos(line.EndPos().x + gd->FontWidth() * 2 + 4, line.EndPos().y);
 			line.Show();
 			gd->Update(rect);
 			updateTimer.Restart();
@@ -52,7 +56,7 @@ void spt::HmiStatusBar::Show()
 		updateTimer.UpCnt(500);
 		updateTimer.Enable(1);
 	}
-	return;
+	return 0;
 }
 
 spt::HmiStatusBar::HmiStatusBar()

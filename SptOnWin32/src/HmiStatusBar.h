@@ -8,7 +8,7 @@ namespace spt
 	public:
 		M_Singleton(HmiStatusBar);
 	public:
-		void Show();
+		int32 Show();
 		/// <summary>
 		/// ÉèÖÃ´æ´¢×èÈû²ÎÊı
 		/// </summary>

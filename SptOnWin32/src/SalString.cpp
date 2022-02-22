@@ -675,12 +675,12 @@ void spt::SalString::Clear()
 	}
 }
 
-int32 spt::SalString::StrLen()
+int32 spt::SalString::StrLen()const
 {
 	return top;
 }
 
-int32 spt::SalString::StrBufLen()
+int32 spt::SalString::StrBufLen()const
 {
 	return BufSize();
 }

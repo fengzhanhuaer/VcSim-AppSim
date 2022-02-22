@@ -17,7 +17,7 @@ void spt::HmiTextWnd::SetPage(uint32 Page, const char* Text)
 	}
 }
 
-void spt::HmiTextWnd::Show()
+int32 spt::HmiTextWnd::Show()
 {
 	if (mode == E_SinglePage)
 	{
@@ -31,6 +31,7 @@ void spt::HmiTextWnd::Show()
 	{
 		ShowContinuePage();
 	}
+	return 0;
 }
 
 void spt::HmiTextWnd::IniAllPage()
@@ -63,7 +64,7 @@ HmiTextWndPage* spt::HmiTextWnd::GetWndPage(uint32 Page)
 	return 0;
 }
 
-void spt::HmiTextWnd::ShowSelf()
+int32 spt::HmiTextWnd::ShowSelf()
 {
 	uint32 dispMaxLine = DispMaxCtxLine();
 	if (mode == E_SinglePage)
@@ -195,6 +196,7 @@ void spt::HmiTextWnd::ShowSelf()
 		}
 	}
 	WidTextWnd::ShowSelf();
+	return 0;
 }
 
 void spt::HmiTextWnd::ShowSinglePage()

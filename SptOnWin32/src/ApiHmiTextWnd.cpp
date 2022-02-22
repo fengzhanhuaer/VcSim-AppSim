@@ -33,7 +33,7 @@ spt::ApiHmiTextWnd::ApiHmiTextWnd(DispType Mode, UpdateHmiTextWnd UpdateFunction
 	updateFunc = UpdateFunction;
 }
 
-void spt::ApiHmiTextWnd::Show()
+int32 spt::ApiHmiTextWnd::Show()
 {
-	HmiTextWnd::Show();
+	return HmiTextWnd::Show();
 }

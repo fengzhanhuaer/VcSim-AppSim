@@ -41,7 +41,7 @@ namespace spt
 		/// <summary>
 		/// 显示
 		/// </summary>
-		void Show();
+		int32 Show();
 		/// <summary>
 		/// 文本窗口
 		/// </summary>

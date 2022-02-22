@@ -1,4 +1,5 @@
 #include "SptProject.h"
+#include "HmiWidgets.h"
 using namespace spt;
 
 GraphicDevice* HmiWidObject::gd = 0;
@@ -1036,13 +1037,24 @@ spt::WidObject::WidObject()
 	nextObject = 0;
 	parent = 0;
 	clientData = 0;
+	cursepos = 0;
 	isInied = 0;
+	isUpdate = 0;
+	isUpdateSelf = 0;
+	isUpdateChild = 0;
+	isCanBeSelect = 0;
+	isSelected = 0;
+	isEnable = 1;
 	periodUpdateTimer.Enable(0);
 	color = gd->E_Black;
 	backcolor = gd->E_White;
 }
-void spt::WidObject::Show()
+int32 spt::WidObject::Show()
 {
+	if (!isEnable)
+	{
+		return 0;
+	}
 	if (isInied)
 	{
 		if (isUpdate)
@@ -1068,6 +1080,7 @@ void spt::WidObject::Show()
 		ShowChild();
 		isInied = 1;
 	}
+	return 0;
 }
 
 bool8 spt::WidObject::SetRect(const HmiRect& Rect)
@@ -1095,8 +1108,35 @@ bool8 spt::WidObject::SetPos(int16 x, int16 y)
 	return 1;
 }
 
+bool8 spt::WidObject::SetPosX(int16 x)
+{
+	rect.x = x;
+	SetUpdate(1);
+	return 1;
+}
+
+bool8 spt::WidObject::SetPosY(int16 y)
+{
+	rect.y = y;
+	SetUpdate(1);
+	return 1;
+}
+
 bool8 spt::WidObject::SetInied(bool8 is)
 {
+	if (is == 0)
+	{
+		SetUpdate(1);
+		if (childList)
+		{
+			WidObject* now = childList;
+			while (now)
+			{
+				now->SetInied(0);
+				now = now->nextObject;
+			}
+		}
+	}
 	return isInied = is;
 }
 
@@ -1183,6 +1223,7 @@ bool8 spt::WidObject::AddChild(WidObject* Object)
 			Object->lastObject = 0;
 		}
 	}
+	SetUpdateChild(1);
 	return 1;
 }
 
@@ -1192,20 +1233,35 @@ void spt::WidObject::ClearRect()
 	SetUpdate(1);
 }
 
-void spt::WidObject::ShowSelf()
+bool8 spt::WidObject::Update()
 {
-	if (!isUpdateSelf)
-	{
-		return;
-	}
-	isUpdateSelf = 0;
+	gd->Update(rect.x, rect.y, rect.w, rect.h);
+	return 0;
 }
 
-void spt::WidObject::ShowChild()
+int32 spt::WidObject::ShowSelf()
 {
+	if (!isEnable)
+	{
+		return 0;
+	}
+	if (!isUpdateSelf)
+	{
+		return 0;
+	}
+	isUpdateSelf = 0;
+	return 0;
+}
+
+int32 spt::WidObject::ShowChild()
+{
+	if (!isEnable)
+	{
+		return 0;
+	}
 	if (!isUpdateChild)
 	{
-		return;
+		return 0;
 	}
 	if (childList)
 	{
@@ -1217,11 +1273,124 @@ void spt::WidObject::ShowChild()
 		}
 	}
 	isUpdateChild = 0;
+	return 0;
 }
 
-void spt::WidObject::ShowPeriod()
+int32 spt::WidObject::ShowPeriod()
 {
+	return 0;
+}
 
+WidObject* spt::WidObject::FindFirstSelChild()
+{
+	if (cursepos)
+	{
+		cursepos->SetSelected(0);
+	}
+	cursepos = 0;
+	if (childList)
+	{
+		WidObject* now = childList;
+		while (now)
+		{
+			if (now->isCanBeSelect)
+			{
+				if (cursepos)
+				{
+					cursepos->SetSelected(0);
+				}
+				cursepos = now;
+				cursepos->SetSelected(1);
+				break;
+			}
+			now = now->nextObject;
+		}
+	}
+	return cursepos;
+}
+
+WidObject* spt::WidObject::FindLastSelChild()
+{
+	if (cursepos)
+	{
+		cursepos->SetSelected(0);
+	}
+	cursepos = 0;
+	if (childList)
+	{
+		WidObject* now = childListEnd;
+		while (now)
+		{
+			if (now->isCanBeSelect)
+			{
+				if (cursepos)
+				{
+					cursepos->SetSelected(0);
+				}
+				cursepos = now;
+				cursepos->SetSelected(1);
+				break;
+			}
+			now = now->lastObject;
+		}
+	}
+	return cursepos;
+}
+
+WidObject* spt::WidObject::Go2LastSelChild()
+{
+	if (cursepos)
+	{
+		WidObject* now = cursepos;
+		now = now->lastObject;
+		while (now)
+		{
+			if (now->isCanBeSelect)
+			{
+				if (cursepos)
+				{
+					cursepos->SetSelected(0);
+				}
+				cursepos = now;
+				cursepos->SetSelected(1);
+				break;
+			}
+			now = now->lastObject;
+		}
+		if (!now)
+		{
+			FindLastSelChild();
+		}
+	}
+	return cursepos;
+}
+
+WidObject* spt::WidObject::Go2NextSelChild()
+{
+	if (cursepos)
+	{
+		WidObject* now = cursepos;
+		now = now->nextObject;
+		while (now)
+		{
+			if (now->isCanBeSelect)
+			{
+				if (cursepos)
+				{
+					cursepos->SetSelected(0);
+				}
+				cursepos = now;
+				cursepos->SetSelected(1);
+				break;
+			}
+			now = now->nextObject;
+		}
+		if (!now)
+		{
+			FindFirstSelChild();
+		}
+	}
+	return cursepos;
 }
 
 void spt::WidLine::SetStartPos(int16 x, int16 y)
@@ -1243,24 +1412,26 @@ void spt::WidLine::SetWidth(int16 Width)
 	w = Width;
 }
 
-void spt::WidLine::ShowSelf()
+int32 spt::WidLine::ShowSelf()
 {
 	if (!isUpdateSelf)
 	{
-		return;
+		return 0;
 	}
 	isUpdateSelf = 0;
 	gd->DrawLine(startPos.x, startPos.y, endPos.x, endPos.y, color, w);
+	return 0;
 }
 
-void spt::WidRect::ShowSelf()
+int32 spt::WidRect::ShowSelf()
 {
 	if (!isUpdateSelf)
 	{
-		return;
+		return 0;
 	}
 	isUpdateSelf = 0;
 	gd->DrawRect(rect.x, rect.y, color, rect.w, rect.h);
+	return 0;
 }
 
 spt::WidTextLine::WidTextLine()
@@ -1270,28 +1441,55 @@ spt::WidTextLine::WidTextLine()
 
 bool8 spt::WidTextLine::SetText(const char* Text)
 {
-	return bool8();
+	if (text != Text)
+	{
+		SetUpdateSelf(1);
+		text = Text;
+	}
+	return 1;
 }
 
-void spt::WidTextLine::ShowSelf()
+bool8 spt::WidTextLine::SetText(uint16 Index, char Data)
+{
+	if (Index < text.StrBufLen())
+	{
+		text.Str()[Index] = Data;
+	}
+	SetUpdateSelf(1);
+	return 0;
+}
+
+int32 spt::WidTextLine::ShowSelf()
 {
 	if (!isUpdateSelf)
 	{
-		return;
+		return 0;
 	}
 	isUpdateSelf = 0;
 	gd->DrawStr(rect.x, rect.y, color, text.Str());
+	return 0;
 }
 
-void spt::WidTextLineRect::ShowSelf()
+int32 spt::WidTextLineRect::ShowSelf()
 {
 	if (!isUpdateSelf)
 	{
-		return;
+		return 0;
 	}
 	isUpdateSelf = 0;
-	gd->DrawRect(rect.x, rect.y, color, rect.w, rect.h);
+	gd->ClearRect(rect.x, rect.y, backcolor, rect.w, rect.h);
 	gd->DrawStr(rect.x + gd->SpaceOfFont(), rect.y + gd->SpaceOfFont(), color, text.Str());
+	return 0;
+}
+
+bool8 spt::WidTextLineRect::SetText(const char* Text)
+{
+	if (text != Text)
+	{
+		SetUpdateSelf(1);
+		text = Text;
+	}
+	return 1;
 }
 
 spt::WidTextWnd::WidTextWnd()
@@ -1433,11 +1631,11 @@ void spt::WidTextWnd::ClearCtxLine(uint32 LineNum)
 	isUpdateCtx = 1;
 }
 
-void spt::WidTextWnd::ShowSelf()
+int32 spt::WidTextWnd::ShowSelf()
 {
 	if (!isUpdateSelf)
 	{
-		return;
+		return 0;
 	}
 	if (isUpdateTitle)
 	{
@@ -1491,4 +1689,84 @@ void spt::WidTextWnd::ShowSelf()
 	isUpdateCtx = 0;
 	isUpdateTitle = 0;
 	isUpdateSelf = 0;
+	return 0;
+}
+
+spt::WidCurseTextLine::WidCurseTextLine()
+{
+	backcolor = gd->E_Black;
+	color = gd->E_White;
+	row = 0;
+	col = 0;
+}
+
+int32 spt::WidCurseTextLine::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return 0;
+	}
+	isUpdateSelf = 0;
+	gd->ClearRect(rect.x, rect.y, backcolor, rect.w, rect.h);
+	gd->DrawStr(rect.x, rect.y, color, text.Str());
+	return 0;
+}
+
+uint16 spt::WidCurseTextLine::SetRow(uint16 Row)
+{
+	if (row != Row)
+	{
+		row = Row;
+	}
+	return row;
+}
+
+uint16 spt::WidCurseTextLine::SetCol(uint16 Col)
+{
+	if (col != Col)
+	{
+		col = Col;
+	}
+	return col;
+}
+
+spt::WidDataLine::WidDataLine()
+{
+}
+
+void spt::WidDataLine::SetData(uint8 Type, u64value Value, bool8 IsFromRight, uint8 Len, uint8 DotLen, bool8 IsAddZero)
+{
+	data.valueType = Type;
+
+	data.valueInfo1 = Len;
+	data.valueInfo2 = DotLen;
+	data.valueInfo3 = IsFromRight;
+	data.valueInfo4 = IsAddZero;
+	text.Clear();
+	SetData(Value);
+}
+
+void spt::WidDataLine::SetData(u64value Value)
+{
+	data.value = Value;
+	if (data.valueInfo4)
+	{
+		data.toStr(text, data.valueInfo3, data.valueInfo1, data.valueInfo2, '0');
+	}
+	else
+	{
+		data.toStr(text, data.valueInfo3, data.valueInfo1, data.valueInfo2, ' ');
+	}
+	SetUpdateSelf(1);
+}
+
+int32 spt::WidDataLine::ShowSelf()
+{
+	if (!isUpdateSelf)
+	{
+		return 0;
+	}
+	isUpdateSelf = 0;
+	gd->DrawStr(rect.x, rect.y, color, text.Str());
+	return 0;
 }
