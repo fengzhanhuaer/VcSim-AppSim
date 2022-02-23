@@ -587,7 +587,7 @@ int32 spt::SptGooseFrameIn::ProcIni()
 		msg.Write(&u16temp, sizeof(u16temp));
 		u16temp = (uint16)posCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
-		u16temp =  (uint16)posNotWithTCellNum;
+		u16temp = (uint16)posNotWithTCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
 
 		uint16 endloop = (uint16)posCellNum;
@@ -653,7 +653,7 @@ int32 spt::SptGooseFrameIn::ProcIni()
 		msg.Write(&u16temp, sizeof(u16temp));
 		u16temp = (uint16)posCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
-		u16temp =  (uint16)posNotWithTCellNum;
+		u16temp = (uint16)posNotWithTCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
 
 		uint16 endloop = (uint16)posCellNum;
@@ -714,7 +714,7 @@ int32 spt::SptGooseFrameIn::ProcIni()
 		msg.Write(&u16temp, sizeof(u16temp));
 		u16temp = (uint16)posCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
-		u16temp =  (uint16)posNotWithTCellNum;
+		u16temp = (uint16)posNotWithTCellNum;
 		msg.Write(&u16temp, sizeof(u16temp));
 
 		uint16 endloop = (uint16)posCellNum;
@@ -806,8 +806,9 @@ void spt::SptGooseFrameIn::RecGoInCbCheckStateMsg(void* Buf, uint32 BufLen)
 
 void spt::SptGooseFrameIn::RecPosMsg(void* Buf, uint32 BufLen)
 {
+	//	LogErr.PrintHex((const uint8*)Buf,BufLen) <<BufLen<< "SptGooseFrameIn::RecPosMsg\n";
 	posFrameNum++;
-	uint32 MaxLen = PosElementBuf.Top() * 10 + 4;
+	uint32 MaxLen = PosElementBuf.Top() * 10 + 6;
 	if (MaxLen < BufLen)
 	{
 		BufLen = MaxLen;
@@ -820,6 +821,7 @@ void spt::SptGooseFrameIn::RecPosMsg(void* Buf, uint32 BufLen)
 	if (cellNum != posCellNum)
 	{
 		ostatus.recvFrameErrCnt++;
+		//	LogErr << "CellNum" << cellNum << posCellNum << "SptGooseFrameIn::RecPosMsg\n";
 		return;
 	}
 	uint16 cellNotTNum = GetLittleEndian16Bit(b);
@@ -827,6 +829,7 @@ void spt::SptGooseFrameIn::RecPosMsg(void* Buf, uint32 BufLen)
 	if (cellNotTNum != posNotWithTCellNum)
 	{
 		ostatus.recvFrameErrCnt++;
+		//	LogErr << "cellNotTNum" << cellNotTNum << posNotWithTCellNum << "SptGooseFrameIn::RecPosMsg\n";
 		return;
 	}
 	ostatus.recvFrameOkCnt++;
@@ -839,7 +842,7 @@ void spt::SptGooseFrameIn::RecPosMsg(void* Buf, uint32 BufLen)
 	uint16 state;
 	SalDateStamp date = stamp;
 	uint32 q;
-	for (uint32 i = 0; i < cellNum; i++)
+	for (uint32 i = 0; i < cellNotTNum; i++)
 	{
 		state = GetLittleEndian16Bit(b);
 		b += sizeof(state);

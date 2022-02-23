@@ -57,6 +57,18 @@ SptLog& spt::SptLog::NotEqual(const char* Name, int32 Data1, int32 Data2)
 	return *this;
 }
 
+SptLog& spt::SptLog::PrintHex(const void* Msg, uint16 Len)
+{
+	String10B str;
+	for (uint32 i = 0; i < Len; i++)
+	{
+		str.Clear();
+		str.FormatHex(((uint8*)Msg)[i]);
+		*this << "0x" << str << ",";
+	}
+	return *this;
+}
+
 SptLog& spt::SptLog::operator<<(const char* Msg)
 {
 	log(Msg);

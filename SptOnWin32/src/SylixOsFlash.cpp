@@ -98,16 +98,17 @@ int32 UpdateOneOS(SalFile& fos, int& Step, const char* SptOsName, uint32 binMax,
 	fos.Seek(fos.E_SET, 0);
 	String40B outInfo;
 	uint32 total = 0;
-	spiFlashErase(startAddr + binMax - pagesize, pagesize);
+	spiFlashErase(startAddr, binMax);
 	int percent = 0, lastpercent = 0;
 
 	total = 0;
-	char buf[pagesize];
+	const uint32 writesize = 64 * 1024;
+	char buf[writesize];
 	while (total < binMax)
 	{
 		fos.Read(buf, sizeof(buf));
-		spiFlashWriteEx(startAddr + total, pagesize, buf);
-		total += pagesize;
+		spiFlashWrite(startAddr + total, writesize, buf);
+		total += writesize;
 		percent = total * 100 / binMax;
 		if (percent != lastpercent)
 		{

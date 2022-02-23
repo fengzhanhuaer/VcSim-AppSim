@@ -297,7 +297,7 @@ int32 spt::GzkFpgaMsgSau31::RecvProc()
 #endif
 	dateTime = angSamp = goAng = goPos = 0;
 	writer = 0;
-	while ((writer < M_ArrLen(msgPool)) && (len = SptRecEmacData(0, (unsigned char*)&msgPool[writer], sizeof(SampIntMsg)) > 0))
+	while ((writer < M_ArrLen(msgPool)) && ((len = SptRecEmacData(0, (unsigned char*)&msgPool[writer], sizeof(SampIntMsg))) > 0))
 	{
 		sampIntRecvMsg.RecvMsgNum++;
 		sampIntRecvMsg.SendMsgNum++;
@@ -423,6 +423,7 @@ int32 spt::GzkFpgaMsgSau31::RecvProc()
 			SampIntMsg* ptr = (SampIntMsg*)msgptr->buf;
 			if (!ptr->IsSumOk())
 			{
+				LogErr.Stamp() << "GzkFpgaMsgSau31 Board Cmm" << msgptr->frameType << " Crc Err\n";
 				break;
 			}
 			switch (ptr->frameType)
@@ -673,7 +674,7 @@ int32 spt::GzkFpgaUpdate::Run(int32(*Process)(int32 Step, const char* info))
 	}
 	updateStep = E_UpdateStart;
 	stepPathWriter = 0;
-	GoOneStep(0xaa00, 0x5500, E_UpdateStart, E_UpdateStart_Wait, E_UpdateBitStreamClose, 1000);
+	GoOneStep(0xaa00, 0x5500, E_UpdateStart, E_UpdateStart_Wait, E_UpdateBitStreamClose, 2000);
 	if (updateStep == E_UpdateBitStreamClose)
 	{
 		info = "ÕýÔÚ²Á³ýFLASH... ";
@@ -875,7 +876,7 @@ void spt::GzkFpgaUpdate::UpdateMsgRecv(void* Buf, int32 MsgLen)
 		LogErr.Stamp() << "UpdateMsgRecv IsBoardCmmSumOk err\n";
 		return;
 	}
-	MemCpy(&recMsg, msg, MsgLen);
+	MemCpy(&recMsg, Buf, MsgLen);
 	recOk = 1;
 	return;
 }

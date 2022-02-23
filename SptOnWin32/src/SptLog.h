@@ -12,6 +12,7 @@ namespace spt
 		SptLog& Print(const char* Msg);//打印一条信息
 		SptLog& EndLine();//输出换行符
 		SptLog& NotEqual(const char* Name, int32 Data1, int32 Data2);
+		SptLog& PrintHex(const void* Msg, uint16 Len);//打印一条信息
 		SptLog& operator<<(const char* Msg);//打印一条信息
 		SptLog& operator<<(int32 Msg);//打印一条信息
 		SptLog& operator<<(uint32 Msg);//打印一条信息

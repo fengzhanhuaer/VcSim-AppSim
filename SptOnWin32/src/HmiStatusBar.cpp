@@ -32,15 +32,15 @@ int32 spt::HmiStatusBar::Show()
 			{
 				if (DatePara::Instance().AdJustMode.Data() == DatePara::E_LIGHT_IRIG_B)
 				{
-					GraphicDevice::Instance().DrawBitMap(line.Rect().x + 2, line.Rect().y + 2, E_BMT_IRIG_B_SYN, GraphicDevice::E_Black);
+					GraphicDevice::Instance().DrawBitMap(line.StartPos().x + 2, line.StartPos().y + 2, E_BMT_IRIG_B_SYN, GraphicDevice::E_Black);
 				}
 				else if (DatePara::Instance().AdJustMode.Data() == DatePara::E_ELE_IRIG_B)
 				{
-					GraphicDevice::Instance().DrawBitMap(line.Rect().x + 2, line.Rect().y + 2, E_BMT_IRIG_B_SYN, GraphicDevice::E_Black);
+					GraphicDevice::Instance().DrawBitMap(line.StartPos().x + 2, line.StartPos().y + 2, E_BMT_IRIG_B_SYN, GraphicDevice::E_Black);
 				}
 				else if (DatePara::Instance().AdJustMode.Data() == DatePara::E_SNTP)
 				{
-					GraphicDevice::Instance().DrawBitMap(line.Rect().x + 2, line.Rect().y + 2, E_BMT_SNTP_SYN, GraphicDevice::E_Black);
+					GraphicDevice::Instance().DrawBitMap(line.StartPos().x + 2, line.StartPos().y + 2, E_BMT_SNTP_SYN, GraphicDevice::E_Black);
 				}
 			}
 			line.SetStartPos(line.StartPos().x + gd->FontWidth() * 2 + 4, line.StartPos().y);
@@ -53,7 +53,7 @@ int32 spt::HmiStatusBar::Show()
 	}
 	else if (!updateTimer.IsEnable())
 	{
-		updateTimer.UpCnt(500);
+		updateTimer.UpCnt(990);
 		updateTimer.Enable(1);
 	}
 	return 0;
