@@ -1395,7 +1395,7 @@ void spt::GzkToolsDateUpdate::UpdateFromIrigB(SalDateStamp& Stamp)
 			}
 		}
 	}
-	Stamp = stamp;
+	Stamp = utcdate;
 }
 void spt::GzkToolsDateUpdate::UpdateFromSntp(SalDateStamp& Stamp)
 {

@@ -126,7 +126,6 @@ namespace spt
 		/// <param name="Col"></param>
 		/// <param name="Ptr"></param>
 		/// <param name="Len"></param>
-
 		void SetColData(uint32 Col, SalStatus* Ptr, uint8 Len);
 		/// <summary>
 		/// 显示状态量时间
@@ -167,7 +166,6 @@ namespace spt
 		void ResetStatus();
 		struct HmiGridWndDataMap* pMap;
 	};
-
 	struct HmiGridWndDataMap
 	{
 		uint16 pageNum;
@@ -200,7 +198,7 @@ namespace spt
 		void ResetStatus();
 		virtual void Show(ShowType Type);
 	protected:
-		void SetColTitle(const char* Title1, const char* Title2, const char* Title3, const char* Title4, const char* Title5, const char* Title6, const char* Title7, const char* Title8, const char* Title9, const char* Title10);
+
 		void SetPage(HmiGridWndDataMapPage* pPage);
 		HmiGridPageCell* SelectedChild() { return selectChild; };
 		HmiGridPageCell* SetSelectedChildAt(int32 Index);
@@ -209,7 +207,7 @@ namespace spt
 	protected:
 		bool8 hasTitleRow;
 		bool8 isEditCellMode;
-		uint8 titleCol;
+
 		HmiWidContextAreaTextLine titleRow[CN_Max_Hmi_Grid_Page_Row_Cell];
 		HmiWidCurseText curse;
 		HmiGridPageCell* selectChild;
@@ -217,16 +215,19 @@ namespace spt
 		HmiGridWndDataMapPage* pPage;
 	};
 	typedef int32(*HmiGridWndUpdateData)(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key);
-	class HmiGridWnd :public HmiGridPage
+	class HmiGridWnd :public WidTextWnd
 	{
 	public:
 		HmiGridWnd();
-		void Show();
+		int32 Show();
 		int32 Edit();
+		void SetColTitle(const char* Title1, const char* Title2, const char* Title3, const char* Title4, const char* Title5, const char* Title6, const char* Title7, const char* Title8, const char* Title9, const char* Title10);
 	protected:
 		void AutoLayerOut();
 	protected:
 		HmiGridWndUpdateData updateData;
+		char colTitle[CN_Max_Hmi_Grid_Page_Row_Cell][15];
+		uint8 titleCol;
 		bool8 isFirstLayerout;
 		bool8 isEditData;
 		bool8 isDataChange;

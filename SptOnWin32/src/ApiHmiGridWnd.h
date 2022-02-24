@@ -36,7 +36,7 @@ namespace spt
 		/// <returns></returns>
 		struct HmiGridWndDataMapRow* CreatRow();
 		/** @brief 展示数据 */
-		void Show();
+		int32 Show();
 		/** @brief 编辑数据 */
 		int32 Edit();
 		/**

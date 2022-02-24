@@ -1542,6 +1542,18 @@ void spt::WidTextWnd::SetLine(uint16 Line)
 	line = Line;
 }
 
+void spt::WidTextWnd::SetCrc(uint32 Crc, uint32 CrcLen)
+{
+	crc = crc;
+	crcLen = CrcLen;
+	SetUpdateSelf(1);
+}
+
+void spt::WidTextWnd::SetTitle(const char* Title)
+{
+	StrNCpy(title, Title, sizeof(title));
+}
+
 void spt::WidTextWnd::SetTotalPage(uint16 Page)
 {
 	totalPage = Page;

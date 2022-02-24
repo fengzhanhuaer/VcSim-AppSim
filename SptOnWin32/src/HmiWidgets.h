@@ -224,8 +224,6 @@ namespace spt
 	{
 	public:
 		void SetInfo(const char* Title, uint32 crc, uint32 crcLen, uint32  page, uint32 TotalPage);
-		void SetCrc(uint32 crc, uint32 crcLen);
-		void SetTitle(const char* Title);
 		void SetPage(uint32  page, uint32 TotalPage);
 		void SetLine(uint32  Line, uint32 TotalLine);
 		uint32 Page();
@@ -369,7 +367,7 @@ namespace spt
 	protected:
 		virtual int32 ShowSelf();
 	protected:
-		String20B text;
+		String40B text;
 		st64value data;
 	};
 	class WidCurseTextLine :public WidTextLine
@@ -404,6 +402,8 @@ namespace spt
 		void SetInfo(const char* Title, uint32 crc, uint32 crcLen, uint32  page, uint32 TotalPage);
 		void SetPage(uint16 page);
 		void SetLine(uint16 line);
+		void SetCrc(uint32 crc, uint32 crcLen);
+		void SetTitle(const char* Title);
 		void SetTotalPage(uint16 page);
 		void SetTotalLine(uint16 line);
 		uint16 DispMaxCtxLine();

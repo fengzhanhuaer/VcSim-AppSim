@@ -34,6 +34,7 @@ void spt::HmiGridWndDataMapCell::ResetStatus()
 	isEnable = 0;
 	isCanSelect = 0;
 	MemSet(&dataSur, 0, sizeof(st32value));
+	MemSet(&dataEdit, 0, sizeof(st32value));
 	MemSet(&dataExInfo, 0, sizeof(st32value));
 	MemSet(&dataDisp, 0, sizeof(st32value));
 	row = 0;
@@ -692,7 +693,7 @@ spt::HmiGridWnd::HmiGridWnd()
 	updateData = 0;
 }
 HmiGridWndDataMap HmiGridWnd::map;
-void spt::HmiGridWnd::Show()
+int32 spt::HmiGridWnd::Show()
 {
 	HmiKey key = { 0 };
 	bool8 first = 1;
@@ -829,7 +830,7 @@ void spt::HmiGridWnd::Show()
 	}
 	UnShow();
 	gd->Update(rect);
-	return;
+	return 0;
 }
 
 int32 spt::HmiGridWnd::Edit()
@@ -966,6 +967,61 @@ int32 spt::HmiGridWnd::Edit()
 	UnShow();
 	gd->Update(rect);
 	return -1;
+}
+
+void spt::HmiGridWnd::SetColTitle(const char* Title1, const char* Title2, const char* Title3, const char* Title4, const char* Title5, const char* Title6, const char* Title7, const char* Title8, const char* Title9, const char* Title10)
+{
+	titleCol = 0;
+	StrNCpy(colTitle[0], Title1, sizeof(colTitle[0]));
+	if (Title1)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[1], Title2, sizeof(colTitle[0]));
+	if (Title2)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[2], Title3, sizeof(colTitle[0]));
+	if (Title3)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[3], Title4, sizeof(colTitle[0]));
+	if (Title4)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[4], Title5, sizeof(colTitle[0]));
+	if (Title5)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[5], Title6, sizeof(colTitle[0]));
+	if (Title6)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[6], Title7, sizeof(colTitle[0]));
+	if (Title7)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[7], Title8, sizeof(colTitle[0]));
+	if (Title8)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[8], Title9, sizeof(colTitle[0]));
+	if (Title9)
+	{
+		titleCol++;
+	}
+	StrNCpy(colTitle[9], Title10, sizeof(colTitle[0]));
+	if (Title10)
+	{
+		titleCol++;
+	}
 }
 
 void spt::HmiGridWnd::AutoLayerOut()
@@ -1140,58 +1196,7 @@ void spt::HmiGridPage::Show(ShowType Type)
 
 void spt::HmiGridPage::SetColTitle(const char* Title1, const char* Title2, const char* Title3, const char* Title4, const char* Title5, const char* Title6, const char* Title7, const char* Title8, const char* Title9, const char* Title10)
 {
-	titleCol = 0;
-	titleRow[0].SetText(Title1);
-	if (Title1)
-	{
-		titleCol++;
-	}
-	titleRow[1].SetText(Title2);
-	if (Title2)
-	{
-		titleCol++;
-	}
-	titleRow[2].SetText(Title3);
-	if (Title3)
-	{
-		titleCol++;
-	}
-	titleRow[3].SetText(Title4);
-	if (Title4)
-	{
-		titleCol++;
-	}
-	titleRow[4].SetText(Title5);
-	if (Title5)
-	{
-		titleCol++;
-	}
-	titleRow[5].SetText(Title6);
-	if (Title6)
-	{
-		titleCol++;
-	}
-	titleRow[6].SetText(Title7);
-	if (Title7)
-	{
-		titleCol++;
-	}
-	titleRow[7].SetText(Title8);
-	if (Title8)
-	{
-		titleCol++;
-	}
-	titleRow[8].SetText(Title9);
-	if (Title9)
-	{
-		titleCol++;
-	}
-	titleRow[9].SetText(Title10);
-	if (Title10)
-	{
-		titleCol++;
-	}
-	hasTitleRow = 1;
+
 }
 
 void spt::HmiGridPage::SetPage(HmiGridWndDataMapPage* Page)
