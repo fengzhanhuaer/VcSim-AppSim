@@ -3,7 +3,7 @@
 
 namespace spt
 {
-	class HmiWidDialog :public WidRect
+	class HmiWidDialog :public HmiWidRect
 	{
 	public:
 		enum EditRetValue
@@ -34,7 +34,7 @@ namespace spt
 	protected:
 		virtual int32 ShowSelf();
 	protected:
-		WidTextLine title[5];
+		HmiWidTextLine title[5];
 	};
 	class HmiWarnDialog :public HmiInfoDialog
 	{
@@ -86,9 +86,9 @@ namespace spt
 		uint8 maxTextLine;
 		uint32 inputMaxLen;
 		String100B inputStr;
-		WidTextLineRect input;
-		WidTextLine text[6];
-		WidCurseTextLine curse;
+		HmiWidTextLineRect input;
+		HmiWidTextLine text[6];
+		HmiWidCurseTextLine curse;
 	};
 	class HmiStrEditDialog :public HmiWidDialog
 	{
@@ -108,8 +108,8 @@ namespace spt
 	protected:
 		uint32 titleMaxLen;
 		uint32 inputMaxLen;
-		WidTextLine title[5];
-		WidTextLine text[5];
+		HmiWidTextLine title[5];
+		HmiWidTextLine text[5];
 	};
 	class HmiIntDataEditDialog :public HmiWidDialog
 	{
@@ -122,10 +122,10 @@ namespace spt
 		uint32 inputMaxLen;
 		uint8 selectIndex;
 		uint8 dataNum;
-		WidTextLine title[3];
-		WidTextLine text[3];
-		WidTextLine titleMid;
-		WidCurseTextLine curse;
+		HmiWidTextLine title[3];
+		HmiWidTextLine text[3];
+		HmiWidTextLine titleMid;
+		HmiWidCurseTextLine curse;
 	};
 	class HmiInt32DataDialog :public HmiIntDataEditDialog
 	{
@@ -224,10 +224,10 @@ namespace spt
 		uint32 inputMaxLen;
 		uint8 selectIndex;
 		uint8 dataNum;
-		WidTextLine title[7];
-		WidTextLine text[7];
-		WidDataLine data[7];
-		WidCurseTextLine curse;
+		HmiWidTextLine title[7];
+		HmiWidTextLine text[7];
+		HmiWidDataLine data[7];
+		HmiWidCurseTextLine curse;
 	};
 }
 

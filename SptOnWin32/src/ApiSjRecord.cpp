@@ -15,6 +15,14 @@ int32 spt::ApiSjRecordGroup::CreatRecord(const char* Process, const char* Usr, c
 	SalSjRecordGroup::CreatEvent(re);
 	return 0;
 }
+int32 spt::ApiSjRecordGroup::CreatRecord(SalDateStamp& Stamp, const char* Process, const char* Usr, const char* Object, const char* Result, const char* exInfo1, const char* exInfo2, const char* exInfo3)
+{
+	SalSjRecordData re;
+	re.SetStamp(Stamp);
+	re.SetRecord(Process, Usr, Object, Result, exInfo1, exInfo2, exInfo3);
+	SalSjRecordGroup::CreatEvent(re);
+	return 0;
+}
 void spt::ApiSjRecordGroup::ClearEvent()
 {
 	SalSjRecordGroup::ClearEvent();

@@ -195,7 +195,7 @@ int32 spt::HmiTextWnd::ShowSelf()
 			}
 		}
 	}
-	WidTextWnd::ShowSelf();
+	HmiWidTextWnd::ShowSelf();
 	return 0;
 }
 
@@ -310,13 +310,13 @@ void spt::HmiTextWnd::ShowSinglePage()
 				}
 				HmiMain::Instance().MsSleep(50);
 			}
-			WidTextWnd::SetPage(page);
+			HmiWidTextWnd::SetPage(page);
 		}
 		else
 		{
 			HmiMain::Instance().MsSleep(200);
 		}
-		WidTextWnd::Show();
+		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -435,13 +435,13 @@ void spt::HmiTextWnd::ShowScrollPage()
 				}
 				HmiMain::Instance().MsSleep(50);
 			}
-			WidTextWnd::SetPage(page);
+			HmiWidTextWnd::SetPage(page);
 		}
 		else
 		{
 			HmiMain::Instance().MsSleep(200);
 		}
-		WidTextWnd::Show();
+		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -471,6 +471,10 @@ void spt::HmiTextWnd::ShowContinuePage()
 				{
 				case spt::EK_ENTER:
 					SetUpdate(1);
+					if (updateFunc)
+					{
+						updateFunc(*this, page, totalPage, key);
+					}
 					break;
 				case spt::EK_LEFT:
 					step = 1;
@@ -560,14 +564,14 @@ void spt::HmiTextWnd::ShowContinuePage()
 				}
 				HmiMain::Instance().MsSleep(50);
 			}
-			WidTextWnd::SetPage(page);
-			WidTextWnd::SetLine(line);
+			HmiWidTextWnd::SetPage(page);
+			HmiWidTextWnd::SetLine(line);
 		}
 		else
 		{
 			HmiMain::Instance().MsSleep(200);
 		}
-		WidTextWnd::Show();
+		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);

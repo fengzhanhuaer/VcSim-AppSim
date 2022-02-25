@@ -228,14 +228,11 @@ static int32 HmiViewAnglogUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDat
 			pvalue = row->GetDataEdit(col);
 			pvalue->value.i32 = (int32)(rmsValue->data1 * rms->Data1Coe());//一次值
 			col++;
-			col++;
 			pvalue = row->GetDataEdit(col);
 			pvalue->value.i32 = rmsValue->data1;//二次值
 			col++;
-			col++;
 			pvalue = row->GetDataEdit(col);
 			pvalue->value.i32 = rmsValue->data2;//角度
-			col++;
 			col++;
 			pvalue = row->GetDataEdit(col);
 			pvalue->value.u16 = rmsValue->q;//品质
@@ -252,7 +249,7 @@ bool8 ViewAnglog(ApiMenu* Menu)
 {
 	ApiHmiGridWnd wnd(HmiViewAnglogUpdateData);
 	wnd.SetInfo("查看模拟量", 0, 0);
-	wnd.SetColTitle("名称", "一次值", 0, "二次值", 0, 0, 0, "品质", 0, 0);
+	wnd.SetColTitle("名称", "一次值", "二次值", "角度", "品质", 0, 0, 0, 0, 0);
 	SalAngRmsGroup* anmsGroup = (SalAngRmsGroup*)&ApiAnglogRmsGroup[0];
 	uint32 dataNum = anmsGroup->InstNum();
 	st64value* pvalue;
@@ -270,41 +267,31 @@ bool8 ViewAnglog(ApiMenu* Menu)
 			struct HmiGridWndDataMapRow* row = wnd.CreatRow();
 			row->SetName(rms->Name());
 			//一次值
-			row->SetColDataCfg(col, 0, E_SVT_I32 | E_SVT_PTR, 8, rms->Data1DotNum());
+			row->SetColDataCfg(col, 0, E_SVT_I32 | E_SVT_PTR, 8, rms->Data1DotNum(), rms->TransUnits1() == 0 ? Unit_NULL.toString() : rms->TransUnits1()->toString());
 			pvalue = row->GetDataSur(col);
 			pvalue->value.vptr = rms;
 			pvalue = row->GetDataEdit(col);
 			row->SetColData(col, &pvalue->value.i32);
-			col++;
-			row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
-			row->SetColStrData(col, rms->TransUnits1() == 0 ? Unit_NULL.toString() : rms->TransUnits1()->toString(), 0);
 			col++;
 			//二次值
-			row->SetColDataCfg(col, 0, E_SVT_I32 | E_SVT_PTR, 8, rms->Data1DotNum());
+			row->SetColDataCfg(col, 0, E_SVT_I32 | E_SVT_PTR, 8, rms->Data1DotNum(), rms->Units1() == 0 ? Unit_NULL.toString() : rms->Units1()->toString());
 			pvalue = row->GetDataSur(col);
 			pvalue->value.vptr = rms;
 			pvalue = row->GetDataEdit(col);
 			row->SetColData(col, &pvalue->value.i32);
-			col++;
-			row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
-			row->SetColStrData(col, rms->Units1() == 0 ? Unit_NULL.toString() : rms->Units1()->toString(), 0);
 			col++;
 			if (rms->DataNum() == 2)
 			{
 				//角度
-				row->SetColDataCfg(col, 0, E_SVT_I32 | E_SVT_PTR, 5, rms->Data2DotNum());
+				row->SetColDataCfg(col, 0, E_SVT_I32 | E_SVT_PTR, 5, rms->Data2DotNum(), rms->Units2() == 0 ? Unit_NULL.toString() : rms->Units2()->toString(), 0);
 				pvalue = row->GetDataSur(col);
 				pvalue->value.vptr = rms;
 				pvalue = row->GetDataEdit(col);
 				row->SetColData(col, &pvalue->value.i32);
 				col++;
-				row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
-				row->SetColStrData(col, rms->Units2() == 0 ? Unit_NULL.toString() : rms->Units2()->toString(), 0);
-				col++;
 			}
 			else
 			{
-				col++;
 				col++;
 			}
 			//品质

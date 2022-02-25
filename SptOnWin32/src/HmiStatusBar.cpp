@@ -10,16 +10,16 @@ int32 spt::HmiStatusBar::Show()
 		if (rtc.second != lastSec)
 		{
 			SetUpdate(1);
-			WidLine line;
+			HmiWidLine line;
 			line.SetWidth(1);
 			line.SetStartPos(rect.x, rect.y);
 			line.SetEndPos(rect.x, rect.y + rect.h);
-			WidRect::ClearRect();
-			WidRect::Show();
+			HmiWidRect::ClearRect();
+			HmiWidRect::Show();
 			lastSec = rtc.second;
 			String30B str;
 			rtc.ToStrHzFmt1(str);
-			WidTextLine text;
+			HmiWidTextLine text;
 			text.SetPos(rect.x + 2, rect.y + 2);
 			text.SetText(str.Str());
 			text.Show();

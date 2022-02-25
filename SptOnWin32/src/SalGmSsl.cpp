@@ -121,7 +121,6 @@ int32  DbgConfigGmServerSsl(void* SslContext)
 	SSL_CTX_set_default_passwd_cb_userdata(ctx, (void*)"123456");
 	// 是否要求校验对方证书 若不验证客户端身份则设置为： SSL_VERIFY_NONE
 	//	SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
-
 	//验证对方
 	SSL_CTX_set_verify(ctx, DbgSimCfg::Instance().GmsslVerifyMode.Data(), NULL);
 	//若验证,则放置CA证书
@@ -385,8 +384,11 @@ int32 spt::DbgGmSslWrite(void* GmSock, const void* Buf, int32 BufLen)
 	{
 		return 0;
 	}
-
+#ifdef WIN32_SIM
 	return SSL_write((SSL*)GmSock, Buf, BufLen);
+#else
+	return SSL_write((SSL*)GmSock, Buf, BufLen);
+#endif // WIN32_SIM
 }
 int32 spt::DbgGmSslRead(void* GmSock, void* Buf, int32 BufLen)
 {
@@ -394,7 +396,11 @@ int32 spt::DbgGmSslRead(void* GmSock, void* Buf, int32 BufLen)
 	{
 		return 0;
 	}
+#ifdef WIN32_SIM
 	return SSL_read((SSL*)GmSock, Buf, BufLen);
+#else
+	return SSL_read((SSL*)GmSock, Buf, BufLen);
+#endif // WIN32_SIM
 }
 
 int32 spt::CheckDbgServerCrt()

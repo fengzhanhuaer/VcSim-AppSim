@@ -11,7 +11,34 @@ namespace spt
 	{
 	public:
 		int32 PowerUpIni(const char* Name, const char* DesName, uint32 PoolSize);
+		/// <summary>
+		/// 生成审计记录
+		/// </summary>
+		/// <param name="Process">进程</param>
+		/// <param name="Usr">用户</param>
+		/// <param name="Object">客体</param>
+		/// <param name="Result">结果</param>
+		/// <param name="exInfo1">附加信息1</param>
+		/// <param name="exInfo2">附加信息2</param>
+		/// <param name="exInfo3">附加信息3</param>
+		/// <returns></returns>
 		int32 CreatRecord(const char* Process, const char* Usr, const char* Object, const char* Result, const char* exInfo1, const char* exInfo2, const char* exInfo3);
+		/// <summary>
+		/// 生成审计记录
+		/// </summary>
+		/// <param name="Stamp">时间戳</param>
+		/// <param name="Process">进程</param>
+		/// <param name="Usr">主体</param>
+		/// <param name="Object">客体</param>
+		/// <param name="Result">结果</param>
+		/// <param name="exInfo1">附加信息1</param>
+		/// <param name="exInfo2">附加信息2</param>
+		/// <param name="exInfo3">附加信息3</param>
+		/// <returns></returns>
+		int32 CreatRecord(SalDateStamp& Stamp, const char* Process, const char* Usr, const char* Object, const char* Result, const char* exInfo1, const char* exInfo2, const char* exInfo3);
+		/// <summary>
+		/// 清空审计记录
+		/// </summary>
 		void ClearEvent();
 	};
 	/// <summary>

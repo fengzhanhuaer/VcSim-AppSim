@@ -3,7 +3,7 @@ using namespace spt;
 
 void spt::ApiHmiTextWnd::SetTitle(const char* Title)
 {
-	HmiTextWnd::SetInfo(Title);
+	HmiTextWnd::SetTitle(Title);
 }
 
 void spt::ApiHmiTextWnd::SetTitle(const char* Title, uint32 TotalPage)
@@ -36,4 +36,9 @@ spt::ApiHmiTextWnd::ApiHmiTextWnd(DispType Mode, UpdateHmiTextWnd UpdateFunction
 int32 spt::ApiHmiTextWnd::Show()
 {
 	return HmiTextWnd::Show();
+}
+
+void spt::ApiHmiTextWnd::ReDraw()
+{
+	SetReDraw(1);
 }

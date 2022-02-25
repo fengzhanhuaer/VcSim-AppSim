@@ -271,7 +271,7 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 	mutp.x = rect.x + gd->FontWidth() / 2;
 	mutp.y = rect.y + 2;
 	SetUpdateSelf(1);
-	WidRect::ClearRect();
+	HmiWidRect::ClearRect();
 	while (1)
 	{
 		switch (taskStep)
@@ -294,21 +294,21 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 				{
 					curMenu->DoFunc();
 					curMenu->AllowExit();
-					WidRect::Show();
+					HmiWidRect::Show();
 					gd->Update(rect);
 					return;
 				}
 			}
 			else
 			{
-				WidRect::Show();
+				HmiWidRect::Show();
 				gd->Update(rect);
 				return;
 			}
 			curMenu->SetPos(mutp);
 			leftMenu = curMenu;
 			taskStep = E_DispAll;
-			WidRect::Show();
+			HmiWidRect::Show();
 			break;
 		}
 		case E_DispAll:
@@ -373,8 +373,8 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 							{
 								curMenu->DoFunc();
 								curMenu->AllowExit();
-								WidRect::ClearRect();
-								WidRect::Show();
+								HmiWidRect::ClearRect();
+								HmiWidRect::Show();
 								taskStep = E_DispAll;
 							}
 						}
@@ -399,14 +399,14 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 								{
 									if (exitFunction((ApiMenu*)MenuRoot))
 									{
-										WidRect::ClearRect();
+										HmiWidRect::ClearRect();
 										gd->Update(rect);
 										return;
 									}
 								}
 								else
 								{
-									WidRect::ClearRect();
+									HmiWidRect::ClearRect();
 									gd->Update(rect);
 									return;
 								}
@@ -464,7 +464,7 @@ void spt::HmiMenuService::StartService(HmiMenu* MenuRoot, IsOkMenuFunction Allow
 			break;
 		}
 	}
-	WidRect::ClearRect();
+	HmiWidRect::ClearRect();
 	gd->Update(rect);
 	return;
 }

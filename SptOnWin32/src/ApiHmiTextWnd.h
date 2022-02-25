@@ -10,6 +10,12 @@ namespace spt
 	{
 	public:
 		/// <summary>
+		/// 文本窗口
+		/// </summary>
+		/// <param name="Mode">E_SinglePage单页模式E_ScrollPage滚动模式 E_ContinuePage连续页模式</param>
+		/// <param name="UpdateFunction">数据更新函数</param>
+		ApiHmiTextWnd(DispType Mode, UpdateHmiTextWnd UpdateFunction);
+		/// <summary>
 		/// 设置标题
 		/// </summary>
 		/// <param name="Title"></param>
@@ -43,11 +49,9 @@ namespace spt
 		/// </summary>
 		int32 Show();
 		/// <summary>
-		/// 文本窗口
+		/// 强制重新刷新窗口
 		/// </summary>
-		/// <param name="Mode">E_SinglePage单页模式E_ScrollPage滚动模式 E_ContinuePage连续页模式</param>
-		/// <param name="UpdateFunction">数据更新函数</param>
-		ApiHmiTextWnd(DispType Mode, UpdateHmiTextWnd UpdateFunction);
+		void ReDraw();
 	protected:
 
 	};

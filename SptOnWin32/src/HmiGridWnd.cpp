@@ -45,7 +45,6 @@ void spt::HmiGridWndDataMapCell::ResetStatus()
 	fullLen = 0;
 	isFromRight = 0;
 	page = 0;
-	pPageCell = 0;
 	dotLen = 0;
 	unit = 0;
 }
@@ -685,30 +684,29 @@ void spt::HmiGridWndDataMapRow::ResetStatus()
 
 spt::HmiGridWnd::HmiGridWnd()
 {
-	isFirstLayerout = 0;
 	map.ResetStatus();
 	isEditData = isDataChange = 0;
-	context.SetVisible(1);
-	title.SetVisible(1);
 	updateData = 0;
+	isEditCellMode = 0;
+	selectCell = 0;
+	MemSet(&colTitle, 0, sizeof(colTitle));
+	titleNum = 0;
 }
 HmiGridWndDataMap HmiGridWnd::map;
 int32 spt::HmiGridWnd::Show()
 {
+	isEditCellMode = 0;
 	HmiKey key = { 0 };
-	bool8 first = 1;
-	MsStampTimer timer;
-	timer.Enable(1);
-	uint32 total;
-	uint32 step;
-	uint32 page;
 	AutoLayerOut();
-	if (title.TotalPage() >= M_ArrLen(map.page))
+	SetPeriodUpdate(1, 500);
+	if (TotalPage() >= M_ArrLen(map.page))
 	{
 		HmiWarnDialog dig;
 		dig.SetTitle("总页数超过最大允许值", 0, 0, 0, 0);
-		return;
+		return -1;
 	}
+	uint16 step;
+	uint32 page = this->page;
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -719,16 +717,14 @@ int32 spt::HmiGridWnd::Show()
 				switch (k2)
 				{
 				case spt::EK_ENTER:
-					first = 1;
+					SetUpdate(1);
 					break;
 				case spt::EK_LEFT:
-					total = title.TotalPage();
-					step = total / 5;
+					step = TotalPage() / 5;
 					if (!step)
 					{
 						step = 1;
 					}
-					page = title.Page();
 					if (page > step)
 					{
 						page = page - step;
@@ -737,98 +733,74 @@ int32 spt::HmiGridWnd::Show()
 					{
 						page = 0;
 					}
-					title.SetPage(page, total);
-					SetPage(&map.page[title.Page()]);
-					first = 1;
+					SetUpdate(1);
 					break;
 				case spt::EK_UP:
-					total = title.TotalPage();
 					step = 1;
-					page = title.Page();
 					if (page >= step)
 					{
 						page = page - step;
 					}
 					else
 					{
-						page = total - step;
+						page = TotalPage() - step;
 					}
-					title.SetPage(page, total);
-					SetPage(&map.page[title.Page()]);
-					first = 1;
+					SetUpdate(1);
 					break;
 				case spt::EK_RIGHT:
-					total = title.TotalPage();
-					step = total / 5;
+					step = TotalPage() / 5;
 					if (!step)
 					{
 						step = 1;
 					}
-					page = title.Page() + step;
-					if (page >= total)
+					page = TotalPage() + step;
+					if (page >= TotalPage())
 					{
-						page = total - 1;
+						page = TotalPage() - 1;
 					}
-					title.SetPage(page, total);
-					SetPage(&map.page[title.Page()]);
-					first = 1;
+					SetUpdate(1);
 					break;
 				case spt::EK_DOWN:
-					total = title.TotalPage();
 					step = 1;
-					page = title.Page() + step;
-					if (page >= total)
+					page += step;
+					if (page >= TotalPage())
 					{
 						page = 0;
 					}
-					title.SetPage(page, total);
-					SetPage(&map.page[title.Page()]);
-					first = 1;
+					SetUpdate(1);
 					break;
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
-					return;
+					return 0;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
-					return;
+					return 0;
 				default:
 					break;
 				}
+				if (updateData)
+				{
+					updateData(this, &map, key);
+					SetUpdate(1);
+				}
+				HmiWidTextWnd::SetPage(page);
 			}
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(50);
-		}
-		if (timer.Status(100))
-		{
-			if (first)
+			HmiMain::Instance().MsSleep(200);
+			if (updateData)
 			{
-				if (updateData)
-				{
-					updateData(this, &map, key);
-				}
-				first = 0;
-				HmiGridPage::Show(E_AllFrame);
-				gd->Update(rect);
-				timer.StartTimer();
-			}
-			else if (timer.Status(1000))
-			{
-				if (updateData)
-				{
-					key.Key1 = 0;
-					updateData(this, &map, key);
-				}
-				HmiGridPage::Show(E_Update);
-				gd->Update(rect);
-				timer.StartTimer();
+				updateData(this, &map, key);
+				SetUpdate(1);
 			}
 		}
+		HmiWidTextWnd::Show();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return 0;
 }
@@ -837,20 +809,18 @@ int32 spt::HmiGridWnd::Edit()
 {
 	isEditCellMode = 1;
 	HmiKey key;
-	bool8 first = 1;
-	MsStampTimer timer;
-	timer.Enable(1);
-	uint32 total;
-	uint32 step;
-	uint32 page;
+	uint16 step;
 	AutoLayerOut();
 	isDataChange = isEditData = 0;
-	if (title.TotalPage() >= M_ArrLen(map.page))
+	if (TotalPage() >= M_ArrLen(map.page))
 	{
 		HmiWarnDialog dig;
 		dig.SetTitle("总页数超过最大允许值", 0, 0, 0, 0);
 		return -1;
 	}
+	FindFirstEditCell();
+	uint32 page = this->page;
+	curse.SetEnable(1);
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -861,176 +831,151 @@ int32 spt::HmiGridWnd::Edit()
 				switch (k2)
 				{
 				case spt::EK_ENTER:
-					if (selectChild && selectChild->pCell)
+					if (selectCell && selectCell->edit)
 					{
-						if (selectChild->pCell->edit)
+						bool8 iChange = 0;
+						if (0 == selectCell->edit(iChange, selectCell))
 						{
-							bool8 iChange = 0;
-							if (0 == selectChild->pCell->edit(iChange, selectChild->pCell))
-							{
-								isDataChange |= iChange;
-							}
-							isEditData = 1;
+							isDataChange |= iChange;
 						}
+						isEditData = 1;
 					}
-					first = 1;
+					SetUpdate(1);
 					break;
 				case spt::EK_LEFT:
-					total = title.TotalPage();
 					step = 1;
-					if (!step)
-					{
-						step = 1;
-					}
-					page = title.Page();
 					if (page > step)
 					{
 						page = page - step;
 					}
 					else
 					{
-						page = 0;
+						page = totalPage - 1;
 					}
-					title.SetPage(page, total);
-					SetPage(&map.page[title.Page()]);
-					SetSelectedChildAt(0);
-					first = 1;
+					SetUpdate(1);
+					FindFirstEditCell();
 					break;
 				case spt::EK_UP:
-					GoToLastCanBeSelected();
-					first = 1;
+					if (Go2LastEditCell() < 0)
+					{
+						FindLastEditCell();
+					}
+					SetUpdate(1);
 					break;
 				case spt::EK_RIGHT:
-					total = title.TotalPage();
 					step = 1;
 					if (!step)
 					{
 						step = 1;
 					}
-					page = title.Page() + step;
-					if (page >= total)
+					page = page + step;
+					if (page >= totalPage)
 					{
-						page = total - 1;
+						page = 0;
 					}
-					title.SetPage(page, total);
-					SetPage(&map.page[title.Page()]);
-					SetSelectedChildAt(0);
-					first = 1;
+					SetUpdate(1);
+					FindFirstEditCell();
 					break;
 				case spt::EK_DOWN:
-					GoToNextCanBeSelected();
-					first = 1;
+					if (Go2NextEditCell() < 0)
+					{
+						FindFirstEditCell();
+					}
+					SetUpdate(1);
 					break;
 				case spt::EK_ESC:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return 0;
 				case spt::EK_MD_STOP:
-					UnShow();
+					ClearRect();
 					gd->Update(rect);
 					return -1;
 				default:
 					break;
 				}
 			}
+			if (updateData)
+			{
+				updateData(this, &map, key);
+				SetUpdate(1);
+			}
+			HmiWidTextWnd::SetPage(page);
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(200);
+			SetUpdate(1);
 		}
-		if (timer.Status(100))
-		{
-			if (first)
-			{
-				if (updateData)
-				{
-					updateData(this, &map, key);
-				}
-				first = 0;
-				HmiGridPage::Show(E_AllFrame);
-				gd->Update(rect);
-				timer.StartTimer();
-			}
-			else if (timer.Status(2000))
-			{
-				if (updateData)
-				{
-					key.Key1 = 0;
-					updateData(this, &map, key);
-				}
-				HmiGridPage::Show(E_Update);
-				gd->Update(rect);
-				timer.StartTimer();
-			}
-		}
+
+		HmiWidTextWnd::Show();
 	}
-	UnShow();
+	ClearRect();
 	gd->Update(rect);
 	return -1;
 }
 
 void spt::HmiGridWnd::SetColTitle(const char* Title1, const char* Title2, const char* Title3, const char* Title4, const char* Title5, const char* Title6, const char* Title7, const char* Title8, const char* Title9, const char* Title10)
 {
-	titleCol = 0;
-	StrNCpy(colTitle[0], Title1, sizeof(colTitle[0]));
+	StrNCpy(colTitle[0].str, Title1, sizeof(colTitle[0].str));
 	if (Title1)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[1], Title2, sizeof(colTitle[0]));
+	StrNCpy(colTitle[1].str, Title2, sizeof(colTitle[0].str));
 	if (Title2)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[2], Title3, sizeof(colTitle[0]));
+	StrNCpy(colTitle[2].str, Title3, sizeof(colTitle[0].str));
 	if (Title3)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[3], Title4, sizeof(colTitle[0]));
+	StrNCpy(colTitle[3].str, Title4, sizeof(colTitle[0].str));
 	if (Title4)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[4], Title5, sizeof(colTitle[0]));
+	StrNCpy(colTitle[4].str, Title5, sizeof(colTitle[0].str));
 	if (Title5)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[5], Title6, sizeof(colTitle[0]));
+	StrNCpy(colTitle[5].str, Title6, sizeof(colTitle[0].str));
 	if (Title6)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[6], Title7, sizeof(colTitle[0]));
+	StrNCpy(colTitle[6].str, Title7, sizeof(colTitle[0].str));
 	if (Title7)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[7], Title8, sizeof(colTitle[0]));
+	StrNCpy(colTitle[7].str, Title8, sizeof(colTitle[0].str));
 	if (Title8)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[8], Title9, sizeof(colTitle[0]));
+	StrNCpy(colTitle[8].str, Title9, sizeof(colTitle[0].str));
 	if (Title9)
 	{
-		titleCol++;
+		titleNum++;
 	}
-	StrNCpy(colTitle[9], Title10, sizeof(colTitle[0]));
+	StrNCpy(colTitle[9].str, Title10, sizeof(colTitle[0].str));
 	if (Title10)
 	{
-		titleCol++;
+		titleNum++;
 	}
 }
 
 void spt::HmiGridWnd::AutoLayerOut()
 {
-	if (isFirstLayerout == 0)
+	if (!isInied)
 	{
-		HmiWidSinglePage::AutoLayerOut();
-		uint16 pageRowNum = context.MaxDispRowNum();
-		if (hasTitleRow)
+		uint16 pageRowNum = HmiWidTextWnd::DispMaxCtxLine();
+		if (titleNum)
 		{
 			pageRowNum = pageRowNum - 1;
 		}
@@ -1039,9 +984,8 @@ void spt::HmiGridWnd::AutoLayerOut()
 		{
 			map.pageNum = 1;
 		}
-		title.SetPage(0, map.pageNum);
-		isFirstLayerout = 1;
-
+		SetPage(0);
+		SetTotalPage(map.pageNum);
 		for (uint32 i = 0; i < map.rowNum; i++)
 		{
 			map.row[i].row = i % pageRowNum;
@@ -1085,19 +1029,20 @@ void spt::HmiGridWnd::AutoLayerOut()
 				map.maxRowCellNum = map.row[i].cellNum;
 			}
 		}
-		if (hasTitleRow && (titleCol > map.maxRowCellNum))
+		if (titleNum && (titleNum > map.maxRowCellNum))
 		{
-			map.maxRowCellNum = titleCol;
+			map.maxRowCellNum = titleNum;
 		}
-		if (hasTitleRow)
+		if (titleNum)
 		{
 			for (uint32 i = 0; i < map.maxRowCellNum; i++)
 			{
-				if (map.rowCellLen[i] < titleRow[i].Text().StrLen())
+				colTitle[i].strlen = StrLen(colTitle[i].str);
+				if (map.rowCellLen[i] < colTitle[i].strlen)
 				{
-					map.rowCellLen[i] = titleRow[i].Text().StrLen();
+					map.rowCellLen[i] = colTitle[i].strlen;
 				}
-				titleRow[i].Len = map.rowCellLen[i];
+				colTitle[i].displen = map.rowCellLen[i];
 			}
 		}
 		uint16 rowLen = 0;
@@ -1105,9 +1050,8 @@ void spt::HmiGridWnd::AutoLayerOut()
 		{
 			rowLen += map.rowCellLen[i];
 		}
-
 		uint16 cellspace = 0;
-		uint16 endCol = context.MaxDispColNum();
+		uint16 endCol = HmiWidTextWnd::DispMaxCtxWidth();
 		if ((rowLen < endCol) && (map.maxRowCellNum))
 		{
 			cellspace = (endCol - rowLen) / map.maxRowCellNum;
@@ -1124,15 +1068,43 @@ void spt::HmiGridWnd::AutoLayerOut()
 		{
 			cellspace = 1;
 		}
-		map.cellCol[0] = titleRow[0].Col = 0;
+		map.cellCol[0] = 0;
+		colTitle[0].isFromRight = 0;
+		colTitle[0].col = 0;
 		if (map.maxRowCellNum >= 2)
 		{
-			titleRow[map.maxRowCellNum - 1].Col = endCol - map.rowCellLen[map.maxRowCellNum - 1] - cellspace;
-			titleRow[map.maxRowCellNum - 1].isFromRight = 1;
+			if (endCol >= (map.rowCellLen[map.maxRowCellNum - 1] + cellspace))
+			{
+				map.cellCol[map.maxRowCellNum - 1] = endCol - map.rowCellLen[map.maxRowCellNum - 1] - cellspace;
+			}
+			else
+			{
+				map.cellCol[map.maxRowCellNum - 1] = 0;
+			}
+			colTitle[map.maxRowCellNum - 1].isFromRight = 1;
 			for (uint32 j = map.maxRowCellNum - 2; j > 0; j--)
 			{
-				map.cellCol[j] = titleRow[j].Col = titleRow[j + 1].Col - map.rowCellLen[j] - cellspace;
-				titleRow[j].isFromRight = 1;
+				if (map.cellCol[j + 1] >= (map.rowCellLen[j] + cellspace))
+				{
+					map.cellCol[j] = map.cellCol[j + 1] - map.rowCellLen[j] - cellspace;
+				}
+				else
+				{
+					map.cellCol[j] = 0;
+				}
+				colTitle[j].isFromRight = 1;
+			}
+		}
+		colTitle[0].isFromRight = 0;
+		colTitle[0].col = 0;
+		if (map.maxRowCellNum >= 2)
+		{
+			colTitle[map.maxRowCellNum - 1].col = map.cellCol[map.maxRowCellNum - 1] + map.rowCellLen[map.maxRowCellNum - 1] - colTitle[map.maxRowCellNum - 1].strlen;
+			colTitle[map.maxRowCellNum - 1].isFromRight = 1;
+			for (uint32 j = map.maxRowCellNum - 2; j > 0; j--)
+			{
+				colTitle[j].col = map.cellCol[j] + map.rowCellLen[j] - colTitle[j].strlen;
+				colTitle[j].isFromRight = 1;
 			}
 		}
 		for (uint32 i = 0; i < map.rowNum; i++)
@@ -1141,237 +1113,206 @@ void spt::HmiGridWnd::AutoLayerOut()
 			{
 				if (map.row[i].cell[j].isFromRight)
 				{
-					map.row[i].cell[j].col = titleRow[j].Col + map.rowCellLen[j] - map.rowCellUnitLen[j] - map.row[i].cell[j].dataLen;
+					map.row[i].cell[j].col = map.cellCol[j] + map.rowCellDataLen[j] - map.row[i].cell[j].dataLen;
 				}
 				else
 				{
-					map.row[i].cell[j].col = titleRow[j].Col;
+					if (map.rowCellUnitLen[j])
+					{
+						map.row[i].cell[j].col = map.cellCol[j] + map.rowCellDataLen[j] - map.row[i].cell[j].dataLen;
+					}
+					else
+					{
+						map.row[i].cell[j].col = map.cellCol[j];
+					}
 				}
 			}
 		}
-		pPage = &map.page[0];
-	}
-	SetPage(&map.page[title.Page()]);
-}
-HmiGridPageCell HmiGridPage::text[CN_Max_Hmi_Grid_Page_Row][CN_Max_Hmi_Grid_Page_Row_Cell];
-spt::HmiGridPage::HmiGridPage()
-{
-	titleCol = 0;
-	hasTitleRow = 0;
-	isEditCellMode = 0;
-	selectChild = 0;
-	context.DeleteAllChild();
-	ResetStatus();
-}
-
-void spt::HmiGridPage::ResetStatus()
-{
-	for (uint32 i = 0; i < CN_Max_Hmi_Grid_Page_Row; i++)
-	{
-		for (uint32 j = 0; j < CN_Max_Hmi_Grid_Page_Row_Cell; j++)
-		{
-			text[i][j].ResetStatus();
-		}
-	}
-	for (uint32 j = 0; j < CN_Max_Hmi_Grid_Page_Row_Cell; j++)
-	{
-		titleRow[j].ResetStatus();
 	}
 }
-
-void spt::HmiGridPage::Show(ShowType Type)
+int32 spt::HmiGridWnd::ShowSelf()
 {
-	HmiWidSinglePage::Show(Type);
-	if (isEditCellMode)
+	if (isUpdate)
 	{
-		if (selectChild)
+		ClearCtx();
+		uint32 startrow = 0;
+		if (titleNum)
 		{
-			curse.Rect() = context.GetTextRect(selectChild->Row, selectChild->Col, selectChild->Cell()->dataLen);
-			curse.SetText(selectChild->Text().Str());
-			curse.IsFromRight() = selectChild->isFromRight;
-			curse.ShowSelf(Type);
-		}
-	}
-}
-
-void spt::HmiGridPage::SetColTitle(const char* Title1, const char* Title2, const char* Title3, const char* Title4, const char* Title5, const char* Title6, const char* Title7, const char* Title8, const char* Title9, const char* Title10)
-{
-
-}
-
-void spt::HmiGridPage::SetPage(HmiGridWndDataMapPage* Page)
-{
-	selectChild = 0;
-	context.DeleteAllChild();
-	pPage = Page;
-	SetUpdate();
-	if (0 == pPage)
-	{
-		return;
-	}
-	for (uint32 i = 0; i < CN_Max_Hmi_Grid_Page_Row; i++)
-	{
-		for (uint32 j = 0; j < CN_Max_Hmi_Grid_Page_Row_Cell; j++)
-		{
-			text[i][j].ResetStatus();
-		}
-	}
-	uint16 endi = pPage->rowNum;
-	uint16 endj = pPage->pMap->maxRowCellNum;
-	if (hasTitleRow)
-	{
-		for (uint16 j = 0; j < endj; j++)
-		{
-			context.AddChild(&titleRow[j]);
-			titleRow[j].SetVisible(1);
-		}
-	}
-	for (uint16 i = 0; i < endi; i++)
-	{
-		for (uint16 j = 0; j < endj; j++)
-		{
-			if (Page->pRow[i]->cell[j].isEnable)
+			startrow = 1;
+			for (uint32 i = 0; i < map.maxRowCellNum; i++)
 			{
-				context.AddChild(&text[i][j]);
-				text[i][j].SeCell(hasTitleRow == 1, &Page->pRow[i]->cell[j]);
+				SetText(0, colTitle[i].col, colTitle[i].str);
 			}
 		}
-	}
-	if (isEditCellMode)
-	{
-		curse.IsCanBeSelect() = 0;
-		curse.IsSelected() = 1;
-		SetSelectedChildAt(0);
-	}
-}
-
-HmiGridPageCell* spt::HmiGridPage::SetSelectedChildAt(int32 Index)
-{
-	if (selectChild)
-	{
-		selectChild->IsSelected() = 0;
-	}
-	selectChild = 0;
-	if (0 == pPage)
-	{
-		return 0;
-	}
-	uint16 endi = pPage->rowNum;
-	uint16 endj = pPage->pMap->maxRowCellNum;
-	uint16 now = 0;
-	for (uint16 i = 0; i < endi; i++)
-	{
-		for (uint16 j = 0; j < endj; j++)
-		{
-			if (text[i][j].IsEnable() && text[i][j].IsCanBeSelect())
-			{
-				if (now == Index)
-				{
-					selectChild = &text[i][j];
-					selectChild->IsSelected() = 1;
-					return selectChild;
-				}
-				now++;
-			}
-		}
-	}
-	return selectChild;
-}
-
-HmiGridPageCell* spt::HmiGridPage::GoToNextCanBeSelected()
-{
-	HmiGridPageCell* end = &text[CN_Max_Hmi_Grid_Page_Row - 1][CN_Max_Hmi_Grid_Page_Row_Cell - 1];
-	if (!selectChild)
-	{
-		return 0;
-	}
-	HmiGridPageCell* now = selectChild + 1;
-	selectChild->IsSelected() = 0;
-	while (now <= end)
-	{
-		if (now->IsEnable() && now->IsCanBeSelect())
-		{
-			selectChild = now;
-			break;
-		}
-		now++;
-	}
-	selectChild->IsSelected() = 1;
-	return selectChild;
-}
-
-HmiGridPageCell* spt::HmiGridPage::GoToLastCanBeSelected()
-{
-	HmiGridPageCell* end = &text[0][0];
-	if (!selectChild)
-	{
-		return 0;
-	}
-	HmiGridPageCell* now = selectChild - 1;
-	selectChild->IsSelected() = 0;
-	while (now >= end)
-	{
-		if (now->IsEnable() && now->IsCanBeSelect())
-		{
-			selectChild = now;
-			break;
-		}
-		now--;
-	}
-	selectChild->IsSelected() = 1;
-	return selectChild;
-}
-
-void spt::HmiGridPageCell::ResetStatus()
-{
-	HmiWidContextAreaTextLine::ResetStatus();
-	text.Clear();
-}
-
-void spt::HmiGridPageCell::SeCell(bool8 HasTitle, HmiGridWndDataMapCell* Cell)
-{
-	pCell = Cell;
-	HasTitle = (HasTitle == 1);
-	if (pCell && pCell->isEnable)
-	{
-		IsCanBeSelect() = pCell->isCanSelect;
-		SetVisible(1);
-		Row = pCell->row + HasTitle;
-		Col = pCell->col;
-		isSelected = 0;
-		Cell->pPageCell = this;
-		Len = pCell->dataLen;
-		isFromRight = pCell->isFromRight;
-	}
-	else
-	{
-		SetVisible(0);
-	}
-}
-
-void spt::HmiGridPageCell::UpdateCheck(ShowType Type)
-{
-	if (pCell && pCell->toStr)
-	{
+		HmiGridWndDataMapPage* ppage = &map.page[page];
 		String100B str;
-		SetText(pCell->toStr(str, pCell));
-		if (isFromRight)
+		String100B temp;
+		for (uint32 i = 0; i < ppage->rowNum; i++)
 		{
-			HmiWidContextAreaTextLine::UpdateCheck(Type);
+			for (uint32 j = 0; j < map.maxRowCellNum; j++)
+			{
+				HmiGridWndDataMapCell* cell = &ppage->pRow[i]->cell[j];
+				str.Clear();
+				if (cell->toStr)
+				{
+					cell->toStr(temp, cell);
+					if (cell->isFromRight)
+					{
+						str.Format(temp.Str(), cell->dataLen, 0, ' ');
+					}
+					else
+					{
+						if (map.rowCellUnitLen[j])
+						{
+							str.Format(temp.Str(), cell->dataLen, 0, ' ');
+						}
+						else
+						{
+							str.Format(temp.Str(), cell->dataLen, 1, ' ');
+						}
+					}
+				}
+				if (isEditCellMode)
+				{
+					if (selectCell == cell)
+					{
+						curse.ClearRect();
+						curse.SetRect(GetRect(i + startrow, selectCell->col, selectCell->dataLen, 1));
+						curse.SetText(str.Str());
+						curse.SetUpdate(1);
+					}
+				}
+				str.Format(cell->unit, cell->unitLen, 1, ' ');
+				SetText(i + startrow, cell->col, str.Str());
+			}
 		}
 	}
+	return HmiWidTextWnd::ShowSelf();
 }
 
-void spt::HmiGridPageCell::ShowSelf(ShowType Type)
+int32 spt::HmiGridWnd::ShowPeriod()
 {
-	HmiWidContextAreaTextLine::ShowSelf(Type);
-	if (pCell->unit && IsHmiWidContextParent())
+	if (updateData)
 	{
-		HmiWidContextArea* p = (HmiWidContextArea*)parent;
-		p->SetText(Row, Len + Col, pCell->unit);
+		HmiKey key = { 0 };
+		updateData(this, &map, key);
 	}
+	return 0;
 }
 
+int32 spt::HmiGridWnd::FindFirstEditCell()
+{
+	selectCell = 0;
+	if (isEditCellMode)
+	{
+		if (page < totalPage)
+		{
+			HmiGridWndDataMapPage* ppage = &map.page[page];
+			for (uint32 i = 0; i < ppage->rowNum; i++)
+			{
+				HmiGridWndDataMapRow* prow = ppage->pRow[i];
+				for (uint32 j = 0; j < map.maxRowCellNum; j++)
+				{
+					HmiGridWndDataMapCell* cell = &prow->cell[j];
+					if (cell->isEnable && cell->isCanSelect && cell->edit)
+					{
+						selectCell = cell;
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int32 spt::HmiGridWnd::FindLastEditCell()
+{
+	selectCell = 0;
+	if (isEditCellMode)
+	{
+		if (page < totalPage)
+		{
+			HmiGridWndDataMapPage* ppage = &map.page[page];
+			for (uint32 i = 0; i < ppage->rowNum; i++)
+			{
+				HmiGridWndDataMapRow* prow = ppage->pRow[ppage->rowNum - i - 1];
+				for (uint32 j = 0; j < map.maxRowCellNum; j++)
+				{
+					HmiGridWndDataMapCell* cell = &prow->cell[map.maxRowCellNum - j - 1];
+					if (cell->isEnable && cell->isCanSelect && cell->edit)
+					{
+						selectCell = cell;
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int32 spt::HmiGridWnd::Go2LastEditCell()
+{
+	if (isEditCellMode)
+	{
+		if (page < totalPage)
+		{
+			bool8 start = 0;
+			HmiGridWndDataMapPage* ppage = &map.page[page];
+			for (uint32 i = 0; i < ppage->rowNum; i++)
+			{
+				HmiGridWndDataMapRow* prow = ppage->pRow[ppage->rowNum - i - 1];
+				for (uint32 j = 0; j < map.maxRowCellNum; j++)
+				{
+					HmiGridWndDataMapCell* cell = &prow->cell[map.maxRowCellNum - j - 1];
+					if (cell == selectCell)
+					{
+						start = 1;
+						continue;
+					}
+					if (start && cell->isEnable && cell->isCanSelect && cell->edit)
+					{
+						selectCell = cell;
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+int32 spt::HmiGridWnd::Go2NextEditCell()
+{
+	if (isEditCellMode)
+	{
+		if (page < totalPage)
+		{
+			bool8 start = 0;
+			HmiGridWndDataMapPage* ppage = &map.page[page];
+			for (uint32 i = 0; i < ppage->rowNum; i++)
+			{
+				HmiGridWndDataMapRow* prow = ppage->pRow[i];
+				for (uint32 j = 0; j < map.maxRowCellNum; j++)
+				{
+					HmiGridWndDataMapCell* cell = &prow->cell[j];
+					if (cell == selectCell)
+					{
+						start = 1;
+						continue;
+					}
+					if (start && cell->isEnable && cell->isCanSelect && cell->edit)
+					{
+						selectCell = cell;
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	return -1;
+}
 
 const char* spt::HmiGridWndDataMapCellStrDisp(SalString& Str, HmiGridWndDataMapCell* Cell)
 {

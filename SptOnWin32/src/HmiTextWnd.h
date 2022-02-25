@@ -17,7 +17,7 @@ namespace spt
 		bool8 isctxupdate;
 	};
 	typedef int32(*UpdateHmiTextWnd)(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage, HmiKey key);
-	class HmiTextWnd :public WidTextWnd
+	class HmiTextWnd :public HmiWidTextWnd
 	{
 	public:
 		static const uint32 CN_Max_WndCell = 20;

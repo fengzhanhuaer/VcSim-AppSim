@@ -24,7 +24,6 @@ namespace spt
 		int64 editMin;
 		const char* unit;
 		struct HmiGridWndDataMapRow* pRow;
-		class HmiGridPageCell* pPageCell;
 		HmiGridWndDataMapCellToStr toStr;
 		HmiGridWndDataMapCellEidt edit;
 		void ResetStatus();
@@ -179,43 +178,16 @@ namespace spt
 		HmiGridWndDataMapPage page[CN_Max_Hmi_Grid_Page];
 		void ResetStatus();
 	};
-	class HmiGridPageCell :public HmiWidContextAreaTextLine
+	struct HmiGridTitleCol
 	{
-	public:
-		void ResetStatus();
-		void SeCell(bool8 HasTitle, HmiGridWndDataMapCell* pCell);
-		struct HmiGridWndDataMapCell* Cell() { return pCell; };
-		virtual void UpdateCheck(ShowType Type);
-		virtual void ShowSelf(ShowType Type);
-	protected:
-		struct HmiGridWndDataMapCell* pCell;
-		friend class HmiGridWnd;
-	};
-	class HmiGridPage :public HmiWidSinglePage
-	{
-	public:
-		HmiGridPage();
-		void ResetStatus();
-		virtual void Show(ShowType Type);
-	protected:
-
-		void SetPage(HmiGridWndDataMapPage* pPage);
-		HmiGridPageCell* SelectedChild() { return selectChild; };
-		HmiGridPageCell* SetSelectedChildAt(int32 Index);
-		HmiGridPageCell* GoToNextCanBeSelected();
-		HmiGridPageCell* GoToLastCanBeSelected();
-	protected:
-		bool8 hasTitleRow;
-		bool8 isEditCellMode;
-
-		HmiWidContextAreaTextLine titleRow[CN_Max_Hmi_Grid_Page_Row_Cell];
-		HmiWidCurseText curse;
-		HmiGridPageCell* selectChild;
-		static HmiGridPageCell text[CN_Max_Hmi_Grid_Page_Row][CN_Max_Hmi_Grid_Page_Row_Cell];
-		HmiGridWndDataMapPage* pPage;
+		char str[15];
+		uint16 strlen;
+		uint16 displen;
+		uint16 col;
+		bool8 isFromRight;
 	};
 	typedef int32(*HmiGridWndUpdateData)(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key);
-	class HmiGridWnd :public WidTextWnd
+	class HmiGridWnd :public HmiWidTextWnd
 	{
 	public:
 		HmiGridWnd();
@@ -224,11 +196,18 @@ namespace spt
 		void SetColTitle(const char* Title1, const char* Title2, const char* Title3, const char* Title4, const char* Title5, const char* Title6, const char* Title7, const char* Title8, const char* Title9, const char* Title10);
 	protected:
 		void AutoLayerOut();
+		virtual int32 ShowSelf();
+		virtual int32 ShowPeriod();
+		int32 FindFirstEditCell();
+		int32 FindLastEditCell();
+		int32 Go2LastEditCell();
+		int32 Go2NextEditCell();
 	protected:
 		HmiGridWndUpdateData updateData;
-		char colTitle[CN_Max_Hmi_Grid_Page_Row_Cell][15];
-		uint8 titleCol;
-		bool8 isFirstLayerout;
+		HmiGridTitleCol colTitle[CN_Max_Hmi_Grid_Page_Row_Cell];
+		HmiGridWndDataMapCell* selectCell;
+		uint8 titleNum;
+		bool8 isEditCellMode;
 		bool8 isEditData;
 		bool8 isDataChange;
 		static HmiGridWndDataMap map;

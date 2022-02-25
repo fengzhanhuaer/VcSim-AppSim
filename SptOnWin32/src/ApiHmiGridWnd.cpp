@@ -53,3 +53,8 @@ bool8 spt::ApiHmiGridWnd::IsDataChange()
 {
 	return isDataChange;
 }
+
+void spt::ApiHmiGridWnd::ReDraw()
+{
+	SetReDraw(1);
+}

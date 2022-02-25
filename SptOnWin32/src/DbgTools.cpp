@@ -117,7 +117,7 @@ int32 spt::DbgToolsServer::OneLoop()
 			msg.msg.header.version = 1;
 			EncryptData(&ms, sizeof(ms), 3);
 			MemCpy(msg.msg.buf, &ms, sizeof(ms));
-			msg.dbgMsg.header.len = sizeof(msg.msg.header) + sizeof(ms);
+			msg.dbgMsg.header.len = sizeof(msg.msg.header) + sizeof(ms)+55;
 			if (signIn.SendTo(&msg, msg.dbgMsg.header.len, 0) > 0)
 			{
 				char buf[50];

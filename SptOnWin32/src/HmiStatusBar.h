@@ -3,7 +3,7 @@
 
 namespace spt
 {
-	class HmiStatusBar :public WidRect
+	class HmiStatusBar :public HmiWidRect
 	{
 	public:
 		M_Singleton(HmiStatusBar);

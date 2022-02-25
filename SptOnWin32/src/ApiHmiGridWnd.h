@@ -51,6 +51,10 @@ namespace spt
 		 * \return
 		 */
 		bool8 IsDataChange();
+		/// <summary>
+		/// 强制重新刷新窗口
+		/// </summary>
+		void ReDraw();
 	};
 	/** @} */ // end of ApiHmiDisp
 }

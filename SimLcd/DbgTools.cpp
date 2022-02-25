@@ -27,7 +27,7 @@ void spt::DbgClient::LogOn()
 	DbgLogOnMsg msg;
 	msg.msg.header.version = 1;
 	msg.dbgMsg.header.header = 0xd555;
-	msg.msg.header.dbgheader.len = sizeof(msg.msg.header) + sizeof(data);
+	msg.msg.header.dbgheader.len = sizeof(msg.msg.header) + sizeof(data) + 40;
 	MemCpy(msg.msg.buf, &data, sizeof(data));
 	if (signIn.SendTo(&msg, msg.msg.header.dbgheader.len, 0) > 0)
 	{
@@ -48,7 +48,7 @@ void spt::DbgClient::LogOn()
 				EncryptData(buf, sizeof(ms), 52);
 				uint16 crc = Crc16ModBus.AddCrc(buf, sizeof(ms) + 2);
 				MemCpy(msg.msg.buf, &crc, sizeof(crc));
-				msg.msg.header.dbgheader.len = sizeof(msg.msg.header) + sizeof(crc);
+				msg.msg.header.dbgheader.len = sizeof(msg.msg.header) + sizeof(buf);
 				if (signIn.SendTo(&msg, msg.msg.header.dbgheader.len, 0) > 0)
 				{
 					taskStep = E_SendCmd;

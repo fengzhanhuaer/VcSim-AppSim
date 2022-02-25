@@ -7,7 +7,7 @@ int32 spt::DispProcess(int Step, const char* info)
 	GraphicDevice& gd = GraphicDevice::Instance();
 	pos.y += Step * (gd.FontHeight() + gd.SpaceOfFont()) + gd.SpaceOfFont();
 	pos.x += gd.FontWidth() / 2;
-	WidTextLine text;
+	HmiWidTextLine text;
 	text.SetRect(pos.x, pos.y, gd.FontWidth() * StrLen(info), gd.FontHeight());
 	text.SetText(info);
 	text.ClearRect();

@@ -88,7 +88,7 @@ int32 spt::HmiAssicInputDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 	}
 	if (isUpdate)
 	{
@@ -236,6 +236,7 @@ int32 spt::HmiAssicInputDialog::Edit()
 				SetUpdateSelf(1);
 			}
 			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
@@ -394,7 +395,7 @@ int32 spt::HmiStrEditDialog::Edit()
 					if (cursepos && cursepos->IsSelected())
 					{
 						HmiAssicInputDialog dig(HmiAssicInputDialog::E_Full);
-						WidTextLine* cur = (WidTextLine*)cursepos;
+						HmiWidTextLine* cur = (HmiWidTextLine*)cursepos;
 						dig.SetDefault(cur->Text().Str());
 						dig.AutoLayout();
 						int res = dig.Edit();
@@ -440,6 +441,7 @@ int32 spt::HmiStrEditDialog::Edit()
 				}
 			}
 			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
@@ -484,7 +486,7 @@ int32 spt::HmiStrEditDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 		for (uint32 i = 0; i < lineCount; i++)
 		{
 			text[i].SetUpdate(1);
@@ -566,6 +568,7 @@ int32 spt::HmiWarnDialog::Edit()
 				}
 			}
 			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
@@ -617,10 +620,12 @@ int32 spt::HmiSelectDialog::Edit()
 					break;
 				}
 			}
+			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
 		Update();
@@ -635,7 +640,7 @@ int32 spt::HmiSelectDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 	}
 	HmiWidDialog::ShowSelf();
 	return 0;
@@ -800,6 +805,7 @@ int32 spt::HmiTimeEditDialog::Edit()
 				}
 			}
 			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
@@ -883,7 +889,7 @@ int32 spt::HmiTimeEditDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 	}
 	text[0].ClearRect();
 	String10B str;
@@ -1044,6 +1050,7 @@ int32 spt::HmiInt32DataDialog::Edit()
 				}
 			}
 			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
@@ -1290,7 +1297,7 @@ int32 spt::HmiIntDataEditDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 	}
 	if (isUpdate)
 	{
@@ -1445,10 +1452,12 @@ int32 spt::HmiHex32DataDialog::Edit()
 					SetUpdateSelf(1);
 				}
 			}
+			SetUpdate(1);
+			HmiMain::Instance().MsSleep(50);
 		}
 		else
 		{
-			HmiMain::Instance().MsSleep(10);
+			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
 		Update();
@@ -1606,6 +1615,7 @@ int32 spt::HmiBit32DataDialog::Edit()
 				SetUpdateSelf(1);
 			}
 			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
@@ -1673,7 +1683,7 @@ int32 spt::HmiBit32DataDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 	}
 	String100B str;
 	curse.SetPosX(text[2].Rect().x + gd->FontWidth() * selectIndex);
@@ -1772,6 +1782,7 @@ int32 spt::HmiEnum32DataDialog::Edit()
 				}
 			}
 			HmiMain::Instance().MsSleep(50);
+			SetUpdate(1);
 		}
 		else
 		{
@@ -1830,7 +1841,7 @@ int32 spt::HmiEnum32DataDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 	}
 	text[2].ClearRect();
 	text[2].SetUpdate(1);
@@ -1924,7 +1935,7 @@ int32 spt::HmiInfoDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		WidRect::ShowSelf();
+		HmiWidRect::ShowSelf();
 	}
 	HmiWidDialog::ShowSelf();
 	return 0;

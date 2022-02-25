@@ -4,7 +4,8 @@ using namespace spt;
 
 void spt::HmiMain::DrawFrameWnd()
 {
-	HmiWidRect::Show(E_AllFrame);
+	ClearRect();
+	HmiWidRect::Show();
 	gd->Update(rect);
 }
 
@@ -80,14 +81,11 @@ spt::HmiMain::HmiMain()
 	:Task("tHmi", TaskBasePriority + 5, 2 * 1024 * 1024, E_T_FLOAT, E_AuxCore)
 {
 	menuService = &HmiMenuService::Instance();
-	SetVisible(1);
 }
 void spt::HmiMainFramePowerUpIni()
 {
 	GraphicDevice::Instance().PowerUpIni(0);
 	HmiWidObject::gd = &GraphicDevice::Instance();
 	HmiWidObject::key = &HmiKeyService::Instance();
-	WidObject::gd = &GraphicDevice::Instance();
-	WidObject::key = &HmiKeyService::Instance();
 	HmiMain::Instance().PowerUpIni(0);
 }
