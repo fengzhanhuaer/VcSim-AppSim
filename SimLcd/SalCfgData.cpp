@@ -45,7 +45,7 @@ bool8 spt::CfgDataBase::Save2File(CfgFile& file)
 	res = file.Write(str.Str());
 	if (notes[0])
 	{
-		res = file.Write("  //");
+		res = file.Write(" ///");
 		res = file.Write(notes);
 	}
 	file.WriteLine("");
@@ -69,12 +69,17 @@ bool8 spt::CfgDataBase::EditBufToValue()
 	return 1;
 }
 
+bool8 spt::CfgDataBase::SetDefaulted()
+{
+	return isDefaulted = 1;
+}
 
 spt::CfgDataBase::CfgDataBase()
 {
 	name[0] = 0;
 	notes[0] = 0;
 	dotNum = 0;
+	isDefaulted = 0;
 }
 
 void spt::CfgStrDataBase::DataStr(SalString& Str)
@@ -105,6 +110,16 @@ void spt::CfgStrDataBase::Set(const char* Name, const char* DataStr)
 {
 	SetName(Name);
 	SetData(DataStr);
+}
+
+void spt::CfgStrDataBase::SetIfNoDefault(const char* Name, const char* Data)
+{
+	SetName(Name);
+	if (!isDefaulted)
+	{
+		SetData(Data);
+		isDefaulted = 1;
+	}
 }
 
 bool8 spt::CfgStrDataBase::ReadFromFile(CfgFile& file)
@@ -147,6 +162,16 @@ void spt::CfgUint32::Set(const char* Name, uint32 Data)
 {
 	SetName(Name);
 	SetData(Data);
+}
+
+void spt::CfgUint32::SetIfNoDefault(const char* Name, uint32 Data)
+{
+	SetName(Name);
+	if (!isDefaulted)
+	{
+		SetData(Data);
+		isDefaulted = 1;
+	}
 }
 
 bool8 spt::CfgUint32::ReadFromFile(CfgFile& file)
@@ -192,6 +217,16 @@ void spt::CfgInt32::Set(const char* Name, int32 Data)
 	SetData(Data);
 }
 
+void spt::CfgInt32::SetIfNoDefault(const char* Name, uint32 Data)
+{
+	SetName(Name);
+	if (!isDefaulted)
+	{
+		SetData(Data);
+		isDefaulted = 1;
+	}
+}
+
 bool8 spt::CfgInt32::ReadFromFile(CfgFile& file)
 {
 	int32 dat = 0;
@@ -228,6 +263,16 @@ void spt::CfgBool::Set(const char* Name, bool8 Data)
 {
 	SetName(Name);
 	SetData(Data);
+}
+
+void spt::CfgBool::SetIfNoDefault(const char* Name, uint32 Data)
+{
+	SetName(Name);
+	if (!isDefaulted)
+	{
+		SetData(Data);
+		isDefaulted = 1;
+	}
 }
 
 bool8 spt::CfgBool::ReadFromFile(CfgFile& file)
@@ -379,6 +424,16 @@ void spt::CfgHex32::Set(const char* Name, uint32 Data)
 {
 	SetName(Name);
 	SetData(Data);
+}
+
+void spt::CfgHex32::SetIfNoDefault(const char* Name, uint32 Data)
+{
+	SetName(Name);
+	if (!isDefaulted)
+	{
+		SetData(Data);
+		isDefaulted = 1;
+	}
 }
 
 bool8 spt::CfgHex32::ReadFromFile(CfgFile& file)

@@ -8,6 +8,7 @@ namespace spt
 		E_DrawAssic = 0x0101,
 		E_DrawStr = 0x0111,
 		E_DrawLine = 0x0121,
+		E_DrawLine2 = 0x0122,
 		E_DrawRect = 0x0131,
 		E_ClearRect = 0x0141,
 		E_ClearAll = 0x0142,
@@ -63,6 +64,17 @@ namespace spt
 		uint16 color;
 		uint16 w;
 		uint16 h;
+	};
+	struct LcdDrawLine2
+	{
+		uint16 type;
+		uint16 len;
+		uint16 sx;
+		uint16 sy;
+		uint16 ex;
+		uint16 ey;
+		uint16 color;
+		uint16 w;
 	};
 	struct LcdDrawCmd
 	{
@@ -127,7 +139,7 @@ namespace spt
 		virtual int32 ProcOut() override;
 		void Close();
 		bool8 IsLinkOk();
-		int32 StartClient(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort);
+		int32 StartClient(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock);
 		int32 CheckStatus();
 	public:
 		HmiTcpCmmChannel();
@@ -136,6 +148,7 @@ namespace spt
 	private:
 		bool8 forceClose;
 		DbgTcpGmClient virlcdCmm;
+		bool8 logOk;
 		MsTimer msTimer;
 		uint32 sendCnt;
 		uint32 sendCntBak;

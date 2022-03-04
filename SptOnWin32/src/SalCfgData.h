@@ -33,9 +33,16 @@ namespace spt
 		uint8 CfgType() { return type; };
 		uint8 DotNum() { return dotNum; };
 		uint8 SetDotNum(uint8 DotNum) { return dotNum = DotNum; };
+		/// <summary>
+		/// 是否已经初始化
+		/// </summary>
+		/// <returns></returns>
+		bool8 SetDefaulted();
+		bool8 IsDefaulted() { return isDefaulted; };
 	protected:
 		CfgDataBase();
 	protected:
+		bool8 isDefaulted;
 		uint8 dotNum;
 		uint8 type;
 		char name[40];
@@ -54,6 +61,7 @@ namespace spt
 		virtual int32 StrDataBufLen();
 		void SetData(const char* DataStr);
 		void Set(const char* Name, const char* DataStr);
+		void SetIfNoDefault(const char* Name, const char* Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 	protected:
 		CfgStrDataBase();
@@ -92,6 +100,7 @@ namespace spt
 		virtual void DataStr(SalString& Str);
 		bool8 SetData(uint32 Data);
 		void Set(const char* Name, uint32 Data);
+		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		uint32 Data()const;
 	protected:
@@ -104,6 +113,7 @@ namespace spt
 		virtual void DataStr(SalString& Str);
 		void SetData(uint32 Data);
 		void Set(const char* Name, uint32 Data);
+		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		uint32 Data()const;
 	protected:
@@ -116,6 +126,7 @@ namespace spt
 		virtual void DataStr(SalString& Str);
 		bool8 SetData(int32 Data);
 		void Set(const char* Name, int32 Data);
+		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		int32 Data()const;
 	protected:
@@ -128,6 +139,7 @@ namespace spt
 		virtual void DataStr(SalString& Str);
 		void SetData(bool8 Data);
 		void Set(const char* Name, bool8 Data);
+		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		bool8 Data()const;
 	protected:

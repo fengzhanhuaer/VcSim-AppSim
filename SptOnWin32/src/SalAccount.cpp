@@ -894,23 +894,23 @@ uint32 spt::SalUserPool::UpdateCrc()
 
 int32 spt::SalUsrCfg::PowerUpIni(int32 Para)
 {
-	EnableAccount.Set("启用账号系统", 1);
+	EnableAccount.SetIfNoDefault("启用账号系统", 1);
 	EnableAccount.SetRange(0, 1);
 	AddCfgData(&EnableAccount);
-	AutoExitTime.Set("自动退出时间", 30);
+	AutoExitTime.SetIfNoDefault("自动退出时间", 30);
 	AutoExitTime.SetRange(1, 30);
 	AutoExitTime.SetUnit(&Unit_Minute);
 	AddCfgData(&AutoExitTime);
-	PasswordErrCnt.Set("允许密码出错次数", 10);
+	PasswordErrCnt.SetIfNoDefault("允许密码出错次数", 10);
 	PasswordErrCnt.SetRange(1, 30);
 	AddCfgData(&PasswordErrCnt);
-	PasswordLockTime.Set("账号锁定时间", 10);
+	PasswordLockTime.SetIfNoDefault("账号锁定时间", 10);
 	PasswordLockTime.SetRange(2, 10);
 	PasswordLockTime.SetUnit(&Unit_Minute);
 	AddCfgData(&PasswordLockTime);
-	EnablePassWordOverTime.Set("启用密码超期判断", 0);
+	EnablePassWordOverTime.SetIfNoDefault("启用密码超期判断", 0);
 	AddCfgData(&EnablePassWordOverTime);
-	PassWordOverTime.Set("密码有效期", 7300);
+	PassWordOverTime.SetIfNoDefault("密码有效期", 7300);
 	PassWordOverTime.SetRange(10, 7300);
 	PassWordOverTime.SetUnit(&Unit_Day);
 	AddCfgData(&PassWordOverTime);

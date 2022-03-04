@@ -29,6 +29,8 @@ namespace spt
 		int32 SetRemoteIp(uint32 Ip);
 		int32 SetLocalPort(uint16 Port);
 		int32 SetRemotePort(uint16 Port);
+		bool8 GetRemote(SalString& Str);
+		bool8 GetIpStr(uint32 Ip, SalString& Str);
 		virtual int32 Send(const void* buf, int32 bufLen, uint32 flags);
 		virtual int32 SendTo(const void* buf, int32 bufLen, uint32 flags, uint32 Ip, uint16 Port);
 		virtual int32 Recv(void* buf, int32 bufLen, uint32 flags);
@@ -49,6 +51,9 @@ namespace spt
 		uint32 RecvErrCnt() { return recvErrCnt; };
 	public:
 		u4bytes& RemoteIp() { return remoteIp; }
+		u2bytes& RemotePort() { return remotePort; }
+		u4bytes& LocalIp() { return localIp; }
+		u2bytes& LocalPort() { return localPort; }
 	public:
 		DbgSocket();
 		~DbgSocket();
@@ -90,12 +95,17 @@ namespace spt
 	{
 	public:
 		DbgTcpCmm();
+		int32 SetClientSocketNonBlock(bool8 block);
 		virtual int32 Send(const void* buf, int32 bufLen, uint32 flags);
 		virtual int32 Recv(void* buf, int32 bufLen, uint32 flags);
+		int32 Send(DbgMsg& Msg);
+		int32 Recv(DbgMsg& Msg);
 		int32 CreatSocket();
 		int32 Accept();
 		bool8 IsClientOk();
 		virtual void Close();
+		int32 ClientSock() { return clientsock; }
+		int32 SetClientSock(int32 sock);
 	protected:
 		int32 clientsock;
 	};
@@ -138,6 +148,7 @@ namespace spt
 		virtual void Close();
 		int32 GmAccept();
 		int32 StartNonBlock();
+		int32 Start();
 		void CreatGmSock();
 	};
 	class DbgTcpGmClient :public DbgTcpClient, public DbgTcpGmCmm
@@ -147,6 +158,7 @@ namespace spt
 		virtual int32 Send(const void* buf, int32 bufLen, uint32 flags);
 		virtual int32 Recv(void* buf, int32 bufLen, uint32 flags);
 		virtual void Close();
+		void CreatGmSock();
 		int32 StartNonBlock();
 		int32 GmConnect();
 		DbgTcpGmClient();

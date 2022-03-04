@@ -138,13 +138,15 @@ namespace spt
 		virtual int32 ProcOut() override;
 		void Close();
 		bool8 IsLinkOk();
-		int32 StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort);
+		int32 StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock);
+		int32 CheckStatus();
 	public:
 		HmiTcpCmmChannel();
 	protected:
-		int32 CheckStatus();
+		
 	private:
 		DbgTcpGmServer virlcdCmm;
+		bool8 logOk;
 		MsTimer msTimer;
 		MsPeriodTimer sendTimer;
 		uint32 sendCnt;
@@ -182,7 +184,7 @@ namespace spt
 			E_Work,
 		};
 	public:
-		int32 StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort);
+		int32 StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock);
 		void HeartBeat();
 		SalCmmChannel& Tcp() { return tcpCmm; };
 		SalCmmChannel& Serial() { return serialCmm; };

@@ -939,43 +939,43 @@ int32 spt::DatePara::PowerUpIni(int32 Para)
 	{
 		if (cfg->platform.devtype == ED_SAU31_Sub)
 		{
-			AdJustMode.Set("校时方式", E_SubBoard);
+			AdJustMode.SetIfNoDefault("校时方式", E_SubBoard);
 			AddCfgData(&AdJustMode);
 		}
 		else
 		{
-			AdJustMode.Set("校时方式", E_LIGHT_IRIG_B);
+			AdJustMode.SetIfNoDefault("校时方式", E_LIGHT_IRIG_B);
 			AddCfgData(&AdJustMode);
 		}
 	}
 	else
 	{
-		AdJustMode.Set("校时方式", E_LIGHT_IRIG_B);
+		AdJustMode.SetIfNoDefault("校时方式", E_LIGHT_IRIG_B);
 		AddCfgData(&AdJustMode);
 	}
 	AdJustMode.SetNotes("0本地守时1SNTP2电B码3光B码4从板卡");
-	TimeZone.Set("时区", 8);
+	TimeZone.SetIfNoDefault("时区", 8);
 	TimeZone.SetNotes("时区");
 	AddCfgData(&TimeZone);
-	IrigB_Delay.Set("B码额定延时", 990);
+	IrigB_Delay.SetIfNoDefault("B码额定延时", 990);
 	IrigB_Delay.SetUnit(&Unit_mS);
 	AddCfgData(&IrigB_Delay);
-	IrigB_Precision.Set("时钟精度", 7);
+	IrigB_Precision.SetIfNoDefault("时钟精度", 7);
 	IrigB_Precision.SetNotes("6-100us;7-ms;8-10ms;9-100ms");
 	AddCfgData(&IrigB_Precision);
-	IrigB_AckCnt.Set("同步确认时间", 12);
+	IrigB_AckCnt.SetIfNoDefault("同步确认时间", 12);
 	IrigB_AckCnt.SetUnit(&Unit_S);
 	AddCfgData(&IrigB_AckCnt);
-	IrigB_UnSynCnt.Set("失步确认时间", 5);
+	IrigB_UnSynCnt.SetIfNoDefault("失步确认时间", 5);
 	IrigB_UnSynCnt.SetUnit(&Unit_S);
 	AddCfgData(&IrigB_UnSynCnt);
-	IrigB_CheckCode.Set("B码校验方式", 0);
+	IrigB_CheckCode.SetIfNoDefault("B码校验方式", 0);
 	IrigB_CheckCode.SetNotes("0不校验;1奇校验;2偶校验");
 	AddCfgData(&IrigB_CheckCode);
-	IrigB_HostContDif.Set("时钟帧跳变阈值", 2);
+	IrigB_HostContDif.SetIfNoDefault("时钟帧跳变阈值", 2);
 	IrigB_HostContDif.SetNotes("ms");
 	AddCfgData(&IrigB_HostContDif);
-	IrigB_ReSyncDif.Set("时钟再同步阈值", 3600);
+	IrigB_ReSyncDif.SetIfNoDefault("时钟再同步阈值", 3600);
 	IrigB_ReSyncDif.SetNotes("s");
 	AddCfgData(&IrigB_ReSyncDif);
 	path.Set(CN_CFG_FILE_ROOT);

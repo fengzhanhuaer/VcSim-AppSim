@@ -3,7 +3,7 @@
 
 namespace spt
 {
-	class VirLcdCmmClient :protected DbgClient
+	class VirLcdCmmClient :public DbgClient
 	{
 	public:
 		void ReConnect();
@@ -16,11 +16,12 @@ namespace spt
 	protected:
 		VirLcdCmmClient();
 	protected:
+		bool8 isAskConnect;
 		bool8 IsIedInfoAsked;
 		bool8 IsIedInfoInied;
-		MsStampTimer lastUpdateReconnected;
-	};
 
+	};
+	bool8 AskForLogOnInfo(bool8 isCheckId, bool8 isCheckAccount, SalString& Id, SalString& Name, SalString& Pw, int32(*DoHeartCheck)());
 
 }
 

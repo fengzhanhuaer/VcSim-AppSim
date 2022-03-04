@@ -69,6 +69,7 @@ namespace spt
 		SingleStackBuf VirGoSvStateBoardBuf;
 		E_SLOWCMD slowCmdstep;
 		uint16 DioMsgCnt;
+		bool8 isPowerUpOver;
 	};
 	class SptGzkMuIoProcess :public SptIedIoProcess
 	{

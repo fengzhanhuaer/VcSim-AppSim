@@ -34,7 +34,7 @@ extern "C" int FactoryModeFormat(int (*Process)(int Step, const char* info))
 		{
 			Process(Step, str.Str());
 		}
-		LogMsg << str<<"\n\n";
+		LogMsg << str << "\n\n";
 		Step++;
 	}
 	if (cfg.UpdateUBoot.Data())
@@ -60,7 +60,7 @@ extern "C" int FactoryModeFormat(int (*Process)(int Step, const char* info))
 		{
 			Process(Step, str.Str());
 		}
-		LogMsg << str<<"\n\n";
+		LogMsg << str << "\n\n";
 		Step++;
 	}
 	if (cfg.UpdateSystem.Data())
@@ -85,7 +85,7 @@ extern "C" int FactoryModeFormat(int (*Process)(int Step, const char* info))
 		{
 			Process(Step, str.Str());
 		}
-		LogMsg << str<<"\n\n";
+		LogMsg << str << "\n\n";
 		Step++;
 	}
 	if (cfg.FormatSysCard.Data())
@@ -103,7 +103,7 @@ extern "C" int FactoryModeFormat(int (*Process)(int Step, const char* info))
 		{
 			Process(Step, str.Str());
 		}
-		LogMsg << str<<"\n\n";
+		LogMsg << str << "\n\n";
 		Step++;
 	}
 	if (cfg.FormatDataCard.Data())
@@ -121,7 +121,7 @@ extern "C" int FactoryModeFormat(int (*Process)(int Step, const char* info))
 		{
 			Process(Step, str.Str());
 		}
-		LogMsg << str <<"\n\n";
+		LogMsg << str << "\n\n";
 		Step++;
 	}
 	if (Process)
@@ -133,15 +133,15 @@ extern "C" int FactoryModeFormat(int (*Process)(int Step, const char* info))
 
 int32 spt::FactoryModeCfg::PowerUpIni(int32 Para)
 {
-	UpdateBoot0.Set("UpdateBoot0", 0);
+	UpdateBoot0.SetIfNoDefault("UpdateBoot0", 0);
 	AddCfgData(&UpdateBoot0);
-	UpdateUBoot.Set("UpdateUBoot", 0);
+	UpdateUBoot.SetIfNoDefault("UpdateUBoot", 0);
 	AddCfgData(&UpdateUBoot);
-	UpdateSystem.Set("UpdateSystem", 0);
+	UpdateSystem.SetIfNoDefault("UpdateSystem", 0);
 	AddCfgData(&UpdateSystem);
-	FormatSysCard.Set("格式化系统盘", 0);
+	FormatSysCard.SetIfNoDefault("格式化系统盘", 0);
 	AddCfgData(&FormatSysCard);
-	FormatDataCard.Set("格式化数据盘", 0);
+	FormatDataCard.SetIfNoDefault("格式化数据盘", 0);
 	AddCfgData(&FormatDataCard);
 
 	path.Set(SptMain::Instance().AppRoot().Str());

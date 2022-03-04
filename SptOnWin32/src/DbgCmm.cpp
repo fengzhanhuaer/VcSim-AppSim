@@ -38,6 +38,22 @@ int32 spt::DbgSocket::SetRemotePort(uint16 Port)
 	return 0;
 }
 
+bool8 spt::DbgSocket::GetRemote(SalString& Str)
+{
+	return GetIpStr(remoteIp.u32, Str);
+}
+
+bool8 spt::DbgSocket::GetIpStr(uint32 Ip, SalString& Str)
+{
+	u4bytes u4;
+	u4.u32 = Ip;
+	Str << (uint8)u4.u8[0] << ".";
+	Str << (uint8)u4.u8[1] << ".";
+	Str << (uint8)u4.u8[2] << ".";
+	Str << (uint8)u4.u8[3];
+	return 0;
+}
+
 int32 spt::DbgSocket::Send(const void* buf, int32 bufLen, uint32 flags)
 {
 	if (sock <= 0)
@@ -325,9 +341,23 @@ void spt::DbgTcpServer::CloseClient()
 	}
 }
 
+bool8 spt::DbgTcpServer::IsReadAble()
+{
+	if (sock > 0)
+	{
+		return SelectSocketR(sock, 0, 0);
+	}
+	return 0;
+}
+
 spt::DbgTcpCmm::DbgTcpCmm()
 {
 	clientsock = -1;
+}
+
+int32 spt::DbgTcpCmm::SetClientSocketNonBlock(bool8 block)
+{
+	return spt::SetSocketNonBlock(clientsock, block);
 }
 
 int32 spt::DbgTcpCmm::Send(const void* buf, int32 bufLen, uint32 flags)
@@ -345,6 +375,16 @@ int32 spt::DbgTcpCmm::Recv(void* buf, int32 bufLen, uint32 flags)
 		return 0;
 	}
 	return spt::Recv(clientsock, buf, bufLen, flags);
+}
+
+int32 spt::DbgTcpCmm::Send(DbgMsg& Msg)
+{
+	return DbgSocket::Send(Msg);
+}
+
+int32 spt::DbgTcpCmm::Recv(DbgMsg& Msg)
+{
+	return DbgSocket::Recv(Msg);
 }
 
 int32 spt::DbgTcpCmm::CreatSocket()
@@ -382,6 +422,11 @@ void spt::DbgTcpCmm::Close()
 	DbgSocket::Close();
 }
 
+int32 spt::DbgTcpCmm::SetClientSock(int32 sock)
+{
+	return clientsock = sock; 
+}
+
 int32 spt::DbgTcpClient::Start()
 {
 	if (CreatSocket() == -1)
@@ -411,6 +456,13 @@ int32 spt::DbgTcpClient::Start()
 		}
 	}
 	clientsock = sock;
+	int32 res = SelectSocketRW(sock, 5, 0);
+	if (res <= 0)
+	{
+		clientsock = -1;
+		Close();
+		return -1;
+	}
 	return 0;
 }
 
@@ -439,6 +491,15 @@ int32 spt::DbgTcpClient::StartNonBlock()
 		return -1;
 	}
 	clientsock = sock;
+	return 0;
+}
+
+bool8 spt::DbgTcpClient::IsReadAble()
+{
+	if (clientsock > 0)
+	{
+		return SelectSocketR(clientsock, 0, 0);
+	}
 	return 0;
 }
 
@@ -574,7 +635,14 @@ int32 spt::DbgTcpGmClient::Recv(void* buf, int32 bufLen, uint32 flags)
 	{
 		return 0;
 	}
+#ifdef WIN32_SIM
+
 	return DbgGmSslRead(gmSock, buf, bufLen);
+
+#else 
+	return DbgGmSslRead(gmSock, buf, bufLen);
+#endif
+	return 0;
 }
 
 void spt::DbgTcpGmClient::Close()
@@ -586,6 +654,21 @@ void spt::DbgTcpGmClient::Close()
 	}
 	DbgTcpClient::Close();
 	SetLinkOk(0);
+}
+
+void spt::DbgTcpGmClient::CreatGmSock()
+{
+	SetLinkOk(0);
+	if (gmSock)
+	{
+		DbgGmSslClose(gmSock);
+		gmSock = 0;
+	}
+	if (!enableGmssl)
+	{
+		return;
+	}
+	gmSock = DbgGmSslSockServerNew((void*)clientsock);
 }
 
 int32 spt::DbgTcpGmClient::StartNonBlock()
@@ -603,13 +686,20 @@ int32 spt::DbgTcpGmClient::StartNonBlock()
 	}
 	//TCP连接已经建立，将连接付给SSL
 	gmSock = DbgGmSslSockClientNew((void*)sock);
-
-	if (GmConnect() <= -1)
+	timer.UpCnt(5000);
+	timer.Enable(1);
+	timer.Restart();
+	while (!timer.Status())
 	{
-		Close();
-		return -1;
+		MsSleep(20);
+		if (GmConnect() <= -1)
+		{
+		}
+		else
+		{
+			break;
+		}
 	}
-
 	SetLinkOk(1);
 	return 0;
 }

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.0-4761b0c)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -90,17 +90,17 @@ SimLcd::SimLcd( wxWindow* parent, wxWindowID id, const wxString& title, const wx
 	this->SetSizer( bSizer5 );
 	this->Layout();
 	m_statusBar1 = this->CreateStatusBar( 4, wxSTB_SHOW_TIPS|wxSTB_SIZEGRIP, wxID_ANY );
-	m_timer1.SetOwner( this, wxID_ANY );
-	m_timer1.Start( 1000 );
+	m_timer1.SetOwner( this, wxID_ANY1 );
+	m_timer1.Start( 500 );
 
-	m_timer2.SetOwner( this, wxID_ANY );
-	m_timer2.Start( 20 );
+	m_timer2.SetOwner( this, wxID_ANY2 );
+	m_timer2.Start( 50 );
 
 
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( SimLcd::WndClose ) );
 	m_menu2->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SimLcd::SetLCDCorlor ), this, m_menuItem3->GetId());
-	HelpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SimLcd::ShowAboat ), this, m_menuItem2->GetId());
+	HelpMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( SimLcd::ShowAbout ), this, m_menuItem2->GetId());
 	m_textCtrl1->Connect( wxEVT_CHAR, wxKeyEventHandler( SimLcd::OnChar ), NULL, this );
 	m_textCtrl1->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( SimLcd::OnKey ), NULL, this );
 	m_textCtrl1->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler( SimLcd::OnLostFocus ), NULL, this );
@@ -109,8 +109,8 @@ SimLcd::SimLcd( wxWindow* parent, wxWindowID id, const wxString& title, const wx
 	m_IpStr->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( SimLcd::SetIpAddr ), NULL, this );
 	m_button2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SimLcd::LinkLcd ), NULL, this );
 	b_ReSet->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SimLcd::CreatRstKey ), NULL, this );
-	this->Connect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateUi ) );
-	this->Connect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateLcd ) );
+	this->Connect( wxID_ANY1, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateUi ) );
+	this->Connect( wxID_ANY2, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateLcd ) );
 }
 
 SimLcd::~SimLcd()
@@ -125,8 +125,8 @@ SimLcd::~SimLcd()
 	m_IpStr->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( SimLcd::SetIpAddr ), NULL, this );
 	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SimLcd::LinkLcd ), NULL, this );
 	b_ReSet->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SimLcd::CreatRstKey ), NULL, this );
-	this->Disconnect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateUi ) );
-	this->Disconnect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateLcd ) );
+	this->Disconnect( wxID_ANY1, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateUi ) );
+	this->Disconnect( wxID_ANY2, wxEVT_TIMER, wxTimerEventHandler( SimLcd::UpdateLcd ) );
 
 }
 
@@ -186,5 +186,73 @@ SetLcdColour::~SetLcdColour()
 	m_colourPicker1->Disconnect( wxEVT_COMMAND_COLOURPICKER_CHANGED, wxColourPickerEventHandler( SetLcdColour::ForeCorlourChanged ), NULL, this );
 	m_colourPicker2->Disconnect( wxEVT_COMMAND_COLOURPICKER_CHANGED, wxColourPickerEventHandler( SetLcdColour::BackCorlourChanged ), NULL, this );
 	Apply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SetLcdColour::ApplySet ), NULL, this );
+
+}
+
+LogOnWnd::LogOnWnd( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	LogBox = new wxBoxSizer( wxVERTICAL );
+
+	idbox = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("唯一性代码") ), wxVERTICAL );
+
+	idtext = new wxTextCtrl( idbox->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	idbox->Add( idtext, 1, wxALL|wxEXPAND, 5 );
+
+
+	LogBox->Add( idbox, 1, wxEXPAND, 5 );
+
+	accountbox = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* namebox;
+	namebox = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("帐号") ), wxVERTICAL );
+
+	nametext = new wxTextCtrl( namebox->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	namebox->Add( nametext, 1, wxALL|wxEXPAND, 5 );
+
+
+	accountbox->Add( namebox, 1, wxEXPAND, 5 );
+
+	wxStaticBoxSizer* pwbox;
+	pwbox = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("密码") ), wxVERTICAL );
+
+	pwtext = new wxTextCtrl( pwbox->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+	pwbox->Add( pwtext, 1, wxALL|wxEXPAND, 5 );
+
+
+	accountbox->Add( pwbox, 1, wxEXPAND, 5 );
+
+
+	LogBox->Add( accountbox, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer6;
+	bSizer6 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_button5 = new wxButton( this, wxID_ANY, wxT("确定"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer6->Add( m_button5, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_button6 = new wxButton( this, wxID_ANY, wxT("取消"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer6->Add( m_button6, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	LogBox->Add( bSizer6, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+
+
+	this->SetSizer( LogBox );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	m_button5->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogOnWnd::Enter ), NULL, this );
+	m_button6->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogOnWnd::Cancel ), NULL, this );
+}
+
+LogOnWnd::~LogOnWnd()
+{
+	// Disconnect Events
+	m_button5->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogOnWnd::Enter ), NULL, this );
+	m_button6->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogOnWnd::Cancel ), NULL, this );
 
 }

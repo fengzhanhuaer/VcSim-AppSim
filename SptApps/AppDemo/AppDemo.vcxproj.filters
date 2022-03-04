@@ -21,9 +21,6 @@
     <ClCompile Include="src\InstAngOut.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\InstEvent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\InstMenu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -88,6 +85,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\InstFwRecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InstDbg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InstEvent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -159,6 +162,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\InstFwRecord.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InstDbg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

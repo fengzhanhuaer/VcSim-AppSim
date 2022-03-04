@@ -241,12 +241,16 @@ const char* spt::CfgFile::SelectByName(const char* Name, const char* Source)
 	const char* sur = Source;
 	if (sur[0] == '/')
 	{
-		return 0;
+		if (sur[1] == '/')
+		{
+			if (sur[2] == '/')
+			{
+				return 0;
+			}
+			return 0;
+		}
 	}
-	if (sur[1] == '/')
-	{
-		return 0;
-	}
+
 	if (!Name)
 	{
 		return 0;
@@ -274,7 +278,7 @@ const char* spt::CfgFile::SelectByName(const char* Name, const char* Source)
 
 	while (*sur)
 	{
-		if ((sur[0] == '/') && ((sur[1] == '/')))
+		if ((sur[0] == '/') && (sur[1] == '/') && (sur[2] == '/'))
 		{
 			*(char*)sur = 0;
 			*(char*)(sur + 1) = 0;
@@ -282,6 +286,25 @@ const char* spt::CfgFile::SelectByName(const char* Name, const char* Source)
 		}
 		sur++;
 	}
-
+	while (sur > data)
+	{
+		if (sur[0] == ' ')
+		{
+			*(char*)sur = 0;
+		}
+		else if (sur[0] == '	')
+		{
+			*(char*)sur = 0;
+		}
+		else if (sur[0] == 0)
+		{
+			*(char*)sur = 0;
+		}
+		else
+		{
+			break;
+		}
+		sur--;
+	}
 	return data;
 }

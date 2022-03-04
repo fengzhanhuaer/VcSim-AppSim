@@ -74,21 +74,43 @@ void spt::OpenSslLibClean()
 void* GmServerMothed()
 {
 #if SSL_LIB_ON
-	return(void*)GMTLS_server_method();
-
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
+	{
+		return(void*)GMTLS_server_method();
+	}
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-GCM-SM3") == 0)
+	{
+		return(void*)TLSv1_2_server_method();
+	}
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-SM3") == 0)
+	{
+		return(void*)TLSv1_2_server_method();
+	}
 #else
 	return 0;
 #endif
+	return 0;
 }
 
 void* GmClientMothed()
 {
 #if SSL_LIB_ON
-	return(void*)GMTLS_client_method();
-
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
+	{
+		return(void*)GMTLS_client_method();
+	}
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-GCM-SM3") == 0)
+	{
+		return(void*)TLSv1_2_client_method();
+	}
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-SM3") == 0)
+	{
+		return(void*)TLSv1_2_client_method();
+	}
 #else
 	return 0;
 #endif
+	return 0;
 }
 
 
@@ -132,13 +154,13 @@ int32  DbgConfigGmServerSsl(void* SslContext)
 
 	//双证书模式，需要先设置签名证书，然后再设置加密证书
 	//载入服务端数字签名证书
-	if (SSL_CTX_use_certificate_file(ctx, SIGN_CERT_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_certificate_file(ctx, SIGN_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "SSL_CTX_use_certificate_file SIGN_CERT_FILE err.\n";
 		return(-1);
 	}
 	//载入服务端签名私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, SIGN_KEY_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_PrivateKey_file(ctx, SIGN_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "SSL_CTX_use_PrivateKey_file SIGN_CERT_FILE err.\n";
 		return(-1);
@@ -149,20 +171,18 @@ int32  DbgConfigGmServerSsl(void* SslContext)
 		LogErr << "SSL_CTX_check_private_key err.\n";
 		return(-1);
 	}
-
 	//载入服务端加密证书
-	if (SSL_CTX_use_certificate_file(ctx, ENC_CERT_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_certificate_file(ctx, ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
 		return(-1);
 	}
 	//载入加密私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, ENC_KEY_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_PrivateKey_file(ctx, ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
 		return(-1);
 	}
-
 	//检查用户私钥是否正确
 	if (!SSL_CTX_check_private_key(ctx))
 	{
@@ -187,13 +207,11 @@ int32 spt::DbgGmSslServerIni()
 	}
 	//建立新的SSL上下文 
 	SSL_CTX* ctx = (SSL_CTX*)SslContextNew(meth);
-
 	if (!ctx)
 	{
 		LogErr << "DbgGmSslServerIni ctx is null.\n";
 		return -1;
 	}
-
 	if (DbgConfigGmServerSsl(ctx))
 	{
 		LogErr << "DbgGmSslServerIni DbgConfigGmServerSsl failed.\n";
@@ -228,26 +246,26 @@ int DbgConfigGmClientSsl(SSL_CTX* ctx)
 	}
 
 	//载入客户端数字证书
-	if (SSL_CTX_use_certificate_file(ctx, CLIENT_CERT_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_certificate_file(ctx, CLIENT_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "DbgConfigGmClientSsl CLIENT_CERT_FILE err.\n";
 		return -1;
 	}
 
 	//载入客户端私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_KEY_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "DbgConfigGmClientSsl CLIENT_KEY_FILE err.\n";
 		return -1;
 	}
 	//载入客户端加密证书
-	if (SSL_CTX_use_certificate_file(ctx, CLIENT_ENC_CERT_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_certificate_file(ctx, CLIENT_ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
 		return(-1);
 	}
 	//载入加密私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_ENC_KEY_FILE, SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
 	{
 		LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
 		return(-1);
@@ -322,6 +340,10 @@ void* spt::DbgGmSslSockClientNew(void* Sock)
 
 int32 spt::DbgGmSslAccept(void* GmSock)
 {
+	if (!GmSock)
+	{
+		return -1;
+	}
 	int32 err = SSL_accept((SSL*)GmSock);
 	if (err == 1)
 	{
@@ -348,7 +370,16 @@ int32 spt::DbgGmSslAccept(void* GmSock)
 }
 int32 spt::DbgGmSslConnect(void* GmSock)
 {
-	int32 err = SSL_connect((SSL*)GmSock);
+	if (!GmSock)
+	{
+		return -1;
+	}
+	int32 err = -1;
+#ifdef WIN32_SIM
+	err = SSL_connect((SSL*)GmSock);
+#else 
+	err = SSL_connect((SSL*)GmSock);
+#endif
 	if (err == 1)
 	{
 		return 0;

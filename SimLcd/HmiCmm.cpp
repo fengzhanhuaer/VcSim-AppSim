@@ -379,6 +379,10 @@ int32 spt::HmiTcpCmmChannel::PowerUpIni(int32 Para)
 
 int32 spt::HmiTcpCmmChannel::SendMsg(void* Data, uint16 DataLen)
 {
+	if (!logOk)
+	{
+		return 0;
+	}
 	SalCmmMsgBufCtrl* ctrl = appSendMsgPool.GetNextWriteBuf();
 	if (ctrl && ctrl->buf)
 	{
@@ -410,6 +414,10 @@ int32 spt::HmiTcpCmmChannel::SendMsg(void* Data, uint16 DataLen)
 
 int32 spt::HmiTcpCmmChannel::Recv(LcdMsg& Msg)
 {
+	if (!logOk)
+	{
+		return 0;
+	}
 	if (halRecvPool.IsEmpty())
 	{
 		return 0;
@@ -453,6 +461,10 @@ int32 spt::HmiTcpCmmChannel::Recv(LcdMsg& Msg)
 
 int32 spt::HmiTcpCmmChannel::ProcIn()
 {
+	if (!logOk)
+	{
+		return 0;
+	}
 	if (virlcdCmm.IsReadAble() == 0)
 	{
 		return 0;
@@ -510,7 +522,7 @@ int32 spt::HmiTcpCmmChannel::ProcOut()
 		{
 			msg = 0;
 		}
-		if (virlcdCmm.IsLinkOk())
+		if (logOk)
 		{
 			EncryptData(halSendPool.BufBase(), halSendPool.Top(), 59);
 			int32 res = virlcdCmm.Send(halSendPool.BufBase(), halSendPool.Top(), 0);
@@ -540,6 +552,7 @@ void spt::HmiTcpCmmChannel::Close()
 	HmiLcdCmm::Instance().Send((LcdMsgContext*)&cmd);
 #endif
 	forceClose = 1;
+	logOk = 0;
 }
 
 bool8 spt::HmiTcpCmmChannel::IsLinkOk()
@@ -547,18 +560,53 @@ bool8 spt::HmiTcpCmmChannel::IsLinkOk()
 	return virlcdCmm.IsClientOk();
 }
 
-int32 spt::HmiTcpCmmChannel::StartClient(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort)
+int32 spt::HmiTcpCmmChannel::StartClient(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock)
 {
 	if (virlcdCmm.IsLinkOk())
 	{
 		return -1;
 	}
+	logOk = 0;
 	virlcdCmm.SetLocalIp(LocalIp);
 	virlcdCmm.SetLocalPort(LocalPort);
 	virlcdCmm.SetRemoteIp(RemoteIp);
 	virlcdCmm.SetRemotePort(RemotePort);
 	virlcdCmm.EnableGmssl(DbgSimCfg::Instance().EnableGmssl.Data());
-	return virlcdCmm.StartNonBlock();
+	virlcdCmm.SetClientSock(ClientSock);
+	MsSleep(100);
+	MsTimer timer;
+	if (DbgSimCfg::Instance().EnableGmssl.Data())
+	{
+		virlcdCmm.CreatGmSock();
+		timer.UpCnt(3000);
+		timer.Enable(1);
+		timer.Restart();
+		while (!timer.Status())
+		{
+			MsSleep(50);
+			if (virlcdCmm.GmConnect() >= 0)
+			{
+				break;
+			}
+		}
+		if (timer.Status())
+		{
+			virlcdCmm.Close();
+			return -1;
+		}
+	}
+	virlcdCmm.SetLinkOk(1);
+	if (VirLcdCmmClient::Instance().LogOn(DbgToolsServer::E_VirLcd, virlcdCmm))
+	{
+		logOk = 1;
+		return 0;
+	}
+	else
+	{
+		virlcdCmm.Close();
+		logOk = 0;
+	}
+	return -1;
 }
 
 int32 spt::HmiTcpCmmChannel::CheckStatus()
@@ -566,7 +614,7 @@ int32 spt::HmiTcpCmmChannel::CheckStatus()
 	if (!msTimer.IsEnable())
 	{
 		msTimer.UpCnt(5000);
-		if (virlcdCmm.IsLinkOk())
+		if (logOk && virlcdCmm.IsLinkOk())
 		{
 			msTimer.Enable(1);
 		}
@@ -583,6 +631,7 @@ int32 spt::HmiTcpCmmChannel::CheckStatus()
 		}
 		virlcdCmm.Close();
 		recvCntBak = outPut.recvCnt;
+		logOk = 0;
 		return -1;
 	}
 	recvCntBak = outPut.recvCnt;

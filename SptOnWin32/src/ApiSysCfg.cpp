@@ -9,16 +9,16 @@ int32 spt::ApiSysEthNetCfg::PowerUpIni(int32 Para)
 	{
 		if (cfg->hmicfg.NetPortNum > M_ArrLen(EthNet))
 		{
-			EthNetNum.Set("EthNetNum", M_ArrLen(EthNet));
+			EthNetNum.SetIfNoDefault("EthNetNum", M_ArrLen(EthNet));
 		}
 		else
 		{
-			EthNetNum.Set("EthNetNum", cfg->hmicfg.NetPortNum);
+			EthNetNum.SetIfNoDefault("EthNetNum", cfg->hmicfg.NetPortNum);
 		}
 	}
 	else
 	{
-		EthNetNum.Set("EthNetNum", 5);
+		EthNetNum.SetIfNoDefault("EthNetNum", 5);
 	}
 	EthNetNum.SetNotes("以太网口数目，含调试口(固定为0口)");
 	AddCfgData(&EthNetNum);
@@ -151,14 +151,13 @@ int32 spt::ApiSysEthNetCfg::AppEthnetPara()
 int32 spt::ApiUnitCfg::PowerUpIni(int32 Para)
 {
 	const ApiAppCfg* cfg = SptMain::Instance().AppCfg();
-
-	NodeId.Set("NodeId", 1);
+	NodeId.SetIfNoDefault("NodeId", 1);
 	NodeId.SetNotes("节点号");
 	AddCfgData(&NodeId);
-	DeviceID.Set("DeviceID", "JCDZ6004020781161101000001");
+	DeviceID.SetIfNoDefault("DeviceID", "JCDZ6004020781161101000001");
 	DeviceID.SetNotes("唯一性代码");
 	AddCfgData(&DeviceID);
-	StationId.Set("StationId", "SubStation");
+	StationId.SetIfNoDefault("StationId", "SubStation");
 	StationId.SetNotes("变电站");
 	AddCfgData(&StationId);
 	if (cfg)
@@ -166,15 +165,15 @@ int32 spt::ApiUnitCfg::PowerUpIni(int32 Para)
 		String100B str;
 		str = cfg->hmicfg.DeviceSampleName;
 		str << "_RCD";
-		UnitRcdId.Set("UnitRcdId", str.Str());
-		FwRecId.Set("FwRecId", cfg->hmicfg.DeviceSampleName);
+		UnitRcdId.SetIfNoDefault("UnitRcdId", str.Str());
+		FwRecId.SetIfNoDefault("FwRecId", cfg->hmicfg.DeviceSampleName);
 	}
 	else
 	{
-		FwRecId.Set("FwRecId", "SubStation");
-		UnitRcdId.Set("UnitRcdId", "DTools");
+		FwRecId.SetIfNoDefault("FwRecId", "SubStation");
+		UnitRcdId.SetIfNoDefault("UnitRcdId", "DTools");
 	}
-	FwRecId.SetNotes("装置名称");
+	FwRecId.SetNotes("装置名称(英文)");
 	AddCfgData(&FwRecId);
 	UnitRcdId.SetNotes("装置录波简写（英文）");
 	AddCfgData(&UnitRcdId);

@@ -228,9 +228,9 @@ spt::HmiLcdCmm::HmiLcdCmm()
 	SptPublicCmmTask::Instance().RgsAppCmmTask(this);
 	StrNCpy(name, "HmiCmm", sizeof(name));
 }
-int32 spt::HmiLcdCmm::StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort)
+int32 spt::HmiLcdCmm::StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock)
 {
-	return tcpCmm.StartServer(LocalIp, LocalPort, RemoteIp, RemotePort);
+	return tcpCmm.StartServer(LocalIp, LocalPort, RemoteIp, RemotePort, ClientSock);
 }
 void spt::HmiLcdCmm::HeartBeat()
 {
@@ -327,6 +327,10 @@ int32 spt::HmiTcpCmmChannel::PowerUpIni(int32 Para)
 
 int32 spt::HmiTcpCmmChannel::SendMsg(void* Data, uint16 DataLen)
 {
+	if (logOk == 0)
+	{
+		return 0;
+	}
 	SalCmmMsgBufCtrl* ctrl = appSendMsgPool.GetNextWriteBuf();
 	if (ctrl && ctrl->buf)
 	{
@@ -358,6 +362,10 @@ int32 spt::HmiTcpCmmChannel::SendMsg(void* Data, uint16 DataLen)
 
 int32 spt::HmiTcpCmmChannel::Recv(LcdMsg& Msg)
 {
+	if (logOk == 0)
+	{
+		return 0;
+	}
 	SalCmmMsgBufCtrl* ctrl = appRecMsgPool.GetNextReadBuf();
 	if (ctrl)
 	{
@@ -374,6 +382,10 @@ int32 spt::HmiTcpCmmChannel::Recv(LcdMsg& Msg)
 
 int32 spt::HmiTcpCmmChannel::ProcIn()
 {
+	if (logOk == 0)
+	{
+		return 0;
+	}
 	char buf[2048];
 	int32 res = virlcdCmm.Recv(buf, sizeof(buf), 0);
 	if (res > 0)
@@ -489,7 +501,7 @@ int32 spt::HmiTcpCmmChannel::ProcOut()
 	appSendMsgPool.UpdateReader();
 	if (halSendPool.Top())
 	{
-		if (virlcdCmm.IsLinkOk())
+		if (logOk)
 		{
 			EncryptData(halSendPool.BufBase(), halSendPool.Top(), 59);
 			int32 res = virlcdCmm.Send(halSendPool.BufBase(), halSendPool.Top(), 0);
@@ -517,6 +529,7 @@ void spt::HmiTcpCmmChannel::Close()
 	cmd.len = sizeof(cmd);
 	HmiLcdCmm::Instance().Send((LcdMsgContext*)&cmd);
 	virlcdCmm.Close();
+	logOk = 0;
 }
 
 bool8 spt::HmiTcpCmmChannel::IsLinkOk()
@@ -524,7 +537,7 @@ bool8 spt::HmiTcpCmmChannel::IsLinkOk()
 	return virlcdCmm.IsLinkOk();
 }
 
-int32 spt::HmiTcpCmmChannel::StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort)
+int32 spt::HmiTcpCmmChannel::StartServer(uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock)
 {
 	if (IsLinkOk())
 	{
@@ -536,69 +549,46 @@ int32 spt::HmiTcpCmmChannel::StartServer(uint32 LocalIp, uint16 LocalPort, uint3
 	virlcdCmm.SetRemoteIp(RemoteIp);
 	virlcdCmm.SetRemotePort(RemotePort);
 	virlcdCmm.EnableGmssl(DbgSimCfg::Instance().EnableGmssl.Data());
-	if (virlcdCmm.StartNonBlock() == 0)
+	virlcdCmm.SetClientSock(ClientSock);
+	MsTimer timer;
+	if (virlcdCmm.IsEnableGmssl())
 	{
-		MsTimer timer;
-		timer.UpCnt(5000);
+		virlcdCmm.CreatGmSock();
+		timer.UpCnt(3000);
 		timer.Enable(1);
-		int clientsock = 0;
+		timer.Restart();
 		while (!timer.Status())
 		{
 			MsSleep(50);
-			clientsock = virlcdCmm.Accept();
-			if (clientsock > 0)
+			if (virlcdCmm.GmAccept() >= 0)
 			{
 				break;
 			}
 		}
-		//virlcdCmm.CloseListener();
-		if (clientsock > 0)
-		{
-			spt::SetSocketNonBlock(clientsock, 1);
-			LogMsg.Stamp() << "DbgLcd Socket Accept Ok." << sendCnt << "\n";
-			LogMsg << "Socket:" << outPut.sendCnt << outPut.sendErrCnt << outPut.recvCnt << outPut.recvErrCnt << "\n";
-			LogMsg << "SendPool:" << appSendMsgPool.outPut.getWriteBufErrCnt << appSendMsgPool.outPut.writeCnt << appSendMsgPool.outPut.readCnt << "\n";
-		}
-		else
+		if (timer.Status())
 		{
 			virlcdCmm.Close();
-			LogWarn.Stamp() << "DbgLcd Socket Accept Failed." << GetSocketLastError() << "\n";
+			LogWarn.Stamp() << "DbgLcd GmAccept Socket Accept Failed." << GetSocketLastError() << "\n";
 			return -1;
-		}
-		if (virlcdCmm.IsEnableGmssl())
-		{
-			virlcdCmm.CreatGmSock();
-			timer.UpCnt(10000);
-			timer.Enable(1);
-			timer.Restart();
-			while (!timer.Status())
-			{
-				MsSleep(50);
-				if (virlcdCmm.GmAccept() >= 0)
-				{
-					break;
-				}
-			}
-			if (timer.Status())
-			{
-				virlcdCmm.Close();
-				LogWarn.Stamp() << "DbgLcd GmAccept Socket Accept Failed." << GetSocketLastError() << "\n";
-				return -1;
-			}
-			else
-			{
-				LogMsg.Stamp() << "DbgLcd GmSocket Accept Ok.\n";
-			}
-			virlcdCmm.SetLinkOk(1);
 		}
 		else
 		{
-			virlcdCmm.SetLinkOk(1);
+			LogMsg.Stamp() << "DbgLcd GmSocket Accept Ok.\n";
 		}
+	}
+	virlcdCmm.SetLinkOk(1);
+	String40B str;
+	virlcdCmm.GetRemote(str);
+	if (DbgToolsServer::Instance().LogOn(DbgToolsServer::E_VirLcd, virlcdCmm))
+	{
+		logOk = 1;
+		LogMsg.Stamp() << "DbgLcd Log Ok.\n";
 	}
 	else
 	{
-		return -1;
+		logOk = 0;
+		LogMsg.Stamp() << "DbgLcd Log Err.\n";
+		virlcdCmm.Close();
 	}
 	return  0;
 }
@@ -608,7 +598,7 @@ int32 spt::HmiTcpCmmChannel::CheckStatus()
 	if (!msTimer.IsEnable())
 	{
 		msTimer.UpCnt(10000);
-		if (virlcdCmm.IsLinkOk())
+		if (logOk && virlcdCmm.IsLinkOk())
 		{
 			msTimer.Enable(1);
 		}
@@ -622,12 +612,16 @@ int32 spt::HmiTcpCmmChannel::CheckStatus()
 		msTimer.Enable(0);
 		if (virlcdCmm.IsLinkOk())
 		{
-			LogMsg.Stamp() << "DbgLcd Socket Accept Ok." << sendCnt << "\n";
+			LogMsg.Stamp() << "DbgLcd Socket is Link Ok." << sendCnt << "\n";
 			LogMsg << "Socket:" << outPut.sendCnt << outPut.sendErrCnt << outPut.recvCnt << outPut.recvErrCnt << "\n";
 			LogMsg << "SendPool:" << appSendMsgPool.outPut.getWriteBufErrCnt << appSendMsgPool.outPut.writeCnt << appSendMsgPool.outPut.readCnt << "\n";
 		}
-		virlcdCmm.Close();
+		String20B str;
+		virlcdCmm.GetRemote(str);
+		DbgToolsServer::Instance().SetClientClose(DbgToolsServer::E_VirLcd, str.Str());
 		recvCntBak = outPut.recvCnt;
+		virlcdCmm.Close();
+		logOk = 0;
 		return -1;
 	}
 	recvCntBak = outPut.recvCnt;

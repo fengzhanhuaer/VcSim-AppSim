@@ -11,6 +11,7 @@ void AppPowerUpStep0()
 //Step0与Step1的区别是Step0中，所有的参数还未初始化完成，因此参数是不可用的。Step1中参数已经初始化并加载完成，Step1中可以使用参数、定值等信息
 void AppPowerUpStep1()
 {
+	AppDbgPowerUpIni();
 	AppEventPowerUpIni();
 	AppAngInPowerUpIni();
 	AppAngOutPowerUpIni();

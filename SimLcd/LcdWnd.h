@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.0-4761b0c)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -30,9 +30,12 @@
 #include <wx/clrpicker.h>
 #include <wx/gbsizer.h>
 #include <wx/dialog.h>
+#include <wx/statbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
+#define wxID_ANY1 1000
+#define wxID_ANY2 1001
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class SimLcd
@@ -60,7 +63,7 @@ class SimLcd : public wxFrame
 		// Virtual event handlers, override them in your derived class
 		virtual void WndClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void SetLCDCorlor( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ShowAboat( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ShowAbout( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChar( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnKey( wxKeyEvent& event ) { event.Skip(); }
 		virtual void OnLostFocus( wxFocusEvent& event ) { event.Skip(); }
@@ -111,6 +114,36 @@ class SetLcdColour : public wxDialog
 		SetLcdColour( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ÉèÖÃÑÕÉ«"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 305,182 ), long style = wxDEFAULT_DIALOG_STYLE );
 
 		~SetLcdColour();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class LogOnWnd
+///////////////////////////////////////////////////////////////////////////////
+class LogOnWnd : public wxDialog
+{
+	private:
+
+	protected:
+		wxBoxSizer* LogBox;
+		wxStaticBoxSizer* idbox;
+		wxTextCtrl* idtext;
+		wxBoxSizer* accountbox;
+		wxTextCtrl* nametext;
+		wxTextCtrl* pwtext;
+		wxButton* m_button5;
+		wxButton* m_button6;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void Enter( wxCommandEvent& event ) { event.Skip(); }
+		virtual void Cancel( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		LogOnWnd( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("µÇÂ¼"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 473,246 ), long style = wxDEFAULT_DIALOG_STYLE );
+
+		~LogOnWnd();
 
 };
 

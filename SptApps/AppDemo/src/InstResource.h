@@ -17,6 +17,7 @@ using namespace spt;
 #include "InstCheck.h"
 #include "InstFwRecord.h"
 #include "InstT860Scl.h"
+#include "InstDbg.h"
 
 
 extern ApiAppCfg AppRunTimeCfg;

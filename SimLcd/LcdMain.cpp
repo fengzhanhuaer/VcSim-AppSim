@@ -39,7 +39,7 @@ int32 spt::LcdMain::OneLoop()
 #ifdef WIN32_LCD_SIM
 	VirLcdCmmClient::Instance().OneLoop();
 	mainLoopLoaddelta = (end - start) / 1000;
-	//	MsSleep(1);
+	MsSleep(20);
 #endif
 	return 0;
 }

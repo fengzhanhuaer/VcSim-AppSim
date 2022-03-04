@@ -3,7 +3,6 @@
 
 #include"DbgCmm.h"
 
-
 namespace spt
 {
 	class DbgSimCfg :public CfgFile
@@ -15,12 +14,13 @@ namespace spt
 		virtual PCfgDataBase* CfgPool() { return pool; };
 		virtual uint32 CfgPoolSize() { return M_ArrLen(pool); };
 	public:
-		CfgBool EnableDbgServer;
-		CfgBool NeedUsrLog;
 		CfgStrData20 ServerIp;
+		CfgStrData20 ClientIp;
+		CfgUint32 ClientPort;
 		CfgBool EnableGmssl;
 		CfgUint32 GmsslVerifyMode;
 		CfgStrData40 GmsslLinkMode;
+		CfgUint32 GmsslCrtFormat;
 		CfgBool EnableGmCrtCheck;
 	private:
 		PCfgDataBase pool[20];
@@ -35,7 +35,8 @@ namespace spt
 	public:
 		enum E_MsgType
 		{
-			E_ServiceAsk = 1,
+			E_HeartBeat,
+			E_ServiceAsk,
 			E_VirLcd,
 			E_DbgServer
 		};
@@ -64,7 +65,7 @@ namespace spt
 		uint32 signInStep;
 		MsTimer msTimer;
 		MsPeriodTimer checkTimer;
-		DbgUdpServer signIn;
+		DbgTcpServer signIn;
 	};
 	class DbgClient :public Task
 	{
@@ -73,19 +74,47 @@ namespace spt
 		{
 			E_PowerUpIni = 0,
 			E_ClentIni,
+			E_WaitConnect,
+			E_AskConnect,
 			E_LogOn,
-			E_SendCmd,
 			E_AskIniInfo,
 			E_Work,
 			E_Check,
 		};
+		enum TaskLogStep
+		{
+			E_StartLog,
+			E_InputPw,
+			E_CheckPw,
+			E_LogOnOk,
+			E_LogOnIdErr,
+			E_LogOnLinkErr,
+			E_LogOnAccountErr,
+			E_LogOverTime,
+		};
+	public:
+		void SendLogHeartBeat();
+		void ReConnect();
+		void ClientIni();
+		void WaitConnect();
+		void AskConnect(uint16 Cmd);
+		void OneLoopPowerUpIni();
+		bool8 LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock);
+		uint8 LogStatus() { return logstatus; };
 	protected:
 		DbgClient();
-		void LogOn();
 	protected:
+		bool8 isAskConnect;
+		bool8 isIdCheck;
+		bool8 isPwCheck;
 		uint32 signInStep;
-		DbgUdpClient signIn;
+		DbgTcpClient signIn;
 		MsPeriodTimer checkTimer;
+		MsPeriodTimer logTimer;
+		MsStampTimer lastUpdateReconnected;
+		uint8 logstatus;
+		DbgToolsServer::E_MsgType msgType;
+		DbgSocket* sock;
 	};
 }
 #include"DbgLcdCmm.h"

@@ -14,6 +14,7 @@ namespace spt
 		};
 	public:
 		HmiWidDialog();
+		virtual int32 Show();
 		virtual void AutoLayout();
 	protected:
 

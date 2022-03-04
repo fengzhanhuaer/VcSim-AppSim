@@ -163,7 +163,7 @@ namespace spt
 		SalCmmMsgHeader salHeader;
 		uint16 unPackIndex;
 		uint16 type;
-		uint16 dataLen;
+		uint16 dataLen;//数据长度，不含头与校验和
 		uint16 res;
 	};
 	struct SalTransFrame

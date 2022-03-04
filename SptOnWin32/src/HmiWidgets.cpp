@@ -567,6 +567,7 @@ void spt::HmiWidTextWnd::SetCrc(uint32 Crc, uint32 CrcLen)
 {
 	crc = crc;
 	crcLen = CrcLen;
+	isUpdateTitle = 1;
 	SetUpdateSelf(1);
 }
 
@@ -717,9 +718,30 @@ int32 spt::HmiWidTextWnd::ShowSelf()
 			pagestr << " Ò³ " << (line + 1) << "/" << totalLine << " ÐÐ";
 		}
 		uint16 totalLen = rect.w / gd->FontWidth() - 1;
-		totalLen -= pagestr.StrLen();
+		uint16 titleLen = totalLen - pagestr.StrLen();
 		String100B titlestr;
-		titlestr.Format(title, totalLen, 1, ' ');
+		String100B title;
+
+		title = this->title;
+
+		if (crcLen)
+		{
+			title << "  CRC(";
+			if (crcLen == 1)
+			{
+				title.FormatHex((uint8)this->crc);
+			}
+			else if (crcLen == 2)
+			{
+				title.FormatHex((uint16)this->crc);
+			}
+			else if (crcLen == 4)
+			{
+				title.FormatHex((uint32)this->crc);
+			}
+			title << ")";
+		}
+		titlestr.Format(title.Str(), titleLen, 1, ' ');
 		titlestr << pagestr;
 		gd->ClearRect(titleRect.x + gd->SpaceOfFont(), titleRect.y + gd->SpaceOfFont(), backcolor, titleRect.w - gd->FontWidth(), gd->FontHeight());
 		gd->DrawStr(titleRect.x + gd->SpaceOfFont(), titleRect.y + gd->SpaceOfFont(), color, titlestr.Str());
@@ -757,6 +779,7 @@ int32 spt::HmiWidTextWnd::ShowChild()
 		gd->Update(rect);
 	}
 	isUpdateCtx = 0;
+	isUpdateChild = 0;
 	return 0;
 }
 

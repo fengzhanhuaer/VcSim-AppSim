@@ -9,7 +9,7 @@ namespace spt
 	*/
 
 	/// <summary>
-	/// 列表框
+	/// 表格窗口
 	/// </summary>
 	class ApiHmiGridWnd :protected HmiGridWnd
 	{

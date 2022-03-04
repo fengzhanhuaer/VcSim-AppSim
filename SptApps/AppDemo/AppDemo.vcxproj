@@ -142,6 +142,7 @@
     <ClCompile Include="src\InstAppCmm.cpp" />
     <ClCompile Include="src\InstAppFlags.cpp" />
     <ClCompile Include="src\InstCheck.cpp" />
+    <ClCompile Include="src\InstDbg.cpp" />
     <ClCompile Include="src\InstEvent.cpp" />
     <ClCompile Include="src\InstFwRecord.cpp" />
     <ClCompile Include="src\InstHmiLed.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\InstAppCmm.h" />
     <ClInclude Include="src\InstAppFlags.h" />
     <ClInclude Include="src\InstCheck.h" />
+    <ClInclude Include="src\InstDbg.h" />
     <ClInclude Include="src\InstEvent.h" />
     <ClInclude Include="src\InstFwRecord.h" />
     <ClInclude Include="src\InstHmiLed.h" />

@@ -104,6 +104,42 @@ void SetLcdColourInst::ApplySet(wxCommandEvent& event) {
 	LcdConfig::Instance().BackGroundColour.SetData(BackGroundColour()->GetColour().GetRGBA());
 	event.Skip();
 }
+class InstLogOnWnd :public LogOnWnd
+{
+public:
+	InstLogOnWnd(bool8 isCheckId, bool8 isCheckAccount, SalString& Id, SalString& Name, SalString& Pw)
+		:LogOnWnd(0), Id(Id), Name(Name), Pw(Pw)
+	{
+		this->isCheckId = isCheckId;
+		this->isCheckAccount = isCheckAccount;
+		if (!isCheckId)
+		{
+			LogBox->Hide((size_t)0);
+		}
+		if (!isCheckAccount)
+		{
+			LogBox->Hide((size_t)1);
+		}
+	}
+	virtual void Enter(wxCommandEvent& event)
+	{
+		event.Skip(0);
+		Id = idtext->GetValue();
+		Name = nametext->GetValue();
+		Pw = pwtext->GetValue();
+		Close(1);
+	}
+	virtual void Cancel(wxCommandEvent& event)
+	{
+		event.Skip(0);
+		Close(1);
+	}
+	bool8 isCheckId;
+	bool8 isCheckAccount;
+	SalString& Id;
+	SalString& Name;
+	SalString& Pw;
+};
 class MySimLcd :public SimLcd
 {
 public:
@@ -163,13 +199,17 @@ public:
 		{
 			str << "初始化";
 		}
+		else if (VirLcdCmmClient::Instance().TaskStep() == DbgClient::E_WaitConnect)
+		{
+			str << "等待建立链接···";
+		}
+		else if (VirLcdCmmClient::Instance().TaskStep() == DbgClient::E_AskConnect)
+		{
+			str << "申请链接···";
+		}
 		else if (VirLcdCmmClient::Instance().TaskStep() == DbgClient::E_LogOn)
 		{
-			str << "申请连接··";
-		}
-		else if (VirLcdCmmClient::Instance().TaskStep() == DbgClient::E_SendCmd)
-		{
-			str << "建立连接···";
+			str << "正在登录···";
 		}
 		else if (VirLcdCmmClient::Instance().TaskStep() == DbgClient::E_AskIniInfo)
 		{
@@ -183,6 +223,40 @@ public:
 		{
 			str << "自检···";
 		}
+		if ((!isloging) && (needlog))
+		{
+			isloging = 1;
+			InstLogOnWnd w(isCheckId, isCheckAccount, Id, Name, Pw);
+			w.ShowModal();
+			needlog = 0;
+			Sleep(500);
+			while (VirLcdCmmClient::Instance().LogStatus() == DbgClient::E_CheckPw)
+			{
+				Sleep(100);
+			}
+			isloging = 0;
+			uint8 status = VirLcdCmmClient::Instance().LogStatus();
+			if (status == DbgClient::E_LogOnIdErr)
+			{
+				wxMessageDialog dia(0, "唯一性代码不正确");
+				dia.ShowModal();
+			}
+			else if (status == DbgClient::E_LogOnAccountErr)
+			{
+				wxMessageDialog dia(0, "帐号或密码错误");
+				dia.ShowModal();
+			}
+			else if (status == DbgClient::E_LogOnLinkErr)
+			{
+				wxMessageDialog dia(0, "网络连接异常");
+				dia.ShowModal();
+			}
+			else if (status == DbgClient::E_LogOverTime)
+			{
+				wxMessageDialog dia(0, "登录超时");
+				dia.ShowModal();
+			}
+		}
 		m_statusBar1->SetStatusText(str, 0);
 		str.Clear();
 		str << "接收:" << HmiLcdCmm::Instance().OutPut().recvCnt << "-" << HmiLcdCmm::Instance().OutPut().recvErrCnt;
@@ -193,9 +267,7 @@ public:
 		str.Clear();
 		str << drawdelta << "-" << mainLoopLoaddelta;
 		m_statusBar1->SetStatusText(str, 3);
-		event.Skip();
-
-
+		event.Skip(0);
 	}
 	virtual void UpdateLcd(wxTimerEvent& event) {
 		if (lcdPixelBufUpdate == 0)
@@ -243,7 +315,7 @@ public:
 		}
 		wxBitmap  hwWndCacheImage(LcdCache);
 		m_bitmap1->SetBitmap(hwWndCacheImage);
-		event.Skip();
+		event.Skip(0);
 		uint32 end = HwUsCnt();
 		drawdelta = (end - start) / 1000;
 	}
@@ -451,9 +523,9 @@ public:
 		event.Skip();
 		m_textCtrl1->SetBackgroundColour(*wxWHITE);
 	}
-	virtual void ShowAboat(wxCommandEvent& event)
+	virtual void ShowAbout(wxCommandEvent& event)
 	{
-		wxMessageDialog dig(this, "iESLab, All Rights Reserved.\n冯占华\n V1.0.0\n" __DATE__" " __TIME__, "关于", wxOK);
+		wxMessageDialog dig(this, "iESLab, All Rights Reserved.\n冯占华\n V1.0.1\n" __DATE__" " __TIME__, "关于", wxOK);
 		dig.ShowModal();
 		event.Skip();
 	}
@@ -461,6 +533,38 @@ public:
 		event.Skip();
 		LcdConfig::Instance().SetLcdCorlor();
 	}
+	bool8 AskForLogOnInfo(bool8 isCheckId, bool8 isCheckAccount, SalString& Id, SalString& Name, SalString& Pw, int32(*DoHeartCheck)())
+	{
+		this->isCheckId = isCheckId;
+		this->isCheckAccount = isCheckAccount;
+		needlog = 0;
+		if (isCheckAccount || isCheckId)
+		{
+			needlog = 1;
+		}
+		while (needlog)
+		{
+			Sleep(200);
+			if (DoHeartCheck)
+			{
+				DoHeartCheck();
+			}
+		}
+		if (isCheckAccount || isCheckId)
+		{
+			Id = this->Id.Str();
+			Name = this->Name.Str();
+			Pw = this->Pw.Str();
+		}
+		return 1;
+	}
+	bool8 isloging;
+	bool8 needlog;
+	bool8 isCheckId;
+	bool8 isCheckAccount;
+	String100B Id;
+	String100B Name;
+	String100B Pw;
 };
 void MySimLcd::WndClose(wxCloseEvent& event)
 {
@@ -490,14 +594,14 @@ void AskForLedInfo(uint16 IedNum)
 	lmc.ledNum = IedNum;
 	HmiLcdCmm::Instance().Send((LcdMsgContext*)&lmc);
 }
-MySimLcd* wnd = 0;
+MySimLcd* lcdwnd = 0;
 void spt::LcdSetDispInfo(uint16 IedNum, const char* Name)
 {
-	if (wnd)
+	if (lcdwnd)
 	{
-		wnd->m_unitName->SetLabelText(Name);
+		lcdwnd->m_unitName->SetLabelText(Name);
 		ledNum = IedNum;
-		wnd->IniLcdInfo();
+		lcdwnd->IniLcdInfo();
 	}
 
 	if (IedNum)
@@ -531,7 +635,7 @@ uint32 GetLedColor(uint16 Cor)
 }
 void spt::LcdSetLedDispInfo(uint16 IedSerial, uint16 Cor, const char* LedName)
 {
-	if (!wnd)
+	if (!lcdwnd)
 	{
 		return;
 	}
@@ -550,7 +654,7 @@ void spt::LcdSetLedDispInfo(uint16 IedSerial, uint16 Cor, const char* LedName)
 		if (IedSerial == ledNum)
 		{
 			VirLcdCmmClient::Instance().SetIedInfoIniedFlag(1);
-			wnd->ReSize();
+			lcdwnd->ReSize();
 		}
 		else
 		{
@@ -599,8 +703,18 @@ bool MyApp::OnInit()
 	{
 		return false;
 	}
-	wnd = new MySimLcd();
+	lcdwnd = new MySimLcd();
 	LcdMain::Instance().PowerUpIni(0);
-	wnd->Show();
+	lcdwnd->Show();
 	return true;
+}
+
+int32 DoLogHeartBeat()
+{
+	VirLcdCmmClient::Instance().SendLogHeartBeat();
+	return 0;
+}
+bool8 spt::AskForLogOnInfo(bool8 isCheckId, bool8 isCheckAccount, SalString& Id, SalString& Name, SalString& Pw, int32(*DoHeartCheck)())
+{
+	return lcdwnd->AskForLogOnInfo(isCheckId, isCheckAccount, Id, Name, Pw, DoLogHeartBeat);
 }

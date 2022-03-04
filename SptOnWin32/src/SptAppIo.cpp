@@ -238,6 +238,7 @@ bool8 spt::SptIedIoProcess::IsRecvBoardFrameMsgOk(void* Buf, uint16 Len)
 
 void spt::SptGzkMuIoProcess::PowerUpIni(int Para)
 {
+	isPowerUpOver = 0;
 	SlowCmdCnt = 0;
 	ProcInSerialBoardBuf.Alloc(sizeof(void*), 20);
 	ProcOutSerialBoardBuf.Alloc(sizeof(void*), 20);
@@ -370,6 +371,7 @@ void spt::SptGzkMuIoProcess::PowerUpIni(int Para)
 	}
 	SendGoSvSelFrame();
 	SptIoProcess::Instance().CfgSendOver(1);
+	isPowerUpOver = 1;
 }
 
 void spt::SptGzkMuIoProcess::RecvNorIoMsg(void* Buf, uint16 Len)
@@ -461,7 +463,7 @@ void spt::SptGzkMuIoProcess::RecvNorIoMsg(void* Buf, uint16 Len)
 			}
 			else
 			{
-				LogErr.Stamp() << "RecvNorIoMsg err1\n" << Addr << "\n";
+				LogErr.Stamp() << "PowerUpOver " << isPowerUpOver << "RecvNorIoMsg err1\n" << Addr << "\n";
 			}
 			hb = (HalBoard*)NorDoAddrBoardBuf.GetAddrElement(Addr);
 			if (hb)
@@ -480,7 +482,7 @@ void spt::SptGzkMuIoProcess::RecvNorIoMsg(void* Buf, uint16 Len)
 			}
 			else
 			{
-				LogErr.Stamp() << "RecvNorIoMsg err2\n";
+				LogErr.Stamp() << "PowerUpOver " << isPowerUpOver << "RecvNorIoMsg err2\n";
 			}
 			break;
 		}
@@ -513,7 +515,7 @@ void spt::SptGzkMuIoProcess::RecvNorIoMsg(void* Buf, uint16 Len)
 			}
 			else
 			{
-				LogErr.Stamp() << "RecvNorIoMsg err3\n";
+				LogErr.Stamp() << "PowerUpOver " << isPowerUpOver << " RecvNorIoMsg err3\n";
 			}
 			break;
 		}
@@ -536,7 +538,7 @@ void spt::SptGzkMuIoProcess::RecvNorIoMsg(void* Buf, uint16 Len)
 			}
 			else
 			{
-				LogErr.Stamp() << "RecvNorIoMsg err4\n";
+				LogErr.Stamp() << "PowerUpOver " << isPowerUpOver << "RecvNorIoMsg err4\n";
 			}
 			break;
 		}
@@ -559,7 +561,7 @@ void spt::SptGzkMuIoProcess::RecvNorIoMsg(void* Buf, uint16 Len)
 			}
 			else
 			{
-				LogErr.Stamp() << "RecvNorIoMsg err5\n";
+				LogErr.Stamp() << "PowerUpOver " << isPowerUpOver << "RecvNorIoMsg err5\n";
 			}
 			break;
 		}
@@ -676,6 +678,10 @@ void spt::SptGzkMuIoProcess::RecvGoAngFrameMsg(void* Buf, uint16 Len)
 
 void spt::SptGzkMuIoProcess::ProcIn()
 {
+	if (!isPowerUpOver)
+	{
+		return;
+	}
 	HalBoard* Board;
 	uint32 len = ProcInSerialBoardBuf.Top();
 	for (uint32 i = 0; i < len; i++)
@@ -690,6 +696,10 @@ void spt::SptGzkMuIoProcess::ProcIn()
 
 void spt::SptGzkMuIoProcess::ProcOut()
 {
+	if (!isPowerUpOver)
+	{
+		return;
+	}
 	HalBoard* Board;
 	uint32 len = NorDoSerialBoardBuf.Top();
 	for (uint32 i = 0; i < len; i++)
@@ -850,16 +860,12 @@ void spt::SptGzkMuIoProcess::SendNorDoFrame()
 	{
 		rtDoFrame.frm_sq++;
 	}
-
 	SendSlowCmd();
-
-
 	rtDoFrame.crc = Crc8MAXIM.CalCrc(&rtDoFrame.frm_header, &rtDoFrame.crc - &rtDoFrame.frm_header);
 	uint16 sum = 0;
 	sum = SumCheck::CalcSum16(&rtDoFrame.frm_header, rtDoFrame.frm_len);
 	rtDoFrame.frm_sumL = (uint8)(sum);
 	rtDoFrame.frm_sumH = (uint8)(sum >> 8);
-
 	SptSendSerialData(E_HSPN_DO_CMM, &rtDoFrame, sizeof(rtDoFrame));
 }
 

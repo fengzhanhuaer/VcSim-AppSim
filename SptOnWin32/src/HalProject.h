@@ -35,6 +35,8 @@ enum HalSerialParaType
 	E_HSPT_EnableTxRx,//接收/发送使能
 	E_HSPT_EnableTx,//发送使能
 	E_HSPT_EnableRx,//接收使能
+	E_HSPT_TxCnt,//发送计数
+	E_HSPT_RxCnt,//接收计数
 	E_HSPT_Num,
 };
 extern"C"  int SptSendSerialData(unsigned int No, void* Sur, int MsgLen);

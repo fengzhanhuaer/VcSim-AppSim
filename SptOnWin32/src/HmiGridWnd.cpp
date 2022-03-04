@@ -753,7 +753,7 @@ int32 spt::HmiGridWnd::Show()
 					{
 						step = 1;
 					}
-					page = TotalPage() + step;
+					page = page + step;
 					if (page >= TotalPage())
 					{
 						page = TotalPage() - 1;
@@ -792,11 +792,6 @@ int32 spt::HmiGridWnd::Show()
 		else
 		{
 			HmiMain::Instance().MsSleep(200);
-			if (updateData)
-			{
-				updateData(this, &map, key);
-				SetUpdate(1);
-			}
 		}
 		HmiWidTextWnd::Show();
 	}
@@ -853,6 +848,7 @@ int32 spt::HmiGridWnd::Edit()
 						page = totalPage - 1;
 					}
 					SetUpdate(1);
+					HmiWidTextWnd::SetPage(page);
 					FindFirstEditCell();
 					break;
 				case spt::EK_UP:
@@ -874,6 +870,7 @@ int32 spt::HmiGridWnd::Edit()
 						page = 0;
 					}
 					SetUpdate(1);
+					HmiWidTextWnd::SetPage(page);
 					FindFirstEditCell();
 					break;
 				case spt::EK_DOWN:
@@ -900,7 +897,6 @@ int32 spt::HmiGridWnd::Edit()
 				updateData(this, &map, key);
 				SetUpdate(1);
 			}
-			HmiWidTextWnd::SetPage(page);
 			HmiMain::Instance().MsSleep(50);
 		}
 		else
@@ -1196,6 +1192,7 @@ int32 spt::HmiGridWnd::ShowPeriod()
 	{
 		HmiKey key = { 0 };
 		updateData(this, &map, key);
+		SetUpdate(1);
 	}
 	return 0;
 }

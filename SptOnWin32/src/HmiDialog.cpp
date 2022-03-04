@@ -5,6 +5,43 @@ spt::HmiWidDialog::HmiWidDialog()
 
 }
 
+int32 spt::HmiWidDialog::Show()
+{
+	if (!isEnable)
+	{
+		return 0;
+	}
+	if (isInied)
+	{
+		if (isUpdate)
+		{
+			if (isUpdateSelf)
+			{
+				ShowSelf();
+			}
+			if (isUpdateChild)
+			{
+				ShowChild();
+			}
+			isUpdate = 0;
+			Update();
+		}
+		else if (periodUpdateTimer.Status())
+		{
+			ShowPeriod();
+			Update();
+		}
+	}
+	else
+	{
+		ShowSelf();
+		ShowChild();
+		isInied = 1;
+		Update();
+	}
+	return 0;
+}
+
 void spt::HmiWidDialog::AutoLayout()
 {
 	rect.w = (lineWidth + 4) * gd->FontWidth();
@@ -243,7 +280,6 @@ int32 spt::HmiAssicInputDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -448,7 +484,6 @@ int32 spt::HmiStrEditDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -575,7 +610,6 @@ int32 spt::HmiWarnDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -628,7 +662,6 @@ int32 spt::HmiSelectDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -640,7 +673,6 @@ int32 spt::HmiSelectDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		HmiWidRect::ShowSelf();
 	}
 	HmiWidDialog::ShowSelf();
 	return 0;
@@ -812,7 +844,6 @@ int32 spt::HmiTimeEditDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -911,6 +942,7 @@ void spt::HmiTimeEditDialog::UpdateDate()
 int32 spt::HmiInt32DataDialog::Edit()
 {
 	HmiKey key;
+	int32 r;
 	SetPeriodUpdate(1, 200);
 	char d = 0;
 	while (1)
@@ -996,7 +1028,6 @@ int32 spt::HmiInt32DataDialog::Edit()
 					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
-					int32 r;
 					r = selectIndex + 1;
 					if (r < text[2].Text().StrLen())
 					{
@@ -1057,7 +1088,6 @@ int32 spt::HmiInt32DataDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1100,6 +1130,7 @@ int32 spt::HmiUInt32DataDialog::Edit()
 {
 	HmiKey key;
 	char d = 0;
+	int32 r;
 	while (1)
 	{
 		if (this->key->Pop(key))
@@ -1175,7 +1206,6 @@ int32 spt::HmiUInt32DataDialog::Edit()
 					SetUpdateSelf(1);
 					break;
 				case spt::EK_RIGHT:
-					int32 r;
 					r = selectIndex + 1;
 					if (r < text[2].Text().StrLen())
 					{
@@ -1226,7 +1256,6 @@ int32 spt::HmiUInt32DataDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1302,11 +1331,13 @@ int32 spt::HmiIntDataEditDialog::ShowSelf()
 	if (isUpdate)
 	{
 		text[2].ClearRect();
+		text[2].SetUpdate(1);
 		curse.SetPosX(text[2].Rect().x + gd->FontWidth() * selectIndex);
 		String10B str;
 		str << text[2].Text().Str()[selectIndex];
 		curse.SetText(str.Str());
-		curse.SetUpdateSelf(1);
+		curse.SetUpdate(1);
+		SetUpdate(1);
 	}
 	return 0;
 }
@@ -1460,7 +1491,6 @@ int32 spt::HmiHex32DataDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1622,7 +1652,6 @@ int32 spt::HmiBit32DataDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1789,7 +1818,6 @@ int32 spt::HmiEnum32DataDialog::Edit()
 			HmiMain::Instance().MsSleep(200);
 		}
 		HmiWidDialog::Show();
-		Update();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1935,7 +1963,6 @@ int32 spt::HmiInfoDialog::ShowSelf()
 	if (!isInied)
 	{
 		ClearRect();
-		HmiWidRect::ShowSelf();
 	}
 	HmiWidDialog::ShowSelf();
 	return 0;
