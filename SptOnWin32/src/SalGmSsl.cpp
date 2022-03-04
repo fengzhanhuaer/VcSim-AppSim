@@ -49,7 +49,7 @@ void spt::OpenSslLibIni()
 		SSL_library_init();
 		SSL_load_error_strings();
 		DbgGmSslServerIni();
-		DbgGmSslClientIni();
+		//	DbgGmSslClientIni();
 #else
 
 #endif // SSL_LIB_ON
@@ -286,7 +286,7 @@ int32 spt::DbgGmSslClientIni()
 
 	if (!meth)
 	{
-		LogErr << "DbgGmSslServerIni meth is null.\n";
+		LogErr << "DbgGmSslClientIni meth is null.\n";
 		return -1;
 	}
 	//建立新的SSL上下文 
@@ -294,7 +294,7 @@ int32 spt::DbgGmSslClientIni()
 
 	if (!ctx)
 	{
-		LogErr << "DbgGmSslServerIni ctx is null.\n";
+		LogErr << "DbgGmSslClientIni ctx is null.\n";
 		return -1;
 	}
 

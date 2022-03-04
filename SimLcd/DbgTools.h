@@ -14,12 +14,12 @@ namespace spt
 		virtual PCfgDataBase* CfgPool() { return pool; };
 		virtual uint32 CfgPoolSize() { return M_ArrLen(pool); };
 	public:
-		CfgStrData20 ServerIp;
-		CfgStrData20 ClientIp;
+		CfgStr ServerIp;
+		CfgStr ClientIp;
 		CfgUint32 ClientPort;
 		CfgBool EnableGmssl;
 		CfgUint32 GmsslVerifyMode;
-		CfgStrData40 GmsslLinkMode;
+		CfgStr GmsslLinkMode;
 		CfgUint32 GmsslCrtFormat;
 		CfgBool EnableGmCrtCheck;
 	private:

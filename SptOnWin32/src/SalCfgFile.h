@@ -25,7 +25,7 @@ namespace spt
 		bool8 Get(const char* Name, uint32& Data);
 		bool8 GetHex(const char* Name, uint32& Data);
 		bool8 Get(const char* Name, char* Buf, int32 BufLen);
-		bool8 Get(CfgStrDataBase& Data);
+		bool8 Get(CfgStr& Data);
 	protected:
 		const char* SelectByName(const char* Name, const char* Source);
 	protected:

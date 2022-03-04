@@ -20,6 +20,7 @@ namespace spt
 		virtual void DataStr(SalString& Str);
 		void SetName(const char* Name);
 		void SetNotes(const char* Notes);
+		void Set(const char* Name, const char* Notes, int64 Default);
 		virtual bool8 Save2File(class CfgFile& file);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		virtual bool8 ValueToEditBuf();
@@ -34,15 +35,18 @@ namespace spt
 		uint8 DotNum() { return dotNum; };
 		uint8 SetDotNum(uint8 DotNum) { return dotNum = DotNum; };
 		/// <summary>
-		/// 是否已经初始化
+		/// 设置默认值
+		/// 本函数应在应用初始化最前面调用
 		/// </summary>
+		/// <param name="Value">默认值</param>
+		/// <param name="Force">强制设置,应用侧设置平台参数的默认值时，此处填写1</param>
 		/// <returns></returns>
-		bool8 SetDefaulted();
-		bool8 IsDefaulted() { return isDefaulted; };
+		bool8 SetDefault(int64 Value, bool8 Force);
+		virtual void ApplyDefault();
 	protected:
 		CfgDataBase();
 	protected:
-		bool8 isDefaulted;
+		bool8 isSetDefault;
 		uint8 dotNum;
 		uint8 type;
 		char name[40];
@@ -50,48 +54,26 @@ namespace spt
 		const VarUnits* unit;
 		st64value value;
 		st64value editValue;
+		st64value defValue;
 		int64 max;
 		int64 min;
 	};
-	class CfgStrDataBase :public CfgDataBase
+	class CfgStr :public CfgDataBase
 	{
 	public:
-		virtual void DataStr(SalString& Str);
-		virtual char* StrData();
-		virtual int32 StrDataBufLen();
+		void DataStr(SalString& Str);
+		char* StrData();
+		int32 StrDataBufLen();
 		void SetData(const char* DataStr);
-		void Set(const char* Name, const char* DataStr);
-		void SetIfNoDefault(const char* Name, const char* Data);
-		virtual bool8 ReadFromFile(class CfgFile& file);
+		void Set(const char* Name, const char* Notes, const char* Default);
+		bool8 SetDefault(const char* Value, bool8 Force);
+		bool8 ReadFromFile(CfgFile& file);
+		virtual void ApplyDefault();
+		CfgStr();
 	protected:
-		CfgStrDataBase();
-	};
-	class CfgStrData20 :public CfgStrDataBase
-	{
-	public:
-		CfgStrData20();
-		virtual char* StrData() { return data; }
-		virtual int32 StrDataBufLen() { return sizeof(data); }
-	protected:
-		char data[20];
-	};
-	class CfgStrData40 :public CfgStrDataBase
-	{
-	public:
-		CfgStrData40();
-		virtual char* StrData() { return data; }
-		virtual int32 StrDataBufLen() { return sizeof(data); }
-	protected:
-		char data[40];
-	};
-	class CfgStrData60 :public CfgStrDataBase
-	{
-	public:
-		CfgStrData60();
-		virtual char* StrData() { return data; }
-		virtual int32 StrDataBufLen() { return sizeof(data); }
-	protected:
-		char data[60];
+		char data[100];
+		char defdata[100];
+
 	};
 	class CfgUint32 :public CfgDataBase
 	{
@@ -99,8 +81,6 @@ namespace spt
 		CfgUint32();
 		virtual void DataStr(SalString& Str);
 		bool8 SetData(uint32 Data);
-		void Set(const char* Name, uint32 Data);
-		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		uint32 Data()const;
 	protected:
@@ -112,8 +92,6 @@ namespace spt
 		CfgHex32();
 		virtual void DataStr(SalString& Str);
 		void SetData(uint32 Data);
-		void Set(const char* Name, uint32 Data);
-		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		uint32 Data()const;
 	protected:
@@ -125,8 +103,6 @@ namespace spt
 		CfgInt32();
 		virtual void DataStr(SalString& Str);
 		bool8 SetData(int32 Data);
-		void Set(const char* Name, int32 Data);
-		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		int32 Data()const;
 	protected:
@@ -138,8 +114,6 @@ namespace spt
 		CfgBool();
 		virtual void DataStr(SalString& Str);
 		void SetData(bool8 Data);
-		void Set(const char* Name, bool8 Data);
-		void SetIfNoDefault(const char* Name, uint32 Data);
 		virtual bool8 ReadFromFile(class CfgFile& file);
 		bool8 Data()const;
 	protected:

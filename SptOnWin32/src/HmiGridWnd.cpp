@@ -698,7 +698,7 @@ int32 spt::HmiGridWnd::Show()
 	isEditCellMode = 0;
 	HmiKey key = { 0 };
 	AutoLayerOut();
-	SetPeriodUpdate(1, 500);
+	SetPeriodUpdate(0, 200);
 	if (TotalPage() >= M_ArrLen(map.page))
 	{
 		HmiWarnDialog dig;
@@ -787,13 +787,19 @@ int32 spt::HmiGridWnd::Show()
 				}
 				HmiWidTextWnd::SetPage(page);
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 		}
 		else
 		{
+			if (updateData)
+			{
+				HmiKey key = { 0 };
+				updateData(this, &map, key);
+				SetUpdate(1);
+			}
+			HmiWidTextWnd::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -897,15 +903,13 @@ int32 spt::HmiGridWnd::Edit()
 				updateData(this, &map, key);
 				SetUpdate(1);
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 		}
 		else
 		{
+			HmiWidTextWnd::Show();
 			HmiMain::Instance().MsSleep(200);
-			SetUpdate(1);
 		}
-
-		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1188,12 +1192,7 @@ int32 spt::HmiGridWnd::ShowSelf()
 
 int32 spt::HmiGridWnd::ShowPeriod()
 {
-	if (updateData)
-	{
-		HmiKey key = { 0 };
-		updateData(this, &map, key);
-		SetUpdate(1);
-	}
+
 	return 0;
 }
 

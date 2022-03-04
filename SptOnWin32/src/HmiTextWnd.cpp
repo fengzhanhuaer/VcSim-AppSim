@@ -299,7 +299,7 @@ void spt::HmiTextWnd::ShowSinglePage()
 				default:
 					break;
 				}
-				HmiMain::Instance().MsSleep(50);
+				HmiMain::Instance().MsSleep(20);
 			}
 			else if (updateFunc)
 			{
@@ -308,15 +308,15 @@ void spt::HmiTextWnd::ShowSinglePage()
 					updateFunc(*this, page, totalPage, key);
 					SetUpdate(1);
 				}
-				HmiMain::Instance().MsSleep(50);
+				HmiMain::Instance().MsSleep(20);
 			}
 			HmiWidTextWnd::SetPage(page);
 		}
 		else
 		{
+			HmiWidTextWnd::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -424,7 +424,7 @@ void spt::HmiTextWnd::ShowScrollPage()
 
 					break;
 				}
-				HmiMain::Instance().MsSleep(50);
+				HmiMain::Instance().MsSleep(20);
 			}
 			else if (updateFunc)
 			{
@@ -433,15 +433,15 @@ void spt::HmiTextWnd::ShowScrollPage()
 					updateFunc(*this, page, totalPage, key);
 					SetUpdate(1);
 				}
-				HmiMain::Instance().MsSleep(50);
+				HmiMain::Instance().MsSleep(20);
 			}
 			HmiWidTextWnd::SetPage(page);
 		}
 		else
 		{
+			HmiWidTextWnd::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -553,7 +553,7 @@ void spt::HmiTextWnd::ShowContinuePage()
 
 					break;
 				}
-				HmiMain::Instance().MsSleep(50);
+				HmiMain::Instance().MsSleep(20);
 			}
 			else if (updateFunc)
 			{
@@ -562,16 +562,17 @@ void spt::HmiTextWnd::ShowContinuePage()
 					updateFunc(*this, page, totalPage, key);
 					SetUpdate(1);
 				}
-				HmiMain::Instance().MsSleep(50);
+				HmiMain::Instance().MsSleep(20);
 			}
 			HmiWidTextWnd::SetPage(page);
 			HmiWidTextWnd::SetLine(line);
+
 		}
 		else
 		{
+			HmiWidTextWnd::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidTextWnd::Show();
 	}
 	ClearRect();
 	gd->Update(rect);

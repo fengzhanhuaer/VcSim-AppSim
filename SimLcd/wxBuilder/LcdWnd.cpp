@@ -89,7 +89,7 @@ SimLcd::SimLcd( wxWindow* parent, wxWindowID id, const wxString& title, const wx
 
 	this->SetSizer( bSizer5 );
 	this->Layout();
-	m_statusBar1 = this->CreateStatusBar( 4, wxSTB_SHOW_TIPS|wxSTB_SIZEGRIP, wxID_ANY );
+	m_statusBar1 = this->CreateStatusBar( 5, wxSTB_SHOW_TIPS|wxSTB_SIZEGRIP, wxID_ANY );
 	m_timer1.SetOwner( this, wxID_ANY1 );
 	m_timer1.Start( 500 );
 

@@ -28,10 +28,10 @@ namespace spt
 		M_Singleton(ApiUnitCfg);
 	public:
 		CfgUint32 NodeId;//节点号
-		CfgStrData60 DeviceID;//装置代码
-		CfgStrData60 StationId;//变电站名称
-		CfgStrData60 FwRecId;//保护设备名称
-		CfgStrData60 UnitRcdId;//装置录波简写
+		CfgStr DeviceID;//装置代码
+		CfgStr StationId;//变电站名称
+		CfgStr FwRecId;//保护设备名称
+		CfgStr UnitRcdId;//装置录波简写
 	protected:
 		virtual PCfgDataBase* CfgPool() { return pool; };
 		virtual uint32 CfgPoolSize() { return M_ArrLen(pool); };

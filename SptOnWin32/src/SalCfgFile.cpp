@@ -235,7 +235,7 @@ bool8 spt::CfgFile::Get(const char* Name, char* Buf, int32 BufLen)
 	return 0;
 }
 
-bool8 spt::CfgFile::Get(CfgStrDataBase& Data)
+bool8 spt::CfgFile::Get(CfgStr& Data)
 {
 	return Get(Data.Name(), Data.StrData(), Data.StrDataBufLen());
 }

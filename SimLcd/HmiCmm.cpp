@@ -371,9 +371,9 @@ int32 spt::HmiTcpCmmChannel::PowerUpIni(int32 Para)
 	driverNum = 0;
 	frameBufLen = 1024;
 	appSendMsgPool.PowerUpIni(256, frameBufLen);
-	appRecMsgPool.PowerUpIni(16, frameBufLen);
+	appRecMsgPool.PowerUpIni(256, frameBufLen);
 	halSendPool.Alloc(1, frameBufLen * 32);
-	halRecvPool.Alloc(1, frameBufLen * 32);
+	halRecvPool.Alloc(1, frameBufLen * 128);
 	return 0;
 }
 
@@ -469,7 +469,7 @@ int32 spt::HmiTcpCmmChannel::ProcIn()
 	{
 		return 0;
 	}
-	char buf[1024];
+	char buf[1024 * 60];
 	int32 res = virlcdCmm.Recv(buf, sizeof(buf), 0);
 	if (res > 0)
 	{

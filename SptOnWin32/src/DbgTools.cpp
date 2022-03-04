@@ -657,48 +657,39 @@ bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 int32 spt::DbgSimCfg::PowerUpIni(int32 Para)
 {
 	DataNum = 0;
-	EnableDbgServer.SetIfNoDefault("EnableDbgServer", 1);
-	EnableDbgServer.SetNotes("使用调试服务器");
+	EnableDbgServer.Set("EnableDbgServer", "使用调试服务器", 1);
 	AddCfgData(&EnableDbgServer);
-	EnableSimLcd.SetIfNoDefault("EnableSimLcd", 1);
-	EnableSimLcd.SetNotes("使用虚拟液晶");
+	EnableSimLcd.Set("EnableSimLcd", "使用虚拟液晶", 1);
 	AddCfgData(&EnableSimLcd);
-	NeedCheckDeviceId.SetIfNoDefault("NeedCheckDeviceId", 0);
-	NeedCheckDeviceId.SetNotes("验证唯一性代码");
+	NeedCheckDeviceId.Set("NeedCheckDeviceId", "验证唯一性代码", 0);
 	AddCfgData(&NeedCheckDeviceId);
-	NeedUsrLog.SetIfNoDefault("NeedUsrLog", 0);
-	NeedUsrLog.SetNotes("使能用户登录");
+	NeedUsrLog.Set("NeedUsrLog", "使能用户登录", 0);
 	AddCfgData(&NeedUsrLog);
 	if (SptMain::Instance().IsDevice(ED_SAU31_Sub))
 	{
-		ServerIp.SetIfNoDefault("ServerIp", "100.100.100.101");
+		ServerIp.Set("ServerIp","", "100.100.100.101");
 	}
 	else
 	{
-		ServerIp.SetIfNoDefault("ServerIp", "100.100.100.100");
+		ServerIp.Set("ServerIp","", "100.100.100.100");
 	}
 	AddCfgData(&ServerIp);
 	if (SptMain::Instance().StartMode() == SptMain::E_Factory)
 	{
-		EnableGmssl.SetIfNoDefault("EnableGmssl", 0);
+		EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
 	}
 	else
 	{
-		EnableGmssl.SetIfNoDefault("EnableGmssl", 0);
+		EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
 	}
-	EnableGmssl.SetNotes("使用国密加密");
 	AddCfgData(&EnableGmssl);
-	EnableGmCrtCheck.SetIfNoDefault("EnableGmCrtCheck", 0);
-	EnableGmCrtCheck.SetNotes("使能证书自检");
+	EnableGmCrtCheck.Set("EnableGmCrtCheck", "使能证书自检", 0);
 	AddCfgData(&EnableGmCrtCheck);
-	GmsslVerifyMode.SetIfNoDefault("GmsslVerifyMode", 1);
-	GmsslVerifyMode.SetNotes("证书验证方式0是SSL_VERIFY_NONE，1是SSL_VERIFY_PEER，2是SSL_VERIFY_FAIL_IF_NO_PEER_CERT");
+	GmsslVerifyMode.Set("GmsslVerifyMode", "证书验证方式0是SSL_VERIFY_NONE，1是SSL_VERIFY_PEER，2是SSL_VERIFY_FAIL_IF_NO_PEER_CERT", 1);
 	AddCfgData(&GmsslVerifyMode);
-	GmsslLinkMode.SetIfNoDefault("GmsslLinkMode", "ECDHE-SM2-WITH-SMS4-SM3");
-	GmsslLinkMode.SetNotes("加密方式ECDHE-SM2-WITH-SMS4-SM3(默认)SM2-WITH-SMS4-SM3(双证书)ECDHE-SM2-WITH-SMS4-GCM-SM3（单证书）");
+	GmsslLinkMode.Set("GmsslLinkMode", "加密方式ECDHE-SM2-WITH-SMS4-SM3(默认)SM2-WITH-SMS4-SM3(双证书)ECDHE-SM2-WITH-SMS4-GCM-SM3（单证书）", "ECDHE-SM2-WITH-SMS4-SM3");
 	AddCfgData(&GmsslLinkMode);
-	GmsslCrtFormat.SetIfNoDefault("GmsslCrtFormat", 1);
-	GmsslCrtFormat.SetNotes("证书格式1是pem(默认)，2是asn1");
+	GmsslCrtFormat.Set("GmsslCrtFormat", "证书格式1是pem(默认)，2是asn1", 1);
 	AddCfgData(&GmsslCrtFormat);
 	path.Set(CN_CFG_FILE_ROOT);
 	name.Set("DbgSim.cfg");

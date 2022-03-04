@@ -267,27 +267,21 @@ void spt::DbgClient::WaitConnect()
 int32 spt::DbgSimCfg::PowerUpIni(int32 Para)
 {
 	DataNum = 0;
-	ServerIp.Set("ServerIp", "100.100.100.100");
+	ServerIp.Set("ServerIp","", "100.100.100.100");
 	AddCfgData(&ServerIp);
-	ClientIp.Set("ClientIp", "0.0.0.0");
+	ClientIp.Set("ClientIp", "","0.0.0.0");
 	AddCfgData(&ClientIp);
-	ClientPort.Set("ClientPort", 33001);
-	ClientPort.SetNotes("Client端口33001~35000");
+	ClientPort.Set("ClientPort","Client端口33001~35000", 33001);
 	AddCfgData(&ClientPort);
-	EnableGmssl.Set("EnableGmssl", 0);
-	EnableGmssl.SetNotes("使用国密加密");
+	EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
 	AddCfgData(&EnableGmssl);
-	EnableGmCrtCheck.Set("EnableGmCrtCheck", 0);
-	EnableGmCrtCheck.SetNotes("使能证书自检");
+	EnableGmCrtCheck.Set("EnableGmCrtCheck", "使能证书自检", 0);
 	AddCfgData(&EnableGmCrtCheck);
-	GmsslVerifyMode.Set("GmsslVerifyMode", 1);
-	GmsslVerifyMode.SetNotes("证书验证方式0是SSL_VERIFY_NONE，1是SSL_VERIFY_PEER，2是SSL_VERIFY_FAIL_IF_NO_PEER_CERT");
+	GmsslVerifyMode.Set("GmsslVerifyMode", "证书验证方式0是SSL_VERIFY_NONE，1是SSL_VERIFY_PEER，2是SSL_VERIFY_FAIL_IF_NO_PEER_CERT", 1);
 	AddCfgData(&GmsslVerifyMode);
-	GmsslLinkMode.Set("GmsslLinkMode", "ECDHE-SM2-WITH-SMS4-SM3");
-	GmsslLinkMode.SetNotes("加密方式ECDHE-SM2-WITH-SMS4-SM3(默认)SM2-WITH-SMS4-SM3(双证书)ECDHE-SM2-WITH-SMS4-GCM-SM3（单证书）");
+	GmsslLinkMode.Set("GmsslLinkMode", "加密方式ECDHE-SM2-WITH-SMS4-SM3(默认)SM2-WITH-SMS4-SM3(双证书)ECDHE-SM2-WITH-SMS4-GCM-SM3（单证书）", "ECDHE-SM2-WITH-SMS4-SM3");
 	AddCfgData(&GmsslLinkMode);
-	GmsslCrtFormat.Set("GmsslCrtFormat", 1);
-	GmsslCrtFormat.SetNotes("证书格式1是pem(默认)，2是asn1");
+	GmsslCrtFormat.Set("GmsslCrtFormat", "证书格式1是pem(默认)，2是asn1", 1);
 	AddCfgData(&GmsslCrtFormat);
 	path.Set(CN_CFG_FILE_ROOT);
 	name.Set("DbgSim.cfg");

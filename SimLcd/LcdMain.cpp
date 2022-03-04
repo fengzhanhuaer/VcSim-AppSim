@@ -8,6 +8,10 @@ LcdMain& spt::LcdMain::Instance()
 }
 #ifndef WIN32_LCD_SIM
 extern uint16 __checksum;
+void spt::LogMsg(const char* Msg, int32 Data1, int32  Data2, int32  Data3)
+{
+
+}
 #endif
 int32 spt::LcdMain::PowerUpIni(int32 Para)
 {

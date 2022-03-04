@@ -90,7 +90,7 @@ void spt::HalLcdDriver::SetBuf(int16 x, int16 y, void* Buf, int16 W)
 	{
 		return;
 	}
-	MemCpy(&lcdBufbits[y][x / 8], Buf,W );
+	MemCpy(&lcdBufbits[y][x / 8], Buf, W);
 }
 void* spt::HalLcdDriver::GetBuf(int16 x, int16 y)
 {

@@ -272,14 +272,14 @@ int32 spt::HmiAssicInputDialog::Edit()
 				}
 				SetUpdateSelf(1);
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -476,14 +476,14 @@ int32 spt::HmiStrEditDialog::Edit()
 					break;
 				}
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -602,14 +602,14 @@ int32 spt::HmiWarnDialog::Edit()
 					break;
 				}
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -654,14 +654,14 @@ int32 spt::HmiSelectDialog::Edit()
 					break;
 				}
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -836,14 +836,14 @@ int32 spt::HmiTimeEditDialog::Edit()
 					break;
 				}
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1080,14 +1080,14 @@ int32 spt::HmiInt32DataDialog::Edit()
 					SetUpdateSelf(1);
 				}
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1249,13 +1249,13 @@ int32 spt::HmiUInt32DataDialog::Edit()
 					SetUpdateSelf(1);
 				}
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1484,13 +1484,13 @@ int32 spt::HmiHex32DataDialog::Edit()
 				}
 			}
 			SetUpdate(1);
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1644,14 +1644,14 @@ int32 spt::HmiBit32DataDialog::Edit()
 				}
 				SetUpdateSelf(1);
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);
@@ -1810,14 +1810,14 @@ int32 spt::HmiEnum32DataDialog::Edit()
 					break;
 				}
 			}
-			HmiMain::Instance().MsSleep(50);
+			HmiMain::Instance().MsSleep(20);
 			SetUpdate(1);
 		}
 		else
 		{
+			HmiWidDialog::Show();
 			HmiMain::Instance().MsSleep(200);
 		}
-		HmiWidDialog::Show();
 	}
 	ClearRect();
 	gd->Update(rect);

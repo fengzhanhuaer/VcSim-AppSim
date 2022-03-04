@@ -18,10 +18,10 @@ namespace spt
 		CfgBool EnableSimLcd;
 		CfgBool NeedCheckDeviceId;
 		CfgBool NeedUsrLog;
-		CfgStrData20 ServerIp;
+		CfgStr ServerIp;
 		CfgBool EnableGmssl;
 		CfgUint32 GmsslVerifyMode;
-		CfgStrData40 GmsslLinkMode;
+		CfgStr GmsslLinkMode;
 		CfgUint32 GmsslCrtFormat;
 		CfgBool EnableGmCrtCheck;
 	private:

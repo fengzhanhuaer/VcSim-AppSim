@@ -30,6 +30,7 @@ namespace spt
 		struct ApiAppCfg* appCfg;
 		E_StartMode startmode;
 	};
+	void LogMsg(const char* Msg, int32 Data1, int32  Data2, int32  Data3);
 }
 
 extern "C" {

@@ -56,9 +56,9 @@ public:
 public:
 	int32 PowerUpIni(int32 Para)
 	{
-		ForeGroundColour.Set("FrontCorlor", 0xff40ff00);
+		ForeGroundColour.Set("FrontCorlor","", 0xff40ff00);
 		AddCfgData(&ForeGroundColour);
-		BackGroundColour.Set("BackCorlor", 0xff000000);
+		BackGroundColour.Set("BackCorlor","", 0xff000000);
 		AddCfgData(&BackGroundColour);
 		path.Set(CN_CFG_FILE_ROOT);
 		name.Set("LcdCfg.cfg");
@@ -167,6 +167,10 @@ public:
 			}
 		}
 		IniLcdInfo();
+	}
+	void LogMsg(wxString& str)
+	{
+		m_statusBar1->SetStatusText(str, 4);
 	}
 	void IniLcdInfo()
 	{
@@ -695,7 +699,10 @@ bool MyApp::OnInit()
 	static HANDLE hThread = GetCurrentThread();
 	//bool res = SetThreadPriority(hThread, THREAD_PRIORITY_ABOVE_NORMAL);
 	DbgSimCfg::Instance().PowerUpIni(0);
-	CheckDbgClientCrt();
+	if (DbgSimCfg::Instance().EnableGmCrtCheck.Data())
+	{
+		CheckDbgClientCrt();
+	}
 	SalFile file;
 	file.Path().Set(".\\Captue\\");
 	file.Path().Creat();
@@ -717,4 +724,14 @@ int32 DoLogHeartBeat()
 bool8 spt::AskForLogOnInfo(bool8 isCheckId, bool8 isCheckAccount, SalString& Id, SalString& Name, SalString& Pw, int32(*DoHeartCheck)())
 {
 	return lcdwnd->AskForLogOnInfo(isCheckId, isCheckAccount, Id, Name, Pw, DoLogHeartBeat);
+}
+void spt::LogMsg(const char* Msg, int32 Data1, int32  Data2, int32  Data3)
+{
+	if (lcdwnd)
+	{
+		wxString str;
+		str << Msg;
+		str << "-" << Data1 << "-" << Data2 << "-" << Data3 << "\n";
+		lcdwnd->LogMsg(str);
+	}
 }

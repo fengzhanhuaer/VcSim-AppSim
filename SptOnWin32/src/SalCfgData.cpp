@@ -32,6 +32,14 @@ void spt::CfgDataBase::SetNotes(const char* Notes)
 	StrNCpy(notes, Notes, sizeof(notes));
 }
 
+void spt::CfgDataBase::Set(const char* Name, const char* Notes, int64 Default)
+{
+	SetName(Name);
+	SetNotes(Notes);
+	SetDefault(Default, 0);
+	ApplyDefault();
+}
+
 bool8 spt::CfgDataBase::Save2File(CfgFile& file)
 {
 	int32 res = file.Write(name);
@@ -83,9 +91,24 @@ const char* spt::CfgDataBase::Unit()
 	return Unit_NULL.toString();
 }
 
-bool8 spt::CfgDataBase::SetDefaulted()
+
+
+bool8 spt::CfgDataBase::SetDefault(int64 Value, bool8 Force)
 {
-	return isDefaulted = 1;
+	if ((!isSetDefault) || (Force))
+	{
+		defValue.value.i64 = Value;
+		isSetDefault = 1;
+	}
+	return isSetDefault;
+}
+
+void spt::CfgDataBase::ApplyDefault()
+{
+	if (isSetDefault)
+	{
+		value.value = defValue.value;
+	}
 }
 
 spt::CfgDataBase::CfgDataBase()
@@ -94,25 +117,25 @@ spt::CfgDataBase::CfgDataBase()
 	notes[0] = 0;
 	unit = &Unit_NULL;
 	dotNum = 0;
-	isDefaulted = 0;
+	isSetDefault = 0;
 }
 
-void spt::CfgStrDataBase::DataStr(SalString& Str)
+void spt::CfgStr::DataStr(SalString& Str)
 {
 	Str = StrData();
 }
 
-char* spt::CfgStrDataBase::StrData()
+char* spt::CfgStr::StrData()
 {
-	return 0;
+	return data;
 }
 
-int32 spt::CfgStrDataBase::StrDataBufLen()
+int32 spt::CfgStr::StrDataBufLen()
 {
-	return 0;
+	return sizeof(data);
 }
 
-void spt::CfgStrDataBase::SetData(const char* DataStr)
+void spt::CfgStr::SetData(const char* DataStr)
 {
 	char* buf = StrData();
 	if (buf)
@@ -121,32 +144,43 @@ void spt::CfgStrDataBase::SetData(const char* DataStr)
 	}
 }
 
-void spt::CfgStrDataBase::Set(const char* Name, const char* DataStr)
+void spt::CfgStr::Set(const char* Name, const char* Notes, const char* Default)
 {
 	SetName(Name);
-	SetData(DataStr);
+	SetNotes(Notes);
+	SetDefault(Default, 0);
+	ApplyDefault();
 }
 
-void spt::CfgStrDataBase::SetIfNoDefault(const char* Name, const char* Data)
+bool8 spt::CfgStr::SetDefault(const char* Value, bool8 Force)
 {
-	SetName(Name);
-	if (!isDefaulted)
+	if ((!isSetDefault) || (Force))
 	{
-		SetData(Data);
-		isDefaulted = 1;
+		StrNCpy(defdata, Value, sizeof(defdata));
+		isSetDefault = 1;
+	}
+	return isSetDefault;
+}
+
+void spt::CfgStr::ApplyDefault()
+{
+	if (isSetDefault)
+	{
+		SetData(defdata);
 	}
 }
 
-bool8 spt::CfgStrDataBase::ReadFromFile(CfgFile& file)
+bool8 spt::CfgStr::ReadFromFile(CfgFile& file)
 {
 	return file.Get(*this);
 }
 
-spt::CfgStrDataBase::CfgStrDataBase()
+spt::CfgStr::CfgStr()
 {
 	value.valueType = E_SVT_STR | E_SVT_PTR;
 	value.value.str = StrData();
 	type = E_STRING;
+	value.value.str = data;
 }
 
 spt::CfgUint32::CfgUint32()
@@ -171,22 +205,6 @@ bool8 spt::CfgUint32::SetData(uint32 Data)
 	}
 	value.value.u32 = Data;
 	return 1;
-}
-
-void spt::CfgUint32::Set(const char* Name, uint32 Data)
-{
-	SetName(Name);
-	SetData(Data);
-}
-
-void spt::CfgUint32::SetIfNoDefault(const char* Name, uint32 Data)
-{
-	SetName(Name);
-	if (!isDefaulted)
-	{
-		SetData(Data);
-		isDefaulted = 1;
-	}
 }
 
 bool8 spt::CfgUint32::ReadFromFile(CfgFile& file)
@@ -226,22 +244,6 @@ bool8 spt::CfgInt32::SetData(int32 Data)
 	return 1;
 }
 
-void spt::CfgInt32::Set(const char* Name, int32 Data)
-{
-	SetName(Name);
-	SetData(Data);
-}
-
-void spt::CfgInt32::SetIfNoDefault(const char* Name, uint32 Data)
-{
-	SetName(Name);
-	if (!isDefaulted)
-	{
-		SetData(Data);
-		isDefaulted = 1;
-	}
-}
-
 bool8 spt::CfgInt32::ReadFromFile(CfgFile& file)
 {
 	int32 dat = 0;
@@ -272,22 +274,6 @@ void spt::CfgBool::DataStr(SalString& Str)
 void spt::CfgBool::SetData(bool8 Data)
 {
 	value.value.bl = (Data == 1);
-}
-
-void spt::CfgBool::Set(const char* Name, bool8 Data)
-{
-	SetName(Name);
-	SetData(Data);
-}
-
-void spt::CfgBool::SetIfNoDefault(const char* Name, uint32 Data)
-{
-	SetName(Name);
-	if (!isDefaulted)
-	{
-		SetData(Data);
-		isDefaulted = 1;
-	}
 }
 
 bool8 spt::CfgBool::ReadFromFile(CfgFile& file)
@@ -435,22 +421,6 @@ void spt::CfgHex32::SetData(uint32 Data)
 	value.value.u32 = Data;
 }
 
-void spt::CfgHex32::Set(const char* Name, uint32 Data)
-{
-	SetName(Name);
-	SetData(Data);
-}
-
-void spt::CfgHex32::SetIfNoDefault(const char* Name, uint32 Data)
-{
-	SetName(Name);
-	if (!isDefaulted)
-	{
-		SetData(Data);
-		isDefaulted = 1;
-	}
-}
-
 bool8 spt::CfgHex32::ReadFromFile(CfgFile& file)
 {
 	bool8 res = file.GetHex(name, value.value.u32);
@@ -460,19 +430,4 @@ bool8 spt::CfgHex32::ReadFromFile(CfgFile& file)
 uint32 spt::CfgHex32::Data() const
 {
 	return value.value.u32;
-}
-
-spt::CfgStrData20::CfgStrData20()
-{
-	value.value.str = data;
-}
-
-spt::CfgStrData40::CfgStrData40()
-{
-	value.value.str = data;
-}
-
-spt::CfgStrData60::CfgStrData60()
-{
-	value.value.str = data;
 }

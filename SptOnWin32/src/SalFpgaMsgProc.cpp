@@ -455,7 +455,7 @@ int32 spt::GzkFpgaMsgSau31::RecvProc()
 			uint32 delta = HwUsCnt() - beginus;
 			if (delta > (SptSampInt::Instance().PeriodUs() / 5))
 			{
-				LogErr.Stamp() << "GzkFpgaMsgSau31 RecProc Timer Over SptSampInt::Instance().PeriodUs()" << timecnt << "\n";
+				LogErr.Stamp() << "GzkFpgaMsgSau31 RecProc Timer Over SptSampInt::Instance().PeriodUs() " << timecnt << "\n";
 				goto exit;
 			}
 		}
