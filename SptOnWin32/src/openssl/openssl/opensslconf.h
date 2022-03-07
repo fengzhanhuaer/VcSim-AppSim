@@ -114,7 +114,7 @@ extern "C" {
 #if defined(OPENSSL_NO_DEPRECATED)
 # define DECLARE_DEPRECATED(f)
 #elif __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 0)
-# define DECLARE_DEPRECATED(f)    f __attribute__ ((deprecated));
+# define DECLARE_DEPRECATED(f)    f;//20220305 冯占华 应用层需要调用相关的函数 __attribute__ ((deprecated));
 #else
 # define DECLARE_DEPRECATED(f)   f;
 #endif

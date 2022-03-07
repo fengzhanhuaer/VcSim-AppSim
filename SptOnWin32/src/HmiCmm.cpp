@@ -554,7 +554,7 @@ int32 spt::HmiTcpCmmChannel::StartServer(uint32 LocalIp, uint16 LocalPort, uint3
 	if (virlcdCmm.IsEnableGmssl())
 	{
 		virlcdCmm.CreatGmSock();
-		timer.UpCnt(3000);
+		timer.UpCnt(5000);
 		timer.Enable(1);
 		timer.Restart();
 		while (!timer.Status())
@@ -575,6 +575,7 @@ int32 spt::HmiTcpCmmChannel::StartServer(uint32 LocalIp, uint16 LocalPort, uint3
 		{
 			LogMsg.Stamp() << "DbgLcd GmSocket Accept Ok.\n";
 		}
+		MsSleep(100);
 	}
 	virlcdCmm.SetLinkOk(1);
 	String40B str;
@@ -589,6 +590,7 @@ int32 spt::HmiTcpCmmChannel::StartServer(uint32 LocalIp, uint16 LocalPort, uint3
 		logOk = 0;
 		LogMsg.Stamp() << "DbgLcd Log Err.\n";
 		virlcdCmm.Close();
+		return -1;
 	}
 	return  0;
 }

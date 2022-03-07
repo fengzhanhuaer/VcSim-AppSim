@@ -131,7 +131,7 @@ bool8 spt::DbgToolsServer::LogOn(E_MsgType MsgType, DbgSocket& Sock)
 }
 
 spt::DbgToolsServer::DbgToolsServer()
-	:Task("tDbgMain", TaskBasePriority + 80, 2048 * 1024, E_T_FLOAT, E_AuxCore)
+	:Task("tDbgMain", TaskBasePriority - 50, 2048 * 1024, E_T_FLOAT, E_AuxCore)
 {
 }
 
@@ -667,11 +667,11 @@ int32 spt::DbgSimCfg::PowerUpIni(int32 Para)
 	AddCfgData(&NeedUsrLog);
 	if (SptMain::Instance().IsDevice(ED_SAU31_Sub))
 	{
-		ServerIp.Set("ServerIp","", "100.100.100.101");
+		ServerIp.Set("ServerIp", "", "100.100.100.101");
 	}
 	else
 	{
-		ServerIp.Set("ServerIp","", "100.100.100.100");
+		ServerIp.Set("ServerIp", "", "100.100.100.100");
 	}
 	AddCfgData(&ServerIp);
 	if (SptMain::Instance().StartMode() == SptMain::E_Factory)

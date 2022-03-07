@@ -5,7 +5,7 @@ using namespace spt;
 void spt::VirLcdCmmClient::ReConnect()
 {
 	DbgClient::ReConnect();
-	if (HmiLcdCmm::Instance().IsLcdCmmOk())
+	if (!HmiLcdCmm::Instance().IsLcdCmmOk())
 	{
 		return;
 	}

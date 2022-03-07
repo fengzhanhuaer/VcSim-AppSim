@@ -86,14 +86,19 @@ void spt::DbgClient::AskConnect(uint16 Cmd)
 					DbgToolsServer::HandshakeMsg hdmsg;
 					MemCpy(&hdmsg, msg.msg.buf, sizeof(hdmsg));
 					DecryptData(&hdmsg, sizeof(hdmsg), 27);
-					DbgSimCfg::Instance().EnableGmssl.SetData(hdmsg.msg[2]);
-					DbgSimCfg::Instance().GmsslVerifyMode.SetData(hdmsg.msg[3]);
 					isIdCheck = hdmsg.msg[4];
 					isPwCheck = hdmsg.msg[5];
-					if (StrLen((const char*)&hdmsg.msg[33]) == hdmsg.msg[32])
+					if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), (const char*)&hdmsg.msg[33])
+						|| (DbgSimCfg::Instance().GmsslVerifyMode.Data() != hdmsg.msg[3])
+						|| (DbgSimCfg::Instance().EnableGmssl.Data() != hdmsg.msg[2])
+						)
 					{
+						DbgSimCfg::Instance().GmsslVerifyMode.SetData(hdmsg.msg[3]);
+						DbgSimCfg::Instance().EnableGmssl.SetData(hdmsg.msg[2]);
 						DbgSimCfg::Instance().GmsslLinkMode.SetData((const char*)&hdmsg.msg[33]);
 						DbgSimCfg::Instance().SaveAll();
+						OpenSslLibClean();
+						OpenSslLibIni();
 					}
 					hdmsg.msg[0] = DbgToolsServer::E_ServiceAsk;
 					hdmsg.msg[1] = DbgToolsServer::E_ServiceAsk >> 8;
@@ -137,7 +142,7 @@ void spt::DbgClient::ReConnect()
 {
 	if (lastUpdateReconnected.IsEnable())
 	{
-		if (!lastUpdateReconnected.Status(10000))
+		if (!lastUpdateReconnected.Status(5000))
 		{
 
 		}
@@ -267,11 +272,11 @@ void spt::DbgClient::WaitConnect()
 int32 spt::DbgSimCfg::PowerUpIni(int32 Para)
 {
 	DataNum = 0;
-	ServerIp.Set("ServerIp","", "100.100.100.100");
+	ServerIp.Set("ServerIp", "", "100.100.100.100");
 	AddCfgData(&ServerIp);
-	ClientIp.Set("ClientIp", "","0.0.0.0");
+	ClientIp.Set("ClientIp", "", "0.0.0.0");
 	AddCfgData(&ClientIp);
-	ClientPort.Set("ClientPort","Client端口33001~35000", 33001);
+	ClientPort.Set("ClientPort", "Client端口33001~35000", 33001);
 	AddCfgData(&ClientPort);
 	EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
 	AddCfgData(&EnableGmssl);

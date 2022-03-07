@@ -48,7 +48,7 @@ void spt::OpenSslLibIni()
 #if SSL_LIB_ON
 		SSL_library_init();
 		SSL_load_error_strings();
-		DbgGmSslServerIni();
+		//DbgGmSslServerIni();
 		DbgGmSslClientIni();
 #else
 
@@ -63,9 +63,16 @@ static SSL_CTX* DbgGmSslClientCtx = 0;
 void spt::OpenSslLibClean()
 {
 #if SSL_LIB_ON
-	SSL_CTX_free(DbgGmSslServerCtx);
+	if (DbgGmSslServerCtx)
+	{
+		SSL_CTX_free(DbgGmSslServerCtx);
+	}
+
 	DbgGmSslServerCtx = 0;
-	SSL_CTX_free(DbgGmSslClientCtx);
+	if (DbgGmSslClientCtx)
+	{
+		SSL_CTX_free(DbgGmSslClientCtx);
+	}
 	DbgGmSslClientCtx = 0;
 #endif
 }
@@ -342,7 +349,7 @@ int32 spt::DbgGmSslAccept(void* GmSock)
 		{
 			//	char buf[100] = { 0 };
 			//	DbgGmSslRead(GmSock, buf, sizeof(buf));
-			return 0;
+			return -1;
 		}
 		else if (err == SSL_ERROR_WANT_WRITE)
 		{
@@ -384,7 +391,7 @@ int32 spt::DbgGmSslConnect(void* GmSock)
 		{
 			//	char buf[100] = { 0 };
 			//	DbgGmSslRead(GmSock, buf, sizeof(buf));
-			return 0;
+			return -1;
 		}
 		else if (err == SSL_ERROR_WANT_WRITE)
 		{

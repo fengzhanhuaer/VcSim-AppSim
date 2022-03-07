@@ -63,13 +63,19 @@ static SSL_CTX* DbgGmSslClientCtx = 0;
 void spt::OpenSslLibClean()
 {
 #if SSL_LIB_ON
-	SSL_CTX_free(DbgGmSslServerCtx);
+	if (DbgGmSslServerCtx)
+	{
+		SSL_CTX_free(DbgGmSslServerCtx);
+	}
+
 	DbgGmSslServerCtx = 0;
-	SSL_CTX_free(DbgGmSslClientCtx);
+	if (DbgGmSslClientCtx)
+	{
+		SSL_CTX_free(DbgGmSslClientCtx);
+	}
 	DbgGmSslClientCtx = 0;
 #endif
 }
-
 
 void* GmServerMothed()
 {
@@ -347,6 +353,7 @@ int32 spt::DbgGmSslAccept(void* GmSock)
 	int32 err = SSL_accept((SSL*)GmSock);
 	if (err == 1)
 	{
+		LogErr << "SSL_get_error SSL_ERROR_SSL\n";
 		return 0;
 	}
 	else
@@ -357,12 +364,14 @@ int32 spt::DbgGmSslAccept(void* GmSock)
 		{
 			//	char buf[100] = { 0 };
 			//	DbgGmSslRead(GmSock, buf, sizeof(buf));
-			return 0;
+			LogErr.Stamp() << "SSL_get_error SSL_ERROR_WANT_READ\n";
+			return -1;
 		}
 		else if (err == SSL_ERROR_WANT_WRITE)
 		{
 			//	char buf[100] = { 0 };
 			//	DbgGmSslWrite(GmSock, buf, sizeof(buf));
+			LogErr.Stamp() << "SSL_get_error SSL_ERROR_WANT_WRITE\n";
 			return -1;
 		}
 	}
@@ -392,7 +401,7 @@ int32 spt::DbgGmSslConnect(void* GmSock)
 		{
 			//	char buf[100] = { 0 };
 			//	DbgGmSslRead(GmSock, buf, sizeof(buf));
-			return 0;
+			return -1;
 		}
 		else if (err == SSL_ERROR_WANT_WRITE)
 		{

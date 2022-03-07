@@ -578,7 +578,7 @@ int32 spt::HmiTcpCmmChannel::StartClient(uint32 LocalIp, uint16 LocalPort, uint3
 	if (DbgSimCfg::Instance().EnableGmssl.Data())
 	{
 		virlcdCmm.CreatGmSock();
-		timer.UpCnt(3000);
+		timer.UpCnt(5000);
 		timer.Enable(1);
 		timer.Restart();
 		while (!timer.Status())
@@ -594,6 +594,7 @@ int32 spt::HmiTcpCmmChannel::StartClient(uint32 LocalIp, uint16 LocalPort, uint3
 			virlcdCmm.Close();
 			return -1;
 		}
+		MsSleep(100);
 	}
 	virlcdCmm.SetLinkOk(1);
 	if (VirLcdCmmClient::Instance().LogOn(DbgToolsServer::E_VirLcd, virlcdCmm))

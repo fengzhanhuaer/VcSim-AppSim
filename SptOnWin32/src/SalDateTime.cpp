@@ -1634,6 +1634,7 @@ void spt::SptDateTask::ForceGetRtcFromHw()
 	if (update)
 	{
 		update->GetHwTime(localStamp);
+		update->SetHwTime(localStamp);
 	}
 }
 
@@ -1766,6 +1767,7 @@ int32 spt::SptDateTask::PowerUpIni(int32 Para)
 	ForceGetRtcFromHw();
 	Task::PowerUpIni(0);
 	Start();
+	LogMsg.Stamp() << "DateTask Started " << (uint32)time(0) << "\n";
 	return 0;
 }
 
