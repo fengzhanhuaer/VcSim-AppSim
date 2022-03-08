@@ -78,7 +78,7 @@ bool8 spt::DbgToolsServer::LogOn(E_MsgType MsgType, DbgSocket& Sock)
 				{
 					if (checkDeviceIdFunc)
 					{
-						if (!checkDeviceIdFunc(MsgType, str.Str(), id.Str()))
+						if (0 != checkDeviceIdFunc(MsgType, str.Str(), id.Str()))
 						{
 							res = -1;
 							MemCpy(&msg.msg.buf[2], &res, sizeof(res));
@@ -92,9 +92,9 @@ bool8 spt::DbgToolsServer::LogOn(E_MsgType MsgType, DbgSocket& Sock)
 				{
 					if (userLogOnFunc)
 					{
-						if (!userLogOnFunc(MsgType, str.Str(), name.Str(), pw.Str()))
+						int32 res = userLogOnFunc(MsgType, str.Str(), name.Str(), pw.Str());
+						if (0 != res)
 						{
-							res = -2;
 							MemCpy(&msg.msg.buf[2], &res, sizeof(res));
 							msg.dbgMsg.header.len = sizeof(msg.msg.header) + 100;
 							Sock.Send(msg.dbgMsg);
@@ -115,7 +115,7 @@ bool8 spt::DbgToolsServer::LogOn(E_MsgType MsgType, DbgSocket& Sock)
 		}
 		if (rtn < 0)
 		{
-			res = -3;
+			res = -4;
 			MemCpy(&msg.msg.buf[2], &res, sizeof(res));
 			msg.dbgMsg.header.len = sizeof(msg.msg.header) + 100;
 			Sock.Send(msg.dbgMsg);
@@ -123,7 +123,7 @@ bool8 spt::DbgToolsServer::LogOn(E_MsgType MsgType, DbgSocket& Sock)
 		}
 		MsSleep(200);
 	}
-	res = -4;
+	res = -5;
 	msg.dbgMsg.header.len = sizeof(msg.msg.header) + 100;
 	MemCpy(&msg.msg.buf[2], &res, sizeof(res));
 	Sock.Send(msg.dbgMsg);
@@ -633,10 +633,15 @@ bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 				}
 				if (res == -3)
 				{
-					logstatus = E_LogOnLinkErr;
+					logstatus = E_LogOnAccountLock;
 					return 0;
 				}
 				if (res == -4)
+				{
+					logstatus = E_LogOnLinkErr;
+					return 0;
+				}
+				if (res == -5)
 				{
 					logstatus = E_LogOverTime;
 					return 0;

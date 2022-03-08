@@ -56,9 +56,9 @@ public:
 public:
 	int32 PowerUpIni(int32 Para)
 	{
-		ForeGroundColour.Set("FrontCorlor","", 0xff40ff00);
+		ForeGroundColour.Set("FrontCorlor", "", 0xff40ff00);
 		AddCfgData(&ForeGroundColour);
-		BackGroundColour.Set("BackCorlor","", 0xff000000);
+		BackGroundColour.Set("BackCorlor", "", 0xff000000);
 		AddCfgData(&BackGroundColour);
 		path.Set(CN_CFG_FILE_ROOT);
 		name.Set("LcdCfg.cfg");
@@ -248,6 +248,11 @@ public:
 			else if (status == DbgClient::E_LogOnAccountErr)
 			{
 				wxMessageDialog dia(0, "’ ∫≈ªÚ√‹¬Î¥ÌŒÛ");
+				dia.ShowModal();
+			}
+			else if (status == DbgClient::E_LogOnAccountLock)
+			{
+				wxMessageDialog dia(0, "’ ∫≈“—À¯∂®£¨«Î…‘∫Û‘Ÿ ‘");
 				dia.ShowModal();
 			}
 			else if (status == DbgClient::E_LogOnLinkErr)

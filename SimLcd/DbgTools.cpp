@@ -217,10 +217,15 @@ bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 				}
 				if (res == -3)
 				{
-					logstatus = E_LogOnLinkErr;
+					logstatus = E_LogOnAccountLock;
 					return 0;
 				}
 				if (res == -4)
+				{
+					logstatus = E_LogOnLinkErr;
+					return 0;
+				}
+				if (res == -5)
 				{
 					logstatus = E_LogOverTime;
 					return 0;

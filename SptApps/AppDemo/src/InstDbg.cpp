@@ -1,16 +1,16 @@
 #include "InstResource.h"
 
-bool8 CheckDeviceIdFunc(DbgToolsServer::E_MsgType MsgType, const char* Ip, const char* UsrInputDeviceId)
+int32 CheckDeviceIdFunc(DbgToolsServer::E_MsgType MsgType, const char* Ip, const char* UsrInputDeviceId)
 {
-	return 1;
+	return 0;
 }
-bool8 UserLogOnFunc(DbgToolsServer::E_MsgType MsgType, const char* Ip, const char* Usr, const char* PassWord)
+int32 UserLogOnFunc(DbgToolsServer::E_MsgType MsgType, const char* Ip, const char* Usr, const char* PassWord)
 {
-	return 1;
+	return 0;
 }
-bool8 UserLinkCloseFunc(DbgToolsServer::E_MsgType MsgType, const char* Ip)
+int32 UserLinkCloseFunc(DbgToolsServer::E_MsgType MsgType, const char* Ip)
 {
-	return 1;
+	return 0;
 }
 
 void AppDbgPowerUpIni()

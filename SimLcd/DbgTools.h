@@ -90,6 +90,7 @@ namespace spt
 			E_LogOnIdErr,
 			E_LogOnLinkErr,
 			E_LogOnAccountErr,
+			E_LogOnAccountLock,
 			E_LogOverTime,
 		};
 	public:

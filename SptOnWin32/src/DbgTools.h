@@ -44,9 +44,17 @@ namespace spt
 			E_DbgServer
 		};
 	public:
-		typedef bool8(*CheckDeviceIdFunc)(E_MsgType MsgType, const char* Ip, const char* UsrInputDeviceId);
-		typedef bool8(*UserLogOnFunc)(E_MsgType MsgType, const char* Ip, const char* Usr, const char* PassWord);
-		typedef bool8(*UserLinkCloseFunc)(E_MsgType MsgType, const char* Ip);
+		/// <summary>
+		/// 0表示成功
+		/// </summary>
+		typedef int32(*CheckDeviceIdFunc)(E_MsgType MsgType, const char* Ip, const char* UsrInputDeviceId);
+		/// <summary>
+		/// 0表示成功
+		/// -2表示帐号锁定
+		/// -3表示帐号或不密码不正确
+		/// </summary>
+		typedef int32(*UserLogOnFunc)(E_MsgType MsgType, const char* Ip, const char* Usr, const char* PassWord);
+		typedef int32(*UserLinkCloseFunc)(E_MsgType MsgType, const char* Ip);
 	public:
 		int32 PowerUpIni(int32 Type);
 		static DbgToolsServer& Instance();
@@ -113,6 +121,7 @@ namespace spt
 			E_LogOnIdErr,
 			E_LogOnLinkErr,
 			E_LogOnAccountErr,
+			E_LogOnAccountLock,
 			E_LogOverTime,
 		};
 	public:
