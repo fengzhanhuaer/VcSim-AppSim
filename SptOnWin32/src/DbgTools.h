@@ -54,7 +54,15 @@ namespace spt
 		/// -3表示帐号或不密码不正确
 		/// </summary>
 		typedef int32(*UserLogOnFunc)(E_MsgType MsgType, const char* Ip, const char* Usr, const char* PassWord);
+		/// <summary>
+		/// 连接关闭时被调用
+		/// </summary>
 		typedef int32(*UserLinkCloseFunc)(E_MsgType MsgType, const char* Ip);
+		/// <summary>
+		/// 用户连接信息
+		/// StatusType,0连接成功，-1,客户端端口范围越限，-2非授权握手连接信息,-3握手超时，-4连接失败
+		/// </summary>
+		typedef int32(*UserLinkFunc)(E_MsgType MsgType, const char* Ip, int32 StatusType);
 	public:
 		int32 PowerUpIni(int32 Type);
 		static DbgToolsServer& Instance();
@@ -77,6 +85,11 @@ namespace spt
 		void SetUserLinkCloseFunc(UserLinkCloseFunc func);
 		UserLinkCloseFunc GetUserLinkCloseFunc() { return userLinkCloseFunc; }
 		void SetClientClose(E_MsgType MsgType, const char* Ip);
+		/// <summary>
+		/// 设置异常连接回调函数
+		/// </summary>
+		/// <param name="func"></param>
+		void SetUserLinkFunc(UserLinkFunc func);
 		bool8 LogOn(E_MsgType MsgType, DbgSocket& Sock);
 	public:
 		enum TaskStep
@@ -97,6 +110,7 @@ namespace spt
 		CheckDeviceIdFunc checkDeviceIdFunc;
 		UserLogOnFunc userLogOnFunc;
 		UserLinkCloseFunc userLinkCloseFunc;
+		UserLinkFunc userLinkFunc;
 	};
 	class DbgClient :public Task
 	{

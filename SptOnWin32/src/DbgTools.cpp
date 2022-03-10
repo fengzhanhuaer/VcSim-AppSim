@@ -34,6 +34,10 @@ void spt::DbgToolsServer::SetUserLinkCloseFunc(UserLinkCloseFunc func)
 {
 	userLinkCloseFunc = func;
 }
+void spt::DbgToolsServer::SetUserLinkFunc(UserLinkFunc func)
+{
+	userLinkFunc = func;
+}
 
 void spt::DbgToolsServer::SetClientClose(E_MsgType MsgType, const char* Ip)
 {
@@ -193,8 +197,14 @@ int32 spt::DbgToolsServer::OneLoop()
 				break;
 			}
 			signIn.SetClientSocketNonBlock(1);
+			String100B str;
+			signIn.GetRemote(str);
 			if ((signIn.RemotePort().u16 < 33001) && (signIn.RemotePort().u16 > 35000))
 			{
+				if (userLinkFunc)
+				{
+					userLinkFunc(E_HeartBeat, str.Str(), -1);
+				}
 				taskStep = E_NetStorm;
 				signIn.CloseClient();
 				LogMsg.Stamp() << "Client Port is not allow .\n";
@@ -219,6 +229,10 @@ int32 spt::DbgToolsServer::OneLoop()
 						msTimer.Enable(1);
 						signIn.Close();
 						taskStep = E_NetStorm;
+						if (userLinkFunc)
+						{
+							userLinkFunc(E_HeartBeat, str.Str(), -2);
+						}
 						return 0;
 					}
 					MemCpy(&data, msg.msg.buf, sizeof(data));
@@ -231,11 +245,19 @@ int32 spt::DbgToolsServer::OneLoop()
 					{
 						signIn.CloseClient();
 						taskStep = E_NetStorm;
+						if (userLinkFunc)
+						{
+							userLinkFunc(E_HeartBeat, str.Str(), -2);
+						}
 						return 0;
 					}
 				}
 				else
 				{
+					if (userLinkFunc)
+					{
+						userLinkFunc(E_HeartBeat, str.Str(), -2);
+					}
 					signIn.CloseClient();
 					taskStep = E_NetStorm;
 					return 0;
@@ -244,6 +266,10 @@ int32 spt::DbgToolsServer::OneLoop()
 			if (timer.Status())
 			{
 				signIn.CloseClient();
+				if (userLinkFunc)
+				{
+					userLinkFunc(E_HeartBeat, str.Str(), -3);
+				}
 				return 0;
 			}
 			uint64  ms = SptMsInt::Instance().MsCnt64();
@@ -280,18 +306,30 @@ int32 spt::DbgToolsServer::OneLoop()
 					{
 						signIn.CloseClient();
 						taskStep = E_NetStorm;
+						if (userLinkFunc)
+						{
+							userLinkFunc(E_HeartBeat, str.Str(), -2);
+						}
 						return 0;
 					}
 				}
 				if (timer.Status())
 				{
 					signIn.CloseClient();
+					if (userLinkFunc)
+					{
+						userLinkFunc(E_HeartBeat, str.Str(), -3);
+					}
 					return 0;
 				}
 			}
 			else
 			{
 				signIn.CloseClient();
+				if (userLinkFunc)
+				{
+					userLinkFunc(E_HeartBeat, str.Str(), -3);
+				}
 				return 0;
 			}
 			msg.msg.header.version = 1;
@@ -344,10 +382,18 @@ int32 spt::DbgToolsServer::OneLoop()
 								taskStep = E_CheckClient;
 								signIn.SetClientSock(-1);
 								LogMsg.Stamp() << "VirLcd connected .\n";
+								if (userLinkFunc)
+								{
+									userLinkFunc(E_VirLcd, str.Str(), -2);
+								}
 								return 0;
 							}
 							else
 							{
+								if (userLinkFunc)
+								{
+									userLinkFunc(E_VirLcd, str.Str(), -4);
+								}
 								signIn.CloseClient();
 								LogMsg.Stamp() << "VirLcd connect failed .\n";
 								taskStep = E_CheckClient;

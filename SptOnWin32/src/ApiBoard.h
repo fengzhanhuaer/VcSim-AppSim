@@ -56,6 +56,13 @@ namespace spt
 		/// </summary>
 		/// <returns></returns>
 		uint32 FpgaClkPps();
+		/// <summary>
+		/// 配置帧接收状态
+		/// Bit1:配置结束帧接收成功
+		///	Bit0:配置开始帧接收成功
+		/// </summary>
+		/// <returns></returns>
+		uint32 CfgRecState();
 	private:
 
 	};

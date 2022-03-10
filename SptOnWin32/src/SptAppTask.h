@@ -38,7 +38,7 @@ namespace spt
 		/// <returns></returns>
 		uint64 PowerUpSampIntCnt();
 		/// <summary>
-		/// 上电后采样中断微妙时间戳
+		/// 上电后采样中断微秒时间戳
 		/// </summary>
 		/// <returns></returns>
 		uint64 PowerUpSampStamp();

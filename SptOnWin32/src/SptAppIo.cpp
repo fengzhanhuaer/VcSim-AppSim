@@ -214,9 +214,23 @@ uint32 spt::SptIoProcess::BoardOnLineState()
 	return 0;
 }
 
+bool8 spt::SptIoProcess::IsIoPowerUpOver()
+{
+	if (proCess)
+	{
+		return proCess->IsIoPowerUpOver();
+	}
+	return 0;
+}
+
 spt::SptIoProcess::SptIoProcess()
 {
 	proCess = 0;
+}
+
+bool8 spt::SptIedIoProcess::IsIoPowerUpOver()
+{
+	return isPowerUpOver;
 }
 
 spt::SptIedIoProcess::SptIedIoProcess()

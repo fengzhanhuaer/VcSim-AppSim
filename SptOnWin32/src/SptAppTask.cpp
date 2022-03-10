@@ -87,11 +87,14 @@ int32 spt::SptSampAppTaskScheduler::OneSampIntLoop()
 	IoInRunInfo.RunStart();
 	SptIoProcess::Instance().ProcIn();
 	IoInRunInfo.RunEnd();
-	if (powerUpSampIntCnt > 4000)
+	if (SptIoProcess::Instance().IsIoPowerUpOver())
 	{
-		appRunInfo.RunStart();
-		AppScheduler();
-		appRunInfo.RunEnd();
+		if (powerUpSampIntCnt > 4000)
+		{
+			appRunInfo.RunStart();
+			AppScheduler();
+			appRunInfo.RunEnd();
+		}
 	}
 	IoOutRunInfo.RunStart();
 	SptIoProcess::Instance().ProcOut();

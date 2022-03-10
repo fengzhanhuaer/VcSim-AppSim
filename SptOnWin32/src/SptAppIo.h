@@ -50,6 +50,7 @@ namespace spt
 		virtual uint8 GetFpagSlowFlags(uint16 Index) { return 0; };
 		virtual uint32 BoardOnLineState() { return 0; };
 		virtual void ResetSubBoardState() {};
+		bool8 IsIoPowerUpOver();
 	protected:
 		SptIedIoProcess();
 		bool8 IsRecvBoardFrameMsgOk(void* Buf, uint16 Len);
@@ -151,11 +152,11 @@ namespace spt
 		void CfgSendOver(bool8 Enable);
 		uint8 GetFpagSlowFlags(uint16 Index);
 		uint32 BoardOnLineState();
+		bool8 IsIoPowerUpOver();
 		const SptFlags& SptFlag() { return sptFlag; };
 		M_Singleton(SptIoProcess);
 	protected:
 		SptIoProcess();
-
 	protected:
 		MsTimer faceRevertStart;
 		MsTimer revertStart;

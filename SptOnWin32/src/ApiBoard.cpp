@@ -35,3 +35,8 @@ uint32 spt::ApiSmartBoardInfo::FpgaClkPps()
 {
 	return clkCntPps;
 }
+
+uint32 spt::ApiSmartBoardInfo::CfgRecState()
+{
+	return cfgState;
+}
