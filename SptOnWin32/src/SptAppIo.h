@@ -51,6 +51,7 @@ namespace spt
 		virtual uint32 BoardOnLineState() { return 0; };
 		virtual void ResetSubBoardState() {};
 	protected:
+		SptIedIoProcess();
 		bool8 IsRecvBoardFrameMsgOk(void* Buf, uint16 Len);
 		SingleStackBuf ProcInSerialBoardBuf;
 		SingleStackBuf ProcOutSerialBoardBuf;

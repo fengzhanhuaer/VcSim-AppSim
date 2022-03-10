@@ -304,7 +304,9 @@ namespace spt
 		void SetQ(uint32 Q);
 		//变位时间,发送GOOOSE如果设置了t则使用应用设置的t,如果应用未设置则使用系统时间
 		void SetStamp(SalDateStamp& stamp);
+		//设置数据
 		void SetValue(u32value Val);
+		void SetValue(uint32 Val);
 		const SalDateStamp& Stamp();
 		uint32 Q();
 		//信号强置状态，此时输入量不再以硬件为准，输出量不再以应用为准，而是调试软件强置、HMI强置

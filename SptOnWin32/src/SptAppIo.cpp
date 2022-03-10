@@ -219,6 +219,11 @@ spt::SptIoProcess::SptIoProcess()
 	proCess = 0;
 }
 
+spt::SptIedIoProcess::SptIedIoProcess()
+{
+	isPowerUpOver = 0;
+}
+
 bool8 spt::SptIedIoProcess::IsRecvBoardFrameMsgOk(void* Buf, uint16 Len)
 {
 	uint16 sum = 0;
@@ -376,6 +381,10 @@ void spt::SptGzkMuIoProcess::PowerUpIni(int Para)
 
 void spt::SptGzkMuIoProcess::RecvNorIoMsg(void* Buf, uint16 Len)
 {
+	if (!isPowerUpOver)
+	{
+		return;
+	}
 	if (Len < 16)
 	{
 		return;

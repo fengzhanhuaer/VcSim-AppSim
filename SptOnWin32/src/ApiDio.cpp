@@ -302,6 +302,7 @@ void spt::ApiGoOut::SetQ(uint32 Q)
 			SptGooseDataSetOut* out = (SptGooseDataSetOut*)virBoard;
 			out->UpdateData(node);
 		}
+		//LogMsg.Stamp() << name << " set q"  "\n";
 	}
 }
 
@@ -323,16 +324,23 @@ void spt::ApiGoOut::SetStamp(SalDateStamp& stamp)
 			SptGooseDataSetOut* out = (SptGooseDataSetOut*)virBoard;
 			out->UpdateData(node);
 		}
+		//LogMsg.Stamp() << name << " set t"  "\n";
 	}
 }
 
 void spt::ApiGoOut::SetValue(u32value Val)
 {
+	ApiGoOut::SetValue(Val.u32);
+}
+
+void spt::ApiGoOut::SetValue(uint32 Val)
+{
 	if (blsignalForce)
 	{
 		return;
 	}
-	SptGooseDataOut::GoSetValue(Val.u32);
+	SptGooseDataOut::GoSetValue(Val);
+	//LogMsg.Stamp() << name << " set value " << Val << "\n";
 }
 
 const SalDateStamp& spt::ApiGoOut::Stamp()

@@ -1393,11 +1393,7 @@ int32 spt::SptGooseDataSetOut::ProcOut()
 	{
 		return -1;
 	}
-	uint32 now = SptSampInt::Instance().Cnt32();
-	if (now == lastSendStamp)
-	{
-		return -1;
-	}
+	uint32 now = SptMsInt::Instance().MsCnt32();
 	if (!isDataUpdate)
 	{
 		uint32 delta = now - lastSendStamp;
@@ -1409,13 +1405,19 @@ int32 spt::SptGooseDataSetOut::ProcOut()
 	//流量控制，一个中断仅发送一个有效数据包
 	if (SptMain::Instance().IsHardWare(EH_GZKSAU))
 	{
-		static uint32 lastsamp;
-		uint32 nowsamp = SptSampInt::Instance().Cnt32();
-		if (nowsamp == lastsamp)
+		if (isDataUpdate)
 		{
-			return 0;
+			stNum++;
+			sqNum = 1;
+			//LogMsg.Stamp() << name << " update 1 " << stNum << sqNum << "\n";
 		}
-		lastsamp = nowsamp;
+		else
+		{
+			sqNum++;
+			//LogMsg.Stamp() << name << " update 0 " << stNum << sqNum << "\n";
+		}
+		isDataUpdate = 0;
+
 		rtSendMsg.writer = 0;
 		static uint16 num = 0;
 		rtSendMsg.Write(&num, sizeof(num));
@@ -1514,16 +1516,6 @@ void spt::SptGooseDataSetOut::UpdateFrame(uint8* buf, uint32 BufLen)
 	sendstamp.toUtcCode(sec, fra);
 	ChangeEndian(dbuf, &sec, sizeof(sec));
 	ChangeEndian(dbuf + 4, &fra, sizeof(fra));
-	if (isDataUpdate)
-	{
-		stNum++;
-		sqNum = 1;
-	}
-	else
-	{
-		sqNum++;
-	}
-	isDataUpdate = 0;
 	dbuf = buf + gocbPub->frame.stOffSet;
 	ChangeEndian(dbuf, &stNum, sizeof(stNum));
 	dbuf = buf + gocbPub->frame.sqOffSet;
