@@ -1,7 +1,7 @@
 #ifndef INSTANGIN_H
 #define INSTANGIN_H
 
-extern ApiBoardAngFrameIn   AngFrameIn[1];
+extern ApiBoardAngFrameIn   AngFrameIn;
 extern ApiBoardNormalAngIn  AngNorAngIn[CN_NUM_BOARD_SAM];
 extern ApiNormalAngIn       AngNorAngSampIn[CN_NUM_AD];
 #if(CN_DEV_CPU1)

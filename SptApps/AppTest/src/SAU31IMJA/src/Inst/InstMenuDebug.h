@@ -33,6 +33,8 @@ bool8 ClaerAlmEvent(ApiMenu* Menu);
 bool8 ClaerChkEvent(ApiMenu* Menu);
 bool8 ClaerRunEvent(ApiMenu* Menu);
 bool8 ClaerOptEvent(ApiMenu* Menu);
+bool8 ClaerPrvtSoeEvent(ApiMenu* Menu);
+bool8 ClaerPrvtOptEvent(ApiMenu* Menu);
 bool8 ClaerDiSoe(ApiMenu* Menu);
 bool8 ClaerDoSoe(ApiMenu* Menu);
 bool8 ClaerGoInSoe(ApiMenu* Menu);

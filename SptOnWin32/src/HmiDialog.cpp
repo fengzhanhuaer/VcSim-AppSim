@@ -72,7 +72,8 @@ void spt::HmiAssicInputDialog::AutoLayout()
 		text[3].SetText("0123456789{}[]\x1B");
 		text[4].SetText("ABCDEFGHIJKLMN`'");
 		text[5].SetText("OPQRSTUVWXYZ,./~");
-		maxTextLine = 6;
+		text[6].SetText("      确定      ");
+		maxTextLine = 7;
 		curse.SetRow(3);
 		curse.SetCol(6);
 	}
@@ -80,12 +81,14 @@ void spt::HmiAssicInputDialog::AutoLayout()
 	{
 		text[0].SetText("0123456789.");
 		text[1].SetText("ABCDEF\x1B");
-		maxTextLine = 2;
+		text[2].SetText("   确定    ");
+		maxTextLine = 3;
 	}
 	else if (mode == E_Number)
 	{
 		text[0].SetText("0123456789.\x1B");
-		maxTextLine = 1;
+		text[1].SetText("   确定    ");
+		maxTextLine = 2;
 	}
 	lineCount = maxTextLine + 1;
 	lineWidth = inputMaxLen;
@@ -135,9 +138,18 @@ int32 spt::HmiAssicInputDialog::ShowSelf()
 		input.SetText(str.Str());
 		input.ClearRect();
 		str.Clear();
-		str << text[curse.Row()].Text().Str()[curse.Col()];
-		curse.SetText(str.Str());
-		curse.SetPos(text[curse.Row()].Rect().x + curse.Col() * gd->FontWidth(), text[curse.Row()].Rect().y);
+		if (maxTextLine == (curse.Row() + 1))
+		{
+			str << text[curse.Row()].Text().Str();
+			curse.SetText(str.Str());
+			curse.SetRect(text[curse.Row()].Rect().x, text[curse.Row()].Rect().y, str.StrLen() * gd->FontWidth(), gd->FontHeight());
+		}
+		else
+		{
+			str << text[curse.Row()].Text().Str()[curse.Col()];
+			curse.SetText(str.Str());
+			curse.SetRect(text[curse.Row()].Rect().x + curse.Col() * gd->FontWidth(), text[curse.Row()].Rect().y, gd->FontWidth(), gd->FontHeight());
+		}
 		for (uint32 i = 0; i < maxTextLine; i++)
 		{
 			text[i].ClearRect();
@@ -168,6 +180,12 @@ int32 spt::HmiAssicInputDialog::Edit()
 				{
 					if (!virok)
 					{
+						if ((curse.Row() + 1) == maxTextLine)
+						{
+							ClearRect();
+							Update();
+							return E_OK;
+						}
 						char d = text[curse.Row()].Text().Str()[curse.Col()];
 						if ((d == '\x1B') && (inputStr.StrLen()))
 						{

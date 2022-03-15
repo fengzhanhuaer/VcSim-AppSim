@@ -15,6 +15,7 @@ $(ComSur_PATH)/IES_IMSam.cpp \
 $(ComSur_PATH)/IES_IMSrc.cpp \
 $(ComSur_PATH)/IES_IMInit.cpp \
 $(ComSur_PATH)/IES_SCLmain.cpp \
+$(ComSur_PATH)/IES_SCLother.cpp \
 #*********************************************************************************************************
 # Header file search path (eg. LOCAL_INC_PATH := -I"Your header files search path")
 #*********************************************************************************************************

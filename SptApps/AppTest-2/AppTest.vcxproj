@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{B1296DCB-0746-4EDF-98BC-012C89CB691A}</ProjectGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>AppDemo</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>AppIMJA</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\SptOnWin32\SptOnWin32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\SptOnWin32\SptOnWin32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\SptOnWin32\SptOnWin32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\SptOnWin32\SptOnWin32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)src\ComSur;$(ProjectDir)src\SAU31IMJA\src\Logic;$(ProjectDir)src\SAU31IMJA\src\InterFace;$(ProjectDir)src\SAU31IMJA\src\Inst;$(ProjectDir)src\SAU31IMJA\src\Const;$(ProjectDir)src\SAU31IMJA\src\Com;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SptOnWin32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;libcrypto.lib;libssl.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <GenerateMapFile>true</GenerateMapFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SptOnWin32;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;libcrypto.lib;libssl.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SimHal\SimHal.vcxproj">
+      <Project>{fc02abd3-7169-4a78-8d08-e01f9a8618b7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SptOnWin32\SptOnWin32.vcxproj">
+      <Project>{4c52c0a7-7c46-4aa7-8654-331f7397cc55}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ComSur\IES_IMDC.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMDI.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMDO.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMFlag.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMInit.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMPub.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMRec.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMSam.cpp" />
+    <ClCompile Include="src\ComSur\IES_IMSrc.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Com\IES_IMCom.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Com.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_DC.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Flag.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_IO.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Para.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Pub.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Rec.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Const\Const_Sam.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAngIn.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAngOut.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAppCmm.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstAppFlags.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstCheck.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstDispCfg.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstEvent.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstHmiLed.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstInterFace.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenu.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuCcdDisp.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuDebug.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuEventDisp.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuGlyMenu.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuInfoView.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuParaSet.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuPrint.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuPub.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstMenuSjyMenu.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstPara.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstResource.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstSjRecord.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstStateIn.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstStateOut.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstT860Scl.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\InstTest.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Inst\SptApp.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\InterFace\IES_IMInterFace.cpp" />
+    <ClCompile Include="src\SAU31IMJA\src\Logic\IES_IMLogic.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ComSur\IES_IMDC.h" />
+    <ClInclude Include="src\ComSur\IES_IMDI.h" />
+    <ClInclude Include="src\ComSur\IES_IMDO.h" />
+    <ClInclude Include="src\ComSur\IES_IMFlag.h" />
+    <ClInclude Include="src\ComSur\IES_IMInit.h" />
+    <ClInclude Include="src\ComSur\IES_IMPub.h" />
+    <ClInclude Include="src\ComSur\IES_IMRec.h" />
+    <ClInclude Include="src\ComSur\IES_IMSam.h" />
+    <ClInclude Include="src\ComSur\IES_IMSrc.h" />
+    <ClInclude Include="src\ComSur\IES_IMtypes.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Com\IES_IMCom.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Com.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_DC.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Flag.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_IO.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Para.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Pub.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Rec.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_Sam.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAngIn.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAngOut.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAppCmm.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstAppFlags.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstCheck.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstDispCfg.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstEvent.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstHmiLed.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstInterFace.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenu.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuCcdDisp.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuDebug.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuEventDisp.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuGlyMenu.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuInfoView.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuParaSet.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuPrint.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuPub.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstMenuSjyMenu.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstPara.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstResource.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstSjRecord.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstStateIn.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstStateOut.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Inst\InstT860Scl.h" />
+    <ClInclude Include="src\SAU31IMJA\src\InterFace\IES_IMInterFace.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Logic\IES_IMLogic.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

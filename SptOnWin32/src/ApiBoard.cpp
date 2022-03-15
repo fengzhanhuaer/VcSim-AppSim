@@ -26,9 +26,24 @@ uint32 spt::ApiSmartBoardInfo::SvRecCfgRecState(uint32 FPGAIndex)
 	return svRecCfgState;
 }
 
-uint32 spt::ApiSmartBoardInfo::GoRecCfgRecState(uint32 FPGAIndex, uint32 StateIndex)
+uint32 spt::ApiSmartBoardInfo::SvSendCfgRecState(uint32 FPGAIndex)
+{
+	return svSendCfgState;
+}
+
+uint32 spt::ApiSmartBoardInfo::GoRecParaCfgRecState(uint32 FPGAIndex, uint32 StateIndex)
 {
 	return goRecCfgState[StateIndex];
+}
+
+uint32 spt::ApiSmartBoardInfo::GoRecTypeCfgRecState(uint32 FPGAIndex, uint32 StateIndex)
+{
+	return goRecTypeCfgState[StateIndex];
+}
+
+uint32 spt::ApiSmartBoardInfo::GoRecMapCfgRecState(uint32 FPGAIndex, uint32 StateIndex)
+{
+	return goRecMapCfgState[StateIndex];
 }
 
 uint32 spt::ApiSmartBoardInfo::FpgaClkPps()

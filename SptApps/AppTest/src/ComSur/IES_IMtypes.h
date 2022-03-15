@@ -1,6 +1,6 @@
 //========================================================
 // 文件模块说明:
-// C6000数据类型定义
+// 数据类型定义
 // 文件版本: v1.00
 // 创建时间: 2011.06.01
 // Copyright(c) 2011-2011
@@ -17,10 +17,7 @@
 #include <time.h>
 #include <math.h>
 #include <stdio.h>
-#define CN_DEV_CPU1        (1)
-#define CN_DEV_CPU2        (0)
-#define CN_LEN_NAME        (64)                       // 名称长度宏定义
-#define CN_FUN_DBUG1       (0)                        // 系统测试功能临时控制
+
 //========================================================
 //========================================================
 
@@ -31,8 +28,6 @@
 	typedef unsigned  long long 		DDWORD;
 	typedef unsigned  short     		*PBOOL16;
 	
-//typedef float            			FLOAT32;不同平台float型数据编码、长度不一致，无法统一
-//有符号类型
 	typedef signed  char       			 INT8;
 	typedef short	int          		 INT16;
 	typedef int                			 INT32;

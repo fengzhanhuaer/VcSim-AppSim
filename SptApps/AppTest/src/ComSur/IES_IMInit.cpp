@@ -62,7 +62,7 @@ void IES_IMInit_PubTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_DTYPE,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_DTYPE,TRUE);
+		g_tagPub.bConstChk[EN_CFG_DTYPE]=TRUE;
 	}
 	// 配置常量表自检
 	dwErrFlg=0;
@@ -98,7 +98,7 @@ void IES_IMInit_PubTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_DTYPE+DB31,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_DTYPE,TRUE);
+		g_tagPub.bConstChk[EN_CFG_DTYPE]=TRUE;
 	}
 
 }
@@ -210,7 +210,7 @@ void IES_IMInit_SamTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_ANA,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_ANA,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_ANA]=TRUE;
 	}
 	// SVPUB常量表自检
 	dwErrFlg=0;
@@ -232,7 +232,7 @@ void IES_IMInit_SamTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_SAM_PUB,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_SAM_PUB,TRUE);
+		g_tagPub.bConstChk[EN_CFG_SAM_PUB]=TRUE;
 	}
 	// 模拟量板卡常量表自检
 	dwErrFlg=0;
@@ -270,7 +270,7 @@ void IES_IMInit_SamTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_SAM_BOARD,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_SAM_BOARD,TRUE);
+		g_tagPub.bConstChk[EN_CFG_SAM_BOARD]=TRUE;
 	}
 	// 模拟量常量表自检
 	dwErrFlg=0;
@@ -334,7 +334,7 @@ void IES_IMInit_SamTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_CAL,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_CAL,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_CAL]=TRUE;
 	}
 }
 // ============================================================================
@@ -382,7 +382,7 @@ void IES_IMInit_IOTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_DI,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_DI,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_DI]=TRUE;
 	}
 	// DI板卡常量表自检
 	dwErrFlg    =0;
@@ -449,7 +449,7 @@ void IES_IMInit_IOTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_DI_BOARD,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_DI_BOARD,TRUE);
+		g_tagPub.bConstChk[EN_CFG_DI_BOARD]=TRUE;
 	}
 
 	// DPI常量表自检
@@ -512,7 +512,7 @@ void IES_IMInit_IOTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_DPI,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_DPI,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_DPI]=TRUE;
 	}
 	// GOIN常量表自检
 	dwErrFlg    =0;
@@ -559,7 +559,7 @@ void IES_IMInit_IOTabChk(void)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_GOIN,dwErrFlg,dwErrIndex);
 		
-		G_Set_Const_Chk(EN_DTYPE_GOIN,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_GOIN]=TRUE;
 	}
 	// DO常量表自检
 	dwErrFlg    =0;
@@ -616,7 +616,7 @@ void IES_IMInit_IOTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_DO,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_DO,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_DO]=TRUE;
 	}
 	// DO板卡常量表自检
 	dwErrFlg    =0;
@@ -682,7 +682,7 @@ void IES_IMInit_IOTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_DO_BOARD,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_DO_BOARD,TRUE);
+		g_tagPub.bConstChk[EN_CFG_DO_BOARD]=TRUE;
 	}
 //  GOOUT常量表自检
 	dwErrFlg    =0;
@@ -747,7 +747,7 @@ void IES_IMInit_IOTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_GOOUT,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_GOOUT,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_GOOUT]=TRUE;
 	}
 //	LED常量表自检
 	dwErrFlg    =0;
@@ -804,7 +804,7 @@ void IES_IMInit_IOTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_LED,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_LED,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_LED]=TRUE;
 	}
 
 }
@@ -880,7 +880,7 @@ void IES_IMInit_ParaTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_PARA,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_PARA,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_PARA]=TRUE;
 	}
 	
 	// 参数分类常量表自检
@@ -938,7 +938,7 @@ void IES_IMInit_ParaTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_PARA_BOARD,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_PARA_BOARD,TRUE);
+		g_tagPub.bConstChk[EN_CFG_PARA_BOARD]=TRUE;
 	}
 }
 // ============================================================================
@@ -1006,7 +1006,7 @@ void IES_IMInit_DCTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_DC,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_DC,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_DC]=TRUE;
 	}
 
 	// 
@@ -1056,7 +1056,7 @@ void IES_IMInit_DCTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_DC_BOARD,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_DC_BOARD,TRUE);
+		g_tagPub.bConstChk[EN_CFG_DC_BOARD]=TRUE;
 	}
 }
 // ============================================================================
@@ -1149,7 +1149,7 @@ void IES_IMInit_FlagTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_FLAG,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_FLAG,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_FLAG]=TRUE;
 	}
 	// 内部标志常量表自检
 	dwErrFlg    =0;
@@ -1189,7 +1189,7 @@ void IES_IMInit_FlagTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_INTER,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_DTYPE_INTER,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_INTER]=TRUE;
 	}
 }
 // ============================================================================
@@ -1208,6 +1208,8 @@ void IES_IMInit_RecTabChk(void)
 	const tagChkTab *ptChkTab;
 	const tagRunTab *ptRunTab;	
 	const tagOptTab *ptOptTab;
+	const tagPrvtSoeTab *ptPrvtSoeTab;
+	const tagPrvtOptTab *ptPrvtOptTab;
 
 	// GOOSE命令常量表自检
 	ptActTab=&g_tActTab[0];
@@ -1307,7 +1309,7 @@ void IES_IMInit_RecTabChk(void)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_ACT,dwErrFlg,dwErrIndex);
 		
-		G_Set_Const_Chk(EN_DTYPE_ACT,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_ACT]=TRUE;
 	}
 	// 告警常量表自检
 	ptAlmTab=&g_tAlmTab[0];
@@ -1373,7 +1375,7 @@ void IES_IMInit_RecTabChk(void)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_ALM,dwErrFlg,dwErrIndex);
 		
-		G_Set_Const_Chk(EN_DTYPE_ALM,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_ALM]=TRUE;
 	}
 	// 告警常量表自检
 	ptChkTab=&g_tChkTab[0];
@@ -1432,7 +1434,7 @@ void IES_IMInit_RecTabChk(void)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_DTYPE_CHK,dwErrFlg,dwErrIndex);
 		
-		G_Set_Const_Chk(EN_DTYPE_CHK,TRUE);
+		g_tagPub.bConstChk[EN_DTYPE_CHK]=TRUE;
 	}
 	// 运行常量表自检
 	ptRunTab=&g_tRunTab[0];
@@ -1469,7 +1471,7 @@ void IES_IMInit_RecTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_RUN,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_RUN,TRUE);
+		g_tagPub.bConstChk[EN_CFG_RUN]=TRUE;
 	}
 		// 操作常量表自检
 	ptOptTab=&g_tOptTab[0];
@@ -1513,7 +1515,73 @@ void IES_IMInit_RecTabChk(void)
 	if(dwErrFlg)
 	{
 		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_OPT,dwErrFlg,dwErrIndex);
-		G_Set_Const_Chk(EN_CFG_OPT,TRUE);
+		g_tagPub.bConstChk[EN_CFG_OPT]=TRUE;
+	}
+	// 内部事项常量表自检
+	ptPrvtSoeTab=&g_tPrvtSoeTab[0];
+	dwErrFlg    =0;
+	dwErrIndex  =0;
+	if(g_NUM_PRVT_SOE!=CN_NUM_PRVT_SOE)
+	{
+		AppLog<<"内部事项常量表配置错误:g_NUM_PRVT_SOE="<<g_NUM_PRVT_SOE<<"CN_NUM_PRVT_SOE="<<CN_NUM_PRVT_SOE<<"\n";
+		dwErrFlg|=CN_CONST_CHK_NUM;
+	}
+	for(dwLoop=0;dwLoop<g_NUM_PRVT_SOE;dwLoop++)
+	{
+		if(ptPrvtSoeTab->wIndex!=dwLoop)
+		{
+			dwErrFlg|=CN_CONST_CHK_NO;
+			dwErrIndex=dwLoop;
+			
+			AppLog<<"内部事项常量表顺序配置错误:Index="<<dwLoop<<"\n";
+		}
+		if((ptPrvtSoeTab->byName[CN_LEN_NAME-1]!=0)||(ptPrvtSoeTab->byPinName[CN_LEN_NAME-1]!=0))
+		{
+			dwErrFlg|=CN_CONST_CHK_CHAR;
+			dwErrIndex=dwLoop;
+			
+			AppLog<<"内部事项常量表名称长度越限:Index="<<dwLoop<<"\n";
+		}
+		//短地址哈希计算结果自检(略)
+		ptPrvtSoeTab++;
+	}
+	if(dwErrFlg)
+	{
+		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_PRVT_SOE,dwErrFlg,dwErrIndex);
+		g_tagPub.bConstChk[EN_CFG_PRVT_SOE]=TRUE;
+	}
+	// 内部操作常量表自检
+	ptPrvtOptTab=&g_tPrvtOptTab[0];
+	dwErrFlg    =0;
+	dwErrIndex  =0;
+	if(g_NUM_PRVT_OPT!=CN_NUM_PRVT_OPT)
+	{
+		AppLog<<"内部操作常量表配置错误:g_NUM_PRVT_OPT="<<g_NUM_PRVT_OPT<<"CN_NUM_PRVT_OPT="<<CN_NUM_PRVT_OPT<<"\n";
+		dwErrFlg|=CN_CONST_CHK_NUM;
+	}
+	for(dwLoop=0;dwLoop<g_NUM_PRVT_OPT;dwLoop++)
+	{
+		if(ptPrvtOptTab->wIndex!=dwLoop)
+		{
+			dwErrFlg|=CN_CONST_CHK_NO;
+			dwErrIndex=dwLoop;
+			
+			AppLog<<"内部操作常量表顺序配置错误:Index="<<dwLoop<<"\n";
+		}
+		if((ptPrvtOptTab->byName[CN_LEN_NAME-1]!=0)||(ptPrvtOptTab->byPinName[CN_LEN_NAME-1]!=0))
+		{
+			dwErrFlg|=CN_CONST_CHK_CHAR;
+			dwErrIndex=dwLoop;
+			
+			AppLog<<"内部操作常量表名称长度越限:Index="<<dwLoop<<"\n";
+		}
+		//短地址哈希计算结果自检(略)
+		ptPrvtOptTab++;
+	}
+	if(dwErrFlg)
+	{
+		G_Set_ChkIn_All(EN_CHK_CONST,EN_CFG_PRVT_OPT,dwErrFlg,dwErrIndex);
+		g_tagPub.bConstChk[EN_CFG_PRVT_OPT]=TRUE;
 	}
 }
 // ============================================================================
@@ -1550,14 +1618,27 @@ void IES_IMInit_RealData(void)
 	IES_memset(&g_tagPub,    0x0,sizeof(g_tagPub));
 	IES_memset(g_bFlag,      0x0,sizeof(g_bFlag));
 	IES_memset(g_iInter,     0x0,sizeof(g_iInter));
-	IES_memset(g_tActQueue,  0x0,sizeof(g_tActQueue));
 	IES_memset(&g_tActState, 0x0,sizeof(g_tActState));
 	IES_memset(&g_tAlmState, 0x0,sizeof(g_tAlmState));
 	IES_memset(&g_tChkState, 0x0,sizeof(g_tChkState));
+
+    IES_memset(&g_tActQueue,  0x0,sizeof(g_tActQueue));
+    IES_memset(&g_tAlmQueue,  0x0,sizeof(g_tAlmQueue));
+    IES_memset(&g_tChkQueue,  0x0,sizeof(g_tChkQueue));
+
+    IES_memset(&g_tDiQueue,   0x0,sizeof(g_tDiQueue));
+    IES_memset(&g_tDpiQueue,  0x0,sizeof(g_tDpiQueue));
+    IES_memset(&g_tDoQueue,   0x0,sizeof(g_tDoQueue));
+    IES_memset(&g_tGoInQueue, 0x0,sizeof(g_tGoInQueue));
+    IES_memset(&g_tGoOutQueue,0x0,sizeof(g_tGoOutQueue));
+    IES_memset(&g_tLedQueue,  0x0,sizeof(g_tLedQueue));
 // 扫描点初始化
 	IES_RamScanAdd(&g_tDevInfor.byRamScan1);
 	IES_RamScanAdd(&g_tDevInfor.byRamScan2);
 	IES_RamScanAdd(&g_tDevInfor.byRamScan3);
+	IES_RamScanAdd(&g_tDevInfor.byRamScan4);
+	IES_RamScanAdd(&g_tDevInfor.byRamScan5);
+	IES_RamScanAdd(&g_tDevInfor.byRamScan6);
 	
 	IES_RamScanAdd(&g_tagAna.byRamScan1);
 	IES_RamScanAdd(&g_tagAna.byRamScan2);
@@ -1658,6 +1739,7 @@ void IES_IMInit_RealData(void)
 	IES_RamScanAdd(&g_tagPara.byRamScan7);
 	IES_RamScanAdd(&g_tagPara.byRamScan8);
 	IES_RamScanAdd(&g_tagPara.byRamScan9);
+	IES_RamScanAdd(&g_tagPara.byRamScan10);
 	
 	IES_RamScanAdd(&g_tagRamScan.byRamScan1);
 	IES_RamScanAdd(&g_tagRamScan.byRamScan2);
@@ -1673,6 +1755,7 @@ void IES_IMInit_RealData(void)
 	IES_RamScanAdd(&g_tActState.byRamScan2);
 	IES_RamScanAdd(&g_tActState.byRamScan3);
 	IES_RamScanAdd(&g_tActState.byRamScan4);
+	IES_RamScanAdd(&g_tActState.byRamScan5);
 
 	IES_RamScanAdd(&g_tAlmState.byRamScan1);
 	IES_RamScanAdd(&g_tAlmState.byRamScan2);
@@ -1687,5 +1770,43 @@ void IES_IMInit_RealData(void)
 	IES_RamScanAdd(&g_tChkState.byRamScan5);
 	IES_RamScanAdd(&g_tChkState.byRamScan6);
 	IES_RamScanAdd(&g_tChkState.byRamScan7);
+	
+	IES_RamScanAdd(&g_tActQueue.byRamScan1);
+	IES_RamScanAdd(&g_tActQueue.byRamScan2);
+	IES_RamScanAdd(&g_tActQueue.byRamScan3);
+	IES_RamScanAdd(&g_tActQueue.byRamScan4);
+	IES_RamScanAdd(&g_tActQueue.byRamScan5);
+	
+	IES_RamScanAdd(&g_tAlmQueue.byRamScan1);
+	IES_RamScanAdd(&g_tAlmQueue.byRamScan2);
+	IES_RamScanAdd(&g_tAlmQueue.byRamScan3);
+	
+	IES_RamScanAdd(&g_tChkQueue.byRamScan1);
+	IES_RamScanAdd(&g_tChkQueue.byRamScan2);
+	IES_RamScanAdd(&g_tChkQueue.byRamScan3);
+
+	IES_RamScanAdd(&g_tDiQueue.byRamScan1);
+	IES_RamScanAdd(&g_tDiQueue.byRamScan2);
+	IES_RamScanAdd(&g_tDiQueue.byRamScan3);
+
+	IES_RamScanAdd(&g_tDpiQueue.byRamScan1);
+	IES_RamScanAdd(&g_tDpiQueue.byRamScan2);
+	IES_RamScanAdd(&g_tDpiQueue.byRamScan3);
+
+	IES_RamScanAdd(&g_tDoQueue.byRamScan1);
+	IES_RamScanAdd(&g_tDoQueue.byRamScan2);
+	IES_RamScanAdd(&g_tDoQueue.byRamScan3);
+	
+	IES_RamScanAdd(&g_tGoInQueue.byRamScan1);
+	IES_RamScanAdd(&g_tGoInQueue.byRamScan2);
+	IES_RamScanAdd(&g_tGoInQueue.byRamScan3);
+
+	IES_RamScanAdd(&g_tGoOutQueue.byRamScan1);
+	IES_RamScanAdd(&g_tGoOutQueue.byRamScan2);
+	IES_RamScanAdd(&g_tGoOutQueue.byRamScan3);
+
+	IES_RamScanAdd(&g_tLedQueue.byRamScan1);
+	IES_RamScanAdd(&g_tLedQueue.byRamScan2);
+	IES_RamScanAdd(&g_tLedQueue.byRamScan3);
 }
 

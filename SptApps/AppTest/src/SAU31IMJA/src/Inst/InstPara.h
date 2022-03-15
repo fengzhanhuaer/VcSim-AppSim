@@ -10,5 +10,6 @@ void AppParaPowerUpIni();
 void AppParaInRef();
 bool8 AppParaCoeEditUpdate(SalParaEditGroup* EditParaGroup,WORD wIndexStr,WORD wIndexEnd,WORD wIndexGroup,BOOL*pbChn);
 INT32 AppParaDefault(WORD wIndex);
+void  AppEthNetParaRef();
 #endif // !INSTPARA_H
 

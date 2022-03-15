@@ -296,5 +296,8 @@
     <ClInclude Include="src\SAU31IMJA\src\Inst\InstCheck.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_VerSion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

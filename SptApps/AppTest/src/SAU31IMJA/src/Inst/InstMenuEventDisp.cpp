@@ -10,7 +10,9 @@ int32 UpdateEventHmiTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage
 	{
 		page = TotalPage - i - 1;
 		str.Clear();
+		str<<"  ["<<i<<"]  ";
 		record = &HmiViewEventPool.record[page];
+		LogMsg<<"Num"<<i<<""<<record->typeId<<" "<<record->boardId<<" "<<record->eventId<<" "<<record->q.u32<<"\n";
 		record->toLcdStr(str, 40);
 		Wnd.SetPage(i, str.Str());
 	}
@@ -23,9 +25,9 @@ bool8 DispEvent(ApiMenu* Menu, SalEventGroup* Group)
 	dateEnd.Now();
 	dateStart.Set(dateEnd.Us() - SalDateStamp::Dt1Day);
 	ApiHmiDateEditDialog dig("开始时间", dateStart);
-	int32 res = dig.Show();
+	int32 res=dig.Show();
 	// 按键“ESC”可以查看所有事项
-	if (res == -1)
+	if(res==-1)
 	{
 		HmiViewEventPool.GetValid(Group, 0x0, (uint64)0xffffffffffffffff, 1);
 	}
@@ -109,4 +111,13 @@ bool8 DispDpiEvent(ApiMenu* Menu)
 	DispEvent(Menu, (SalEventGroup*)&AppEventDpiSoeGroup);
 	return 1;
 }
-
+bool8 DispPrvtSoeEvent(ApiMenu* Menu)
+{
+	DispEvent(Menu, (SalEventGroup*)&AppEventPrvtSoeGroup);
+	return 1;
+}
+bool8 DispPrvtOptEvent(ApiMenu* Menu)
+{
+	DispEvent(Menu, (SalEventGroup*)&AppEventPrvtOptGroup);
+	return 1;
+}

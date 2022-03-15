@@ -1,7 +1,4 @@
 #include"InstResource.h"
-
-uint16 wPageTemp;
-
 #if(CN_DEV_CPU1)
 int32 UpdateCcdSvSubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage, HmiKey key)
 {
@@ -40,7 +37,7 @@ int32 UpdateCcdSvSubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage
 	str << "\n";
 	str <<"cbRef:"<<pSVcbInfo->control.cbRef<<"\n";
 	str <<"smvID:"<<pSVcbInfo->control.smvID<<"\n";
-	str <<"datSetRef:"<<pSVcbInfo->control.datSetRef<<"\n";
+	str <<"datSet:"<<pSVcbInfo->control.datSetRef<<"\n";
 	str <<"通信状态字:";
 	str.FormatHex(g_tagAna.dwSvCbStatus[Page]);
 	str <<"\n";
@@ -88,6 +85,7 @@ int32 UpdateCcdSvPubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage,
 	DWORD      *pdwAnaQ;
 	tagVector  *ptAnaVectFst;
 	
+	g_iInter[EN_INTER_OPT_ANA]=FALSE;
 	pdwAnaQ      =&g_tagAna.dwAnaQ[0];
 	ptAnaVectFst =&g_tagAna.tAnaVectFst[0];
 	pwSvPubSend  =&g_tagAna.wSvPubSend[0];
@@ -95,7 +93,7 @@ int32 UpdateCcdSvPubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage,
 	String500B str;
 	uint32 pageEnd = Min(TotalPage, Page + 11);
 	// 展示额定延时通道
-	if(G_Get_Inter(EN_INTER_SVPUB_DLY))
+	if(g_iInter[EN_INTER_SVPUB_DLY])
 	{
 		j=0;
 	}
@@ -107,10 +105,10 @@ int32 UpdateCcdSvPubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage,
 	str.Clear();
 	str.Format("序号"   ,    5  ,1,' ');
 	str.Format("名称"   ,    20 ,1,' ');
-	str.Format("一次值" ,    8  ,1,' ');	
-	str.Format("相位"   ,    8  ,1,' ');
-	str.Format("品质"   ,    6  ,1,' ');
-	str.Format("极性"   ,    6  ,1,' ');
+	str.Format("一次值" ,    10 ,0,' ');
+	str.Format("相位"   ,    8  ,0,' ');
+	str.Format("品质"   ,    6  ,0,' ');
+	str.Format("极性"   ,    6  ,0,' ');
 	str<<"\n";
 	for (i = Page; i < pageEnd; i++)
 	{
@@ -120,23 +118,23 @@ int32 UpdateCcdSvPubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage,
 		{
 			str.Format("额定延时",20,1,' ');
 			#if(CN_DEV_CPU1)
-				if(G_Get_Inter(EN_INTER_SVSUB_NOPUB))
+				if(g_iInter[EN_INTER_SVSUB_NOPUB])
 				{
-					str<<CN_SVPUB_TIME;
+					str.Format(CN_SVPUB_TIME, 10, 0,0, ' ');
 				}
 				else
 				{
-					str<<CN_SVPUB_TIME_LINK;
+					str.Format(CN_SVPUB_TIME_LINK, 10, 0,0, ' ');
 				}
 			#endif
 			#if(CN_DEV_CPU2)
-				if(!G_Get_Inter(EN_INTER_SVPUB_SUB))
+				if(!g_iInter[EN_INTER_SVPUB_SUB])
 				{
-					str<<CN_SVPUB_TIME;
+					str.Format(CN_SVPUB_TIME, 10, 0,0, ' ');
 				}
 				else
 				{
-					str<<CN_SVPUB_TIME_LINK;
+					str.Format(CN_SVPUB_TIME_LINK, 10, 0,0, ' ');
 				}
 			#endif
 		}
@@ -164,18 +162,19 @@ int32 UpdateCcdSvPubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage,
 				else if(wIndex1<CN_NUM_ANA)
 				{
 					str.Format(g_tAnaTab[wIndex1].byName,20,1,' ');
-					str.Format(ptAnaVectFst[wIndex1].dwAm, 8, 3,1, ' ');
-					str.Format(ptAnaVectFst[wIndex1].dwAngleRel, 8, 3,1, ' ');
+					str.Format(ptAnaVectFst[wIndex1].dwAm, 10, 0,0, ' ');
+					str.Format(ptAnaVectFst[wIndex1].dwAngleRel, 8, 3,0, ' ');
+					str<<"  ";
 					str.FormatHex((UINT16)pdwAnaQ[wIndex1]);
 				}
 				// 极性
 				if(bPol)
 				{
-					str.Format("   -",6,1,' ');
+					str.Format("  -",6,0,' ');
 				}
 				else
 				{
-					str.Format("   +",6,1,' ');
+					str.Format("  +",6,0,' ');
 				}
 			}
 		}
@@ -183,6 +182,7 @@ int32 UpdateCcdSvPubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage,
 		Wnd.SetPage(i, str.Str());
 		str.Clear();
 	}
+	g_iInter[EN_INTER_OPT_ANA]=TRUE;
 	return 0;
 }
 
@@ -201,9 +201,11 @@ int32 UpdateCcdSvPubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage
 	// 进入详细信息
 	if ((key.Key1 == EK1_ASSIC) && (key.Key2 == ' '))
 	{	
+		g_iInter[EN_INTER_OPT_ANA]=TRUE;
 		ApiHmiTextWnd wnd1(HmiTextWnd::E_ScrollPage, UpdateCcdSvPubDatWnd);
 		wnd1.SetTitle("DatSet", pSVcbInfo->dataElementNum);
 		wnd1.Show();
+		g_iInter[EN_INTER_OPT_ANA]=FALSE;
 	}
 	uint8* pbyMac;
 	uint8  byCard = CN_BOARD_CPU;
@@ -229,7 +231,7 @@ int32 UpdateCcdSvPubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage
 	str << "\n";
 	str << "cbRef:" << pSVcbInfo->control.cbRef << "\n";
 	str << "smvID:" << pSVcbInfo->control.smvID << "\n";
-	str << "datSetRef:" << pSVcbInfo->control.datSetRef << "\n";
+	str << "datSet:" << pSVcbInfo->control.datSetRef << "\n";
 	str << "发布端口:"; 
 	if (pSVcbInfo->connect.PortEnableNum <=sizeof(pSVcbInfo->connect.Card_Port))
 	{
@@ -250,6 +252,7 @@ int32 UpdateCcdSvPubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage
 		}
 	}
 	Wnd.SetPage(Page, str.Str());
+	Wnd.SetReDraw(1);
 	return 0;
 }
 
@@ -299,7 +302,7 @@ int32 UpdateCcdGooseSubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalP
 	str << "\n";
 	str << "cbRef:" << pGoCbInfo->control.cbRef << "\n";
 	str << "appID:" << pGoCbInfo->control.appID << "\n";
-	str << "datSetRef:" << pGoCbInfo->control.datSetRef << "\n";
+	str << "datSet:" << pGoCbInfo->control.datSetRef << "\n";
 	uint8 i = 0,j=0,byBnEna=FALSE;
 	// 判断B网有没有使能
 	if(pGoCbInfo->connect.PortEnableNum<=sizeof(pGoCbInfo->connect.BPortEnable))
@@ -319,6 +322,7 @@ int32 UpdateCcdGooseSubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalP
 		str << "\n";
 		str << "B网通信状态字:";
 		str.FormatHex(g_tagIO.dwGoInStatusB[Page]);
+		str << "\n";
 		if (pGoCbInfo->connect.PortEnableNum <=sizeof(pGoCbInfo->connect.ACard_Port))
 		{
 			str << "A网订阅端口:";
@@ -337,6 +341,7 @@ int32 UpdateCcdGooseSubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalP
 					if (j++ >= 7){j = 0;str << "\n";}
 				}
 			}
+			str << "\n";
 			str << "B网订阅端口:";
 			for (i = 0,j=0;i <pGoCbInfo->connect.PortEnableNum;i++)
 			{
@@ -396,6 +401,7 @@ bool8 DispCcdGooseSub(ApiMenu* Menu)
 	wnd.Show();
 	return 1;
 }
+uint16 wPageTemp;
 int32 UpdateCcdGoosePubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPage, HmiKey key)
 {
 	if (wPageTemp >= CN_NUM_GOCB_PUB)
@@ -408,6 +414,7 @@ int32 UpdateCcdGoosePubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPa
 	SptGooseFrameOut* input = (SptGooseFrameOut*)(&GoOutFrame[0]);
 	HalIoCell* cell;
 	SptGooseDataOut* scell;
+	FLOAT32 *pfDcTemp=NULL;
 	str.Clear();
 	str.Format("序号"   ,    6  ,1,' ');
 	str.Format("名称"   ,    20 ,1,' ');
@@ -452,7 +459,8 @@ int32 UpdateCcdGoosePubDatWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalPa
 						break;
 					case spt::GoSvDataType::E_GOSV_FLOAT32:
 						str.Format("浮点"  ,    5  ,1,' ');
-						str.Format(scell->Value().value.i32,3);
+						pfDcTemp=(FLOAT32*)(&scell->Value().value.u32);
+						str.Format((INT32)(*pfDcTemp*1000),3);
 						break;
 					case spt::GoSvDataType::E_GOSV_TIMSSTAMP:
 						str.Format("时标"  ,    5  ,1,' ');
@@ -507,7 +515,7 @@ int32 UpdateCcdGoosePubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalP
 	str << "\n";
 	str << "cbRef:" << pGoCbInfo->control.cbRef << "\n";
 	str << "appID:" << pGoCbInfo->control.appID << "\n";
-	str << "datSetRef:" << pGoCbInfo->control.datSetRef << "\n";
+	str << "datSet:" << pGoCbInfo->control.datSetRef << "\n";
 	str << "发布端口:";
 	if (pGoCbInfo->connect.PortEnableNum<=sizeof(pGoCbInfo->connect.ACard_Port))
 	{
@@ -527,7 +535,7 @@ int32 UpdateCcdGoosePubTextWnd(class HmiTextWnd& Wnd, uint16 Page, uint16 TotalP
 		}
 	}
 	Wnd.SetPage(Page, str.Str());
-	
+	Wnd.SetReDraw(1);
 	return 0;
 }
 

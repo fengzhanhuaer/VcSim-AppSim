@@ -1,7 +1,6 @@
 #ifndef _CONST_REC_H_
 #define _CONST_REC_H_
 
-#include "IES_IMtypes.h"
 /*================================================================================*/
 //GOOSE命令信号枚举
 /*================================================================================*/
@@ -13,7 +12,7 @@ enum _TYPE_REC_ACT_
 	EN_ACT_BHYT,
 	EN_ACT_CKTZ,
 	EN_ACT_CKHZ,
-	EN_ACT_SHTQ,
+	EN_ACT_JBS_XCBR,
 	EN_ACT_BZTTZ,
 	EN_ACT_BZTHZ,
 	EN_ACT_CLS_XSWI01,
@@ -127,7 +126,6 @@ enum _TYPE_REC_ALM_
 	EN_ALM_GOCB11_TEST,                      // GOCB11检修不一致
 	EN_ALM_GOCB12_TEST,                      // GOCB12检修不一致
 	EN_ALM_GOCB_TEST_END,                    // GOCB检修不一致结束
-#if(!CN_FUN_DBUG1)
 	EN_ALM_GOCB_STORM_STR=EN_ALM_GOCB_TEST_END,// GOCB网络风暴
 	EN_ALM_GOCB01_STORM=EN_ALM_GOCB_STORM_STR,// GOCB01网络风暴
 	EN_ALM_GOCB02_STORM,                     // GOCB02网络风暴
@@ -143,9 +141,6 @@ enum _TYPE_REC_ALM_
 	EN_ALM_GOCB12_STORM,                     // GOCB12网络风暴
 	EN_ALM_GOCB_STORM_END,                   // GOCB检修不一致结束
 	EN_ALM_CCD_SVSUB=EN_ALM_GOCB_STORM_END,
-#else
-	EN_ALM_CCD_SVSUB=EN_ALM_GOCB_TEST_END,
-#endif
 	EN_ALM_CCD_SVPUB,
 	EN_ALM_CCD_GOSUB,
 	EN_ALM_CCD_GOPUB,
@@ -170,7 +165,9 @@ enum _TYPE_REC_CHK_
 // 装置全局自检(闭锁装置全部功能)
 	EN_CHK_STR=0,               // 自检开始
 	EN_CHK_CONST=EN_CHK_STR,
-	EN_CHK_RAMERR,
+	EN_CHK_RAM_ERR,
+	EN_CHK_RAM_ALLOC,
+	EN_CHK_RAM_CHK,
 	EN_CHK_CCD_NO,
 	EN_CHK_CCD_ERR,
 	EN_CHK_CCD_PARALOSE,
@@ -194,14 +191,26 @@ enum _TYPE_REC_CHK_
 	EN_CHK_DO2_RTN1=EN_CHK_DO_RTN1_STR+EN_BOARD_DO2,
 	EN_CHK_DIO_RTN1=EN_CHK_DO_RTN1_STR+EN_BOARD_DO3,
 // DO下行通道自检(不闭锁)
-	EN_CHK_BOARD_DO_CHN1_STR=EN_CHK_DO_RTN1_STR+CN_NUM_BOARD_DO_RTN,
-	EN_CHK_BOARD_DO1_CHN1=EN_CHK_BOARD_DO_CHN1_STR+EN_BOARD_DO1,
-	EN_CHK_BOARD_DO2_CHN1=EN_CHK_BOARD_DO_CHN1_STR+EN_BOARD_DO2,
-	EN_CHK_BOARD_DIO_CHN1=EN_CHK_BOARD_DO_CHN1_STR+EN_BOARD_DO3,
-	EN_CHK_BOARD_DO_CHN2_STR=EN_CHK_BOARD_DO_CHN1_STR+CN_NUM_BOARD_DO_RTN,
-	EN_CHK_BOARD_DO1_CHN2=EN_CHK_BOARD_DO_CHN2_STR+EN_BOARD_DO1,
-	EN_CHK_BOARD_DO2_CHN2=EN_CHK_BOARD_DO_CHN2_STR+EN_BOARD_DO2,
-	EN_CHK_BOARD_DIO_CHN2=EN_CHK_BOARD_DO_CHN2_STR+EN_BOARD_DO3,
+	//EN_CHK_BOARD_DO_CHN1_STR=EN_CHK_DO_RTN1_STR+CN_NUM_BOARD_DO_RTN,
+	//EN_CHK_BOARD_DO1_CHN1=EN_CHK_BOARD_DO_CHN1_STR+EN_BOARD_DO1,
+	//EN_CHK_BOARD_DO2_CHN1=EN_CHK_BOARD_DO_CHN1_STR+EN_BOARD_DO2,
+	//EN_CHK_BOARD_DIO_CHN1=EN_CHK_BOARD_DO_CHN1_STR+EN_BOARD_DO3,
+	//EN_CHK_BOARD_DO_CHN2_STR=EN_CHK_BOARD_DO_CHN1_STR+CN_NUM_BOARD_DO_RTN,
+	//EN_CHK_BOARD_DO1_CHN2=EN_CHK_BOARD_DO_CHN2_STR+EN_BOARD_DO1,
+	//EN_CHK_BOARD_DO2_CHN2=EN_CHK_BOARD_DO_CHN2_STR+EN_BOARD_DO2,
+	//EN_CHK_BOARD_DIO_CHN2=EN_CHK_BOARD_DO_CHN2_STR+EN_BOARD_DO3,
+	//EN_CHK_BOARD_DO_POW24_STR=EN_CHK_BOARD_DO_CHN2_STR+CN_NUM_BOARD_DO_RTN,
+	//EN_CHK_BOARD_DO1_POW24=EN_CHK_BOARD_DO_POW24_STR+EN_BOARD_DO1,
+	//EN_CHK_BOARD_DO2_POW24=EN_CHK_BOARD_DO_POW24_STR+EN_BOARD_DO2,
+	//EN_CHK_BOARD_DIO_POW24=EN_CHK_BOARD_DO_POW24_STR+EN_BOARD_DO3,
+	EN_CHK_BOARD_DO_POW30_STR=EN_CHK_DO_RTN1_STR+CN_NUM_BOARD_DO_RTN,
+	EN_CHK_BOARD_DO1_POW30=EN_CHK_BOARD_DO_POW30_STR+EN_BOARD_DO1,
+	EN_CHK_BOARD_DO2_POW30=EN_CHK_BOARD_DO_POW30_STR+EN_BOARD_DO2,
+	EN_CHK_BOARD_DIO_POW30=EN_CHK_BOARD_DO_POW30_STR+EN_BOARD_DO3,
+	//EN_CHK_BOARD_DO_PARA_STR=EN_CHK_BOARD_DO_POW30_STR+CN_NUM_BOARD_DO_RTN,
+	//EN_CHK_BOARD_DO1_PARA=EN_CHK_BOARD_DO_PARA_STR+EN_BOARD_DO1,
+	//EN_CHK_BOARD_DO2_PARA=EN_CHK_BOARD_DO_PARA_STR+EN_BOARD_DO2,
+	//EN_CHK_BOARD_DIO_PARA=EN_CHK_BOARD_DO_PARA_STR+EN_BOARD_DO3,
 // 参数自检(闭锁对应功能)
 	EN_CHK_PARA_STR,
 	EN_CHK_PARA_DI       =EN_CHK_PARA_STR+EN_BOARD_PARA_DI,
@@ -221,9 +230,11 @@ enum _TYPE_REC_CHK_
 	EN_CHK_BOARD_DI3      =EN_CHK_BOARD_DI_STR+EN_BOARD_DI3,
 	EN_CHK_BOARD_DIO_DI   =EN_CHK_BOARD_DI_STR+EN_BOARD_DI4,
 	EN_CHK_BOARD_OPB1     =EN_CHK_BOARD_DI_STR+EN_BOARD_DI5,
-	EN_CHK_BOARD_DO1      =EN_CHK_BOARD_DI_STR+EN_BOARD_DI6,
-	EN_CHK_BOARD_DO2      =EN_CHK_BOARD_DI_STR+EN_BOARD_DI7,
-	EN_CHK_BOARD_DIO_DO   =EN_CHK_BOARD_DI_STR+EN_BOARD_DI8,
+	
+	EN_CHK_BOARD_DO_STR   =EN_CHK_BOARD_DI_STR+EN_BOARD_DI_DO_STR,// 
+	EN_CHK_BOARD_DO1      =EN_CHK_BOARD_DO_STR+EN_BOARD_DO1,
+	EN_CHK_BOARD_DO2      =EN_CHK_BOARD_DO_STR+EN_BOARD_DO2,
+	EN_CHK_BOARD_DIO_DO   =EN_CHK_BOARD_DO_STR+EN_BOARD_DO3,
 	EN_CHK_BOARD_DI_END   =EN_CHK_BOARD_DI_STR+EN_BOARD_DI_END,
 	EN_CHK_BOARD_DC_STR   =EN_CHK_BOARD_DI_END,
 	EN_CHK_BOARD_DC_SAM   =EN_CHK_BOARD_DC_STR+EN_BOARD_DC_SAM,
@@ -303,16 +314,8 @@ enum _TYPE_RUN_OPT_
 enum _TYPE_REC_OPT_
 {
 	EN_OPT_STR=0,                   // 操作信号开始
-	EN_OPT_DEV_LINK=EN_OPT_STR,     // 调试工具连接成功
-	EN_OPT_DEV_BREAK,               // 调试工具连接中断
-	EN_OPT_DATA_R_SUCC,             // 召唤数据成功
-	EN_OPT_DATA_R_FAIL,             // 召唤数据失败
-	EN_OPT_FILE_UP_SUCC,            // 文件上传成功
-	EN_OPT_FILE_UP_FAIL,            // 文件上传失败
-	EN_OPT_FILE_DN_SUCC,            // 文件下载成功
-	EN_OPT_FILE_DN_FAIL,            // 文件下载失败
 	// 参数相关操作
-	EN_OPT_PARA_W_SUCC_STR,
+	EN_OPT_PARA_W_SUCC_STR=EN_OPT_STR,
 	EN_OPT_PARA_W_SUCC_END=EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_END,
 	EN_OPT_PARA_W_FAIL_STR=EN_OPT_PARA_W_SUCC_END,
 	EN_OPT_PARA_W_FAIL_END=EN_OPT_PARA_W_FAIL_STR+EN_BOARD_PARA_END,
@@ -330,23 +333,6 @@ enum _TYPE_REC_OPT_
 	EN_OPT_ADJ_ANG_FAIL,            // 交流量相位校准失败
 	EN_OPT_ADJ_DC_SUCC,             // 直流量自动校准成功
 	EN_OPT_ADJ_DC_FAIL,             // 直流量自动校准失败
-	
-	EN_OPT_FLASH_BAK_SUCC,          // 参数备份成功
-	EN_OPT_FLASH_BAK_FAIL,          // 参数备份失败
-	EN_OPT_PARA_REST_SUCC,          // 参数还原成功
-	EN_OPT_PARA_REST_FAIL,          // 参数还原失败
-
-	EN_OPT_UPDATE_BOOT0_SUCC,       // BOOT0升级成功
-	EN_OPT_UPDATE_BOOT0_FAIL,       // BOOT0升级失败
-	EN_OPT_UPDATE_UBOOT_SUCC,       // UBOOT升级成功
-	EN_OPT_UPDATE_UBOOT_FAIL,       // UBOOT升级失败
-	EN_OPT_UPDATE_SYSTEM_SUCC,      // SYSTEM升级成功
-	EN_OPT_UPDATE_SYSTEM_FAIL,      // SYSTEM升级失败
-	EN_OPT_UPDATE_FPGA1_SUCC,       // FPGA1升级成功
-	EN_OPT_UPDATE_FPGA1_FAIL,       // FPGA1升级失败
-	EN_OPT_UPDATE_FPGA2_SUCC,       // FPGA2升级成功
-	EN_OPT_UPDATE_FPGA2_FAIL,       // FPGA2升级失败
-	
 	// 界面调试
 	EN_OPT_DEBUG_IN,                // 装置调试态进入
 	EN_OPT_DEBUG_OUT,               // 装置调试态退出
@@ -358,25 +344,9 @@ enum _TYPE_REC_OPT_
 	EN_OPT_DEBUG_GO_S,              // GOOSE通信单点调试
 	EN_OPT_DEBUG_GO_Dp,             // GOOSE通信双点调试
 	EN_OPT_DEBUG_GO_DC,             // GOOSE置数调试
-	
-//	EN_OPT_DO_BLOCK,                // 硬出口闭锁
-//	EN_OPT_DO_UNLOCK,               // 硬出口解锁
-//	EN_OPT_DEV_BLOCK,               // 装置总闭锁
-//	EN_OPT_DEV_UNLOCK,              // 装置总解锁
-//	EN_OPT_CHK_BLOCK,               // 自检异常闭锁
-//	EN_OPT_CHK_UNLOCK,              // 自检异常恢复
-//	EN_OPT_USR_LOGIN_SUCC,          // 用户登录成功
-//	EN_OPT_USR_LOGIN_FAIL,          // 用户登录失败
-//	EN_OPT_USR_ADD_SUCC,            // 添加用户成功
-//	EN_OPT_USR_ADD_FAIL,            // 添加用户失败
-//	EN_OPT_USR_CODE_SUCC,           // 用户密码修改成功
-//	EN_OPT_USR_CODE_FAIL,           // 用户密码修改失败
-	EN_OPT_EVENT_ALL_DEl,           // 清除所有事项
 	EN_OPT_ACT_DEl,                 // 清除GOOSE命令事项
 	EN_OPT_ALM_DEl,                 // 清除告警事项
 	EN_OPT_CHK_DEl,                 // 清除自检事项
-	EN_OPT_RUN_DEl,                 // 清除运行事项
-	EN_OPT_OPT_DEl, 				// 清除操作事项
 	EN_OPT_DI_SOE_DEl,              // 清除硬开入SOE事项
 	EN_OPT_DO_SOE_DEl,              // 清除硬开出SOE事项
 	EN_OPT_GOIN_SOE_DEl,            // 清除硬GOOSE开入SOE事项
@@ -384,17 +354,8 @@ enum _TYPE_REC_OPT_
 	EN_OPT_LED_SOE_DEl,             // 清除硬指示灯SOE事项
 	EN_OPT_DPI_SOE_DEl,             // 清除双点遥信SOE事项
 	EN_OPT_FLAG_SOE_DEl,            // 清除虚遥信SOE事项
-//	EN_OPT_WAVE_DEl,                // 清除录波
-//	EN_OPT_RESET,                   // CPU复位
-//	EN_OPT_FUN_RESET,               // 装置复归
 	EN_OPT_TIME_W_SUCC,             // 时钟修改成功
 	EN_OPT_TIME_W_FAIL,             // 时钟修改失败
-	
-	EN_OPT_ETH_W_SUCC,             // 网络参数修改成功
-	EN_OPT_ETH_W_FAIL,             // 网络参数修改失败
-	
-//	EN_OPT_WAVE_SUCC,               // 录波生成成功
-//	EN_OPT_WAVE_FAIL,               // 录波生成失败
 	EN_OPT_BAK01,
 	EN_OPT_BAK02,
 	EN_OPT_BAK03,
@@ -407,6 +368,46 @@ enum _TYPE_REC_OPT_
 	EN_OPT_BAK10,
 	EN_OPT_END,                     // 操作信号结束
 };
+enum _TYPE_REC_PRVT_
+{
+	
+	EN_PRVT_SOE_STR=0,                     // 内部事项信号开始
+	EN_PRVT_SOE_BAK0=EN_PRVT_SOE_STR,      // 内部事项信号备用
+	EN_PRVT_SOE_END,                       // 内部事项信号结束
+	
+	EN_PRVT_OPT_STR=0,                     // 操作信号开始
+	EN_PRVT_OPT_DEV_LINK=EN_PRVT_OPT_STR,  // 调试工具连接成功
+	EN_PRVT_OPT_DEV_BREAK,                 // 调试工具连接中断
+	EN_PRVT_OPT_DATA_R_SUCC,               // 召唤数据成功
+	EN_PRVT_OPT_DATA_R_FAIL,               // 召唤数据失败
+	EN_PRVT_OPT_FILE_UP_SUCC,              // 文件上传成功
+	EN_PRVT_OPT_FILE_UP_FAIL,              // 文件上传失败
+	EN_PRVT_OPT_FILE_DN_SUCC,              // 文件下载成功
+	EN_PRVT_OPT_FILE_DN_FAIL,              // 文件下载失败
+	EN_PRVT_OPT_FLASH_BAK_SUCC,            // 参数备份成功
+	EN_PRVT_OPT_FLASH_BAK_FAIL,            // 参数备份失败
+	EN_PRVT_OPT_PARA_REST_SUCC,            // 参数还原成功
+	EN_PRVT_OPT_PARA_REST_FAIL,            // 参数还原失败
+	EN_PRVT_OPT_UPDATE_BOOT0_SUCC,         // BOOT0升级成功
+	EN_PRVT_OPT_UPDATE_BOOT0_FAIL,         // BOOT0升级失败
+	EN_PRVT_OPT_UPDATE_UBOOT_SUCC,         // UBOOT升级成功
+	EN_PRVT_OPT_UPDATE_UBOOT_FAIL,         // UBOOT升级失败
+	EN_PRVT_OPT_UPDATE_SYSTEM_SUCC,        // SYSTEM升级成功
+	EN_PRVT_OPT_UPDATE_SYSTEM_FAIL,        // SYSTEM升级失败
+	EN_PRVT_OPT_UPDATE_FPGA1_SUCC,         // FPGA1升级成功
+	EN_PRVT_OPT_UPDATE_FPGA1_FAIL,         // FPGA1升级失败
+	EN_PRVT_OPT_UPDATE_FPGA2_SUCC,         // FPGA2升级成功
+	EN_PRVT_OPT_UPDATE_FPGA2_FAIL,         // FPGA2升级失败
+	EN_PRVT_OPT_EVENT_ALL_DEl,             // 清除所有事项
+	EN_PRVT_OPT_RUN_DEl,                   // 清除运行事项
+	EN_PRVT_OPT_OPT_DEl,                   // 清除操作事项
+	EN_PRVT_OPT_PRVT_SOE_DEl,              // 清除内部事项
+	EN_PRVT_OPT_PRVT_OPT_DEl,              // 清除操作事项
+	EN_PRVT_OPT_ETH_W_SUCC,                // 网络参数修改成功
+	EN_PRVT_OPT_ETH_W_FAIL,                // 网络参数修改失败
+	EN_PRVT_OPT_END,                       // 操作信号结束
+};
+
 /*================================================================================*/
 //常量表结构体
 /*================================================================================*/
@@ -480,6 +481,22 @@ typedef struct
 	INT8S			byPinName[CN_LEN_NAME]; 		// 虚端子名称
 } tagOptTab;
 
+typedef struct
+{
+	WORD			wIndex; 						// 记录枚举
+	WORD			wCfg; 							// 其他设置
+	INT8S			byName[CN_LEN_NAME]; 			// 记录名称
+	INT8S			byPinName[CN_LEN_NAME]; 		// 虚端子名称
+} tagPrvtSoeTab;
+
+typedef struct
+{
+	WORD			wIndex; 						// 记录枚举
+	WORD			wCfg; 							// 其他设置
+	INT8S			byName[CN_LEN_NAME]; 			// 记录名称
+	INT8S			byPinName[CN_LEN_NAME]; 		// 虚端子名称
+} tagPrvtOptTab;
+
 /*================================================================================*/
 // 宏定义
 /*================================================================================*/
@@ -488,10 +505,9 @@ typedef struct
 #define CN_NUM_CHK    (EN_CHK_END)
 #define CN_NUM_RUN    (EN_RUN_END)
 #define CN_NUM_OPT    (EN_OPT_END)
+#define CN_NUM_PRVT_SOE    (EN_PRVT_SOE_END)
+#define CN_NUM_PRVT_OPT    (EN_PRVT_OPT_END)
 
-//#define CN_NUM_ALM32  ((EN_ALM_END-1)/32+1)
-//#define CN_NUM_CHK32  ((EN_CHK_END-1)/32+1)
-//#define CN_NUM_OPT32  ((EN_OPT_END-1)/32+1)
 
 #define CN_NUM_ALM_GOCB_DATA  (EN_ALM_GOCB_DATA_END-EN_ALM_GOCB_DATA_STR)
 #define CN_NUM_ALM_GOCB_TEST  (EN_ALM_GOCB_TEST_END-EN_ALM_GOCB_TEST_STR)
@@ -509,6 +525,11 @@ extern const tagOptTab g_tOptTab[];
 extern const DWORD     g_NUM_OPT;
 extern const tagRunTab g_tRunTab[];
 extern const DWORD     g_NUM_RUN;
+
+extern const tagPrvtSoeTab g_tPrvtSoeTab[];
+extern const DWORD         g_NUM_PRVT_SOE;
+extern const tagPrvtOptTab g_tPrvtOptTab[];
+extern const DWORD         g_NUM_PRVT_OPT;
 
 #endif  // _CONST_REC_H_
 

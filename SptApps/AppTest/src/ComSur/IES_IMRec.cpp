@@ -22,13 +22,22 @@ tagIES_IMRec      gtagIES_IMRec;
 // 输出参数：32位us,最大4294967295us=4294967.295ms=4294.967295s=
 // 返回值：  无
 // ============================================================================
-UINT32 IES_IMRec_Rela_Time(tagTimeUTC tUTCA,tagTimeUTC tUTCB)
+#ifdef __cplusplus
+inline UINT32 IES_IMRec_Rela_Time(tagTimeUTC *ptUTCA,tagTimeUTC *ptUTCB)
 {
-	UINT64  *u64A,*u64B;
-	u64A=(UINT64*)(&tUTCA.dwUSecond_L);
-	u64B=(UINT64*)(&tUTCB.dwUSecond_L);
-	return (UINT32)(*u64A-*u64B);
+	//UINT64  *u64A,*u64B;
+	//u64A=(UINT64*)(&tUTCA.dwUSecond_L);
+	//u64B=(UINT64*)(&tUTCB.dwUSecond_L);
+	return (UINT32)(*((UINT64*)ptUTCA)-*((UINT64*)ptUTCB));
 }
+#else
+
+#define IES_IMRec_Rela_Time(ptUTCA,ptUTCB)            \
+{                                                     \
+	(UINT32)(*((UINT64*)ptUTCA)-*((UINT64*)ptUTCB));    \
+}
+
+#endif
 // ============================================================================
 // 函数功能：GOOSE命令事项生成
 // 输入参数：
@@ -38,37 +47,34 @@ UINT32 IES_IMRec_Rela_Time(tagTimeUTC tUTCA,tagTimeUTC tUTCB)
 void IES_IMRec_Act(tagIES_IMRec  *pgtagIES_IMRec)
 {
 	register UINT32 i,j;
+	register UINT32 *piMeaValue;
 	const    WORD   *pwSrcIndexIn, *pwSrcIndexOut,*pwAppId;
-	WORD     *pwActInIndex,*pwActOutIndex;
-
 	BOOL    *pbActIn,*pbActOut,*pbActOutRet;
 	BOOL    *pbSrcIn,*pbSrcOut,*pbSrcOutRet;
-	BOOL     bActInXor,bActOutXor,bActOutRetXor;
+	BOOL     bActInXor,bActOutXor;
 	BOOL     bDstIn=FALSE,bDstOut=FALSE,bDstOutRet=FALSE;
 	BOOL    *pbyInvaild;
-	tagActQueue      *ptagActQueue;
-	tagActEvent      *ptagActEvent;
-	tagMsgValue6     *ptRecValue;
 	
+	register tagActEvent   *ptagActEvent;
+	register tagCosEvent6  *ptEvent;
 	const tagActTab  *ptActTab;
 	
-	ptActTab      = &g_tActTab[0];
+	ptActTab      = g_tActTab;
 	pbActIn       = g_tActState.bActIn;
 	pbActOut      = g_tActState.bActOut;
 	pbActOutRet   = g_tActState.bActOutRet;
-	pwActInIndex  = g_tActState.wActInIndex;
-	pwActOutIndex = g_tActState.wActOutIndex;
+	ptagActEvent  = g_tActState.tActEvent;
 	
-	pbSrcOut     = G_Get_GOIN_V_P;
-	pbSrcIn      = G_Get_GOIN_P;
-	pbyInvaild   = G_Get_GOIN_InV_P;
-	pbSrcOutRet  = G_Get_DI_P;
+	pbSrcOut     = g_tagIO.bGoInValid;
+	pbSrcIn      = g_tagIO.bGoIn;
+	pbyInvaild   = g_tagIO.byGoInInValid;
+	pbSrcOutRet  = g_tagIO.bDIHldIn;
 	pwAppId      = g_tagIO.wGoInAppId;
 	// 暂时封掉硬开入的判断
 	for(i=0;i<CN_NUM_ACT;i++)
 	{
 		// 实时数据刷新
-		pwSrcIndexOut=pwSrcIndexIn=&ptActTab->wSrcIndex[0];
+		pwSrcIndexOut=pwSrcIndexIn=ptActTab->wSrcIndex;
 		for(j=0;j<CN_ACT_SNUM;j++)
 		{
 			if(*pwSrcIndexIn==CN_NULL_PINNO)
@@ -82,12 +88,6 @@ void IES_IMRec_Act(tagIES_IMRec  *pgtagIES_IMRec)
 				break;
 			}
 			pwSrcIndexIn++;
-		}
-		bActInXor=bDstIn^(*pbActIn);
-		
-		if(bActInXor)
-		{
-			*pbActIn=bDstIn;
 		}
 
 		for(j=0;j<CN_ACT_SNUM;j++)
@@ -104,126 +104,164 @@ void IES_IMRec_Act(tagIES_IMRec  *pgtagIES_IMRec)
 			}
 			pwSrcIndexOut++;
 		}
-		bActOutXor    =bDstOut^(*pbActOut);
+		// 防误在初始化
+		*pbActOutRet=bDstOutRet=pbSrcOutRet[ptActTab->wDoRetIndex];
 		
-		if(bActOutXor)
-		{
-			*pbActOut=bDstOut;
-		}
-
-		bDstOutRet=pbSrcOutRet[ptActTab->wDoRetIndex];
-		
-		bActOutRetXor =*pbActOutRet^(bDstOutRet);
-		if(bActOutRetXor)
-		{
-			*pbActOutRet=bDstOutRet;
-		}
+		piMeaValue=ptagActEvent->iMeaValue;
 		// 返校等待
-		ptagActQueue=&g_tActQueue[i];
-		ptagActEvent=&ptagActQueue->tActEvent;
-		ptRecValue  =&ptagActEvent->tRecValue6;
-		
-		if(ptagActQueue->byFlag==EN_ACTS_EVENT_WAIT)
+		if(ptagActEvent->byFlag==EN_ACTS_EVENT_WAIT)
 		{
-			if(ptagActEvent->bActOut==bDstOutRet)
+			if(*pbActOut==bDstOutRet)
 			{
-				ptagActEvent->bActOutRet=bDstOutRet;// 返校成功
-				ptRecValue->iMeaValue[EN_VAILD_FAIL]  =EN_INVAILD_NO;
-				ptRecValue->iMeaValue[EN_VAILD_RET_T] =IES_IMRec_Rela_Time(g_tagPub.tSysTimeUTC,ptagActQueue->tActEvent.tActT);//
-				ptagActQueue->byFlag                  =EN_ACTS_EVENT_STOP;
+				// 生成事项
+				piMeaValue[EN_VAILD_FAIL]  =EN_INVAILD_NO;
+				piMeaValue[EN_VAILD_RET_T] =IES_IMRec_Rela_Time(&g_tagPub.tSysTimeUTC,&ptagActEvent->tActT);
+				ptagActEvent->byFlag       =EN_ACTS_EVENT_STOP;
+				// 生成事项
 			}
-			else if((++ptagActQueue->dwTimeCnt)>=CN_T7MS)
+			else if((++ptagActEvent->dwTimeCnt)>=CN_T7MS)
 			{
-				ptagActEvent->bActOutRet=bDstOutRet;
-				ptRecValue->iMeaValue[EN_VAILD_FAIL]  =EN_RET_OVER;
-				ptRecValue->iMeaValue[EN_VAILD_RET_T] =IES_IMRec_Rela_Time(g_tagPub.tSysTimeUTC,ptagActQueue->tActEvent.tActT);;//
-				ptagActQueue->byFlag                  =EN_ACTS_EVENT_STOP;
+				piMeaValue[EN_VAILD_FAIL]  =EN_RET_OVER;
+				piMeaValue[EN_VAILD_RET_T] =IES_IMRec_Rela_Time(&g_tagPub.tSysTimeUTC,&ptagActEvent->tActT);//
+				ptagActEvent->byFlag       =EN_ACTS_EVENT_STOP;
 			}
 		}
+		bActInXor  =bDstIn^(*pbActIn);
+		bActOutXor =bDstOut^(*pbActOut);
 		// 新事项生成
-		if((bActInXor)||(bActOutXor))
+		if(bActInXor||bActOutXor)
 		{
-			if(ptagActQueue->byFlag!=EN_ACTS_EVENT_NULL)
+			*pbActIn=bDstIn;
+			*pbActOut=bDstOut;
+			// 命令覆盖直接生成事项
+			if(ptagActEvent->byFlag!=EN_ACTS_EVENT_NULL)
 			{
-				ptRecValue->iMeaValue[EN_VAILD_FAIL]  =EN_RET_COVER;
-				ptRecValue->iMeaValue[EN_VAILD_RET_T] =IES_IMRec_Rela_Time(g_tagPub.tSysTimeUTC,ptagActQueue->tActEvent.tActT);
-				ptagActQueue->tActEventBak=ptagActQueue->tActEvent;
-				ptagActQueue->byBakVaild=TRUE;
+				piMeaValue[EN_VAILD_FAIL]  =EN_RET_COVER;
+				piMeaValue[EN_VAILD_RET_T] =IES_IMRec_Rela_Time(&g_tagPub.tSysTimeUTC,&ptagActEvent->tActT);
+				// 事项存储
+				{
+					ptEvent=&g_tActQueue.tEvent[g_tActQueue.wWptr];
+					ptEvent->wIndex = i;
+					ptEvent->wState = ptagActEvent->bActState;
+					ptEvent->tTime  = ptagActEvent->tActT;
+					ptEvent->iMeaValue[0]=piMeaValue[0];
+					ptEvent->iMeaValue[1]=piMeaValue[1];
+					ptEvent->iMeaValue[2]=piMeaValue[2];
+					ptEvent->iMeaValue[3]=piMeaValue[3];
+					ptEvent->iMeaValue[4]=piMeaValue[4];
+					ptEvent->iMeaValue[5]=piMeaValue[5];
+					
+					if(++g_tActQueue.wWptr>=CN_NUM_RPT_ACT)
+					{
+						g_tActQueue.wWptr=0;
+					}
+					if(g_tActQueue.wWptr==g_tActQueue.wRptr)
+					{
+						g_tActQueue.wFlag=CN_RPT_FULL;
+					}
+				}
+				ptagActEvent->byFlag=EN_ACTS_EVENT_NULL;
 			}
 			// 保证两次合命令可以检测到变化,从而生成事项
 			if(bDstOut)
 			{
-				ptagActEvent->bActIn  = bDstIn+2;
+				ptagActEvent->bActState= bDstIn+2;
 			}
 			else
 			{
-				ptagActEvent->bActIn  = bDstIn;
+				ptagActEvent->bActState= bDstIn;
 			}
-			ptagActEvent->bActOut = bDstOut;
-			ptRecValue->iMeaValue[EN_VAILD_GOOSE] =bDstIn;
-			ptRecValue->iMeaValue[EN_VAILD_DO] =bDstOut;
+			piMeaValue[EN_VAILD_GOOSE] =bDstIn;
+			piMeaValue[EN_VAILD_DO] =bDstOut;
 			ptagActEvent->tActT=g_tagPub.tSysTimeUTC;
 			// 记录GOOSE命令AppID,返回命令不做记录
 			if(bDstOut)
 			{
-				ptRecValue->iMeaValue[EN_VAILD_SRC_INDEX]=*pwSrcIndexOut;
-				ptRecValue->iMeaValue[EN_VAILD_SRC_APPID]=pwAppId[*pwSrcIndexOut];
+				piMeaValue[EN_VAILD_SRC_INDEX]=*pwSrcIndexOut;
+				piMeaValue[EN_VAILD_SRC_APPID]=pwAppId[*pwSrcIndexOut];
 			}
 			else if(bDstIn)
 			{
-				ptRecValue->iMeaValue[EN_VAILD_SRC_INDEX]=*pwSrcIndexIn;
-				ptRecValue->iMeaValue[EN_VAILD_SRC_APPID]=pwAppId[*pwSrcIndexIn];
+				piMeaValue[EN_VAILD_SRC_INDEX]=*pwSrcIndexIn;
+				piMeaValue[EN_VAILD_SRC_APPID]=pwAppId[*pwSrcIndexIn];
 			}
-			else if((bActInXor)&&(*pwActInIndex!=CN_NULL_PINNO))
+			else if((bActInXor)&&(ptagActEvent->wActInIndex!=CN_NULL_PINNO))
 			{
-				ptRecValue->iMeaValue[EN_VAILD_SRC_INDEX]=*pwActInIndex;
-				ptRecValue->iMeaValue[EN_VAILD_SRC_APPID]=pwAppId[*pwActInIndex];
+				piMeaValue[EN_VAILD_SRC_INDEX]=ptagActEvent->wActInIndex;
+				piMeaValue[EN_VAILD_SRC_APPID]=pwAppId[ptagActEvent->wActInIndex];
 			}
-			else if((bActOutXor)&&(*pwActOutIndex!=CN_NULL_PINNO))
+			else if((bActOutXor)&&(ptagActEvent->wActOutIndex!=CN_NULL_PINNO))
 			{
-				ptRecValue->iMeaValue[EN_VAILD_SRC_INDEX]=*pwActOutIndex;
-				ptRecValue->iMeaValue[EN_VAILD_SRC_APPID]=pwAppId[*pwActOutIndex];
+				piMeaValue[EN_VAILD_SRC_INDEX]=ptagActEvent->wActOutIndex;
+				piMeaValue[EN_VAILD_SRC_APPID]=pwAppId[ptagActEvent->wActOutIndex];
 			}
 			else
 			{
-				ptRecValue->iMeaValue[EN_VAILD_SRC_INDEX]=CN_NULL_PINNO;
-				ptRecValue->iMeaValue[EN_VAILD_SRC_APPID]=0;
+				piMeaValue[EN_VAILD_SRC_INDEX]=CN_NULL_PINNO;
+				piMeaValue[EN_VAILD_SRC_APPID]=0;
 			}
 			// 事项直接停止处理
 			if(bDstIn^bDstOut)
 			{
 				if(*pwSrcIndexIn<CN_NUM_GOIN)
 				{
-					ptRecValue->iMeaValue[EN_VAILD_FAIL]=(UINT32)pbyInvaild[*pwSrcIndexIn];
+					piMeaValue[EN_VAILD_FAIL]=(UINT32)pbyInvaild[*pwSrcIndexIn];
 				}
 				else
 				{
-					ptRecValue->iMeaValue[EN_VAILD_FAIL]=EN_RET_DIF;
+					piMeaValue[EN_VAILD_FAIL]=EN_RET_DIF;
 				}
-				ptRecValue->iMeaValue[EN_VAILD_RET_T]=0;
-				ptagActQueue->byFlag=EN_ACTS_EVENT_STOP;
+				piMeaValue[EN_VAILD_RET_T]=0;
+				ptagActEvent->byFlag  =EN_ACTS_EVENT_STOP;
 			}
 			else if(bDstOut==bDstOutRet)
 			{
-				ptRecValue->iMeaValue[EN_VAILD_FAIL]=EN_RET_ELSE;
-				ptRecValue->iMeaValue[EN_VAILD_RET_T]=0;
-				ptagActQueue->byFlag=EN_ACTS_EVENT_STOP;
+				piMeaValue[EN_VAILD_FAIL]=EN_RET_ELSE;
+				piMeaValue[EN_VAILD_RET_T]=0;
+				ptagActEvent->byFlag=EN_ACTS_EVENT_STOP;
 			}
 			else
 			{
-			
-				ptRecValue->iMeaValue[EN_VAILD_FAIL]=EN_INVAILD_NO;
-				ptagActQueue->byFlag   =EN_ACTS_EVENT_WAIT;
-				ptagActQueue->dwTimeCnt=0;
+				piMeaValue[EN_VAILD_FAIL]=EN_INVAILD_NO;
+				ptagActEvent->byFlag =EN_ACTS_EVENT_WAIT;
+				ptagActEvent->dwTimeCnt=0;
 			}
 		}
 		// 记录枚举
-		*pwActInIndex++  =*pwSrcIndexIn;
-		*pwActOutIndex++ =*pwSrcIndexOut;
+		ptagActEvent->wActInIndex  =*pwSrcIndexIn;
+		ptagActEvent->wActOutIndex =*pwSrcIndexOut;
+		// 输出事项
+		if(ptagActEvent->byFlag==EN_ACTS_EVENT_STOP)
+		{
+			// 生成动作事项
+			{
+				ptEvent=&g_tActQueue.tEvent[g_tActQueue.wWptr];
+				ptEvent->wIndex = i;
+				ptEvent->wState = ptagActEvent->bActState;
+				ptEvent->tTime  = ptagActEvent->tActT;
+				ptEvent->iMeaValue[0]=piMeaValue[0];
+				ptEvent->iMeaValue[1]=piMeaValue[1];
+				ptEvent->iMeaValue[2]=piMeaValue[2];
+				ptEvent->iMeaValue[3]=piMeaValue[3];
+				ptEvent->iMeaValue[4]=piMeaValue[4];
+				ptEvent->iMeaValue[5]=piMeaValue[5];
+				if(++g_tActQueue.wWptr>=CN_NUM_RPT_ACT)
+				{
+					g_tActQueue.wWptr=0;
+				}
+				if(g_tActQueue.wWptr==g_tActQueue.wRptr)
+				{
+					g_tActQueue.wFlag=CN_RPT_FULL;
+				}
+			}
+			ptagActEvent->byFlag =EN_ACTS_EVENT_NULL;
+		}
+		
 		ptActTab++;
 		pbActIn++;
 		pbActOut++;
 		pbActOutRet++;
+		ptagActEvent++;
 	}
 }
 
@@ -236,16 +274,18 @@ void IES_IMRec_Act(tagIES_IMRec  *pgtagIES_IMRec)
 void IES_IMRec_Alm(tagIES_IMRec  *pgtagIES_IMRec)
 {
 	register UINT32  i;
-	register BOOL *pbAlmIn,*pbAlmEna, *pbAlmOut,*pbAlmXor,*pbAlmTimerEna;
+	register BOOL *pbAlmIn,*pbAlmEna, *pbAlmOut,*pbAlmTimerEna;//*pbAlmXor,
 	register BOOL  bAlmOut;
 	register BOOL  bAlmDo=FALSE;
 	register tagTimeRelay *ptTimer;
+	register tagCosEvent  *ptEvent;
+	register UINT32       *pMeaValue;
 	const    tagAlmTab    *ptAlmTab;
 	
-	ptAlmTab = &g_tAlmTab[0];
-	pbAlmIn  = G_Get_AlmIn_P;
-	pbAlmOut = G_Get_AlmOut_P;
-	pbAlmXor = G_Get_AlmXor_P;
+	ptAlmTab = g_tAlmTab;
+	pbAlmIn  = g_tAlmState.bAlmIn;
+	pbAlmOut = g_tAlmState.bAlmOut;
+	//pbAlmXor = g_tAlmState.bAlmXor;
 	
 	pbAlmEna = pgtagIES_IMRec->bAlmEna;
 	ptTimer  = pgtagIES_IMRec->tTimer_Alm;
@@ -266,11 +306,29 @@ void IES_IMRec_Alm(tagIES_IMRec  *pgtagIES_IMRec)
 		{
 			bAlmOut=IES_TimeRelayRun(ptTimer, pbAlmIn[i]);
 		}
-		pbAlmXor[i]=pbAlmOut[i]^bAlmOut;
 		// 有变位
-		if(pbAlmXor[i])
+		if(pbAlmOut[i]!=bAlmOut)
 		{
 			pbAlmOut[i]=bAlmOut;
+			// 事项存储
+			ptEvent=&g_tAlmQueue.tEvent[g_tAlmQueue.wWptr];
+			ptEvent->wIndex = i;
+			ptEvent->wState = bAlmOut;
+			if(ptAlmTab->wValType1!=CN_NULL_PINNO)
+			{
+				pMeaValue=g_tAlmState.tRecValue[i].iMeaValue;
+				ptEvent->iMeaValue[0]= pMeaValue[0];
+				ptEvent->iMeaValue[1]= pMeaValue[1];
+				ptEvent->iMeaValue[2]= pMeaValue[2];
+			}
+			if(++g_tAlmQueue.wWptr>=CN_NUM_RPT_ALM)
+			{
+				g_tAlmQueue.wWptr=0;
+			}
+			if(g_tAlmQueue.wWptr==g_tAlmQueue.wRptr)
+			{
+				g_tAlmQueue.wFlag=CN_RPT_FULL;
+			}
 		}
 		// 出口标志合成
 		if(bAlmOut)
@@ -284,7 +342,7 @@ void IES_IMRec_Alm(tagIES_IMRec  *pgtagIES_IMRec)
 		ptAlmTab++;
 	}
 	// 告警出口输出
-	G_Set_Flag(EN_FLAG_ALM, bAlmDo);
+	g_bFlag[EN_FLAG_ALM]=bAlmDo;
 }
 // ============================================================================
 // 函数功能：自检事项生成
@@ -296,14 +354,16 @@ void IES_IMRec_Chk(tagIES_IMRec  *pgtagIES_IMRec)
 {
 	register UINT32  i;
 	register UINT32  *pdwActCnt,*pdwRetCnt;
-	register BOOL    *pbChkOut,*pbChkIn,*pbChkXor;
-	register BOOL     bChkIn,bChkOut,bChkDo=FALSE,bChkBs=FALSE;
+	register BOOL    *pbChkOut,*pbChkIn;//,*pbChkXor;
+	register BOOL     bChkIn,bChkOut,bChkDo=FALSE,bChkBs=FALSE,bChkXor=FALSE;
+	register tagCosEvent  *ptEvent;
+	register UINT32       *pMeaValue;
 	const tagChkTab  *ptChkTab;
 	
-	ptChkTab = &g_tChkTab[0];
-	pbChkIn  = G_Get_ChkIn_P;
-	pbChkOut = G_Get_ChkOut_P;
-	pbChkXor = G_Get_ChkXor_P;
+	ptChkTab = g_tChkTab;
+	pbChkIn  = g_tChkState.bChkIn;
+	pbChkOut = g_tChkState.bChkOut;
+	//pbChkXor = g_tChkState.bChkXor;
 	pdwActCnt= g_tChkState.dwChkActCnt;
 	pdwRetCnt= g_tChkState.dwChkRetCnt;
 
@@ -315,14 +375,39 @@ void IES_IMRec_Chk(tagIES_IMRec  *pgtagIES_IMRec)
 			if((bChkIn)&&(pdwActCnt[i]>=ptChkTab[i].dwActCnt))
 			{
 				bChkOut=TRUE;
-				pbChkXor[i]=pbChkOut[i]^bChkOut;
-				pbChkOut[i]=TRUE;
+				bChkXor=TRUE;
+				//pbChkXor[i]=pbChkOut[i]^bChkOut;
+				//pbChkOut[i]=TRUE;
 			}
 			else if((!bChkIn)&&(pdwRetCnt[i]>=ptChkTab[i].dwRetCnt))
 			{
 				bChkOut=FALSE;
-				pbChkXor[i]=pbChkOut[i]^bChkOut;
-				pbChkOut[i]=FALSE;
+				bChkXor=TRUE;
+				//pbChkXor[i]=pbChkOut[i]^bChkOut;
+				//pbChkOut[i]=FALSE;
+			}
+			if(bChkXor)
+			{
+				pbChkOut[i]=bChkOut;
+				// 事项存储
+				ptEvent=&g_tChkQueue.tEvent[g_tChkQueue.wWptr];
+				ptEvent->wIndex = i;
+				ptEvent->wState = bChkOut;
+				if(ptChkTab->wValType1!=CN_NULL_PINNO)
+				{
+					pMeaValue=g_tChkState.tRecValue[i].iMeaValue;
+					ptEvent->iMeaValue[0]= pMeaValue[0];
+					ptEvent->iMeaValue[1]= pMeaValue[1];
+					ptEvent->iMeaValue[2]= pMeaValue[2];
+				}
+				if(++g_tChkQueue.wWptr>=CN_NUM_RPT_CHK)
+				{
+					g_tChkQueue.wWptr=0;
+				}
+				if(g_tChkQueue.wWptr==g_tChkQueue.wRptr)
+				{
+					g_tChkQueue.wFlag=CN_RPT_FULL;
+				}
 			}
 		}
 		if(pbChkOut[i])
@@ -337,8 +422,7 @@ void IES_IMRec_Chk(tagIES_IMRec  *pgtagIES_IMRec)
 			}
 		}
 	}
-	G_Set_Flag(EN_FLAG_CHK, bChkDo);
-	
+	g_bFlag[EN_FLAG_CHK]=bChkDo;
 	g_tagPub.bSysBs=bChkBs;
 }
 // ============================================================================

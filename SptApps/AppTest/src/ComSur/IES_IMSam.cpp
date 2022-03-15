@@ -11,6 +11,9 @@
  * V1.00 2021-2-24 刘志利：初版
  *================================================================================*/
 #include "IES_IMSam.h"
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_2AD))
+#include "InstResource.h"
+#endif
 /*================================================================================*/
 // 元件私有变量出口
 tag_IMSam     gtag_IMSam;
@@ -59,7 +62,7 @@ void IES_IMSam_In(tag_IMSam *ptag_IMSam)
 	register INT32 *piSam,iSam;
 	register UINT32 i;
 	
-	piSam      =&(g_tagAna.iAnaSam[0]);
+	piSam      =g_tagAna.iAnaSam;
 	
 	for(i=0;i<CN_NUM_SAM;i++)
 	{
@@ -86,6 +89,45 @@ void IES_IMSam_In(tag_IMSam *ptag_IMSam)
 		}
 	}
 }
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_2AD))
+// =============================================================================
+// 函数功能：双AD不一致自检(目前仅对本地采样进行双AD不一致判断)
+// 输入参数：无
+// 输出参数：无
+// 返回值：  无
+// =============================================================================
+void IES_IMSam_2AdChk(tag_IMSam *ptag_IMSam)
+{
+	register INT32 *piSam;
+	register UINT32 dwSamFst,dwDelsam;
+	register UINT32 i;
+	const    tagAnaTab  *ptagAnaTab;
+	
+	piSam      =g_tagAna.iAnaSam;
+	ptagAnaTab =g_tAnaTab;
+	
+	for(i=0;i<CN_NUM_SAM;i++)
+	{
+		if(ptagAnaTab->wIndex<EN_ANA_SAM_END)
+		{
+			if(ptagAnaTab->wChanType==EN_CTYPE_ANA_U)
+			{
+				dwSamFst=(UINT32)(G_Get_PARA_F(ptagAnaTab->wParaFst)*100000);
+			}
+			else
+			{
+				dwSamFst=(UINT32)(G_Get_PARA_F(ptagAnaTab->wParaFst)*1000);
+			}
+			dwDelsam=abs(piSam[i]-piSam[ptagAnaTab->wIndex]);
+			if(dwDelsam>(dwSamFst*0.2))
+			{
+				LogMsg.Stamp()<<ptagAnaTab->byName<<"--AD1:"<<piSam[i]<<"AD2:"<<piSam[ptagAnaTab->wIndex]<<"\n";
+			}
+		}
+		ptagAnaTab++;
+	}
+}
+#endif
 // =============================================================================
 // 函数功能：基准电压计算
 // 输入参数：无
@@ -100,7 +142,9 @@ void IES_IMSam_JZ(tag_IMSam *ptag_IMSam)
 	register UINT32    dwBuf;
 	register BOOL      *pbJzChk;
 	register UINT32    dwJz1MkMin,dwJz1MkMax;
+#if(CN_HARDWARE_MCPU==CN_HARDWARE_MCPU_V1)
 	register UINT32    dwJz2MkMin,dwJz2MkMax;
+#endif
 	// 一次值计算
 	piBuf    =&(g_tagAna.iAnaSam[EN_ANA_JZ_STR]);
 	ptVector =&(g_tagAna.tAnaVect[EN_ANA_JZ_STR]);
@@ -109,9 +153,10 @@ void IES_IMSam_JZ(tag_IMSam *ptag_IMSam)
 	
 	dwJz1MkMin=ptag_IMSam->dwJz1MkMin;
 	dwJz1MkMax=ptag_IMSam->dwJz1MkMax;
+#if(CN_HARDWARE_MCPU==CN_HARDWARE_MCPU_V1)
 	dwJz2MkMin=ptag_IMSam->dwJz2MkMin;
 	dwJz2MkMax=ptag_IMSam->dwJz2MkMax;
-
+#endif
 	for(i=0;i<CN_NUM_JZ;i++,ptVector++)
 	{
 		dwBuf=(UINT32)(piBuf[i]);
@@ -119,10 +164,12 @@ void IES_IMSam_JZ(tag_IMSam *ptag_IMSam)
 		{
 			pbJzChk[i]=FALSE;
 		}
+#if(CN_HARDWARE_MCPU==CN_HARDWARE_MCPU_V1)
 		else if((dwBuf<dwJz2MkMax)&&(dwBuf>dwJz2MkMin))
 		{
 			pbJzChk[i]=FALSE;
 		}
+#endif
 		else
 		{
 			pbJzChk[i]=TRUE;
@@ -682,7 +729,7 @@ UINT32  IES_IMSam_AdJAm(BOOL *pbChn)
 	const    tagAnaTab  *ptagAnaTab;
 	DWORD    *pdwPara,*pdwParaBak;
 	tag_IMSam *ptag_IMSam;
-	if(G_Get_ChkIn_P[EN_CHK_PARA_AM_COE])
+	if(g_tChkState.bChkIn[EN_CHK_PARA_AM_COE])
 	{
 		return dwAdjNo;
 	}
@@ -707,7 +754,8 @@ UINT32  IES_IMSam_AdJAm(BOOL *pbChn)
 			if(wChanType==EN_CTYPE_ANA_U)
 			{
 				// 电压幅值波动不得超过0.5V
-				if(dwDAm<(g_dwMul[CN_SAM_DIV_U]>>1))
+				if(dwDAm<(g_dwMul[CN_SAM_DIV_U]>>1))
+
 
 				{
 					fCoe=(100.0f*wAdjNum*g_dwMul[CN_SAM_DIV_U])/ptag_IMSam->dwAdjAmBuf[i];
@@ -724,7 +772,8 @@ UINT32  IES_IMSam_AdJAm(BOOL *pbChn)
 				if (pdwPara[ptagAnaTab[i].wParaScd] == 1)
 				{
 					// 1A额定值,电流幅值波动不得超过0.02A
-					if(dwDAm<(g_dwMul[CN_SAM_DIV_I]*0.02f))
+					if(dwDAm<(g_dwMul[CN_SAM_DIV_I]*0.02f)
+)
 					{
 						fCoe=(FLOAT32)(5.00f*wAdjNum*g_dwMul[CN_SAM_DIV_I])/(FLOAT32)ptag_IMSam->dwAdjAmBuf[i];
 					}
@@ -737,7 +786,8 @@ UINT32  IES_IMSam_AdJAm(BOOL *pbChn)
 				else
 				{
 					// 1A额定值,电流幅值波动不得超过0.1A
-					if(dwDAm<(g_dwMul[CN_SAM_DIV_I]*0.1f))
+					if(dwDAm<(g_dwMul[CN_SAM_DIV_I]*0.1f)
+)
 					{
 						fCoe=(FLOAT32)(1.00f*wAdjNum*g_dwMul[CN_SAM_DIV_I])/(FLOAT32)ptag_IMSam->dwAdjAmBuf[i];
 					}
@@ -812,14 +862,14 @@ UINT32  IES_IMSam_AdJDc(BOOL *pbChn)
 {
 	WORD     i;
 	DWORD    dwAdjNo=0;
-	DWORD    *pdwAmPara,*pdwParaBak;
+	DWORD    *pdwAmPara,*pdwParaBak,*pdwPara;
 	INT32     iParaDefMin,iParaDefMax;
 	FLOAT32  fAmPara;
 	INT32    iCoe,iDAm;
 	WORD     wAdjNum;
 	WORD     wParaDc;//wParaFst = 0xffff,
 	tag_IMSam *ptag_IMSam;
-	if(G_Get_ChkIn_P[EN_CHK_PARA_DCBC_COE])
+	if(g_tChkState.bChkIn[EN_CHK_PARA_DCBC_COE])
 	{
 		return dwAdjNo;
 	}
@@ -834,17 +884,22 @@ UINT32  IES_IMSam_AdJDc(BOOL *pbChn)
 	{
 		ptag_IMSam->bAdjDcEnd=FALSE;
 		wAdjNum    = ptag_IMSam->wAdjDcNum;
+		pdwPara    = g_tagPara.dwPara;
 		pdwParaBak = g_tagPara.dwParaBak;
 		pdwAmPara  = g_tagAna.dwAnaAmCoe;
 		for(i=0;i<CN_NUM_SAM;i++)
 		{
-			fAmPara=(FLOAT32)(pdwAmPara[i]>>16);
+			fAmPara=(FLOAT32)pdwAmPara[i]/0xffff;
 			if(fAmPara!=0.0f)
 			{
-				iDAm = (ptag_IMSam->iAdjDcMax[i]-ptag_IMSam->iAdjDcMin[i])/fAmPara;
-				if((iDAm<(INT32)(g_dwMul[CN_SAM_DIV_U]>>1))&&(iDAm>=0))
+				// 最大最小值防误
+				// 抖动范围防误
+				iDAm = (INT32)((ptag_IMSam->iAdjDcMax[i]-ptag_IMSam->iAdjDcMin[i])/fAmPara);
+				// AD数抖动范围为50
+				if(iDAm<50)
+
 				{
-					iCoe=(INT32)(ptag_IMSam->iAdjDcBuf[i]/fAmPara/(wAdjNum));
+					iCoe=(INT32)(ptag_IMSam->iAdjDcBuf[i]/fAmPara/(wAdjNum)*1000.0);
 				}
 				else
 				{
@@ -860,6 +915,7 @@ UINT32  IES_IMSam_AdJDc(BOOL *pbChn)
 			wParaDc   = EN_PARA_DCBC_COE_STR+i;
 			iParaDefMin=g_tParaTab[wParaDc].iValMin;
 			iParaDefMax=g_tParaTab[wParaDc].iValMax;
+			iCoe       =pdwPara[wParaDc]+iCoe;
 			// 系数微调范围判断
 			if((iCoe>iParaDefMax)||(iCoe<iParaDefMin))
 			{
@@ -927,7 +983,7 @@ UINT32  IES_IMSam_AdJAng(BOOL *pbChn)
 	DWORD     *pdwPara,*pdwParaBak;
 	tag_IMSam *ptag_IMSam;
 	
-	if(G_Get_ChkIn_P[EN_CHK_PARA_ANG_COE])
+	if(g_tChkState.bChkIn[EN_CHK_PARA_ANG_COE])
 	{
 		return dwAdjNo;
 	}
@@ -1064,7 +1120,7 @@ void IES_IMSam_SvSub_Init()
 		// A套I母线电压有订阅/未全订阅/电压跨控制块订阅判断
 		if(pbSvSub[i])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_A1_CFG,TRUE);
+			g_iInter[EN_INTER_SVSUB_A1_CFG]=TRUE;
 			// 记录第一个控制块号
 			if(bySvCbA1==0xAA)
 			{
@@ -1074,18 +1130,18 @@ void IES_IMSam_SvSub_Init()
 			{
 				if(pbySvCb[i]!=bySvCbA1)
 				{
-					G_Set_Inter(EN_INTER_SVSUB_A1_MULT,TRUE);
+					g_iInter[EN_INTER_SVSUB_A1_MULT]=TRUE;
 				}
 			}
 		}
 		else
 		{
-			G_Set_Inter(EN_INTER_SVSUB_A1_LOSE,TRUE);
+			g_iInter[EN_INTER_SVSUB_A1_LOSE]=TRUE;
 		}
 		// A套II母线电压有订阅/未全订阅/电压跨控制块订阅判断
 		if(pbSvSub[i+EN_LINK_END])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_A2_CFG,TRUE);
+			g_iInter[EN_INTER_SVSUB_A2_CFG]=TRUE;
 			if(bySvCbA2==0xAA)
 			{
 				bySvCbA2=pbySvCb[i+EN_LINK_END];
@@ -1094,18 +1150,18 @@ void IES_IMSam_SvSub_Init()
 			{
 				if(pbySvCb[i+EN_LINK_END]!=bySvCbA2)
 				{
-					G_Set_Inter(EN_INTER_SVSUB_A2_MULT,TRUE);
+					g_iInter[EN_INTER_SVSUB_A2_MULT]=TRUE;
 				}
 			}
 		}
 		else
 		{
-			G_Set_Inter(EN_INTER_SVSUB_A2_LOSE,TRUE);
+			g_iInter[EN_INTER_SVSUB_A2_LOSE]=TRUE;
 		}
 		// B套I母线电压有订阅/未全订阅/电压跨控制块订阅判断
 		if(pbSvSub[i+EN_LINK_END*2])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_B1_CFG,TRUE);
+			g_iInter[EN_INTER_SVSUB_B1_CFG]=TRUE;
 			if(bySvCbB1==0xAA)
 			{
 				bySvCbB1=pbySvCb[i+EN_LINK_END*2];
@@ -1114,22 +1170,22 @@ void IES_IMSam_SvSub_Init()
 			{
 				if(pbySvCb[i+EN_LINK_END*2]!=bySvCbB1)
 				{
-					G_Set_Inter(EN_INTER_SVSUB_B1_MULT,TRUE);
+					g_iInter[EN_INTER_SVSUB_B1_MULT]=TRUE;
 				}
 			}
 		}
 		else
 		{
-			G_Set_Inter(EN_INTER_SVSUB_B1_LOSE,TRUE);
+			g_iInter[EN_INTER_SVSUB_B1_LOSE]=TRUE;
 		}
 		// B套II母线电压有订阅/未全订阅/电压跨控制块订阅判断
 		if(pbSvSub[i+EN_LINK_END*3])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_B2_CFG,TRUE);
+			g_iInter[EN_INTER_SVSUB_B2_CFG]=TRUE;
 		}
 		else
 		{
-			G_Set_Inter(EN_INTER_SVSUB_B2_LOSE,TRUE);
+			g_iInter[EN_INTER_SVSUB_B2_LOSE]=TRUE;
 			if(bySvCbB2==0xAA)
 			{
 				bySvCbB2=pbySvCb[i+EN_LINK_END*3];
@@ -1138,167 +1194,165 @@ void IES_IMSam_SvSub_Init()
 			{
 				if(pbySvCb[i+EN_LINK_END*3]!=bySvCbB2)
 				{
-					G_Set_Inter(EN_INTER_SVSUB_B2_MULT,TRUE);
+					g_iInter[EN_INTER_SVSUB_B2_MULT]=TRUE;
 				}
 			}
 		}
 		// A套I、II母订阅不一致
 		if(pbSvSub[i]^pbSvSub[i+EN_LINK_END])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_A_DIS,TRUE);
+			g_iInter[EN_INTER_SVSUB_A_DIS]=TRUE;
 		}
 		// A套I、II母跨控制块订阅
 		if((pbSvSub[i]&pbSvSub[i+EN_LINK_END])
 		&&(pbySvCb[i]!=pbySvCb[i+EN_LINK_END]))
 		{
-			G_Set_Inter(EN_INTER_SVSUB_A_MULT,TRUE);
+			g_iInter[EN_INTER_SVSUB_A_MULT]=TRUE;
 		}
 		// B套I、II母订阅不一致
 		if(pbSvSub[i+EN_LINK_END*2]^pbSvSub[i+EN_LINK_END*3])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_B_DIS,TRUE);
+			g_iInter[EN_INTER_SVSUB_B_DIS]=TRUE;
 		}
 		// B套I、II母跨控制块订阅
 		if((pbSvSub[i+EN_LINK_END*2]&pbSvSub[i+EN_LINK_END*3])
 		&&(pbySvCb[i+EN_LINK_END*2]!=pbySvCb[i+EN_LINK_END*3]))
 		{
-			G_Set_Inter(EN_INTER_SVSUB_B_MULT,TRUE);
+			g_iInter[EN_INTER_SVSUB_B_MULT]=TRUE;
 		}
 		// A、B套I母订阅不一致
 		if(pbSvSub[i]^pbSvSub[i+EN_LINK_END*2])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_1M_DIS,TRUE);
+			g_iInter[EN_INTER_SVSUB_1M_DIS]=TRUE;
 		}
 		// A、B套II母订阅不一致
 		if(pbSvSub[i+EN_LINK_END]^pbSvSub[i+EN_LINK_END*3])
 		{
-			G_Set_Inter(EN_INTER_SVSUB_2M_DIS,TRUE);
+			g_iInter[EN_INTER_SVSUB_2M_DIS]=TRUE;
 		}
 	}
 	// 母线板(CPU2)在任何情况下判断为单母线单套订阅
 #if(CN_DEV_CPU2)
 // if(g_tagBoard.dwBoardType==CN_BOARD_CPU2_ADDR)	
 	{
-		G_Set_Inter(EN_INTER_SVSUB_A1_CFG,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_A1_LOSE,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_A1_MULT,FALSE);
-		
-		G_Set_Inter(EN_INTER_SVSUB_A2_CFG,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_A2_LOSE,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_A2_MULT,FALSE);
-		
-		G_Set_Inter(EN_INTER_SVSUB_B1_CFG,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_B1_LOSE,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_B1_MULT,FALSE);
-		
-		G_Set_Inter(EN_INTER_SVSUB_B2_CFG,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_B2_LOSE,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_B2_MULT,FALSE);
+		g_iInter[EN_INTER_SVSUB_A1_CFG]=TRUE;
+		g_iInter[EN_INTER_SVSUB_A1_LOSE]=FALSE;
+		g_iInter[EN_INTER_SVSUB_A1_MULT]=FALSE;
+		g_iInter[EN_INTER_SVSUB_A2_CFG]=FALSE;
+		g_iInter[EN_INTER_SVSUB_A2_LOSE]=FALSE;
+		g_iInter[EN_INTER_SVSUB_A2_MULT]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B1_CFG]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B1_LOSE]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B1_MULT]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B2_CFG]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B2_LOSE]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B2_MULT]=FALSE;
 	}
 #endif
 	// A套I母有效判断
-	if(G_Get_Inter(EN_INTER_SVSUB_A1_CFG)
-		&&(!G_Get_Inter(EN_INTER_SVSUB_A1_MULT)))
+	if(g_iInter[EN_INTER_SVSUB_A1_CFG]
+		&&(!g_iInter[EN_INTER_SVSUB_A1_MULT]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_A1_VALID,TRUE);
+		g_iInter[EN_INTER_SVSUB_A1_VALID]=TRUE;
 	}
 	// A套II母有效判断
-	if(G_Get_Inter(EN_INTER_SVSUB_A2_CFG)
-		&&(!G_Get_Inter(EN_INTER_SVSUB_A2_MULT)))
+	if(g_iInter[EN_INTER_SVSUB_A2_CFG]
+		&&(!g_iInter[EN_INTER_SVSUB_A2_MULT]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_A2_VALID,TRUE);
+		g_iInter[EN_INTER_SVSUB_A2_VALID]=TRUE;
 	}
 	// B套I母有效判断
-	if(G_Get_Inter(EN_INTER_SVSUB_B1_CFG)
-		&&(!G_Get_Inter(EN_INTER_SVSUB_B1_MULT)))
+	if(g_iInter[EN_INTER_SVSUB_B1_CFG]
+		&&(!g_iInter[EN_INTER_SVSUB_B1_MULT]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_B1_VALID,TRUE);
+		g_iInter[EN_INTER_SVSUB_B1_VALID]=TRUE;
 	}
 	// B套II母有效判断
-	if(G_Get_Inter(EN_INTER_SVSUB_B2_CFG)
-		&&(!G_Get_Inter(EN_INTER_SVSUB_B2_MULT)))
+	if(g_iInter[EN_INTER_SVSUB_B2_CFG]
+		&&(!g_iInter[EN_INTER_SVSUB_B2_MULT]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_B2_VALID,TRUE);
+		g_iInter[EN_INTER_SVSUB_B2_VALID]=TRUE;
 	}
 	// 单母线仅A套订阅:A套I母订阅有效且其他母线均无订阅
-	if(G_Get_Inter(EN_INTER_SVSUB_A1_VALID)&&(!G_Get_Inter(EN_INTER_SVSUB_A2_CFG))&&(!G_Get_Inter(EN_INTER_SVSUB_B1_CFG))&&(!G_Get_Inter(EN_INTER_SVSUB_B2_CFG)))
+	if(g_iInter[EN_INTER_SVSUB_A1_VALID]&&(!g_iInter[EN_INTER_SVSUB_A2_CFG])&&(!g_iInter[EN_INTER_SVSUB_B1_CFG])&&(!g_iInter[EN_INTER_SVSUB_B2_CFG]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_1M_1LINKA,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_A_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_B_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_1M_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_2M_DIS,FALSE);
+		g_iInter[EN_INTER_SVSUB_1M_1LINKA]=TRUE;
+		g_iInter[EN_INTER_SVSUB_A_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_1M_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_2M_DIS]=FALSE;
 	}
 	// 单母线仅B套订阅:B套I母订阅有效且其他母线均无订阅
-	else if((!G_Get_Inter(EN_INTER_SVSUB_A1_CFG))&&(!G_Get_Inter(EN_INTER_SVSUB_A2_CFG))&&G_Get_Inter(EN_INTER_SVSUB_B1_VALID)&&(!G_Get_Inter(EN_INTER_SVSUB_B2_CFG)))
+	else if((!g_iInter[EN_INTER_SVSUB_A1_CFG])&&(!g_iInter[EN_INTER_SVSUB_A2_CFG])&&g_iInter[EN_INTER_SVSUB_B1_VALID]&&(!g_iInter[EN_INTER_SVSUB_B2_CFG]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_1M_1LINKB,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_A_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_B_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_1M_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_2M_DIS,FALSE);
+		g_iInter[EN_INTER_SVSUB_1M_1LINKB]=TRUE;
+		g_iInter[EN_INTER_SVSUB_A_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_1M_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_2M_DIS]=FALSE;
 	}
 	// 单母线双套订阅
-	else if(G_Get_Inter(EN_INTER_SVSUB_A1_VALID)&&(!G_Get_Inter(EN_INTER_SVSUB_A2_CFG))&&G_Get_Inter(EN_INTER_SVSUB_B1_VALID)&&(!G_Get_Inter(EN_INTER_SVSUB_B2_CFG)))
+	else if(g_iInter[EN_INTER_SVSUB_A1_VALID]&&(!g_iInter[EN_INTER_SVSUB_A2_CFG])&&g_iInter[EN_INTER_SVSUB_B1_VALID]&&(!g_iInter[EN_INTER_SVSUB_B2_CFG]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_1M_2LINK,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_A_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_B_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_2M_DIS,FALSE);
+		
+		g_iInter[EN_INTER_SVSUB_1M_2LINK]=TRUE;
+		g_iInter[EN_INTER_SVSUB_A_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_B_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_2M_DIS]=FALSE;
 	}
 	// 双母线仅A套订阅
-	else if(G_Get_Inter(EN_INTER_SVSUB_A1_VALID)&&G_Get_Inter(EN_INTER_SVSUB_A2_VALID)&&(!G_Get_Inter(EN_INTER_SVSUB_B1_CFG))&&(!G_Get_Inter(EN_INTER_SVSUB_B2_CFG)))
+	else if(g_iInter[EN_INTER_SVSUB_A1_VALID]&&g_iInter[EN_INTER_SVSUB_A2_VALID]&&(!g_iInter[EN_INTER_SVSUB_B1_CFG])&&(!g_iInter[EN_INTER_SVSUB_B2_CFG]))
 	{
-		G_Set_Inter(EN_INTER_SVSUB_2M_1LINKA,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_B_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_1M_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_2M_DIS,FALSE);
+		g_iInter[EN_INTER_SVSUB_2M_1LINKA]=TRUE;
+		g_iInter[EN_INTER_SVSUB_B_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_1M_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_2M_DIS]=FALSE;
 	}
 	// 双母线仅B套订阅
-	else if((!G_Get_Inter(EN_INTER_SVSUB_A1_CFG))&&(!G_Get_Inter(EN_INTER_SVSUB_A2_CFG))&&G_Get_Inter(EN_INTER_SVSUB_B1_VALID)&&G_Get_Inter(EN_INTER_SVSUB_B2_VALID))
+	else if((!g_iInter[EN_INTER_SVSUB_A1_CFG])&&(!g_iInter[EN_INTER_SVSUB_A2_CFG])&&g_iInter[EN_INTER_SVSUB_B1_VALID]&&g_iInter[EN_INTER_SVSUB_B2_VALID])
 	{
-		G_Set_Inter(EN_INTER_SVSUB_2M_1LINKB,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_A_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_1M_DIS,FALSE);
-		G_Set_Inter(EN_INTER_SVSUB_2M_DIS,FALSE);
+		g_iInter[EN_INTER_SVSUB_2M_1LINKB]=TRUE;
+		g_iInter[EN_INTER_SVSUB_A_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_1M_DIS]=FALSE;
+		g_iInter[EN_INTER_SVSUB_2M_DIS]=FALSE;
 	}	
 	// 双母线双套订阅
-	else if(G_Get_Inter(EN_INTER_SVSUB_A1_VALID)&&G_Get_Inter(EN_INTER_SVSUB_A2_VALID)&&G_Get_Inter(EN_INTER_SVSUB_B1_VALID)&&G_Get_Inter(EN_INTER_SVSUB_B2_VALID))
+	else if(g_iInter[EN_INTER_SVSUB_A1_VALID]&&g_iInter[EN_INTER_SVSUB_A2_VALID]&&g_iInter[EN_INTER_SVSUB_B1_VALID]&&g_iInter[EN_INTER_SVSUB_B2_VALID])
 	{
-		G_Set_Inter(EN_INTER_SVSUB_2M_2LINK,TRUE);
+		g_iInter[EN_INTER_SVSUB_2M_2LINK]=TRUE;
 	}
 	// A套无订阅
-	if(!(G_Get_Inter(EN_INTER_SVSUB_A1_CFG)||G_Get_Inter(EN_INTER_SVSUB_A2_CFG)))
+	if(!(g_iInter[EN_INTER_SVSUB_A1_CFG]||g_iInter[EN_INTER_SVSUB_A2_CFG]))
 	{
-		G_Set_AlmIn(EN_ALM_SVLINK_NOCFGA,TRUE);
+		g_tAlmState.bAlmIn[EN_ALM_SVLINK_NOCFGA]=TRUE;
 	}
 	// B套无订阅
-	if(!(G_Get_Inter(EN_INTER_SVSUB_B1_CFG)||G_Get_Inter(EN_INTER_SVSUB_B2_CFG)))
+	if(!(g_iInter[EN_INTER_SVSUB_B1_CFG]||g_iInter[EN_INTER_SVSUB_B2_CFG]))
 	{
-		G_Set_AlmIn(EN_ALM_SVLINK_NOCFGB,TRUE);
+		g_tAlmState.bAlmIn[EN_ALM_SVLINK_NOCFGB]=TRUE;
 	}
 	// A套订阅配置异常
-	if(G_Get_Inter(EN_INTER_SVSUB_A1_MULT)||G_Get_Inter(EN_INTER_SVSUB_A2_MULT)
-		||G_Get_Inter(EN_INTER_SVSUB_A_DIS)||G_Get_Inter(EN_INTER_SVSUB_A_MULT)
-		||G_Get_Inter(EN_INTER_SVSUB_1M_DIS)||G_Get_Inter(EN_INTER_SVSUB_2M_DIS))
+	if(g_iInter[EN_INTER_SVSUB_A1_MULT]||g_iInter[EN_INTER_SVSUB_A2_MULT]
+		||g_iInter[EN_INTER_SVSUB_A_DIS]||g_iInter[EN_INTER_SVSUB_A_MULT]
+		||g_iInter[EN_INTER_SVSUB_1M_DIS]||g_iInter[EN_INTER_SVSUB_2M_DIS])
 	{
-		G_Set_AlmIn(EN_ALM_SVLINK_CFGA,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_A_CHK,TRUE);
+		g_tAlmState.bAlmIn[EN_ALM_SVLINK_CFGA]=TRUE;
+		g_iInter[EN_INTER_SVSUB_A_CHK]=TRUE;
 	}
 	// B套订阅配置异常
-	if(G_Get_Inter(EN_INTER_SVSUB_B1_MULT)||G_Get_Inter(EN_INTER_SVSUB_B2_MULT)
-		||G_Get_Inter(EN_INTER_SVSUB_B_DIS)||G_Get_Inter(EN_INTER_SVSUB_B_MULT)
-		||G_Get_Inter(EN_INTER_SVSUB_1M_DIS)||G_Get_Inter(EN_INTER_SVSUB_2M_DIS))
+	if(g_iInter[EN_INTER_SVSUB_B1_MULT]||g_iInter[EN_INTER_SVSUB_B2_MULT]
+		||g_iInter[EN_INTER_SVSUB_B_DIS]||g_iInter[EN_INTER_SVSUB_B_MULT]
+		||g_iInter[EN_INTER_SVSUB_1M_DIS]||g_iInter[EN_INTER_SVSUB_2M_DIS])
 	{
-		G_Set_AlmIn(EN_ALM_SVLINK_CFGB,TRUE);
-		G_Set_Inter(EN_INTER_SVSUB_B_CHK,TRUE);
+		g_tAlmState.bAlmIn[EN_ALM_SVLINK_CFGB]=TRUE;
+		g_iInter[EN_INTER_SVSUB_B_CHK]=TRUE;
 	}
 	// 控制块配置异常
 	for(i=0;i<CN_NUM_SVCB_SUB;i++)
 	{
 		if(g_tagAna.dwSvCbSubCfg[i])
 		{
-			G_Set_AlmIn(EN_ALM_SVSUB_CFG01+i,TRUE);
+			g_tAlmState.bAlmIn[EN_ALM_SVSUB_CFG01+i]=TRUE;
 		}
 	}
 	#endif
@@ -1326,14 +1380,14 @@ void IES_IMSam_SvPub_Init()
 
 	if(g_tagAna.wSvPubNum==g_tagAna.wSvPubDatNum)
 	{
-		G_Set_Inter(EN_INTER_SVPUB_DLY,TRUE);
+		g_iInter[EN_INTER_SVPUB_DLY]=TRUE;
 	}
 	if((wSvPubNum==g_NUM_SVPUB)&& (g_tagAna.wSvPubNum == g_tagAna.wSvPubDatNum+1))
 	{
 		ptSvPubTab=&g_tSvPubTab[0];
-		G_Set_Inter(EN_INTER_SVPUB_STD,TRUE);
-		G_Set_Inter(EN_INTER_SVPUB_ANA,TRUE);
-		G_Set_Inter(EN_INTER_SVPUB_M,TRUE);
+		g_iInter[EN_INTER_SVPUB_STD]=TRUE;
+		g_iInter[EN_INTER_SVPUB_ANA]=TRUE;
+		g_iInter[EN_INTER_SVPUB_M]=TRUE;
 		for(i=0;i<wSvPubNum;i++)
 		{
 			 wSvPubCfg=*pwSvPubCfg++;
@@ -1341,19 +1395,19 @@ void IES_IMSam_SvPub_Init()
 			// 标准
 			if(wSvPubCfg!=ptSvPubTab->wStdIndex)
 			{
-				G_Set_Inter(EN_INTER_SVPUB_STD,FALSE);
+				g_iInter[EN_INTER_SVPUB_STD]=FALSE;
 			}
 			if(wSvPubCfg!=ptSvPubTab->wAnaIndex)
 			{
-				G_Set_Inter(EN_INTER_SVPUB_ANA,FALSE);
+				g_iInter[EN_INTER_SVPUB_ANA]=FALSE;
 			}
 			if((wSvPubCfg!=ptSvPubTab->wAnaIndex2))
 			{
-				G_Set_Inter(EN_INTER_SVPUB_M,FALSE);
+				g_iInter[EN_INTER_SVPUB_M]=FALSE;
 			}
-			if(!(G_Get_Inter(EN_INTER_SVPUB_STD)||G_Get_Inter(EN_INTER_SVPUB_ANA)||G_Get_Inter(EN_INTER_SVPUB_M)))
+			if(!(g_iInter[EN_INTER_SVPUB_STD]||g_iInter[EN_INTER_SVPUB_ANA]||g_iInter[EN_INTER_SVPUB_M]))
 			{
-				G_Set_Inter(EN_INTER_SVPUB_CHK,TRUE);
+				g_iInter[EN_INTER_SVPUB_CHK]=TRUE;
 			}
 			ptSvPubTab++;
 		}
@@ -1361,12 +1415,12 @@ void IES_IMSam_SvPub_Init()
 	// 通道个数不一致,非标准SV发布
 	else
 	{
-		G_Set_Inter(EN_INTER_SVPUB_CHK,TRUE);
+		g_iInter[EN_INTER_SVPUB_CHK]=TRUE;
 	}
 		// 映射关系解析
 	if(g_tagAna.wSvPubDatNum>=CN_NUM_ANA)
 	{
-		G_Set_Inter(EN_INTER_SVPUB_CHN_NUM,TRUE);
+		g_iInter[EN_INTER_SVPUB_CHN_NUM]=TRUE;
 		wSvPubNum=g_tagAna.wSvPubDatNum;
 	}
 	pwSvPubCfg = g_tagAna.wSvPubCfg;
@@ -1380,7 +1434,7 @@ void IES_IMSam_SvPub_Init()
 		// 通道配置越限
 		else
 		{
-			G_Set_Inter(EN_INTER_SVPUB_CHN_NO,TRUE);
+			g_iInter[EN_INTER_SVPUB_CHN_NO]=TRUE;
 		}
 	}
 }
@@ -1401,7 +1455,7 @@ void IES_IMSam_SvPub_Chg(WORD wIndexSrc,WORD wIndexDst,WORD wAddNum,DWORD dwChg1
 	pbSvPubChn  =&g_tagAna.wSvPubChn[wIndexSrc];
 	pbSvPubSend =g_tagAna.wSvPubSend;
 	pbSvPubPol  =g_tagAna.bSvPubPol;
-	//if(!(G_Get_Inter(EN_INTER_SVPUB_CHK)))
+	//if(!g_iInter[EN_INTER_SVPUB_CHK])
 	{
 		// 更新原始配置
 		for(i=0;i<g_tagAna.wSvPubDatNum;i++)
@@ -1417,7 +1471,6 @@ void IES_IMSam_SvPub_Chg(WORD wIndexSrc,WORD wIndexDst,WORD wAddNum,DWORD dwChg1
 				// 动态修改异常
 				continue;
 			}
-			
 			if(pbSvPubPol[wIndexDst+i])
 			{
 				pbSvPubSend[bSvPubChn]=wIndexDst+i+CN_SV_Pub_Pol;
@@ -1587,9 +1640,92 @@ void IES_IMSam_Reset()
 // ============================================================================
 void IES_IMSam_TChg_Para(tag_IMSam *ptag_IMSam)
 {
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_TCOMP))
+	INT32 iDCOut=g_tagDC.iDCOut[CN_DC_INDEX_T];
+	INT32 *piTCompEna=ptag_IMSam->iTCompT;
+	register UINT32 i;
+	if(ptag_IMSam->bTCompEna)
+	{
+		for(i=0;i<EN_TCHG_END;i++)
+		{
+			if((piTCompEna[i]<0&&iDCOut<=piTCompEna[i])
+			||(piTCompEna[i]>0&&iDCOut>=piTCompEna[i]))
+			{
+				if(ptag_IMSam->dwCoeTModStr!=i)
+				{
+						ptag_IMSam->dwCoeTModStr=i;
+						ptag_IMSam->dwCoeTCnt=0;
+				}
+				if(ptag_IMSam->dwCoeTMod!=i)
+				{
+					// 此处连续5次不能代表连续5帧,考虑修正
+					if(++ptag_IMSam->dwCoeTCnt>=5)
+					{
+						ptag_IMSam->dwCoeTMod=i;
+						ptag_IMSam->dwCoeTCnt=0;
+						IES_IMSam_Para_Init();
+					}
+				}
+				return;
+			}
+		}
+		if(i==EN_TCHG_END)
+		{
+			if(ptag_IMSam->dwCoeTModStr!=EN_TCHG_END)
+			{
+				ptag_IMSam->dwCoeTModStr=EN_TCHG_END;
+				ptag_IMSam->dwCoeTCnt=0;
+			}
+			if(ptag_IMSam->dwCoeTMod!=EN_TCHG_END)
+			{
+				if(++ptag_IMSam->dwCoeTCnt>=5)
+				{
+					ptag_IMSam->dwCoeTMod=EN_TCHG_END;
+					ptag_IMSam->dwCoeTCnt=0;
+					IES_IMSam_Para_Init();
+				}
+			}
+		}
+	}
+	else
+	{
+		if(ptag_IMSam->dwCoeTModStr!=EN_TCHG_END)
+		{
+			ptag_IMSam->dwCoeTModStr=EN_TCHG_END;
+			ptag_IMSam->dwCoeTCnt=0;
+		}
+		if(ptag_IMSam->dwCoeTMod!=EN_TCHG_END)
+		{
+			if(++ptag_IMSam->dwCoeTCnt>=5)
+			{
+				ptag_IMSam->dwCoeTMod=EN_TCHG_END;
+				ptag_IMSam->dwCoeTCnt=0;
+			}
+		}
+	}
+	
+#else
 	//if(g_tagDC.bDCChg[EN_DC_T1])
 	{
-		if(g_tagDC.iDCOut[CN_DC_INDEX_T]>=73000)
+		if(g_tagDC.iDCOut[CN_DC_INDEX_T]>=90000)
+		{
+			if(ptag_IMSam->dwCoeTModStr!=EN_TCHG_MOD4)
+			{
+				ptag_IMSam->dwCoeTModStr=EN_TCHG_MOD4;
+				ptag_IMSam->dwCoeTCnt=0;
+			}
+			if(ptag_IMSam->dwCoeTMod!=EN_TCHG_MOD4)
+			{
+				// 此处连续5次不能代表连续5帧,考虑修正
+				if(++ptag_IMSam->dwCoeTCnt>=5)
+				{
+					ptag_IMSam->dwCoeTMod=EN_TCHG_MOD4;
+					ptag_IMSam->dwCoeTCnt=0;
+					IES_IMSam_Para_Init();
+				}
+			}
+		}
+		else if(g_tagDC.iDCOut[CN_DC_INDEX_T]>=70000)
 		{
 			if(ptag_IMSam->dwCoeTModStr!=EN_TCHG_MOD2)
 			{
@@ -1607,6 +1743,7 @@ void IES_IMSam_TChg_Para(tag_IMSam *ptag_IMSam)
 				}
 			}
 		}
+	#if 0
 		else if(g_tagDC.iDCOut[CN_DC_INDEX_T]<=(-8000))
 		{
 			if(ptag_IMSam->dwCoeTModStr!=EN_TCHG_MOD3)
@@ -1624,6 +1761,7 @@ void IES_IMSam_TChg_Para(tag_IMSam *ptag_IMSam)
 				}
 			}
 		}
+	#endif
 		else
 		{
 			if(ptag_IMSam->dwCoeTModStr!=EN_TCHG_MOD1)
@@ -1642,6 +1780,7 @@ void IES_IMSam_TChg_Para(tag_IMSam *ptag_IMSam)
 			}
 		}
 	}
+#endif
 }
 #endif
 // ============================================================================
@@ -1659,9 +1798,11 @@ void IES_IMSam_Para_Init()
 	FLOAT32          *pfPara;
 	WORD             i, wParaFst = 0xffff, wParaScd = 0xffff;
 	DWORD            *pdwPara,*pdwAnaAmCoe;
-	WORD             *pwAnaAngCoe,*pwAnaDcCoe;
+	WORD             *pwAnaAngCoe;
+	INT32            *piAnaDcCoe;
 	DWORD            dwAnaAmCoe=0;
-	WORD             wAnaAngCoe=0,wAnaDcCoe=0;
+	WORD             wAnaAngCoe=0;
+	INT32            iAnaDcCoe=0;
 	FLOAT32          fBb12 = 0.0;   // 一次值转二次值变比
 	FLOAT32          fBb21 = 0.0;   // 二次值转一次值变比
 	FLOAT32          fTCoe = 1.0f;  // 温度调节系数
@@ -1669,12 +1810,12 @@ void IES_IMSam_Para_Init()
 	ptag_IMSam = &gtag_IMSam;
 	// 参数异常退出参数更新,并闭锁
 	// 常量表自检退出参数更新,并闭锁
-	if(G_Get_ChkIn_P[EN_CHK_PARA_SAM]
-	||G_Get_ChkIn_P[EN_CHK_PARA_AM_COE]
-	||G_Get_ChkIn_P[EN_CHK_PARA_ANG_COE]
-	/*||G_Get_ChkIn_P[EN_CHK_PARA_DCBC_COE]*/
-	||G_Get_Const_Chk(EN_DTYPE_ANA)
-	||G_Get_Const_Chk(EN_CFG_SAM_BOARD)
+	if(g_tChkState.bChkIn[EN_CHK_PARA_SAM]
+	||g_tChkState.bChkIn[EN_CHK_PARA_AM_COE]
+	||g_tChkState.bChkIn[EN_CHK_PARA_ANG_COE]
+	||g_tChkState.bChkIn[EN_CHK_PARA_DCBC_COE]
+	||g_tagPub.bConstChk[EN_DTYPE_ANA]
+	||g_tagPub.bConstChk[EN_CFG_SAM_BOARD]
 	)
 	{
 		g_iInter[EN_INTER_RUN_SV_BS]=TRUE;
@@ -1748,24 +1889,47 @@ void IES_IMSam_Para_Init()
 	ptag_IMSam->bJzChkEna =pdwPara[EN_PARA_ENA_JZ];
 	ptag_IMSam->dwJz1MkMin=pdwPara[EN_PARA_V_JZ1MIN];
 	ptag_IMSam->dwJz1MkMax=pdwPara[EN_PARA_V_JZ1MAX];
-	
+#if(CN_HARDWARE_MCPU==CN_HARDWARE_MCPU_V1)
 	ptag_IMSam->dwJz2MkMin=pdwPara[EN_PARA_V_JZ2MIN];
 	ptag_IMSam->dwJz2MkMax=pdwPara[EN_PARA_V_JZ2MAX];
+#endif
 	// 向FPGA下发幅值校准系数更新
-#if(CN_TCHG_ENA)	
+#if(CN_TCHG_ENA)
 	// 温度调节
+	#if(CN_SOFT_CPU_TEST_GET(CN_TEST_TCOMP))
+	if((ptag_IMSam->dwCoeTMod<EN_TCHG_END)&&(ptag_IMSam->bTCompEna))
+	{
+		fTCoe=ptag_IMSam->fTCompCoe[ptag_IMSam->dwCoeTMod];
+	}
+	else
+	{
+		fTCoe=1.0f;
+	}
+	#else
 	if(ptag_IMSam->dwCoeTMod==EN_TCHG_MOD1)
 	{
 		fTCoe=1.0f;
 	}
 	else if(ptag_IMSam->dwCoeTMod==EN_TCHG_MOD2)
 	{
-		fTCoe=1.0015f;
+		fTCoe=1.0008f;
 	}
+#if 0
 	else if(ptag_IMSam->dwCoeTMod==EN_TCHG_MOD3)
 	{
 		fTCoe=0.9987f;
 	}
+#endif
+	else if(ptag_IMSam->dwCoeTMod==EN_TCHG_MOD4)
+	{
+		fTCoe=1.0022f;
+	}
+	else
+	{
+		fTCoe=1.0f;
+	}
+
+#endif
 #endif
 	pfPara      = &g_tagPara.fPara[EN_PARA_AM_COE_STR];
 	pfBb        = &(g_tagAna.fAnaPtCt[0]);
@@ -1820,17 +1984,17 @@ void IES_IMSam_Para_Init()
 	}
 	
 	// 直流补偿更新
-	pwAnaDcCoe = &(g_tagAna.wAnaDcCoe[0]);
-	
-	for (i = 0; i < CN_NUM_AD; i++)
+	piAnaDcCoe = &(g_tagAna.iAnaDcCoe[0]);
+	pdwAnaAmCoe= &(g_tagAna.dwAnaAmCoe[0]);
+	pfPara     = &g_tagPara.fPara[EN_PARA_DCBC_COE_STR];
+	for (i = 0; i < CN_NUM_SAM; i++)
 	{
-		wAnaDcCoe=pdwPara[EN_PARA_DCBC_COE_STR+i];
-		if(*pwAnaDcCoe!=wAnaDcCoe)
+		iAnaDcCoe=(INT32)(pfPara[i]*pdwAnaAmCoe[i]/0xffff);
+		if(piAnaDcCoe[i]!=iAnaDcCoe)
 		{
-			*pwAnaDcCoe=wAnaDcCoe;
+			piAnaDcCoe[i]=iAnaDcCoe;
 			byAnaDcCoeChg = TRUE;
 		}
-		pwAnaDcCoe++;
 	}
 	// 标志更新放置在代码最后,可保证缓存完全更新完成,在一个断面中，保证任务中调用参数初始化无问题。
 	if(byAnaPtCtChg)
@@ -1885,6 +2049,19 @@ void IES_IMSam_Para_Init()
 			IES_IMSam_SvPub_Pol(EN_ANA_SAM_STR, EN_ANA_SAM_END, ptag_IMSam->dwPolSamMat1);
 		}
 	}
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_TCOMP))
+	//温度补偿参数更新
+	ptag_IMSam->bTCompEna=g_tagPara.dwPara[EN_PARA_SAM_BAK01]?1:0;
+	pdwPara = &g_tagPara.dwPara[EN_PARA_SAM_BAK02];
+	pfPara  = &g_tagPara.fPara[EN_PARA_SAM_BAK03];
+	for(i=0;i<EN_TCHG_END;i++)
+	{
+		ptag_IMSam->iTCompT[i]   =(INT32)(*pdwPara);
+		ptag_IMSam->fTCompCoe[i] =*pfPara;
+		pdwPara+=2;
+		pfPara+=2;
+	}
+#endif
 }
 // =============================================================================
 // 函数功能：采样元件初始化函数
@@ -1922,6 +2099,11 @@ void IES_IMSam_Init()
 	IES_RamScanAdd(&gtag_IMSam.byRamScan22);
 	IES_RamScanAdd(&gtag_IMSam.byRamScan23);
 	IES_RamScanAdd(&gtag_IMSam.byRamScan24);
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_TCOMP))
+	gtag_IMSam.dwCoeTMod    =EN_TCHG_END;
+	gtag_IMSam.dwCoeTModStr =EN_TCHG_END;
+	gtag_IMSam.dwCoeTCnt    =0;
+#endif
 }
 // =============================================================================
 // 函数功能：模拟量品质合成
@@ -1983,13 +2165,13 @@ void IES_IMSam_Q()
 			{
 				bSvCbLinkErr=TRUE;
 				G_Set_AlmIn_All(EN_ALM_SVSUB_COM01+i,TRUE,dwSvCbStatus,0,0);
-				G_Set_AlmIn(EN_ALM_SVSUB_TEST01+i,FALSE);
-				G_Set_AlmIn(EN_ALM_SVSUB_DAT01+i,FALSE);
-				G_Set_AlmIn(EN_ALM_SVSUB_SYN01+i,FALSE);
+				g_tAlmState.bAlmIn[EN_ALM_SVSUB_TEST01+i]=FALSE;
+				g_tAlmState.bAlmIn[EN_ALM_SVSUB_DAT01+i]=FALSE;
+				g_tAlmState.bAlmIn[EN_ALM_SVSUB_SYN01+i]=FALSE;
 			}
 			else
 			{
-				G_Set_AlmIn(EN_ALM_SVSUB_COM01+i,FALSE);
+				g_tAlmState.bAlmIn[EN_ALM_SVSUB_COM01+i]=FALSE;
 				
 				// 检修标志
 				if(((dwSvCbStatus&CN_SVCB_Test)?TRUE:FALSE)^(g_tagPub.bSysTest))
@@ -1998,7 +2180,7 @@ void IES_IMSam_Q()
 				}
 				else
 				{
-					G_Set_AlmIn(EN_ALM_SVSUB_TEST01+i,FALSE);
+					g_tAlmState.bAlmIn[EN_ALM_SVSUB_TEST01+i]=FALSE;
 				}
 				// 数据异常
 				if(dwSvCbStatus&CN_SVCB_DataErr)
@@ -2008,7 +2190,7 @@ void IES_IMSam_Q()
 				}
 				else
 				{
-					G_Set_AlmIn(EN_ALM_SVSUB_DAT01+i,FALSE);
+					g_tAlmState.bAlmIn[EN_ALM_SVSUB_DAT01+i]=FALSE;
 				}
 				// 同步异常
 				if(dwSvCbStatus&CN_SVCB_SynErr)
@@ -2017,7 +2199,7 @@ void IES_IMSam_Q()
 				}
 				else
 				{
-					G_Set_AlmIn(EN_ALM_SVSUB_SYN01+i,FALSE);
+					g_tAlmState.bAlmIn[EN_ALM_SVSUB_SYN01+i]=FALSE;
 				}
 			}
 		}
@@ -2095,7 +2277,7 @@ void IES_IMSam_Q()
 						dwAnaQ|=CN_SV_Q_VALIDL;
 					}
 					
-					if(G_Get_Flag(EN_FLAG_V_NULL))
+					if(g_bFlag[EN_FLAG_V_NULL])
 					{
 						dwAnaQ|=CN_SV_Q_VCLR;
 					}
@@ -2157,7 +2339,7 @@ void IES_IMSam_Q()
 			dwAnaQ|=CN_SV_Q_TEST;
 		}
 		// 2.4 上电电压切换保持状态,品质无效
-		if(G_Get_Flag(EN_FLAG_V_BC_INIT))
+		if(g_bFlag[EN_FLAG_V_BC_INIT])
 		{
 			dwAnaQ|=CN_SV_Q_VALIDL;
 		}
@@ -2202,10 +2384,10 @@ void IES_IMSam_Q()
 				}
 			}
 		}
-		G_Set_AlmIn(EN_ALM_SVPUB_INVALID,bSvPubQErr);
+		g_tAlmState.bAlmIn[EN_ALM_SVPUB_INVALID]=bSvPubQErr;
 	}
 	// 发布数据无效
-	bSvPubQErr=G_Get_AlmIn_P[EN_ALM_SVPUB_INVALID];
+	bSvPubQErr=g_tAlmState.bAlmIn[EN_ALM_SVPUB_INVALID];
 	g_tagAna.byAnaQChg=bQchg;
 	// 3.相关告警输出
 	// 采样异常告警
@@ -2215,25 +2397,34 @@ void IES_IMSam_Q()
 	}
 	else
 	{
-		G_Set_AlmIn(EN_ALM_SAM,FALSE);
+		g_tAlmState.bAlmIn[EN_ALM_SAM]=FALSE;
+	}
+	// CPU板AD自检
+	if(dwADErr)
+	{
+		G_Set_ChkIn(EN_CHK_BOARD_CPU);
+	}
+	else
+	{
+		G_Clr_ChkIn(EN_CHK_BOARD_CPU);
 	}
 #if(CN_SV_IN_ENA)
 	// SV级联相关告警
-	G_Set_AlmIn(EN_ALM_SVLINK_QA,bSvAQErr);
-	G_Set_AlmIn(EN_ALM_SVLINK_QB,bSvBQErr);
-	G_Set_AlmIn(EN_ALM_SVLINK_TESTA,bSvATest);
-	G_Set_AlmIn(EN_ALM_SVLINK_TESTB,bSvBTest);
+	g_tAlmState.bAlmIn[EN_ALM_SVLINK_QA]=bSvAQErr;
+	g_tAlmState.bAlmIn[EN_ALM_SVLINK_QB]=bSvBQErr;
+	g_tAlmState.bAlmIn[EN_ALM_SVLINK_TESTA]=bSvATest;
+	g_tAlmState.bAlmIn[EN_ALM_SVLINK_TESTB]=bSvBTest;
 	// 输出总的SV级联数据异常
 	bSvErrAll|=bSvCbLinkErr|bSvCbDatErr|bSvAQErr|bSvBQErr;
-	G_Set_AlmIn(EN_ALM_SVSUB,bSvErrAll);
+	g_tAlmState.bAlmIn[EN_ALM_SVSUB]=bSvErrAll;
 	// SV订阅配置总异常
-	bSvSubCfgErr=G_Get_Inter(EN_INTER_SVSUB_CFG);
+	bSvSubCfgErr=g_iInter[EN_INTER_SVSUB_CFG];
 	bSvErrAll|=(bSvSubCfgErr);
-	G_Set_AlmIn(EN_ALM_LINK,bSvErrAll);
+	g_tAlmState.bAlmIn[EN_ALM_LINK]=bSvErrAll;
 #endif
-	bSvPubCfgErr=G_Get_Inter(EN_INTER_SVPUB_CFG);
+	bSvPubCfgErr=g_iInter[EN_INTER_SVPUB_CFG];
 	bSvErrAll|=bSvPubQErr|bSvPubCfgErr;
-	G_Set_AlmIn(EN_ALM_SV,bSvErrAll);
+	g_tAlmState.bAlmIn[EN_ALM_SV]=bSvErrAll;
 }
 
 // =============================================================================
@@ -2253,6 +2444,10 @@ void IES_IMSam()
 	}
 	// 采样数据刷新
 	IES_IMSam_In(ptag_IMSam);
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_2AD))
+	// 双AD不一致自检
+	IES_IMSam_2AdChk(ptag_IMSam);
+#endif
 	// 上电防误处理
 	if(!ptag_IMSam->dwPWInit)
 	{
@@ -2272,9 +2467,9 @@ void IES_IMSam()
 		return;
 	}
 	// 界面浏览才进行计算
-	if(!(G_Get_Inter(EN_INTER_OPT_ANA)
-	||G_Get_Inter(EN_INTER_OPT_ANA_J)
-	||G_Get_Inter(EN_INTER_OPT_ANA_FR)))
+	if(!(g_iInter[EN_INTER_OPT_ANA]
+	||g_iInter[EN_INTER_OPT_ANA_J]
+	||g_iInter[EN_INTER_OPT_ANA_FR]))
 	{
 		// 增加标志限制,降低负载
 		if(ptag_IMSam->dwMenuInit)
@@ -2286,7 +2481,7 @@ void IES_IMSam()
 	}
 	ptag_IMSam->dwMenuInit=TRUE;
 	// 测频
-	if(!G_Get_Const_Chk(EN_DTYPE_CAL))
+	if(!g_tagPub.bConstChk[EN_DTYPE_CAL])
 	{
 		IES_IMSam_Fr(ptag_IMSam);
 	}

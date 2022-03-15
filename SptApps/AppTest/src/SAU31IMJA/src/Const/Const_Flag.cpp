@@ -236,6 +236,7 @@ const tagInterTab g_tInterTab[]=
 	{EN_INTER_CPU2_CTRL_ZK     ,   EN_CTYPE_PARA_B,     "CPU2非接管释放直控权限"             , "INTER_CPU2_CTRL_ZK"},
 	{EN_INTER_CPU2_CTRL_DBG    ,   EN_CTYPE_PARA_B,     "直控出口调试状态"                , "INTER_CPU2_CTRL_DBG"},
 	{EN_INTER_LCD_VIR          ,   EN_CTYPE_PARA_B,     "虚拟LCD通信断开"                 , "INTER_LCD_VIR"},
+	{EN_INTER_POW30_OFF        ,   EN_CTYPE_PARA_B,     "30V电源自检断开"                 , "INTER_POW30_OFF"},
 
 };
 const DWORD g_NUM_INTER = sizeof(g_tInterTab) / sizeof(tagInterTab);

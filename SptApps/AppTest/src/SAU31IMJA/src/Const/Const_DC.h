@@ -1,7 +1,6 @@
 #ifndef _CONST_DC_H_
 #define _CONST_DC_H_
 
-#include "IES_IMtypes.h"
 /*================================================================================*/
 // 信号枚举
 /*================================================================================*/
@@ -11,13 +10,11 @@ enum _DC_INDEX_TYPE_
     EN_DC_SAM_STR=0,
     EN_DC_SAM1=EN_DC_SAM_STR,                  // 直采起始
     EN_DC_SAM2,                                // 直流采集2
-#if(!CN_FUN_DBUG1)
     EN_DC_SAM3,                                // 直流采集3
     EN_DC_SAM4,                                // 直流采集4
     EN_DC_SAM5,                                // 直流采集5
     EN_DC_SAM6,                                // 直流采集6
-    EN_DC_SAM7,                                // 直流采集7
-#endif
+    EN_DC_SAM7,                                // 备用直流采集
     EN_DC_SAM_END,                             // 直采结束
 //  在线监测数据
     EN_DC_DEV_STR=EN_DC_SAM_END,
@@ -29,6 +26,8 @@ enum _DC_INDEX_TYPE_
     EN_DC_V4,                                  // 内部电压4
     EN_DC_V5,                                  // 内部电压5
     EN_DC_CCD_CRC,                             // CCD文件CRC
+    EN_DC_FPGA_CLK1_1,                         // CPU1板FPGA主频
+    EN_DC_FPGA_CLK1_2,                         // CPU1背板FPGA主频
     EN_DC_DEV1_END,
     EN_DC_DEV2_STR=EN_DC_DEV1_END,
     EN_DC_T2=EN_DC_DEV2_STR,                   // 温度2
@@ -38,10 +37,11 @@ enum _DC_INDEX_TYPE_
     EN_DC_V9,                                  // 内部电压9
     EN_DC_V10,                                 // 内部电压10
     EN_DC_CCD_CRC2,                            // CCD文件CRC
+    EN_DC_FPGA_CLK2,                           // CPU2板FPGA主频
     EN_DC_DEV2_END,
     EN_DC_DEV3_STR=EN_DC_DEV2_END,
-	EN_DC_T3=EN_DC_DEV3_STR,                   // 温度3
-	EN_DC_V11,                                 // 内部电压11
+    EN_DC_T3=EN_DC_DEV3_STR,                   // 温度3
+    EN_DC_V11,                                 // 内部电压11
     EN_DC_DEV3_END,
     EN_DC_DEV_END=EN_DC_DEV3_END,
 //  板卡1光功率
@@ -209,13 +209,13 @@ typedef struct
 #define CN_DC_DSP_DEV      (3)                              // 装置直流显示数据倍率
 #define CN_DC_DIV_DEV      (3)                              // 装置直流采集数据倍率
 #if(CN_DEV_CPU1)
-#define CN_DC_INDEX_T       (EN_DC_T1)                      // 直采直流显示数据倍率
-#define CN_DC_INDEX_V       (EN_DC_V1)                      // 直采直流采集数据倍率
-#define CN_DC_INDEX_CRC     (EN_DC_CCD_CRC)                 // 直采直流采集数据倍率
+#define CN_DC_INDEX_T       (EN_DC_T1)                      // 
+#define CN_DC_INDEX_V       (EN_DC_V1)                      // 
+#define CN_DC_INDEX_CRC     (EN_DC_CCD_CRC)                 // 
 #else
-#define CN_DC_INDEX_T       (EN_DC_T2)                      // 直采直流显示数据倍率
-#define CN_DC_INDEX_V       (EN_DC_V6)                      // 直采直流采集数据倍率
-#define CN_DC_INDEX_CRC     (EN_DC_CCD_CRC2)                // 直采直流采集数据倍率
+#define CN_DC_INDEX_T       (EN_DC_T2)                      // 
+#define CN_DC_INDEX_V       (EN_DC_V6)                      // 
+#define CN_DC_INDEX_CRC     (EN_DC_CCD_CRC2)                // 
 #endif
 /*================================================================================*/
 // 常量表声明

@@ -177,23 +177,26 @@ int32  DbgConfigGmServerSsl(void* SslContext)
 		LogErr << "SSL_CTX_check_private_key err.\n";
 		return(-1);
 	}
-	//载入服务端加密证书
-	if (SSL_CTX_use_certificate_file(ctx, ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
 	{
-		LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
-		return(-1);
-	}
-	//载入加密私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
-	{
-		LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
-		return(-1);
-	}
-	//检查用户私钥是否正确
-	if (!SSL_CTX_check_private_key(ctx))
-	{
-		LogErr << "SSL_CTX_check_private_key err.\n";
-		return(-1);
+		//载入服务端加密证书
+		if (SSL_CTX_use_certificate_file(ctx, ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		{
+			LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
+			return(-1);
+		}
+		//载入加密私钥
+		if (SSL_CTX_use_PrivateKey_file(ctx, ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		{
+			LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
+			return(-1);
+		}
+		//检查用户私钥是否正确
+		if (!SSL_CTX_check_private_key(ctx))
+		{
+			LogErr << "SSL_CTX_check_private_key err.\n";
+			return(-1);
+		}
 	}
 	return 0;
 #else
@@ -264,25 +267,27 @@ int DbgConfigGmClientSsl(SSL_CTX* ctx)
 		LogErr << "DbgConfigGmClientSsl CLIENT_KEY_FILE err.\n";
 		return -1;
 	}
-	//载入客户端加密证书
-	if (SSL_CTX_use_certificate_file(ctx, CLIENT_ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
 	{
-		LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
-		return(-1);
+		//载入客户端加密证书
+		if (SSL_CTX_use_certificate_file(ctx, CLIENT_ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		{
+			LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
+			return(-1);
+		}
+		//载入加密私钥
+		if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		{
+			LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
+			return(-1);
+		}
+		//检查私钥是否正确
+		if (SSL_CTX_check_private_key(ctx) <= 0)
+		{
+			LogErr << "SSL_CTX_check_private_key err.\n";
+			return -1;
+		}
 	}
-	//载入加密私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
-	{
-		LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
-		return(-1);
-	}
-	//检查私钥是否正确
-	if (SSL_CTX_check_private_key(ctx) <= 0)
-	{
-		LogErr << "SSL_CTX_check_private_key err.\n";
-		return -1;
-	}
-
 	return 0;
 }
 int32 spt::DbgGmSslClientIni()
@@ -353,7 +358,7 @@ int32 spt::DbgGmSslAccept(void* GmSock)
 	int32 err = SSL_accept((SSL*)GmSock);
 	if (err == 1)
 	{
-		LogErr << "SSL_get_error SSL_ERROR_SSL\n";
+		LogMsg << "SSL_get_error SSL_ERROR_SSL\n";
 		return 0;
 	}
 	else

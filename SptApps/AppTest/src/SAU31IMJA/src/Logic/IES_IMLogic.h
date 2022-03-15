@@ -54,11 +54,12 @@ typedef struct
 	tagTimeRelay    tTimer_PTRet; 	// PT同时返回确认时间
 	tagTimeRelay    tTimer_SvA;  	// 级联A正常定时器
 	tagTimeRelay    tTimer_SvB;  	// 级联B正常定时器
-//	BOOL            bVolType; 		// 电压采集方式
+	BOOL            bVolType; 		// 电压采集方式
+	BOOL            bVolTypeRef; 	// 电压采集方式变化
 	BOOL            bBusMuQh; 		// 级联切换使能
 	BOOL            bVolQh; 		// 电压切换使能
 	UINT32          dwUxPhase; 		// Ux选相
-	UINT32          bUxPhaseRef; 	// Ux选相参数更新标志
+	BOOL            bUxPhaseRef; 	// Ux选相参数更新标志
 	UINT32          dwSxbyz; 		// 三相不一致遥信定义
 // 闭锁重合相关定值
 	BOOL            bYTBschBcEna;	// 遥跳(手跳)闭锁重合保持功能投退

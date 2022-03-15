@@ -20,6 +20,15 @@ typedef struct
 	UINT32        dwCrc;                       // 程序CRC校验码
 	UINT32        dwTime;                      // 程序版本时间
 }tagSoftVer;
+// 网络参数
+typedef struct
+{
+	DWORD          dwIp;
+	DWORD          dwMask;
+	DWORD          dwGate;
+	DWORD          dwFlag;
+}tagDevEthnet;
+
 // 装置版本信息
 typedef struct
 {
@@ -28,8 +37,15 @@ typedef struct
 	UINT32        dwCrcOth;                    // 另一板卡CCD文件CRC
 	char          byID[64];                    // 唯一性编码
 	BYTE          byRamScan2;
-	char          byName[64];                  // 装置型号
+	char          byVerName[48];               // 版本信息
 	BYTE          byRamScan3;
+	char          byVerOthName[48];            // 对侧CPU版本信息
+	BYTE          byRamScan4;
+	BYTE          byDevEthnet;
+	tagDevEthnet  tDevEthnet;
+	BYTE          byRamScan5;
+	tagDevEthnet  tDevEthnetOth;
+	BYTE          byRamScan6;
 }tagDevInfor;
 // 模拟量向量(保护)
 typedef struct
@@ -113,7 +129,7 @@ typedef struct
 	WORD      wAnaAngCoe[CN_NUM_JZ*2];              // AD微调系数
 	BYTE      byRamScan14;
 	BYTE      byAnaDcCoeChg;                        // 直流补偿系数下发标志
-	WORD      wAnaDcCoe[CN_NUM_AD];                 // 直流补偿系数
+	INT32     iAnaDcCoe[CN_NUM_AD];                 // 直流补偿系数
 	BYTE      byRamScan15;
 	// 向界面显示下发系数
 	BYTE      byAnaPtCtChg;                         // 变比下发标志
@@ -159,7 +175,7 @@ typedef struct
 	BYTE       byRamScan13;
 	//2.2 GOOSE订阅输入数据
 	DWORD      dwGoInCnt;                         // GO订阅计数器
-	WORD       wGoQSrc[CN_NUM_GOIN];              // GO订阅值字型(品质)
+	WORD       wGoInQ[CN_NUM_GOIN];               // GO订阅值字型(品质)
 	BYTE       byRamScan14;
 	tagTimeUTC tGoInUTC[CN_NUM_GOIN];             // GO订阅数据时标
 	BYTE       byRamScan15;
@@ -319,6 +335,8 @@ typedef struct
 	BYTE    byRamScan8;
 	DWORD   dwParaBak[CN_NUM_PARA];        // 参数写备份
 	BYTE    byRamScan9;
+	WORD    wParaCfg[CN_NUM_PARA];         // 参数配置字
+	BYTE    byRamScan10;
 } tagPara;
 // 内存扫描数据结构体
 typedef struct
@@ -369,32 +387,17 @@ typedef struct
 	WORD    wMeaType[3];         // 测量类型1~3
 	UINT32  iMeaValue[3];        // 测量值1~3
 }tagMsgValue;
-// 事项参数(6组)
+// Act中间事项
 typedef struct
 {
-	WORD    wMeaType[6];         // 测量类型1~6
-	UINT32  iMeaValue[6];        // 测量值1~6
-}tagMsgValue6;
-
-// Act事项
-typedef struct
-{
-	BOOL           bActIn;            // GOOSE命令状态
-	BOOL           bActOut;           // 出口状态
-	BOOL           bActOutRet;        // 出口返校状态
+	BOOL           bActState;         // GOOSE命令状态
+	BYTE           byFlag;            // 事项记录标志
+	WORD           wActInIndex;       // GOOSE命令枚举记录
+	WORD           wActOutIndex;      // 出口命令枚举记录
+	DWORD          dwTimeCnt;         // 时间继电器
+	UINT32         iMeaValue[6];      // 测量值1~6
 	tagTimeUTC     tActT;             // GOOSE命令时标
-	tagTimeUTC     tActOutRetT;       // 出口返校时标
-	tagMsgValue6   tRecValue6;        // 事项参数记录
 }tagActEvent;
-// Act队列
-typedef struct
-{
-	tagActEvent    tActEvent;                // GOOSE命令事项
-	tagActEvent    tActEventBak;             // GOOSE命令事项备份
-	DWORD          dwTimeCnt;                // 时间继电器
-	BYTE           byFlag;                   // 事项记录标志
-	BYTE           byBakVaild;               // 备份有效标志
-}tagActQueue;
 // Act状态
 typedef struct
 {
@@ -405,10 +408,8 @@ typedef struct
 	BYTE           byRamScan3;
 	BOOL           bActOutRet[CN_NUM_ACT];        // 出口返校状态
 	BYTE           byRamScan4;
-	WORD           wActInIndex[CN_NUM_ACT];       // GOOSE命令枚举记录
+	tagActEvent    tActEvent[CN_NUM_ACT];
 	BYTE           byRamScan5;
-	WORD           wActOutIndex[CN_NUM_ACT];      // 出口命令枚举记录
-	BYTE           byRamScan6;
 }tagActState;
 // Alm状态
 typedef struct
@@ -441,6 +442,191 @@ typedef struct
 	BYTE           byRamScan7;
 }tagChkState;
 
+// SOE事项
+typedef struct
+{
+	WORD           wIndex;             // 事项枚举
+	WORD           wState;             // 事项状态
+	WORD           wQ;                 // 品质
+	tagTimeUTC     tTime;              // 时标
+}tagSoeEvent;
+
+typedef struct
+{
+	WORD           wIndex;             // 事项枚举
+	WORD           wState;             // 事项状态
+	tagTimeUTC     tTime;              // 时标
+	UINT32         iMeaValue[3];       // 测量值1~3
+}tagCosEvent;
+
+typedef struct
+{
+	WORD           wIndex;             // 事项枚举
+	WORD           wState;             // 事项状态
+	tagTimeUTC     tTime;              // 时标
+	UINT32         iMeaValue[6];       // 测量值1~6
+}tagCosEvent6;
+
+typedef struct
+{
+	WORD           wIndex;             // 枚举
+	WORD           wState;             // 状态
+	WORD           wResult;            // 结果
+	tagTimeUTC     tTime;              // 时标
+}tagSjEvent;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wFlag;              // 队列标志
+	BYTE           byRamScan2;
+	tagCosEvent6   tEvent[CN_NUM_RPT_ACT];
+	BYTE           byRamScan3;
+	// 审计记录
+	WORD           wSjWptr;           // 写指针
+	WORD           wSjRptr;           // 写指针
+	WORD           wSjFlag;           // 队列标志
+	WORD           wSjCtrl;           // 控制标志
+	BYTE           byRamScan4;
+	tagSjEvent     tSjEvent[CN_NUM_RPT_ACT];
+	BYTE           byRamScan5;
+	
+}tagActQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wFlag;              // 队列标志
+	WORD           wBak;               // 备用标志
+	BYTE           byRamScan2;
+	tagCosEvent    tEvent[CN_NUM_RPT_ALM];
+	BYTE           byRamScan3;
+}tagAlmQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wFlag;              // 队列标志
+	WORD           wBak;               // 备用标志
+	BYTE           byRamScan2;
+	tagCosEvent    tEvent[CN_NUM_RPT_CHK];
+	BYTE           byRamScan3;
+}tagChkQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wFlag;              // 队列标志
+	WORD           wBak;               // 备用标志
+	BYTE           byRamScan2;
+	tagCosEvent    tEvent[CN_NUM_RPT_RUN];
+	BYTE           byRamScan3;
+}tagRunQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wFlag;              // 队列标志
+	WORD           wBak;               // 备用标志
+	BYTE           byRamScan2;
+	tagCosEvent    tEvent[CN_NUM_RPT_OPT];
+	BYTE           byRamScan3;
+}tagOptQueue;
+
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 事项读指针
+	WORD           wGoRptr;            // GOOSE读指针
+	WORD           wFlag;              // 队列标志
+	BYTE           byRamScan2;
+	tagSoeEvent    tEvent[CN_NUM_RPT_DI];
+	BYTE           byRamScan3;
+}tagDiQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wGoRptr;            // GOOSE读指针
+	WORD           wFlag;              // 队列标志
+	BYTE           byRamScan2;
+	tagSoeEvent    tEvent[CN_NUM_RPT_DPI];
+	BYTE           byRamScan3;
+}tagDpiQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wGoRptr;            // GOOSE读指针
+	WORD           wFlag;              // 队列标志
+	BYTE           byRamScan2;
+	tagSoeEvent    tEvent[CN_NUM_RPT_DO];
+	BYTE           byRamScan3;
+}tagDoQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wGoRptr;            // GOOSE读指针
+	WORD           wFlag;              // 队列标志
+	BYTE           byRamScan2;
+	tagSoeEvent    tEvent[CN_NUM_RPT_GOIN];
+	BYTE           byRamScan3;
+}tagGoInQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wGoRptr;            // GOOSE读指针
+	WORD           wFlag;              // 队列标志
+	BYTE           byRamScan2;
+	tagSoeEvent    tEvent[CN_NUM_RPT_GOOUT];
+	BYTE           byRamScan3;
+}tagGoOutQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wFlag;              // 队列标志
+	WORD           wBak;               // 备用标志
+	BYTE           byRamScan2;
+	tagSoeEvent    tEvent[CN_NUM_RPT_LED];
+	BYTE           byRamScan3;
+}tagLedQueue;
+
+typedef struct
+{
+	BYTE           byRamScan1;
+	WORD           wWptr;              // 写指针
+	WORD           wRptr;              // 读指针
+	WORD           wFlag;              // 队列标志
+	WORD           wBak;               // 备用标志
+	BYTE           byRamScan2;
+	tagSoeEvent    tEvent[CN_NUM_RPT_FLAG];
+	BYTE           byRamScan3;
+}tagFlagQueue;
 /*================================================================================*/
 // 应用侧全局数据区
 /*================================================================================*/
@@ -456,15 +642,23 @@ extern tagPub       g_tagPub;                 // 平台公共部分
 // 应用中间标志
 extern BOOL         g_bFlag[CN_NUM_FLAG+1];   // 全局布尔变量标志定义
 extern INT32        g_iInter[CN_NUM_INTER+1]; // 全局内部数据定义
-// 事项队列
-extern tagActQueue     g_tActQueue[CN_NUM_ACT];
 // 事项实时状态
 extern tagActState     g_tActState;           // 告警事件实时状态
 extern tagAlmState     g_tAlmState;           // 告警事件实时状态
 extern tagChkState     g_tChkState;           // 自检事件实时状态
+// 事项队列
+extern tagActQueue     g_tActQueue;            // GOOSE命令事件缓冲队列
+extern tagAlmQueue     g_tAlmQueue;            // 告警事件缓冲队列
+extern tagChkQueue     g_tChkQueue;            // 自检事件缓冲队列
+extern tagDiQueue      g_tDiQueue;             // 硬开入单点SOE缓冲队列
+extern tagDpiQueue     g_tDpiQueue;            // 硬开入双点SOE缓冲队列
+extern tagDoQueue      g_tDoQueue;             // 硬开出SOE缓冲队列
+extern tagGoInQueue    g_tGoInQueue;           // GOOSE订阅SOE缓冲队列
+extern tagGoOutQueue   g_tGoOutQueue;          // GOOSE发布SOE缓冲队列
+extern tagLedQueue     g_tLedQueue;            // 指示灯SOE缓冲队列
 
 /*================================================================================*/
-// 应用侧全局数据接口
+// 应用侧全局数据接口(数组下标为变量时使用放误接口取数据)
 /*================================================================================*/
 // 源数据获取
 #define CN_Get_Dat_Src_P(wTypeIndex)            (((wTypeIndex)<CN_NUM_DTYPE)?g_tDTypeTab[(wTypeIndex)].bDatAtr:0);
@@ -485,93 +679,69 @@ extern tagChkState     g_tChkState;           // 自检事件实时状态
 // 模拟量部分--频率
 #define CN_Get_Cal_F(wIndex)          (((wIndex)<CN_NUM_CAL)?g_tagAna.dwFrCal[(wIndex)]:0);
 // IO部分
-#define G_Get_DI_P                  (g_tagIO.bDIHldIn)
-#define G_Get_DPI_P                 (g_tagIO.byDpiIn)
-#define G_Get_GOIN_P                (g_tagIO.bGoIn)
-#define G_Get_GOIN_V_P              (g_tagIO.bGoInValid)
-#define G_Get_GOIN_InV_P            (g_tagIO.byGoInInValid)
-#define G_Get_DI_UTC_P              (g_tagIO.tDIHldUTC)
-#define G_Get_DPI_UTC_P             (g_tagIO.tDpiUTC)
-#define G_Get_GOIN_UTC_P            (g_tagIO.tGoInUTC)
 #define G_Get_DI(wIndex)            (((wIndex)<CN_NUM_DI)?g_tagIO.bDIHldIn[(wIndex)]:0)
+#define G_Get_DI_Q(wIndex)          (((wIndex)<CN_NUM_DI)?g_tagIO.dwDIQ[(wIndex)]:0)
+#define G_Get_DI_UTC(wIndex)        (((wIndex)<CN_NUM_DI)?g_tagIO.tDIHldUTC[(wIndex)]:g_tagPub.tSysTimeUTC)
 #define G_Get_DPI(wIndex)           (((wIndex)<CN_NUM_DPI)?g_tagIO.byDpiIn[(wIndex)]:0)
 #define G_Get_GOIN(wIndex)          (((wIndex)<CN_NUM_GOIN)?g_tagIO.bGoInValid[(wIndex)]:0)
 // 直流部分
-#define G_Get_DC_In_P                (g_tagDC.iDCIn)
-#define G_Get_DC_I_P                 (g_tagDC.iDCOut)
-#define G_Get_DC_F_P                 (g_tagDC.fDCOut)
 #define G_Get_DC_I(wIndex)           (((wIndex)<CN_NUM_DC)?g_tagDC.iDCOut[(wIndex)]:0)
 #define G_Get_DC_F(wIndex)           (((wIndex)<CN_NUM_DC)?g_tagDC.fDCOut[(wIndex)]:0)
 // 参数部分
-#define G_Get_PARA_I_P               (g_tagPara.dwPara)
-#define G_Get_PARA_F_P               (g_tagPara.fPara)
-#define G_Get_PARA_COE_P             (g_tagPara.dwCoe)
-
 #define G_Get_PARA_I(wIndex)         (((wIndex)<CN_NUM_PARA)?g_tagPara.dwPara[(wIndex)]:0)
 #define G_Get_PARA_F(wIndex)         (((wIndex)<CN_NUM_PARA)?g_tagPara.fPara[(wIndex)]:0)
 #define G_Get_PARA_COE(wIndex)       (((wIndex)<CN_NUM_PARA)?g_tagPara.dwCoe[(wIndex)]:0)
 // 公共部分
-#define G_Get_PUB_UTC                  (&g_tagPub.tSysTimeUTC)
 #define G_Get_Const_Chk(wIndex)        (g_tagPub.bConstChk[(wIndex)])
 #define G_Set_Const_Chk(wIndex,wState) (((wIndex)<CN_NUM_PUB)?(g_tagPub.bConstChk[(wIndex)]=(wState)):0)
 // 全局标志
-#define G_Get_Flag_P                (g_bFlag)
 #define G_Get_Flag(wIndex)          (((wIndex)<CN_NUM_FLAG)?g_bFlag[(wIndex)]:0)
 #define G_Set_Flag(wIndex,wState)   (((wIndex)<CN_NUM_FLAG)?g_bFlag[(wIndex)]=(wState):0)
 // 全局标志(内部使用)
-#define G_Get_Inter_P                (g_iInter)
 #define G_Get_Inter(wIndex)          (((wIndex)<CN_NUM_INTER)?g_iInter[(wIndex)]:0)
 #define G_Set_Inter(wIndex,iState)   (((wIndex)<CN_NUM_INTER)?g_iInter[(wIndex)]=(iState):0)
 // 事项启动
 #define G_Set_ActIn(wIndex,wState)  (((wIndex)<CN_NUM_ACT)?g_tActState.bActIn[(wIndex)]=(wState):0)
 #define G_Set_AlmIn(wIndex,wState)  (((wIndex)<CN_NUM_ALM)?g_tAlmState.bAlmIn[(wIndex)]=(wState):0)
 // GOOSE命令事项状态输出
-#define G_Get_ActIn_P               (g_tActState.bActIn)
-#define G_Get_ActOut_P              (g_tActState.bActOut)
-#define G_Get_ActOutRet_P           (g_tActState.bActOutRet)
 #define G_Get_ActOut(wIndex)        (((wIndex)<CN_NUM_ACT)?g_tActState.bActOut[(wIndex)]:0)
 // 告警事项状态输出
-#define G_Get_AlmIn_P               (g_tAlmState.bAlmIn)
-#define G_Get_AlmOut_P              (g_tAlmState.bAlmOut)
-#define G_Get_AlmXor_P              (g_tAlmState.bAlmXor)
 #define G_Get_AlmOut(wIndex)        (((wIndex)<CN_NUM_ALM)?g_tAlmState.bAlmOut[(wIndex)]:0)
 // 自检事项状态输出
-#define G_Get_ChkIn_P               (g_tChkState.bChkIn)
-#define G_Get_ChkOut_P              (g_tChkState.bChkOut)
-#define G_Get_ChkXor_P              (g_tChkState.bChkXor)
+#define G_Get_ChkIn(wIndex)         (((wIndex)<CN_NUM_CHK)?g_tChkState.bChkIn[(wIndex)]:0)
 #define G_Get_ChkOut(wIndex)        (((wIndex)<CN_NUM_CHK)?g_tChkState.bChkOut[(wIndex)]:0)
 // 带参数事项接口
 #define G_Set_AlmIn_All(wIndex,wState,iValue1,iValue2,iValue3)    \
 	if((wIndex)<CN_NUM_ALM)                                       \
 	{                                                             \
-		g_tAlmState.bAlmIn[(wIndex)]=(wState);                        \
-		g_tAlmState.tRecValue[(wIndex)].iMeaValue[0]=(iValue1);       \
-		g_tAlmState.tRecValue[(wIndex)].iMeaValue[1]=(iValue2);       \
-		g_tAlmState.tRecValue[(wIndex)].iMeaValue[2]=(iValue3);       \
+		g_tAlmState.bAlmIn[(wIndex)]=(wState);                    \
+		g_tAlmState.tRecValue[(wIndex)].iMeaValue[0]=(iValue1);   \
+		g_tAlmState.tRecValue[(wIndex)].iMeaValue[1]=(iValue2);   \
+		g_tAlmState.tRecValue[(wIndex)].iMeaValue[2]=(iValue3);   \
 	}
 // 自检事项带参数置位
 #define G_Set_ChkIn_All(wIndex,iValue1,iValue2,iValue3)           \
 	if((wIndex)<CN_NUM_CHK)                                       \
 	{                                                             \
-		g_tChkState.tRecValue[(wIndex)].iMeaValue[0]=(iValue1);       \
-		g_tChkState.tRecValue[(wIndex)].iMeaValue[1]=(iValue2);       \
-		g_tChkState.tRecValue[(wIndex)].iMeaValue[2]=(iValue3);       \
-		g_tChkState.dwChkActCnt[(wIndex)]++;                        \
-		g_tChkState.dwChkRetCnt[(wIndex)]=0;                        \
-		g_tChkState.bChkIn[(wIndex)]=TRUE;                          \
+		g_tChkState.tRecValue[(wIndex)].iMeaValue[0]=(iValue1);   \
+		g_tChkState.tRecValue[(wIndex)].iMeaValue[1]=(iValue2);   \
+		g_tChkState.tRecValue[(wIndex)].iMeaValue[2]=(iValue3);   \
+		g_tChkState.dwChkActCnt[(wIndex)]++;                      \
+		g_tChkState.dwChkRetCnt[(wIndex)]=0;                      \
+		g_tChkState.bChkIn[(wIndex)]=TRUE;                        \
 	}
 // 自检事项无参数置位
-#define G_Set_ChkIn(wIndex)    \
+#define G_Set_ChkIn(wIndex)                                       \
 	if((wIndex)<CN_NUM_CHK)                                       \
 	{                                                             \
-		g_tChkState.dwChkActCnt[(wIndex)]++;                        \
-		g_tChkState.dwChkRetCnt[(wIndex)]=0;                        \
-		g_tChkState.bChkIn[(wIndex)]=TRUE;                          \
+		g_tChkState.dwChkActCnt[(wIndex)]++;                      \
+		g_tChkState.dwChkRetCnt[(wIndex)]=0;                      \
+		g_tChkState.bChkIn[(wIndex)]=TRUE;                        \
 	}
 // 自检事项无参数清位
-#define G_Clr_ChkIn(wIndex)    \
-	if((wIndex)<CN_NUM_CHK)                                    \
-	{                                                          \
+#define G_Clr_ChkIn(wIndex)                                      \
+	if((wIndex)<CN_NUM_CHK)                                      \
+	{                                                            \
 		g_tChkState.dwChkActCnt[(wIndex)]=0;                     \
 		g_tChkState.dwChkRetCnt[(wIndex)]++;                     \
 		g_tChkState.bChkIn[(wIndex)]=FALSE;                      \
@@ -585,6 +755,15 @@ extern tagChkState     g_tChkState;           // 自检事件实时状态
 #define G_Sys_Div4_2   ((g_tagPub.dwSysCnt&0x3)==0x1)
 #define G_Sys_Div4_3   ((g_tagPub.dwSysCnt&0x3)==0x2)
 #define G_Sys_Div4_4   ((g_tagPub.dwSysCnt&0x3)==0x3)
+// 2ms分时复用宏定义
+#define G_Sys_Div8_1   ((g_tagPub.dwSysCnt&0x7)==0x0)
+#define G_Sys_Div8_2   ((g_tagPub.dwSysCnt&0x7)==0x1)
+#define G_Sys_Div8_3   ((g_tagPub.dwSysCnt&0x7)==0x2)
+#define G_Sys_Div8_4   ((g_tagPub.dwSysCnt&0x7)==0x3)
+#define G_Sys_Div8_5   ((g_tagPub.dwSysCnt&0x7)==0x4)
+#define G_Sys_Div8_6   ((g_tagPub.dwSysCnt&0x7)==0x5)
+#define G_Sys_Div8_7   ((g_tagPub.dwSysCnt&0x7)==0x6)
+#define G_Sys_Div8_8   ((g_tagPub.dwSysCnt&0x7)==0x7)
 // 1024分时复用宏定义
 #define G_Sys_Div1024_000   ((g_tagPub.dwSysCnt&0x3ff)==0x1)
 #define G_Sys_Div1024_256   ((g_tagPub.dwSysCnt&0x3ff)==0x101)
@@ -596,6 +775,18 @@ extern tagChkState     g_tChkState;           // 自检事件实时状态
 #define G_Sys_Div2048_512   ((g_tagPub.dwSysCnt&0x7ff)==0x202)
 #define G_Sys_Div2048_768   ((g_tagPub.dwSysCnt&0x7ff)==0x302)
 #define G_Sys_Div2048_1024  ((g_tagPub.dwSysCnt&0x7ff)==0x402)
+// 4096分时复用宏定义
+#define G_Sys_Div4096_000    ((g_tagPub.dwSysCnt&0xfff)==0x3)
+#define G_Sys_Div4096_256    ((g_tagPub.dwSysCnt&0xfff)==0x103)
+#define G_Sys_Div4096_512    ((g_tagPub.dwSysCnt&0xfff)==0x203)
+#define G_Sys_Div4096_768    ((g_tagPub.dwSysCnt&0xfff)==0x303)
+#define G_Sys_Div4096_1024   ((g_tagPub.dwSysCnt&0xfff)==0x403)
+// 8192分时复用宏定义
+#define G_Sys_Div8192_000    ((g_tagPub.dwSysCnt&0x1fff)==0x3)
+#define G_Sys_Div8192_256    ((g_tagPub.dwSysCnt&0x1fff)==0x103)
+#define G_Sys_Div8192_512    ((g_tagPub.dwSysCnt&0x1fff)==0x203)
+#define G_Sys_Div8192_768    ((g_tagPub.dwSysCnt&0x1fff)==0x303)
+#define G_Sys_Div8192_1024   ((g_tagPub.dwSysCnt&0x1fff)==0x403)
 // 0x4000分时复用宏定义
 #define G_Sys_Div16284_000   ((g_tagPub.dwSysCnt&0x3fff)==0x3)
 #define G_Sys_Div16284_256   ((g_tagPub.dwSysCnt&0x3fff)==0x103)

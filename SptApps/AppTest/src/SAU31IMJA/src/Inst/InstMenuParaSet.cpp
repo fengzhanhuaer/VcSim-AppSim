@@ -1,4 +1,41 @@
 #include "InstResource.h"
+bool8 DispEthnetPara(ApiMenu* Menu)
+{
+	ApiHmiTextWnd wnd(HmiTextWnd::E_SinglePage, 0);
+	String1000B str;
+	str.Clear();
+	tagDevEthnet  *ptDevEthnet;
+	u4bytes  u4bytesTem;
+	// 详细信息
+	str << "本CPU板网络参数"<<"\n";
+	ptDevEthnet=  &g_tDevInfor.tDevEthnet;
+	u4bytesTem.u32=ptDevEthnet->dwIp;
+	str << "IP地址  :"<<u4bytesTem.u8[0]<<"."<<u4bytesTem.u8[1]<<"."<<u4bytesTem.u8[2]<<"."<<u4bytesTem.u8[3]<<"\n";
+	u4bytesTem.u32=ptDevEthnet->dwMask;
+	str << "子网掩码:"<<u4bytesTem.u8[0]<<"."<<u4bytesTem.u8[1]<<"."<<u4bytesTem.u8[2]<<"."<<u4bytesTem.u8[3]<<"\n";
+	u4bytesTem.u32=ptDevEthnet->dwGate;
+	str << "网关    :"<<u4bytesTem.u8[0]<<"."<<u4bytesTem.u8[1]<<"."<<u4bytesTem.u8[2]<<"."<<u4bytesTem.u8[3]<<"\n";
+	str << "标志字  :";
+	str.FormatHex(ptDevEthnet->dwFlag);
+	str <<"\n";
+
+	str << "另一CPU板网络参数"<<"\n";
+	ptDevEthnet=  &g_tDevInfor.tDevEthnetOth;
+	u4bytesTem.u32=ptDevEthnet->dwIp;
+	str << "IP地址  :"<<u4bytesTem.u8[0]<<"."<<u4bytesTem.u8[1]<<"."<<u4bytesTem.u8[2]<<"."<<u4bytesTem.u8[3]<<"\n";
+	u4bytesTem.u32=ptDevEthnet->dwMask;
+	str << "子网掩码:"<<u4bytesTem.u8[0]<<"."<<u4bytesTem.u8[1]<<"."<<u4bytesTem.u8[2]<<"."<<u4bytesTem.u8[3]<<"\n";
+	u4bytesTem.u32=ptDevEthnet->dwGate;
+	str << "网关    :"<<u4bytesTem.u8[0]<<"."<<u4bytesTem.u8[1]<<"."<<u4bytesTem.u8[2]<<"."<<u4bytesTem.u8[3]<<"\n";
+	str << "标志字  :";
+	str.FormatHex(ptDevEthnet->dwFlag);
+	str <<"\n";
+	wnd.SetPage(0, str.Str());
+	wnd.SetTitle("网络参数", 1);
+	wnd.Show();
+	return 1;
+}
+
 bool8 EditEthnetPara(ApiMenu* Menu)
 {
 	ApiSysEthNetCfg& UsrCfg = ApiSysEthNetCfg::Instance();
@@ -22,7 +59,7 @@ bool8 EditEthnetPara(ApiMenu* Menu)
 		ApiSelectDialog dig("参数已修改是否保存?", 0, 0, 0, 0);
 		if (dig.Show() == 0)
 		{
-			if (LcdOperationConfirmationAccountInfo(Menu) == 0)
+			if(LcdOperationConfirmationAccountInfo(Menu)==0)
 			{
 				return 0;
 			}
@@ -32,9 +69,10 @@ bool8 EditEthnetPara(ApiMenu* Menu)
 			{
 				ApiWarnDialog dig1("参数保存成功!", 0, 0, 0, 0);
 				dig1.Show();
-
-				AppEventOptRef(EN_OPT_ETH_W_SUCC);
-
+				
+				AppEventPrvtOptRef(EN_PRVT_OPT_ETH_W_SUCC);
+				// 网络参数保存
+				AppEthNetParaRef();
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "参数存储成功", 0, 0, 0);
 			}
@@ -42,9 +80,9 @@ bool8 EditEthnetPara(ApiMenu* Menu)
 			{
 				ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 				dig1.Show();
-
-				AppEventOptRef(EN_OPT_ETH_W_FAIL);
-
+				
+				AppEventPrvtOptRef(EN_PRVT_OPT_ETH_W_FAIL);
+				
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "参数存储失败", 0, 0, 0);
 			}
@@ -87,28 +125,28 @@ bool8 MakeParaSetMenu(ApiMenu* Menu, ApiHmiGridWnd& wnd, SalParaEditGroup* ParaG
 	return 1;
 }
 // 自检参数
-bool8 ChkProtSet(ApiMenu* Menu, uint16 wIndex, uint16 wFlag)
+bool8 ChkProtSet(ApiMenu* Menu,uint16 wIndex,uint16 wFlag)
 {
-	if (G_Get_ChkOut(EN_CHK_PARA_STR + wIndex))
+	if(G_Get_ChkOut(EN_CHK_PARA_STR+wIndex))
 	{
-		ApiSelectDialog sd("参数异常", "是否初始化该参数？", 0, 0, 0);
+		ApiSelectDialog sd("参数异常","是否初始化该参数？", 0, 0, 0);
 		int32 res = sd.Show();
 		if (res == 0)
 		{
-			if (wFlag == 1)
+			if(wFlag==1)
 			{
-				if (LcdOperationConfirmationAccountInfo(Menu) == 0)
+				if(LcdOperationConfirmationAccountInfo(Menu)==0)
 				{
 					return 0;
 				}
 			}
-			if (AppParaDefault(wIndex) != 0)
+			if(AppParaDefault(wIndex)!=0)
 			{
-				ApiWarnDialog dig2("参数初始化失败!", 0, 0, 0, 0);
+				ApiWarnDialog dig2("参数初始化失败!",0, 0, 0, 0);
 				dig2.Show();
 				return 0;
 			}
-			ApiWarnDialog dig2("参数初始化成功!", 0, 0, 0, 0);
+			ApiWarnDialog dig2("参数初始化成功!",0, 0, 0, 0);
 			dig2.Show();
 		}
 		else
@@ -120,9 +158,9 @@ bool8 ChkProtSet(ApiMenu* Menu, uint16 wIndex, uint16 wFlag)
 }
 
 
-bool8 DispProtSet(ApiMenu* Menu, uint16 wIndex)
+bool8 DispProtSet(ApiMenu* Menu,uint16 wIndex)
 {
-	if (wIndex >= CN_NUM_BOARD_PARA)
+	if(wIndex>=CN_NUM_BOARD_PARA)
 	{
 		return 0;
 	}
@@ -140,52 +178,53 @@ bool8 DispProtSet(ApiMenu* Menu, uint16 wIndex)
 
 bool8 DispProtSetDI(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_DI);
+	DispProtSet(Menu,EN_BOARD_PARA_DI);
 	return 1;
 }
 bool8 DispProtSetDC(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_DC);
+	DispProtSet(Menu,EN_BOARD_PARA_DC);
 	return 1;
 }
 bool8 DispProtSetSam(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_SAM);
+	DispProtSet(Menu,EN_BOARD_PARA_SAM);
 	return 1;
 }
 bool8 DispProtSetFun(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_FUN);
+	DispProtSet(Menu,EN_BOARD_PARA_FUN);
 	return 1;
 }
 bool8 DispProtSetDcCoe(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_DC_COE);
+	DispProtSet(Menu,EN_BOARD_PARA_DC_COE);
 	return 1;
 }
 
 bool8 DispProtSetAmCoe(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_AM_COE);
+	DispProtSet(Menu,EN_BOARD_PARA_AM_COE);
 	return 1;
 }
 bool8 DispProtSetDcBcCoe(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_DCBC_COE);
+	DispProtSet(Menu,EN_BOARD_PARA_DCBC_COE);
 	return 1;
 }
 bool8 DispProtSetAngCoe(ApiMenu* Menu)
 {
-	DispProtSet(Menu, EN_BOARD_PARA_ANG_COE);
+	DispProtSet(Menu,EN_BOARD_PARA_ANG_COE);
 	return 1;
 }
-bool8 EditProtSet(ApiMenu* Menu, uint16 wIndex)
+bool8 EditProtSet(ApiMenu* Menu,uint16 wIndex)
 {
-	if (wIndex >= CN_NUM_BOARD_PARA)
+	BYTE byPowOff=FALSE;
+	if(wIndex>=CN_NUM_BOARD_PARA)
 	{
 		return 0;
 	}
-	if (ChkProtSet(Menu, wIndex, 1) == 0)
+	if(ChkProtSet(Menu,wIndex,1)==0)
 	{
 		return 0;
 	}
@@ -200,35 +239,67 @@ bool8 EditProtSet(ApiMenu* Menu, uint16 wIndex)
 
 		if (dig.Show() == 0)
 		{
-			if (LcdOperationConfirmationAccountInfo(Menu) == 0)
+			if(LcdOperationConfirmationAccountInfo(Menu)==0)
 			{
 				return 1;
 			}
+			// 上电重启检测
+			WORD *pCfg=g_tagPara.wParaCfg;
+			for(WORD i=g_tBoardParaTab[wIndex].wIndexStr;i<g_tBoardParaTab[wIndex].wIndexEnd;i++)
+			{
+				if(pCfg[i]&DB0)
+				{
+					SalPara*para          = (SalPara*)&ProtPara[i];
+					SalParaEditCell*epara = HmiParaEditGroup.EditCell(para->InstId());
+					if(epara&& epara->Des() &&( *epara->Buf()!=epara->Des()->Int32()))
+					{
+						byPowOff=TRUE;
+					}
+				}
+			}
+			
 			if (HmiParaEditGroup.SavePara() == 0)
 			{
 				if (AppSendPara2SubBoard(&ProtParaGroup[wIndex], 0) == 0)
 				{
-					ApiWarnDialog dig1("参数保存成功!", 0, 0, 0, 0);
-					dig1.Show();
-					AppEventOptRef(EN_OPT_PARA_W_SUCC_STR + wIndex);
+					if(byPowOff)
+					{
+						ApiWarnDialog dig1("参数保存成功!","重启装置生效!", 0, 0, 0);
+	                    dig1.Show();
+					}
+					else
+					{
+						ApiWarnDialog dig1("参数保存成功!",0, 0, 0, 0);
+	                    dig1.Show();
+					}
+
+					AppEventOptRef(EN_OPT_PARA_W_SUCC_STR+wIndex);
 					//if(LogInUsr)
 					//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), "用户设置功能", "设置成功",g_tBoardParaTab[wIndex].byName, 0, 0);
 				}
 				else
 				{
-					ApiWarnDialog dig1("本板参数保存成功!", "另一板参数保存失败!", 0, 0, 0);
-					dig1.Show();
-					AppEventOptRef(EN_OPT_PARA_W_FAIL_STR + wIndex);
+					if(byPowOff)
+					{
+						ApiWarnDialog dig1("本板参数保存成功!", "重启装置生效!", "另一板参数保存失败!", 0, 0);
+	                    dig1.Show();
+					}
+					else
+					{
+						ApiWarnDialog dig1("本板参数保存成功!", "另一板参数保存失败!", 0, 0, 0);
+	                    dig1.Show();
+					}
+					AppEventOptRef(EN_OPT_PARA_W_FAIL_STR+wIndex);
 					//if(LogInUsr)
 					//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), "用户设置功能", "设置失败",g_tBoardParaTab[wIndex].byName, 0, 0);
-
+					
 				}
 			}
 			else
 			{
 				ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 				dig1.Show();
-				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR + wIndex);
+				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR+wIndex);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), "用户设置功能", "设置失败", g_tBoardParaTab[wIndex].byName, 0, 0);
 			}
@@ -239,47 +310,47 @@ bool8 EditProtSet(ApiMenu* Menu, uint16 wIndex)
 
 bool8 EditProtSetDI(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_DI);
+	EditProtSet(Menu,EN_BOARD_PARA_DI);
 	return 1;
 }
 bool8 EditProtSetDC(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_DC);
+	EditProtSet(Menu,EN_BOARD_PARA_DC);
 	return 1;
 }
 bool8 EditProtSetSam(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_SAM);
+	EditProtSet(Menu,EN_BOARD_PARA_SAM);
 	return 1;
 }
 bool8 EditProtSetFun(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_FUN);
+	EditProtSet(Menu,EN_BOARD_PARA_FUN);
 	return 1;
 }
 
 bool8 EditProtSetDcCoe(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_DC_COE);
+	EditProtSet(Menu,EN_BOARD_PARA_DC_COE);
 	return 1;
 }
 
 
 bool8 EditProtSetAmCoe(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_AM_COE);
+	EditProtSet(Menu,EN_BOARD_PARA_AM_COE);
 	return 1;
 }
 
 bool8 EditProtSetDcBcCoe(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_DCBC_COE);
+	EditProtSet(Menu,EN_BOARD_PARA_DCBC_COE);
 	return 1;
 }
 
 bool8 EditProtSetAngCoe(ApiMenu* Menu)
 {
-	EditProtSet(Menu, EN_BOARD_PARA_ANG_COE);
+	EditProtSet(Menu,EN_BOARD_PARA_ANG_COE);
 	return 1;
 }
 
@@ -287,16 +358,16 @@ bool8 EditProtSetAngCoe(ApiMenu* Menu)
 static int32 HmiViewAnaUpdate(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
 	// 更新数据
-	if (G_Get_Inter(EN_INTER_OPT_ANA))
+	if(g_iInter[EN_INTER_OPT_ANA])
 	{
-		if (AppDispAnaAmRef())
+		if(AppDispAnaAmRef())
 		{
 			return 0;
 		}
 	}
-	if (G_Get_Inter(EN_INTER_OPT_ANA_J))
+	if(g_iInter[EN_INTER_OPT_ANA_J])
 	{
-		if (AppDispAnaAmjRef())
+		if(AppDispAnaAmjRef())
 		{
 			return 0;
 		}
@@ -423,11 +494,11 @@ bool8 MakeAnaParaSetMenu(ApiMenu* Menu, ApiHmiGridWnd& wnd, SalParaEditGroup* Pa
 }
 bool8 EditAnaAmParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_AM_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_AM_COE,0)==0)
 	{
 		return 0;
 	}
-
+	
 	ApiHmiGridWnd wnd(HmiViewAnaUpdate);
 	wnd.SetInfo("幅值校准系数", 0, 0);
 	HmiParaEditGroup.Set((SalParaGroup*)&ProtParaGroup[EN_BOARD_PARA_AM_COE], 0);
@@ -442,7 +513,7 @@ bool8 EditAnaAmParaSet(ApiMenu* Menu)
 			{
 				ApiWarnDialog dig1("参数保存成功!", 0, 0, 0, 0);
 				dig1.Show();
-				AppEventOptRef(EN_OPT_PARA_W_SUCC_STR + EN_BOARD_PARA_AM_COE);
+				AppEventOptRef(EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_AM_COE);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准成功", "幅值校准系数", 0, 0);
 			}
@@ -450,7 +521,7 @@ bool8 EditAnaAmParaSet(ApiMenu* Menu)
 			{
 				ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 				dig1.Show();
-				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR + EN_BOARD_PARA_AM_COE);
+				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR+EN_BOARD_PARA_AM_COE);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准失败", "幅值校准系数", 0, 0);
 			}
@@ -470,12 +541,12 @@ bool8 DispAnaAmParaSet(ApiMenu* Menu)
 BOOL bChnAna[CN_NUM_AD];
 bool8 AutoAnaAmParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_AM_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_AM_COE,0)==0)
 	{
 		return 0;
 	}
-	BOOL* pChn = NULL;
-	ApiSelectDialog sd("接入U=100V I=In f=50Hz", "幅值自动校准？", 0, 0, 0);
+	BOOL *pChn=NULL;
+	ApiSelectDialog sd("接入U=100V I=In f=50Hz","幅值自动校准？", 0, 0, 0);
 	int32 res = sd.Show();
 	if (res == 0)
 	{
@@ -483,7 +554,7 @@ bool8 AutoAnaAmParaSet(ApiMenu* Menu)
 		HmiParaEditGroup.Set((SalParaGroup*)&ProtParaGroup[EN_BOARD_PARA_AM_COE], 0);
 		wnd.SetInfo("幅值校准系数", 0, 0);
 		// 暂定100周波
-		if (IES_IMSam_AdJAm_Str(100))
+		if(IES_IMSam_AdJAm_Str(100))
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -495,8 +566,8 @@ bool8 AutoAnaAmParaSet(ApiMenu* Menu)
 			return 1;
 		}
 		MsSleep(5000);
-		uint32 dwNo = IES_IMSam_AdJAm(bChnAna);
-		if (dwNo == 0)
+		uint32 dwNo =IES_IMSam_AdJAm(bChnAna);
+		if (dwNo==0)
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -507,9 +578,9 @@ bool8 AutoAnaAmParaSet(ApiMenu* Menu)
 			wnd.Show();
 			return 1;
 		}
-		else if (dwNo != CN_NUM_SAM)
+		else if(dwNo!=CN_NUM_SAM)
 		{
-			ApiSelectDialog sd1("仅部分通道校准成功", "是否存储？", 0, 0, 0);
+			ApiSelectDialog sd1("仅部分通道校准成功","是否存储？", 0, 0, 0);
 			if (sd1.Show() != 0)
 			{
 				ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
@@ -522,10 +593,10 @@ bool8 AutoAnaAmParaSet(ApiMenu* Menu)
 				wnd.Show();
 				return 1;
 			}
-			pChn = bChnAna;
+			pChn=bChnAna;
 		}
 		// 更新参数
-		if (AppParaCoeEditUpdate(&HmiParaEditGroup, EN_PARA_AM_COE_STR, EN_PARA_AM_COE_STR + CN_NUM_SAM, EN_BOARD_PARA_AM_COE, pChn))
+		if(AppParaCoeEditUpdate(&HmiParaEditGroup,EN_PARA_AM_COE_STR,EN_PARA_AM_COE_STR+CN_NUM_SAM,EN_BOARD_PARA_AM_COE,pChn))
 		{
 			ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 			dig1.Show();
@@ -557,7 +628,7 @@ bool8 AutoAnaAmParaSet(ApiMenu* Menu)
 
 bool8 EditAnaDcParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_DCBC_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_DCBC_COE,0)==0)
 	{
 		return 0;
 	}
@@ -575,8 +646,8 @@ bool8 EditAnaDcParaSet(ApiMenu* Menu)
 			if (HmiParaEditGroup.SavePara() == 0)
 			{
 				ApiWarnDialog dig1("参数保存成功!", 0, 0, 0, 0);
-
-				AppEventOptRef(EN_OPT_PARA_W_SUCC_STR + EN_BOARD_PARA_DCBC_COE);
+				
+				AppEventOptRef(EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_DCBC_COE);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准成功", "幅值校准系数", 0, 0);
 				dig1.Show();
@@ -584,8 +655,8 @@ bool8 EditAnaDcParaSet(ApiMenu* Menu)
 			else
 			{
 				ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
-
-				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR + EN_BOARD_PARA_DCBC_COE);
+				
+				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR+EN_BOARD_PARA_DCBC_COE);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准失败", "幅值校准系数", 0, 0);
 				dig1.Show();
@@ -606,13 +677,13 @@ bool8 DispAnaDcParaSet(ApiMenu* Menu)
 }
 bool8 AutoAnaDcParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_DCBC_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_DCBC_COE,0)==0)
 	{
 		return 0;
 	}
 
-	BOOL* pChn = NULL;
-	ApiSelectDialog sd("接入U=0V I=0A", "直流补偿校准？", 0, 0, 0);
+	BOOL *pChn=NULL;
+	ApiSelectDialog sd("接入U=0V I=0A","直流补偿校准？", 0, 0, 0);
 	int32 res = sd.Show();
 	if (res == 0)
 	{
@@ -620,8 +691,8 @@ bool8 AutoAnaDcParaSet(ApiMenu* Menu)
 		HmiParaEditGroup.Set((SalParaGroup*)&ProtParaGroup[EN_BOARD_PARA_DCBC_COE], 0);
 		wnd.SetInfo("直流补偿参数", 0, 0);
 		// 暂定100周波
-
-		if (IES_IMSam_AdJDc_Str(10))
+		
+		if(IES_IMSam_AdJDc_Str(10))
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -633,8 +704,8 @@ bool8 AutoAnaDcParaSet(ApiMenu* Menu)
 			return 1;
 		}
 		MsSleep(5000);
-		uint32 dwNo = IES_IMSam_AdJDc(bChnAna);
-		if (dwNo == 0)
+		uint32 dwNo =IES_IMSam_AdJDc(bChnAna);
+		if(dwNo==0)
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -645,9 +716,9 @@ bool8 AutoAnaDcParaSet(ApiMenu* Menu)
 			wnd.Show();
 			return 1;
 		}
-		else if (dwNo != CN_NUM_SAM)
+		else if(dwNo!=CN_NUM_SAM)
 		{
-			ApiSelectDialog sd1("仅部分通道校准成功", "是否存储？", 0, 0, 0);
+			ApiSelectDialog sd1("仅部分通道校准成功","是否存储？", 0, 0, 0);
 			if (sd1.Show() != 0)
 			{
 				ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
@@ -659,10 +730,10 @@ bool8 AutoAnaDcParaSet(ApiMenu* Menu)
 				wnd.Show();
 				return 1;
 			}
-			pChn = bChnAna;
+			pChn=bChnAna;
 		}
 		// 更新参数
-		if (AppParaCoeEditUpdate(&HmiParaEditGroup, EN_PARA_DCBC_COE_STR, EN_PARA_DCBC_COE_STR + CN_NUM_SAM, EN_BOARD_PARA_DCBC_COE, pChn))
+		if(AppParaCoeEditUpdate(&HmiParaEditGroup,EN_PARA_DCBC_COE_STR,EN_PARA_DCBC_COE_STR+CN_NUM_SAM,EN_BOARD_PARA_DCBC_COE,pChn))
 		{
 			ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 			dig1.Show();
@@ -695,7 +766,7 @@ bool8 AutoAnaDcParaSet(ApiMenu* Menu)
 
 bool8 EditAnaAngParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_ANG_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_ANG_COE,0)==0)
 	{
 		return 0;
 	}
@@ -714,7 +785,7 @@ bool8 EditAnaAngParaSet(ApiMenu* Menu)
 			{
 				ApiWarnDialog dig1("参数保存成功!", 0, 0, 0, 0);
 				dig1.Show();
-				AppEventOptRef(EN_OPT_PARA_W_SUCC_STR + EN_BOARD_PARA_ANG_COE);
+				AppEventOptRef(EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_ANG_COE);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准成功", "相位补偿系数", 0, 0);
 			}
@@ -722,7 +793,7 @@ bool8 EditAnaAngParaSet(ApiMenu* Menu)
 			{
 				ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 				dig1.Show();
-				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR + EN_BOARD_PARA_ANG_COE);
+				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR+EN_BOARD_PARA_ANG_COE);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准失败", "相位补偿系数", 0, 0);
 			}
@@ -742,13 +813,13 @@ bool8 DispAnaAngParaSet(ApiMenu* Menu)
 }
 bool8 AutoAnaAngParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_ANG_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_ANG_COE,0)==0)
 	{
 		return 0;
 	}
 
-	BOOL* pChn = NULL;
-	ApiSelectDialog sd("接入U=100V I=In f=50Hz Ang=0°", "相位自动校准？", 0, 0, 0);
+	BOOL *pChn=NULL;
+	ApiSelectDialog sd("接入U=100V I=In f=50Hz Ang=0°","相位自动校准？", 0, 0, 0);
 	int32 res = sd.Show();
 	if (res == 0)
 	{
@@ -756,8 +827,8 @@ bool8 AutoAnaAngParaSet(ApiMenu* Menu)
 		HmiParaEditGroup.Set((SalParaGroup*)&ProtParaGroup[EN_BOARD_PARA_ANG_COE], 0);
 		wnd.SetInfo("相位补偿参数", 0, 0);
 		// 暂定100周波
-
-		if (IES_IMSam_AdJAng_Str(100))
+		
+		if(IES_IMSam_AdJAng_Str(100))
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -769,8 +840,8 @@ bool8 AutoAnaAngParaSet(ApiMenu* Menu)
 			return 1;
 		}
 		MsSleep(5000);
-		uint32 dwNo = IES_IMSam_AdJAng(bChnAna);
-		if (dwNo == 0)
+		uint32 dwNo =IES_IMSam_AdJAng(bChnAna);
+		if (dwNo==0)
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -781,9 +852,9 @@ bool8 AutoAnaAngParaSet(ApiMenu* Menu)
 			wnd.Show();
 			return 1;
 		}
-		if (dwNo != (CN_NUM_JZ + CN_NUM_JZ))
+		if (dwNo!=(CN_NUM_JZ+ CN_NUM_JZ))
 		{
-			ApiSelectDialog sd1("仅部分通道校准成功", "是否存储？", 0, 0, 0);
+			ApiSelectDialog sd1("仅部分通道校准成功","是否存储？", 0, 0, 0);
 			if (sd1.Show() != 0)
 			{
 				ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
@@ -795,10 +866,10 @@ bool8 AutoAnaAngParaSet(ApiMenu* Menu)
 				wnd.Show();
 				return 1;
 			}
-			pChn = bChnAna;
+			pChn=bChnAna;
 		}
 		// 更新参数
-		if (AppParaCoeEditUpdate(&HmiParaEditGroup, EN_PARA_ANG_COE_STR, EN_PARA_ANG_COE_END, EN_BOARD_PARA_ANG_COE, pChn))
+		if(AppParaCoeEditUpdate(&HmiParaEditGroup,EN_PARA_ANG_COE_STR,EN_PARA_ANG_COE_END,EN_BOARD_PARA_ANG_COE,pChn))
 		{
 			ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 			dig1.Show();
@@ -830,7 +901,7 @@ bool8 AutoAnaAngParaSet(ApiMenu* Menu)
 static int32 HmiViewDcUpdate(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
 	// 更新数据
-	if (AppDispDcRef())
+	if(AppDispDcRef())
 	{
 		return 0;
 	}
@@ -952,7 +1023,7 @@ bool8 MakeDcParaSetMenu(ApiMenu* Menu, ApiHmiGridWnd& wnd, SalParaEditGroup* Par
 
 bool8 EditDcParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_DC_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_DC_COE,0)==0)
 	{
 		return 0;
 	}
@@ -972,7 +1043,7 @@ bool8 EditDcParaSet(ApiMenu* Menu)
 				if (AppSendPara2SubBoard(&ProtParaGroup[EN_BOARD_PARA_DC_COE], 0) == 0)
 				{
 					ApiWarnDialog dig1("参数保存成功!", 0, 0, 0, 0);
-					AppEventOptRef(EN_OPT_PARA_W_SUCC_STR + EN_BOARD_PARA_DC_COE);
+					AppEventOptRef(EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_DC_COE);
 					//if(LogInUsr)
 					//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准成功", "直流校准系数", 0, 0);
 					dig1.Show();
@@ -980,7 +1051,7 @@ bool8 EditDcParaSet(ApiMenu* Menu)
 				else
 				{
 					ApiWarnDialog dig1("本板参数参数保存成功!", "另一板参数保存失败", 0, 0, 0);
-					AppEventOptRef(EN_OPT_PARA_W_FAIL_STR + EN_BOARD_PARA_DC_COE);
+					AppEventOptRef(EN_OPT_PARA_W_FAIL_STR+EN_BOARD_PARA_DC_COE);
 					//if(LogInUsr)
 					//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准成功", "本板直流校准系数", 0, 0);
 					dig1.Show();
@@ -989,7 +1060,7 @@ bool8 EditDcParaSet(ApiMenu* Menu)
 			else
 			{
 				ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
-				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR + EN_BOARD_PARA_DC_COE);
+				AppEventOptRef(EN_OPT_PARA_W_FAIL_STR+EN_BOARD_PARA_DC_COE);
 				//if(LogInUsr)
 				//SjSystemRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "校准失败", "直流校准系数", 0, 0);
 				dig1.Show();
@@ -1010,12 +1081,12 @@ bool8 DispDcParaSet(ApiMenu* Menu)
 }
 bool8 AutoDcParaSet(ApiMenu* Menu)
 {
-	if (ChkProtSet(Menu, EN_BOARD_PARA_DC_COE, 0) == 0)
+	if(ChkProtSet(Menu,EN_BOARD_PARA_DC_COE,0)==0)
 	{
 		return 0;
 	}
-	BOOL* pChn = NULL;
-	ApiSelectDialog sd("DC接入方式0~5V   接入DC=5V", "直流自动校准？", 0, 0, 0);
+	BOOL *pChn=NULL;
+	ApiSelectDialog sd("DC接入方式0~5V   接入DC=5V","直流自动校准？", 0, 0, 0);
 	int32 res = sd.Show();
 	if (res == 0)
 	{
@@ -1023,7 +1094,7 @@ bool8 AutoDcParaSet(ApiMenu* Menu)
 		HmiParaEditGroup.Set((SalParaGroup*)&ProtParaGroup[EN_BOARD_PARA_DC_COE], 0);
 		wnd.SetInfo("直流校准系数", 0, 0);
 		// 暂定100周波
-		if (IES_IMDC_AdJ_Str(20))
+		if(IES_IMDC_AdJ_Str(20))
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -1035,8 +1106,8 @@ bool8 AutoDcParaSet(ApiMenu* Menu)
 			return 1;
 		}
 		MsSleep(10000);
-		uint32 dwNo = IES_IMDC_AdJ(bChnAna);
-		if (dwNo == 0)
+		uint32 dwNo =IES_IMDC_AdJ(bChnAna);
+		if (dwNo==0)
 		{
 			ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
 			wd.Show();
@@ -1047,9 +1118,9 @@ bool8 AutoDcParaSet(ApiMenu* Menu)
 			wnd.Show();
 			return 1;
 		}
-		else if (dwNo != CN_NUM_DC_SAM)
+		else if(dwNo!=CN_NUM_DC_SAM)
 		{
-			ApiSelectDialog sd1("仅部分通道校准成功", "是否存储？", 0, 0, 0);
+			ApiSelectDialog sd1("仅部分通道校准成功","是否存储？", 0, 0, 0);
 			if (sd1.Show() != 0)
 			{
 				ApiWarnDialog wd("自动校准失败", 0, 0, 0, 0);
@@ -1061,10 +1132,10 @@ bool8 AutoDcParaSet(ApiMenu* Menu)
 				wnd.Show();
 				return 1;
 			}
-			pChn = bChnAna;
+			pChn=bChnAna;
 		}
 		// 更新参数
-		if (AppParaCoeEditUpdate(&HmiParaEditGroup, EN_PARA_DC_COE_STR, EN_PARA_DC_COE_END, EN_BOARD_PARA_DC_COE, pChn))
+		if(AppParaCoeEditUpdate(&HmiParaEditGroup,EN_PARA_DC_COE_STR,EN_PARA_DC_COE_END,EN_BOARD_PARA_DC_COE,pChn))
 		{
 			ApiWarnDialog dig1("参数保存失败!", 0, 0, 0, 0);
 			dig1.Show();

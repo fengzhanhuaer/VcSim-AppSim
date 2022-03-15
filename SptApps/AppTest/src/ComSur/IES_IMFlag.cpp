@@ -30,15 +30,15 @@ void IES_IMFlag_Chg(tagIES_IMFlag *pgtagIES_IMFlag)
 	BOOL   *pbFlagDst,*pbFlagSrc;
 	const  tagFlagTab *ptFlagTab;
 	
-	ptFlagTab   =&g_tFlagTab[0];
-	pbFlagDst   =&g_bFlag[0];
+	ptFlagTab   =g_tFlagTab;
+	pbFlagDst   =g_bFlag;
 	
 	for(i=0;i<CN_NUM_FLAG;i++,ptFlagTab++)
 	{
-		if(ptFlagTab->wSrcType!=CN_NULL_PINNO)
+		if(ptFlagTab->wSrcType<CN_NUM_DTYPE)
 		{
-			pbFlagSrc  = CN_Get_Dat_Src_P(ptFlagTab->wSrcType);
-			pwSrcIndex = &ptFlagTab->wSrcIndex[0];
+			pbFlagSrc  = g_tDTypeTab[ptFlagTab->wSrcType].bDatAtr;
+			pwSrcIndex = ptFlagTab->wSrcIndex;
 			
 			if((pbFlagSrc!=NULL)&&(*pwSrcIndex!=CN_NULL_PINNO))
 			{

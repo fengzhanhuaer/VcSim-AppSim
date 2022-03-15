@@ -31,13 +31,9 @@ int32 spt::SalUserAccount::NewUser(const char* Account, uint8 AcType, uint32 Id,
 		status.isDefaultPw = IsDefault;
 		data.id = Id;
 		status.lastLogTime = now.Us();
-		status.lastLogTimeQ = now.q.q;
 		status.lastPwChagneTime = now.Us();
-		status.lastPwChagneTimeQ = now.q.q;
 		status.firstErrTime = now.Us();
-		status.firstErrTimeQ = now.q.q;
 		status.lastErrTime = now.Us();
-		status.lastErrTimeQ = now.q.q;
 		status.size = sizeof(status);
 		StrNCpy(data.account, Account, sizeof(data.account));
 		StrNCpy(data.password, Pw, sizeof(data.password));
@@ -89,10 +85,8 @@ bool8 spt::SalUserAccount::SetPassWord(const char* Pw)
 	SalDateStamp now = SptDateTask::Instance().Now();
 	StrNCpy(data.password, Pw, sizeof(data.password));
 	status.lastPwChagneTime = now.Us();
-	status.lastPwChagneTimeQ = now.q.q;
 	status.logErrCnt = 0;
 	status.lastLogTime = now.Us();
-	status.lastLogTimeQ = now.q.q;
 	status.isDefaultPw = 0;
 	return 1;
 }
@@ -112,7 +106,6 @@ int32 spt::SalUserAccount::LogOnce(const char* Pw)
 	{
 		status.logErrCnt = 0;
 		status.lastLogTime = now.Us();
-		status.lastLogTimeQ = now.q.q;
 		if (SalUserMng::Instance().UsrCfg.EnablePassWordOverTime.Data())
 		{
 			uint64 delta = now.Us() - status.lastPwChagneTime;
@@ -130,15 +123,12 @@ int32 spt::SalUserAccount::LogOnce(const char* Pw)
 		{
 			status.logErrCnt = 1;
 			status.firstErrTime = now.Us();
-			status.firstErrTimeQ = now.q.q;
 			status.lastErrTime = now.Us();
-			status.lastErrTimeQ = now.q.q;
 		}
 		else
 		{
 			status.logErrCnt++;
 			status.lastErrTime = now.Us();
-			status.lastErrTimeQ = now.q.q;
 		}
 		if (status.logErrCnt > SalUserMng::Instance().UsrCfg.PasswordErrCnt.Data())
 		{

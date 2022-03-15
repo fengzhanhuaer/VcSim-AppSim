@@ -13,15 +13,37 @@ void ApiFlagsIn()
 // 平台告警标志
 	// 虚拟LCD标志
 	g_iInter[EN_INTER_LCD_VIR]              =(SptApiStatus[E_SAS_VirLcdCmmErr].Value().bl)?TRUE:FALSE;
-	// LED自检
-	g_tChkState.bChkIn[EN_CHK_BOARD_LED]    =(SptApiStatus[E_SAS_LcdCmmErr].Value().bl)?TRUE:FALSE;
 	// SV同步
 	g_tAlmState.bAlmIn[EN_ALM_SYN]          =(SptApiStatus[E_SAS_HostSvSynState].Value().bl)?FALSE:TRUE;
 	// 时间帧跳变异常
 	g_tAlmState.bAlmIn[EN_ALM_TIME_SINGLE]  =(SptApiStatus[E_SAS_HostTPortAlarm].Value().bl)?TRUE:FALSE;
 	g_tAlmState.bAlmIn[EN_ALM_TIME_SERVICE] =(SptApiStatus[E_SAS_HostTSrvAlarm].Value().bl)?TRUE:FALSE;
 	g_tAlmState.bAlmIn[EN_ALM_TIME_CHKERR]  =(SptApiStatus[E_SAS_HostContAlarm].Value().bl)?TRUE:FALSE;
-
+	// 自检
+	if(SptApiStatus[E_SAS_LcdCmmErr].Value().bl)
+	{
+		G_Set_ChkIn(EN_CHK_BOARD_LED);
+	}
+	else
+	{
+		G_Clr_ChkIn(EN_CHK_BOARD_LED);
+	}
+	if(SptApiStatus[E_SAS_RamAllocErr].Value().bl)
+	{
+		G_Set_ChkIn(EN_CHK_RAM_ALLOC);
+	}
+	else
+	{
+		G_Clr_ChkIn(EN_CHK_RAM_ALLOC);
+	}
+	if(SptApiStatus[E_SAS_RamCheckErr].Value().bl)
+	{
+		G_Set_ChkIn(EN_CHK_RAM_CHK);
+	}
+	else
+	{
+		G_Clr_ChkIn(EN_CHK_RAM_CHK);
+	}
 // 系统标志
 	const tsAppFlags& pAppFlags=ApiIoGlobalFlag::Instance().AppFlags();
 	// 调试标志
@@ -29,7 +51,7 @@ void ApiFlagsIn()
 	// 界面复归
 	g_bFlag[EN_FLAG_RESET_DBG]=(pAppFlags.blFaceRevert)?TRUE:FALSE;
 	// 增加电源监视控制字
-	if(G_Get_PARA_I(EN_PARA_ENA_POW)==1)
+	if(g_tagPara.dwPara[EN_PARA_ENA_POW]==1)
 	{
 		// 装置掉电瞬时信号
 		SptGetHwVal(E_HPT_PowerUp, &g_iInter[EN_INTER_POW_LOS], 1);
@@ -74,23 +96,7 @@ void ApiFlagsIn()
 	{
 		G_Clr_ChkIn(EN_CHK_BOARD_PTCT2);
 	}
-#if(CN_DEV_CPU1)
-	// 背板每隔4S进行一次更新
-	// 暂时封掉,后续根据FPGA改动开放
-	#if 0	
-	if(G_Sys_Div16284_000)
-	{
-		if(wboard&DB2)
-		{
-			G_Set_ChkIn(EN_CHK_BOARD_CPU_AUX);
-		}
-		else
-		{
-			G_Clr_ChkIn(EN_CHK_BOARD_CPU_AUX);
-		}
-	}
-	#endif
-#endif
+
 }
 void ApiFlagsOut()
 {
@@ -98,6 +104,8 @@ void ApiFlagsOut()
 	ApiIoGlobalFlag::Instance().SetUnitTestState(g_tagPub.bSysTest);
 	// 复归标志
 	ApiIoGlobalFlag::Instance().SetUnitRevert(g_tagPub.bSysReset);
+	
+	ApiIoGlobalFlag::Instance().EnableAngErrPointDeal((bool8)g_tagPara.dwPara[EN_PARA_ENA_DIST]);
 	// 启动SV、GOOSE发布
 	if(g_tagPub.bSysPower)
 	{
@@ -188,6 +196,17 @@ void ApiFlagsOut()
 	}
 	
 #endif
-	
+	// 30V电源检测
+	if(g_tChkState.bChkOut[EN_CHK_BOARD_DO1_POW30]
+	||g_tChkState.bChkOut[EN_CHK_BOARD_DIO_POW30]
+	)
+	{
+		if(g_iInter[EN_INTER_POW30_OFF])
+		{
+			g_iInter[EN_INTER_POW30_OFF]=FALSE;
+			UINT8 byPowDo=FALSE;
+			SptSetHwVal(E_HPT_RelayPower30V, &byPowDo, 1);
+		}
+	}
 }
 

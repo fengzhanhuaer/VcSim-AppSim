@@ -24,7 +24,7 @@ int32 T860CCDLinkDataSet()
 			// 判断是否CPU1板,SV仅CPU1板订阅
 			if ((Card != EN_CARD_CPU1) || (Port >byPortMax)||(Port==0))
 			{
-				G_Set_Inter(EN_INTER_SVSUB_PORT,TRUE);
+				g_iInter[EN_INTER_SVSUB_PORT]=TRUE;
 				continue;
 			}
 			// 应用应在此处判断板卡号与端口号的正确性
@@ -41,17 +41,17 @@ int32 T860CCDLinkDataSet()
 					// 参数异常
 					if(gosvInfo.ParseInfo.svcbSub[i].parseErr)
 					{
-						G_Set_Inter(EN_INTER_SVSUB_PARAERR,TRUE);
+						g_iInter[EN_INTER_SVSUB_PARAERR]=TRUE;
 					}
 					// 短地址异常
 					if(gosvInfo.ParseInfo.svcbSub[i].sAddrErr)
 					{
-						G_Set_Inter(EN_INTER_SVSUB_ADRERR,TRUE);
+						g_iInter[EN_INTER_SVSUB_ADRERR]=TRUE;
 					}
 					// 配置异常
 					if(gosvInfo.ParseInfo.svcbSub[i].cfgErr)
 					{
-						G_Set_Inter(EN_INTER_SVSUB_CFGERR,TRUE);
+						g_iInter[EN_INTER_SVSUB_CFGERR]=TRUE;
 					}
 				}
 				else if (dataset->SetSvCbCfg(&gosvInfo.ParseInfo.svcbSub[i], j, gosvInfo.ParseInfo.svEnableSubNum))
@@ -60,18 +60,18 @@ int32 T860CCDLinkDataSet()
 				}
 				else
 				{
-					G_Set_Inter(EN_INTER_SVSUB_CFGERR,TRUE);
+					g_iInter[EN_INTER_SVSUB_CFGERR]=TRUE;
 				}
 				
 			}
 			else
 			{
-				G_Set_Inter(EN_INTER_SVSUB_NUMERR,TRUE);
+				g_iInter[EN_INTER_SVSUB_NUMERR]=TRUE;
 			}
 		}
 		if(gosvInfo.ParseInfo.svcbSub[i].connect.PortEnableNum==0)
 		{
-			G_Set_Inter(EN_INTER_SVSUB_PORT,TRUE);
+			g_iInter[EN_INTER_SVSUB_PORT]=TRUE;
 		}
 		gosvInfo.ParseInfo.svcbSub[i].linked = 1;
 	}
@@ -81,7 +81,6 @@ int32 T860CCDLinkDataSet()
 	tt = gosvInfo.ParseInfo.svPubNum;
 	for (uint32 i = 0; i < tt; i++)
 	{
-	
 		bygoEna=0;
 		if (gosvInfo.ParseInfo.svcbPub[i].linked)
 		{
@@ -96,7 +95,7 @@ int32 T860CCDLinkDataSet()
 			// 间隔采执仅CPU1、CPU2发布
 			if ((Card != CN_BOARD_CPU)&&(Card != CN_BOARD_CPU_OTH))
 			{
-				G_Set_Inter(EN_INTER_SVPUB_PORT,TRUE);
+				g_iInter[EN_INTER_SVPUB_PORT]=TRUE;
 			}
 			if (Card!=CN_BOARD_CPU)
 			{
@@ -104,7 +103,7 @@ int32 T860CCDLinkDataSet()
 			}
 			if((Port >byPortMax)||(Port==0))
 			{
-				G_Set_Inter(EN_INTER_SVPUB_PORT,TRUE);
+				g_iInter[EN_INTER_SVPUB_PORT]=TRUE;
 				continue;
 			}
 			
@@ -117,28 +116,28 @@ int32 T860CCDLinkDataSet()
 			k++;
 			if((gosvInfo.ParseInfo.svcbPub[i].parseErr)
 			||(gosvInfo.ParseInfo.svcbPub[i].sAddrErr)
-			||(gosvInfo.ParseInfo.svcbPub[i].cfgErr)
+			||(gosvInfo.ParseInfo.svcbPub[i].cfgErr)
 			||(gosvInfo.ParseInfo.svcbPub[i].connect.PortEnableNum==0)
 			)
 			{
 				// 参数异常
 				if(gosvInfo.ParseInfo.svcbPub[i].parseErr)
 				{
-					G_Set_Inter(EN_INTER_SVPUB_PARAERR,TRUE);
+					g_iInter[EN_INTER_SVPUB_PARAERR]=TRUE;
 				}
 				// 短地址异常
 				if(gosvInfo.ParseInfo.svcbPub[i].sAddrErr)
 				{
-					G_Set_Inter(EN_INTER_SVPUB_ADRERR,TRUE);
+					g_iInter[EN_INTER_SVPUB_ADRERR]=TRUE;
 				}
 				// 配置异常
 				if(gosvInfo.ParseInfo.svcbPub[i].cfgErr)
 				{
-					G_Set_Inter(EN_INTER_SVPUB_CFGERR,TRUE);
+					g_iInter[EN_INTER_SVPUB_CFGERR]=TRUE;
 				}
 				if(gosvInfo.ParseInfo.svcbPub[i].connect.PortEnableNum==0)
 				{
-					G_Set_Inter(EN_INTER_SVPUB_PORT,TRUE);
+					g_iInter[EN_INTER_SVPUB_PORT]=TRUE;
 				}
 			}
 			else if (dataset->SetSvCbCfg(&gosvInfo.ParseInfo.svcbPub[i], gosvInfo.ParseInfo.svEnablePubNum))
@@ -147,12 +146,12 @@ int32 T860CCDLinkDataSet()
 			}
 			else
 			{
-				G_Set_Inter(EN_INTER_SVPUB_CFGERR,TRUE);
+				g_iInter[EN_INTER_SVPUB_CFGERR]=TRUE;
 			}
 		}
 		else if(bygoEna)
 		{
-			G_Set_Inter(EN_INTER_SVPUB_NUMERR,TRUE);
+			g_iInter[EN_INTER_SVPUB_NUMERR]=TRUE;
 		}
 		gosvInfo.ParseInfo.svcbPub[i].linked = 1;
 	}
@@ -175,7 +174,7 @@ int32 T860CCDLinkDataSet()
 			// 判断是否CPU1板
 			if ((Card != CN_BOARD_CPU) && (Card != CN_BOARD_CPU_OTH))
 			{
-				G_Set_Inter(EN_INTER_GOSUB_PORT, TRUE);
+				g_iInter[EN_INTER_GOSUB_PORT]=TRUE;
 			}
 			if (Card != CN_BOARD_CPU)
 			{
@@ -183,7 +182,7 @@ int32 T860CCDLinkDataSet()
 			}
 			if ((Port >byPortMax)||(Port==0))
 			{
-				G_Set_Inter(EN_INTER_GOSUB_PORT,TRUE);
+				g_iInter[EN_INTER_GOSUB_PORT]=TRUE;
 				continue;
 			}
 			gosvInfo.ParseInfo.gocbSub[i].connect.AInnerPortIndex[j] = Port-1;;
@@ -200,23 +199,23 @@ int32 T860CCDLinkDataSet()
 				SptGooseDataSetIn* dataset = (SptGooseDataSetIn*)&GoInCB[k++];
 				if((gosvInfo.ParseInfo.gocbSub[i].parseErr)
 				||(gosvInfo.ParseInfo.gocbSub[i].sAddrErr)
-				||(gosvInfo.ParseInfo.gocbSub[i].cfgErr)
+				||(gosvInfo.ParseInfo.gocbSub[i].cfgErr)
 				)
 				{
 					// 参数异常
 					if(gosvInfo.ParseInfo.gocbSub[i].parseErr)
 					{
-						G_Set_Inter(EN_INTER_GOSUB_PARAERR,TRUE);
+						g_iInter[EN_INTER_GOSUB_PARAERR]=TRUE;
 					}
 					// 短地址异常
 					if(gosvInfo.ParseInfo.gocbSub[i].sAddrErr)
 					{
-						G_Set_Inter(EN_INTER_GOSUB_ADRERR,TRUE);
+						g_iInter[EN_INTER_GOSUB_ADRERR]=TRUE;
 					}
 					// 配置异常
 					if(gosvInfo.ParseInfo.gocbSub[i].cfgErr)
 					{
-						G_Set_Inter(EN_INTER_GOSUB_CFGERR,TRUE);
+						g_iInter[EN_INTER_GOSUB_CFGERR]=TRUE;
 					}
 				}
 				else if (dataset->SetGoCbCfg(&gosvInfo.ParseInfo.gocbSub[i], j, gosvInfo.ParseInfo.goEnableSubNum))
@@ -225,17 +224,17 @@ int32 T860CCDLinkDataSet()
 				}
 				else
 				{
-					G_Set_Inter(EN_INTER_GOSUB_CFGERR,TRUE);
+					g_iInter[EN_INTER_GOSUB_CFGERR]=TRUE;
 				}
 			}
 			else
 			{
-				G_Set_Inter(EN_INTER_GOSUB_NUMERR,TRUE);
+				g_iInter[EN_INTER_GOSUB_NUMERR]=TRUE;
 			}
 		}
 		if(gosvInfo.ParseInfo.gocbSub[i].connect.PortEnableNum==0)
 		{
-			G_Set_Inter(EN_INTER_GOSUB_PORT,TRUE);
+			g_iInter[EN_INTER_GOSUB_PORT]=TRUE;
 		}
 		gosvInfo.ParseInfo.gocbSub[i].linked = 1;
 	}
@@ -257,7 +256,7 @@ int32 T860CCDLinkDataSet()
 			uint8 Port = (uint8)gosvInfo.ParseInfo.gocbPub[i].connect.ACard_Port[j]&0xff;
 			if ((Card != CN_BOARD_CPU) && (Card != CN_BOARD_CPU_OTH))
 			{
-				G_Set_Inter(EN_INTER_GOPUB_PORT, TRUE);
+				g_iInter[EN_INTER_GOPUB_PORT]=TRUE;
 			}
 			// 判断是否CPU板
 			if (Card != CN_BOARD_CPU)
@@ -266,7 +265,7 @@ int32 T860CCDLinkDataSet()
 			}
 			if((Port >byPortMax)||(Port==0))
 			{
-				G_Set_Inter(EN_INTER_GOPUB_PORT,TRUE);
+				g_iInter[EN_INTER_GOPUB_PORT]=TRUE;
 				continue;
 			}
 			gosvInfo.ParseInfo.gocbPub[i].connect.AInnerPortIndex[j] = Port-1;
@@ -277,28 +276,28 @@ int32 T860CCDLinkDataSet()
 			SptGooseDataSetOut* dataset = (SptGooseDataSetOut*)&GoDataSetOut[k++];
 			if((gosvInfo.ParseInfo.gocbPub[i].parseErr)
 			||(gosvInfo.ParseInfo.gocbPub[i].sAddrErr)
-			||(gosvInfo.ParseInfo.gocbPub[i].cfgErr)
+			||(gosvInfo.ParseInfo.gocbPub[i].cfgErr)
 			||(gosvInfo.ParseInfo.gocbPub[i].connect.PortEnableNum==0)
 			)
 			{
 				// 参数异常
 				if(gosvInfo.ParseInfo.gocbPub[i].parseErr)
 				{
-					G_Set_Inter(EN_INTER_GOPUB_PARAERR,TRUE);
+					g_iInter[EN_INTER_GOPUB_PARAERR]=TRUE;
 				}
 				// 短地址异常
 				if(gosvInfo.ParseInfo.gocbPub[i].sAddrErr)
 				{
-					G_Set_Inter(EN_INTER_GOPUB_ADRERR,TRUE);
+					g_iInter[EN_INTER_GOPUB_ADRERR]=TRUE;
 				}
 				// 配置异常
 				if(gosvInfo.ParseInfo.gocbPub[i].cfgErr)
 				{
-					G_Set_Inter(EN_INTER_GOPUB_CFGERR,TRUE);
+					g_iInter[EN_INTER_GOPUB_CFGERR]=TRUE;
 				}
 				if(gosvInfo.ParseInfo.gocbPub[i].connect.PortEnableNum==0)
 				{
-					G_Set_Inter(EN_INTER_GOPUB_PORT,TRUE);
+					g_iInter[EN_INTER_GOPUB_PORT]=TRUE;
 				}
 			}
 			else if (dataset->SetGoCbCfg(&gosvInfo.ParseInfo.gocbPub[i], gosvInfo.ParseInfo.goEnablePubNum))
@@ -307,12 +306,12 @@ int32 T860CCDLinkDataSet()
 			}
 			else
 			{
-				G_Set_Inter(EN_INTER_GOPUB_CFGERR,TRUE);
+				g_iInter[EN_INTER_GOPUB_CFGERR]=TRUE;
 			}
 		}
 		else if(bygoEna)
 		{
-			G_Set_Inter(EN_INTER_GOPUB_NUMERR,TRUE);
+			g_iInter[EN_INTER_GOPUB_NUMERR]=TRUE;
 		}
 		gosvInfo.ParseInfo.gocbPub[i].linked = 1;
 	}
@@ -339,14 +338,6 @@ void GetT860Version()
 }
 int32 T860PowerUpIni()
 {
-	GetT860Version();
-	SptT860Info::Instance().CheckOutputDataSet();
-	SptCcdFile::Instance().PowerUpIni(CN_NUM_GOCB_SUB, CN_NUM_GOCB_PUB, CN_NUM_SVCB_SUB, CN_NUM_SVCB_PUB);
-	T860CCDLinkDataSet();
 	return 0;
 }
 
-int32 T860SclMain()
-{
-	return 0;
-}

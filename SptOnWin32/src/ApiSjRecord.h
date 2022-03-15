@@ -40,6 +40,21 @@ namespace spt
 		/// 清空审计记录
 		/// </summary>
 		void ClearEvent();
+		/// <summary>
+		/// 有效记录个数
+		/// </summary>
+		/// <returns></returns>
+		uint16 ValidNum();
+		/// <summary>
+		/// 审计记录生成总个数
+		/// </summary>
+		/// <returns></returns>
+		uint16 CreatNum();
+		/// <summary>
+		/// 缓冲区大小
+		/// </summary>
+		/// <returns></returns>
+		uint16 PoolSize();
 	};
 	/// <summary>
 	/// Hmi事项查看缓冲区

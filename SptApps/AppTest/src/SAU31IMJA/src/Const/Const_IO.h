@@ -1,7 +1,6 @@
 #ifndef _CONST_IO_H_
 #define _CONST_IO_H_
 
-#include "IES_IMtypes.h"
 /*================================================================================*/
 // 开入信号枚举
 /*================================================================================*/
@@ -137,23 +136,23 @@ enum _DI_NUMBER
 	EN_DI_YX_BAK70,
 	EN_DI_YX_BAK71,
 	EN_DI_POW4,        // 开入开出板遥信电源监视
-	EN_DI_YX_BAK72,
-	EN_DI_YX_BAK73,
-	EN_DI_YX_BAK74,
-	EN_DI_YX_BAK75,
-	EN_DI_YX_BAK76,
-	EN_DI_YX_BAK77,
-	EN_DI_YX_BAK78,
-	EN_DI_YX_BAK79,
-	EN_DI_YX_BAK80,
-	EN_DI_YX_BAK81,
-	EN_DI_YX_BAK82,
-	EN_DI_YX_BAK83,
-	EN_DI_YX_BAK84,
-	EN_DI_YX_BAK85,
-	EN_DI_YX_BAK86,
-	EN_DI_YX_BAK87,
-	EN_DI_YX_BAK88,
+//	EN_DI_YX_BAK72,
+//	EN_DI_YX_BAK73,
+//	EN_DI_YX_BAK74,
+//	EN_DI_YX_BAK75,
+//	EN_DI_YX_BAK76,
+//	EN_DI_YX_BAK77,
+//	EN_DI_YX_BAK78,
+//	EN_DI_YX_BAK79,
+//	EN_DI_YX_BAK80,
+//	EN_DI_YX_BAK81,
+//	EN_DI_YX_BAK82,
+//	EN_DI_YX_BAK83,
+//	EN_DI_YX_BAK84,
+//	EN_DI_YX_BAK85,
+//	EN_DI_YX_BAK86,
+//	EN_DI_YX_BAK87,
+//	EN_DI_YX_BAK88,
 	EN_DI_BOARD4_END,
 /*==============================*/
 //  DWORD5.OPB1板枚举-内部采集信号
@@ -196,7 +195,7 @@ enum _DI_NUMBER
 	EN_DI_DO_XCBR_OPN,
 	EN_DI_DO_XCBR_CLS,
 	EN_DI_DO_BSCH,
-	EN_DI_DO_SHTQ,
+	EN_DI_DO_XCBR_JBS,
 	EN_DI_DO_XSWI01_JBS,
 	EN_DI_DO_XSWI02_JBS,
 	EN_DI_DO_XSWI03_JBS,
@@ -262,7 +261,7 @@ enum _GOIN_NUMBER
 	EN_GOIN_RESET=EN_GOIN_S_STR,  // 远方复归
 	EN_GOIN_CKTZ,                 // 测控跳闸
 	EN_GOIN_CKHZ,                 // 测控合闸
-	EN_GOIN_SHTQ,                 // 手合同期
+	EN_GOIN_JBS_XCBR,             // 断路器解闭锁
 	EN_GOIN_BZTTZ1,               // 备自投跳闸1
 	EN_GOIN_BZTTZ2,               // 备自投跳闸2
 	EN_GOIN_BZTHZ1,               // 备自投合闸1
@@ -344,7 +343,7 @@ enum _DO_NUMBER
     EN_DO_XCBR_OPN,
     EN_DO_XCBR_CLS,
     EN_DO_BSCH,
-    EN_DO_SHTQ,
+    EN_DO_XCBR_JBS,
     EN_DO_XSWI01_JBS,
     EN_DO_XSWI02_JBS,
     EN_DO_XSWI03_JBS,
@@ -518,6 +517,14 @@ enum _LED_NUMBER
 /*================================================================================*/
 enum _BOARD_IO_TYPE_
 {
+    EN_BOARD_DO1=0,
+    EN_BOARD_DO2,
+    EN_BOARD_DO3,
+    EN_BOARD_DIO_DO=EN_BOARD_DO3,      // DIO板卡标识
+    EN_BOARD_DO_RTN_END,               // 有返校的开出信号
+    EN_BOARD_DO4=EN_BOARD_DO_RTN_END,  
+    EN_BOARD_DO_END,
+    
     EN_BOARD_DI1=0,
     EN_BOARD_DI2,
     EN_BOARD_DI3,
@@ -526,17 +533,12 @@ enum _BOARD_IO_TYPE_
     EN_BOARD_DI5,
     EN_BOARD_OPB=EN_BOARD_DI5,        // OPB板卡标识
     EN_BOARD_DI_DI_END,               // DI非返校部分
-    EN_BOARD_DI6=EN_BOARD_DI_DI_END,
-    EN_BOARD_DI7,
-    EN_BOARD_DI8,
-    EN_BOARD_DI_END,
-    EN_BOARD_DO1=0,
-    EN_BOARD_DO2,
-    EN_BOARD_DO3,
-    EN_BOARD_DIO_DO=EN_BOARD_DO3,      // DIO板卡标识
-    EN_BOARD_DO_RTN_END,               // 有返校的开出信号
-    EN_BOARD_DO4=EN_BOARD_DO_RTN_END,  
-    EN_BOARD_DO_END,
+    EN_BOARD_DI_DO_STR=EN_BOARD_DI_DI_END,// DI非返校部分
+    EN_BOARD_DI6=EN_BOARD_DI_DO_STR+EN_BOARD_DO1,
+    EN_BOARD_DI7=EN_BOARD_DI_DO_STR+EN_BOARD_DO2,
+    EN_BOARD_DI8=EN_BOARD_DI_DO_STR+EN_BOARD_DO3,
+    EN_BOARD_DI_DO_END=EN_BOARD_DI_DO_STR+EN_BOARD_DO_RTN_END,
+    EN_BOARD_DI_END=EN_BOARD_DI_DO_END,
 };
 // GOOSE信号无效原因
 enum _TYPE_GOIN_INVAILD_
@@ -652,6 +654,7 @@ typedef struct
 #define CN_NUM_LED           (EN_LED_END)
 // 板卡个数
 #define CN_NUM_BOARD_DI_DI   (EN_BOARD_DI_DI_END)
+#define CN_NUM_BOARD_DI_DO   (EN_BOARD_DI_DO_STR)
 #define CN_NUM_BOARD_DI      (EN_BOARD_DI_END)
 #define CN_NUM_BOARD_DO_RTN  (EN_BOARD_DO_RTN_END)
 #define CN_NUM_BOARD_DO      (EN_BOARD_DO_END)
@@ -667,20 +670,20 @@ typedef struct
 #define CN_NUM_GOCB_SUB       (12)
 #define CN_NUM_GOCB_PUB       (8)
 // GOOSE品质(经过向右平移)
-//#define CN_GOIN_St            (DB0+DB1)                       // bit0~bit1 状态信息 
+//#define CN_GOIN_St          (DB0+DB1)                       // bit0~bit1 状态信息 
 #define CN_GOIN_Invalid       (DB0+DB1)                       // bit2~bit3 品质无效
 #define CN_GOIN_Test          (DB2)                           // bit4 检修状态(订阅Q,取Q中检修;未订阅Q,取控制块检修):0--未检修 1--检修
 #define CN_GOIN_Link          (DB3)                           // bit5 链路状态:0--未断链 1--断链 
 #define CN_GOIN_TimeToLive0   (DB4)                           // bit6 TimeToLive是否为0标志:0--TimeToLive不为0 1--TimeToLive为0 
 #define CN_GOIN_DataErr       (DB5)                           // bit7 数据异常
-#define CN_GOIN_Bak08         (DB6)                           // bit8 备用 
-#define CN_GOIN_Bak09         (DB7)                           // bit9 备用 
-#define CN_GOIN_Bak10         (DB8)                          // bit10 备用 
-#define CN_GOIN_Bak11         (DB9)                          // bit11 备用 
-#define CN_GOIN_Bak12         (DB10)                          // bit12 备用 
-#define CN_GOIN_Bak13         (DB11)                          // bit13 备用 
-#define CN_GOIN_Bak14         (DB12)                          // bit14 备用 
-#define CN_GOIN_Bak15         (DB13)                          // bit15 备用 
+#define CN_GOIN_Bak08         (DB6)                           // bit8 备用
+#define CN_GOIN_NoSub         (DB7)                           // bit9 未订阅
+#define CN_GOIN_Bak10         (DB8)                           // bit10 备用
+#define CN_GOIN_Bak11         (DB9)                           // bit11 备用
+#define CN_GOIN_Bak12         (DB10)                          // bit12 备用
+#define CN_GOIN_Bak13         (DB11)                          // bit13 备用
+#define CN_GOIN_Bak14         (DB12)                          // bit14 备用
+#define CN_GOIN_Bak15         (DB13)                          // bit15 备用
 
 // GOOSE控制块状态字
 #define CN_GOCB_NO            (0xff)                          // bit0~bit7  控制块序号
@@ -711,7 +714,18 @@ typedef struct
 #define CN_GOCFG_CfgErr     (DB0)                             // bit0 平台提供--配置异常
 #define CN_GOCFG_ParseErr   (DB1)                             // bit1 平台提供--解析异常。
 #define CN_GOCFG_DataErr    (CN_GOCFG_CfgErr+CN_GOCFG_ParseErr)
-
+// 出口板自检状态字
+#define CN_DO_CHK_CHN1       (DB0)                          // bit0 通道1中断(CPU1->出口板),Do板5S收不到数据置位,收到数据200ms返回
+#define CN_DO_CHK_CHN2       (DB1)                          // bit1 通道2中断(CPU2->出口板，母线采执不使用)
+#define CN_DO_CHK_FPOW       (DB2)                          // bit2 快速出口30V电压长期供电，出口板单片机扫描30V供电状态，无30kV控制且供电状态存在超过5S会置位,可自动返回。
+#define CN_DO_CHK_PARA       (DB3)                          // bit3 出口板参数错,出口板单片机集成SRAM,有一点概率出现bit翻转,单片机存储3份参数，周期比对，三份均不一致，置位。
+#if(CN_HARDWARE_DO==CN_HARDWARE_DO_V1)
+#define CN_DO_CHK_POW24      (0)
+#define CN_DO_CHK_POW30      (0)
+#else
+#define CN_DO_CHK_POW24      (DB4)                          // bit4 出口板24V电压断,50ms更新一次。
+#define CN_DO_CHK_POW30      (DB5)                          // bit5 出口板30V电压断,3min更新一次。
+#endif
 /*================================================================================*/
 // 全局常量表声明
 /*================================================================================*/

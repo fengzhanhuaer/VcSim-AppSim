@@ -27,9 +27,9 @@ void IES_IMDI_In(tagIES_IMDI  *pgtagIES_IMDI)
 {
 	register UINT32 i;
 	register DWORD  *pdwSrc, *pdwDst, *pdwXorDst;
-	pdwSrc    =&(g_tagIO.dwDIIn[0]);
-	pdwDst    =&(pgtagIES_IMDI->dwDIBuf[0]);
-	pdwXorDst =&(pgtagIES_IMDI->dwDIXor[0]);
+	pdwSrc    =g_tagIO.dwDIIn;
+	pdwDst    =pgtagIES_IMDI->dwDIBuf;
+	pdwXorDst =pgtagIES_IMDI->dwDIXor;
 	
 	for(i=0;i<CN_NUM_BOARD_DI;i++)
 	{
@@ -65,7 +65,7 @@ void IES_IMDI_Fst(tagIES_IMDI  *pgtagIES_IMDI)
 		ptTimeUTC   = g_tagIO.tDIHldUTC;
 		pdwHld      = g_tagIO.dwDIHldIn32;
 		pbHld       = g_tagIO.bDIHldIn;
-		ptBoardDITab= &g_tBoardDITab[0];
+		ptBoardDITab= g_tBoardDITab;
 		// 单点状态更新
 		for(i=0;i<CN_NUM_BOARD_DI;i++)
 		{
@@ -88,7 +88,7 @@ void IES_IMDI_Fst(tagIES_IMDI  *pgtagIES_IMDI)
 			ptBoardDITab++;
 		}
 		// 双点硬开入状态更新
-		ptDpiTab  = &g_tDpiTab[0];
+		ptDpiTab  = g_tDpiTab;
 		ptDpiUTC  = g_tagIO.tDpiUTC;
 		pbDpiOve  = g_tagIO.byDpiIn;
 		ptTimeUTC = g_tagIO.tDIHldUTC;
@@ -133,7 +133,7 @@ void IES_IMDI_Pow(tagIES_IMDI  *pgtagIES_IMDI)
 	pdwDIHldFlg = pgtagIES_IMDI->dwDIHldFlg;
 	pdwDIHldCnt = pgtagIES_IMDI->dwDIHldCnt;
 	
-	ptBoardDITab=&g_tBoardDITab[0];
+	ptBoardDITab= g_tBoardDITab;
 	// 输出变量
 	pdwHld      = g_tagIO.dwDIHldIn32;
 	// 遥信电源监视投入
@@ -194,7 +194,7 @@ void IES_IMDI_Pow(tagIES_IMDI  *pgtagIES_IMDI)
 	}
 	else
 	{
-		G_Set_AlmIn(EN_ALM_DIPOW, FALSE);
+		g_tAlmState.bAlmIn[EN_ALM_DIPOW]=FALSE;
 	}
 }
 // ============================================================================
@@ -210,11 +210,12 @@ void IES_IMDI_HldCpu(tagIES_IMDI  *pgtagIES_IMDI)
 	register DWORD   *pdwDst,*pdwDIXor,*pdwHld,*pdwHldXor;
 	register DWORD   dwDst,dwDIXor,dwDIHld,dwDIHldXor,dwDIHldXor32;
 	register DWORD   dwBit;
-	register tagTimeUTC  *ptTimeUTC,*ptTimeUTCF,*ptTimeUTCB,*ptFpgaUTC;
+	register tagTimeUTC  *ptTimeUTC,*ptTimeUTCF,*ptFpgaUTC;//*ptTimeUTCB,
 	
 	register BOOL    *pbHld;
 	register DWORD   *pdwDIHldFlg,*pdwDIHldCnt,*pdwDIFdTime,*pdwDIQrTime,dwDIHldFlg;
 	const tagBoardIoTab    *ptBoardDITab;
+	register tagSoeEvent  *ptEvent;
 	// 中间变量
 	pdwDst      = pgtagIES_IMDI->dwDIBuf;
 	pdwDIXor    = pgtagIES_IMDI->dwDIXor;
@@ -223,7 +224,7 @@ void IES_IMDI_HldCpu(tagIES_IMDI  *pgtagIES_IMDI)
 	pdwDIFdTime = pgtagIES_IMDI->dwDIFdTime;
 	pdwDIQrTime = pgtagIES_IMDI->dwDIQrTime;
 	ptTimeUTCF  = pgtagIES_IMDI->tDITimeUTCF;
-	ptTimeUTCB  = pgtagIES_IMDI->tDITimeUTCB;
+	//ptTimeUTCB  = pgtagIES_IMDI->tDITimeUTCB;
 	
 	ptFpgaUTC   = g_tagIO.tDIInUTC;
 	//输出变量
@@ -232,7 +233,7 @@ void IES_IMDI_HldCpu(tagIES_IMDI  *pgtagIES_IMDI)
 	pdwHldXor   = g_tagIO.dwDIHldXor32;
 	pbHld       = g_tagIO.bDIHldIn;
 	
-	ptBoardDITab=&g_tBoardDITab[0];
+	ptBoardDITab= g_tBoardDITab;
 	// 
 	for(i=0;i<CN_NUM_BOARD_DI;i++)
 	{
@@ -265,7 +266,7 @@ void IES_IMDI_HldCpu(tagIES_IMDI  *pgtagIES_IMDI)
 						pdwDIHldFlg[j]=CN_HLD_RD;
 						pdwDIHldCnt[j]=0;
 						// 记录防抖后时间
-						ptTimeUTCB[j]=ptFpgaUTC[i];
+						//ptTimeUTCB[j]=ptFpgaUTC[i];
 						// 防抖前防抖后选择
 						// 输出防抖前时标
 						ptTimeUTC[j]=ptTimeUTCF[j];
@@ -284,6 +285,21 @@ void IES_IMDI_HldCpu(tagIES_IMDI  *pgtagIES_IMDI)
 						}
 						// 更新变位状态
 						dwDIHldXor32|=dwBit;
+						// 生成事项
+						{
+							ptEvent=&g_tDiQueue.tEvent[g_tDiQueue.wWptr];
+							ptEvent->wIndex = j;
+							ptEvent->wState = pbHld[j];
+							ptEvent->tTime  = ptTimeUTC[j];
+							if((++g_tDiQueue.wWptr)>=CN_NUM_RPT_DI)
+							{
+								g_tDiQueue.wWptr=0;
+							}
+							if(g_tDiQueue.wWptr==g_tDiQueue.wRptr)
+							{
+								g_tDiQueue.wFlag=CN_RPT_FULL;
+							}
+						}
 					}
 				}
 				else
@@ -328,15 +344,11 @@ void IES_IMDI_HldCpu(tagIES_IMDI  *pgtagIES_IMDI)
 void IES_IMDI_Go_Chk(tagIES_IMDI  *pgtagIES_IMDI)
 {
 	register UINT32      i;
-	register BOOL        bTestErrA,bTestErrB,bCfgErr,bCfgEna,bSubCfgErr,bPubCfgErr;
+	register BOOL        bTestErrA,bTestErrB,bCfgErr,bCfgEna;
 	register BOOL        bTestErrHld=FALSE,bDatErrHld=FALSE,bCfgErrHld=FALSE,bCfgEnaHld=FALSE;
 	register BOOL        *pbTestErrA,*pbTestErrB;
 	register UINT32     *pdwStatusA,*pdwStatusB,*pdwSubStatus;
 	register UINT32      dwStatusA,dwStatusB,dwSubStatus;
-	register WORD        wAlmTestIndex,wAlmDatErrIndex;
-#if(!CN_FUN_DBUG1)
-	register WORD        wAlmStormIndex;
-#endif
 	// 输入变量
 	pdwSubStatus =g_tagIO.dwGoInSubStatus;
 	pdwStatusA   =g_tagIO.dwGoInStatusA;
@@ -344,12 +356,6 @@ void IES_IMDI_Go_Chk(tagIES_IMDI  *pgtagIES_IMDI)
 	pbTestErrA   =pgtagIES_IMDI->bTestErrA;
 	pbTestErrB   =pgtagIES_IMDI->bTestErrB;
 	
-	// 告警起始枚举
-	wAlmDatErrIndex =EN_ALM_GOCB_DATA_STR;
-	wAlmTestIndex   =EN_ALM_GOCB_TEST_STR;
-#if(!CN_FUN_DBUG1)
-	wAlmStormIndex  =EN_ALM_GOCB_STORM_STR;
-#endif
 	// 告警信息 更新
 	for(i=0;i<g_tagIO.byGoCbSubNum;i++)
 	{
@@ -408,40 +414,33 @@ void IES_IMDI_Go_Chk(tagIES_IMDI  *pgtagIES_IMDI)
 		if(bTestErrA|bTestErrB)
 		{
 			bTestErrHld=TRUE;
-			G_Set_AlmIn_All(wAlmTestIndex,TRUE,dwSubStatus,dwStatusA,dwStatusB);
+			G_Set_AlmIn_All(EN_ALM_GOCB_TEST_STR+i,TRUE,dwSubStatus,dwStatusA,dwStatusB);
 		}
 		else
 		{
-			G_Set_AlmIn(wAlmTestIndex,FALSE);
+			g_tAlmState.bAlmIn[EN_ALM_GOCB_TEST_STR+i]=FALSE;
 		}
 		// 数据异常告警
 		if(((dwStatusA|dwStatusB)&CN_GOCB_DataAlm)||bCfgEna||bCfgErr)
 		{
-			G_Set_AlmIn_All(wAlmDatErrIndex,TRUE,dwSubStatus,dwStatusA,dwStatusB);
+			G_Set_AlmIn_All(EN_ALM_GOCB_DATA_STR+i,TRUE,dwSubStatus,dwStatusA,dwStatusB);
 		}
 		else
 		{
-			G_Set_AlmIn(wAlmDatErrIndex,FALSE);
+			g_tAlmState.bAlmIn[EN_ALM_GOCB_DATA_STR+i]=FALSE;
 		}
-	#if(!CN_FUN_DBUG1)
 		// 网络风暴告警
 		if((dwStatusA|dwStatusB)&CN_GOCB_Storm)
 		{
-			G_Set_AlmIn_All(wAlmStormIndex,TRUE,dwSubStatus,dwStatusA,dwStatusB);
+			G_Set_AlmIn_All(EN_ALM_GOCB_STORM_STR+i,TRUE,dwSubStatus,dwStatusA,dwStatusB);
 		}
 		else
 		{
-			G_Set_AlmIn(wAlmStormIndex,FALSE);
+			g_tAlmState.bAlmIn[EN_ALM_GOCB_STORM_STR+i]=FALSE;
 		}
-		wAlmStormIndex++;
-	#endif
-		wAlmTestIndex++;
-		wAlmDatErrIndex++;
 	}
-	G_Set_AlmIn(EN_ALM_GOOSE_TEST,bTestErrHld);
-	bSubCfgErr=G_Get_Inter(EN_INTER_GOSUB_CFG);
-	bPubCfgErr=G_Get_Inter(EN_INTER_GOPUB_CFG);
-	G_Set_AlmIn(EN_ALM_GOOSE,(bDatErrHld|bCfgErrHld|bCfgEnaHld|bSubCfgErr|bPubCfgErr));
+	g_tAlmState.bAlmIn[EN_ALM_GOOSE_TEST]=bTestErrHld;
+	g_tAlmState.bAlmIn[EN_ALM_GOOSE]=bDatErrHld|bCfgErrHld|bCfgEnaHld|g_iInter[EN_INTER_GOSUB_CFG]|g_iInter[EN_INTER_GOPUB_CFG];
 }
 
 // ============================================================================
@@ -453,16 +452,17 @@ void IES_IMDI_Go_Chk(tagIES_IMDI  *pgtagIES_IMDI)
 void IES_IMDI_Go(tagIES_IMDI  *pgtagIES_IMDI)
 {
 	register UINT32      i;
-	register BOOL        *pbGoIn,*pbXor,*pbGoInSub,*pbGoInValid,*pbGoInValidXor;
+	register BOOL        *pbGoIn,*pbGoInXor,*pbGoInSub,*pbGoInValid,*pbGoInValidXor;
 	register BOOL         bGoInValid;
 	register WORD        *pwSrcQ,wSrcQ;
 	register BYTE        *pbyGoInInValid;
+	register tagSoeEvent *ptEvent;
 	// 输入变量
-	pwSrcQ   =g_tagIO.wGoQSrc;
-	pbGoInSub=g_tagIO.byGoInSub;
+	pwSrcQ           =g_tagIO.wGoInQ;
+	pbGoInSub        =g_tagIO.byGoInSub;
 	// 输出变量
 	pbGoIn           =g_tagIO.bGoIn;
-	pbXor            =g_tagIO.bGoInXor;
+	pbGoInXor        =g_tagIO.bGoInXor;
 	pbGoInValid      =g_tagIO.bGoInValid;
 	pbGoInValidXor   =g_tagIO.bGoInValidXor;
 	pbyGoInInValid   =g_tagIO.byGoInInValid;
@@ -470,15 +470,35 @@ void IES_IMDI_Go(tagIES_IMDI  *pgtagIES_IMDI)
 	for(i=0;i<CN_NUM_GOIN;i++)
 	{
 		// 信号未订阅,不进行有效判断
-		if(!pbGoInSub[i])
-		{
-			pbGoInValid[i]        = FALSE;
-			pbGoInValidXor[i]     = FALSE;
-			pbyGoInInValid[i]     = EN_INVAILD_NO;
-		}
-		else
+		//if(!pbGoInSub[i])
+		//{
+		//	pbGoInValid[i]        = FALSE;
+		//	pbGoInValidXor[i]     = FALSE;
+		//	pbyGoInInValid[i]     = EN_INVAILD_NO;
+		//}
+		//else
+		if(pbGoInSub[i])
 		{
 			wSrcQ  =pwSrcQ[i];
+			// 生成事项
+			if(pbGoInXor[i])
+			{
+				ptEvent=&g_tGoInQueue.tEvent[g_tGoInQueue.wWptr];
+				ptEvent->wIndex = i;
+				ptEvent->wState = pbGoIn[i];
+				ptEvent->wQ     = wSrcQ;
+				ptEvent->tTime  = g_tagPub.tSysTimeUTC;
+				if((++g_tGoInQueue.wWptr)>=CN_NUM_RPT_GOIN)
+				{
+					g_tGoInQueue.wWptr=0;
+				}
+				if(g_tGoInQueue.wWptr==g_tGoInQueue.wRptr)
+				{
+					g_tGoInQueue.wFlag=CN_RPT_FULL;
+				}
+				// 清除变位标志,
+				pbGoInXor[i]=FALSE;
+			}
 			// 检修不一致
 			if(((wSrcQ&CN_GOIN_Test)?TRUE:FALSE)^g_tagPub.bSysTest)
 			{
@@ -506,11 +526,7 @@ void IES_IMDI_Go(tagIES_IMDI  *pgtagIES_IMDI)
 				pbyGoInInValid[i]=EN_INVAILD_NO;
 			}
 			pbGoInValidXor[i]=pbGoInValid[i]^bGoInValid;
-			// 有效状态变位处理
-			if(pbGoInValidXor[i])
-			{
-				pbGoInValid[i]=bGoInValid;
-			}
+			pbGoInValid[i]=bGoInValid;
 		}
 	}
 }
@@ -532,11 +548,13 @@ void IES_IMDI_Dpi(tagIES_IMDI  *pgtagIES_IMDI)
 	register tagTimeUTC *ptTimeUTC;//,*ptDIHldUTC,*ptGoInUTC;
 	register tagTimeUTC *ptDpiUTC;
 	const    tagDpiTab  *ptDpiTab;
+	
+	register tagSoeEvent  *ptEvent;
 	// 输入变量
-	pbHldIn     = g_tagIO.bDIHldIn;
-	ptTimeUTC   = g_tagIO.tDIHldUTC;
+	pbHldIn   = g_tagIO.bDIHldIn;
+	ptTimeUTC = g_tagIO.tDIHldUTC;
 	// 常量表
-	ptDpiTab  = &g_tDpiTab[0];
+	ptDpiTab  = g_tDpiTab;
 	// 输出变量
 	pbDpiOve  = g_tagIO.byDpiIn;
 	pbDpiXor  = g_tagIO.byDpiInXor;
@@ -553,7 +571,7 @@ void IES_IMDI_Dpi(tagIES_IMDI  *pgtagIES_IMDI)
 		bDpiOve+= (bCls?DB1:0);
 		
 		bDpiXor=(pbDpiOve[i])^bDpiOve;
-        pbDpiXor[i]=bDpiXor;
+		pbDpiXor[i]=bDpiXor;
 		
 		if(bDpiXor)
 		{
@@ -568,6 +586,21 @@ void IES_IMDI_Dpi(tagIES_IMDI  *pgtagIES_IMDI)
 			else
 			{
 				ptDpiUTC[i]=ptTimeUTC[ptDpiTab->wSrcCls];
+			}
+			// 生成事项
+			{
+				ptEvent=&g_tDpiQueue.tEvent[g_tDpiQueue.wWptr];
+				ptEvent->wIndex = i;
+				ptEvent->wState = bDpiOve;
+				ptEvent->tTime=ptDpiUTC[i];
+				if(++g_tDpiQueue.wWptr>=CN_NUM_RPT_DPI)
+				{
+					g_tDpiQueue.wWptr=0;
+				}
+				if(g_tDpiQueue.wWptr==g_tDpiQueue.wRptr)
+				{
+					g_tDpiQueue.wFlag=CN_RPT_FULL;
+				}
 			}
 		}
 		ptDpiTab++;
@@ -611,7 +644,7 @@ void IES_IMDI_Q(tagIES_IMDI  *pgtagIES_IMDI)
 		g_tagIO.dwDIQChg=TRUE;
 	}
 	// 无效品质
-	ptagBoardIoTab =&(g_tBoardDITab[0]);
+	ptagBoardIoTab =g_tBoardDITab;
 	pbBoardErr     =&g_tChkState.bChkOut[EN_CHK_BOARD_DI_STR];
 	pbBoardErrXor  =&g_tChkState.bChkXor[EN_CHK_BOARD_DI_STR];
 	for(i=0;i<CN_NUM_BOARD_DI;i++,ptagBoardIoTab++)
@@ -664,10 +697,10 @@ void IES_IMDI_Q(tagIES_IMDI  *pgtagIES_IMDI)
 	{
 		pdwDIQ  = g_tagIO.dwDIQ;
 		pdwDpiQ = g_tagIO.dwDpiQ;
-		ptDpiTab= &g_tDpiTab[0];
+		ptDpiTab= g_tDpiTab;
 		for(i=0;i<CN_NUM_DPI;i++)
 		{
-			*pdwDpiQ++=pdwDIQ[ptDpiTab->wSrcOpn]|pdwDIQ[ptDpiTab->wSrcCls];
+			pdwDpiQ[i]=(G_Get_DI_Q(ptDpiTab->wSrcOpn))|(G_Get_DI_Q(ptDpiTab->wSrcCls));
 			ptDpiTab++;
 		}
 	}
@@ -693,7 +726,7 @@ void IES_IMDI_Para_Init()
 	
 	pgtagIES_IMDI =&gtagIES_IMDI;
 	// 参数异常退出参数更新
-	if(G_Get_ChkIn_P[EN_CHK_PARA_DI])
+	if(g_tChkState.bChkIn[EN_CHK_PARA_DI])
 	{
 		pgtagIES_IMDI->dwBs=TRUE;
 		return;
@@ -702,7 +735,7 @@ void IES_IMDI_Para_Init()
 	{
 		pgtagIES_IMDI->dwBs=FALSE;
 	}
-	pdwPara       =&(g_tagPara.dwPara[0]);
+	pdwPara       =g_tagPara.dwPara;
 	pdwDIFdTime   =pgtagIES_IMDI->dwDIFdTime;
 	pdwDIQrTime   =pgtagIES_IMDI->dwDIQrTime;
 	pgtagIES_IMDI->dwInit=TRUE;
@@ -731,7 +764,7 @@ void IES_IMDI_Para_Init()
 			pdwDIQrTime[i]=0;
 		}
 	}
-	ptagBoardIoTab=&(g_tBoardDITab[0]);
+	ptagBoardIoTab=g_tBoardDITab;
 	// 电源监视投退更新
 	for(i=0;i<CN_NUM_BOARD_DI_DI;i++,ptagBoardIoTab++)
 	{
@@ -824,8 +857,8 @@ void IES_IMDI()
 	// 开入单点合成双点
 	IES_IMDI_Dpi(pgtagIES_IMDI);
 	// 遥信品质处理
-	if(G_Get_Inter(EN_INTER_GOPUB_DI_Q)
-	||G_Get_Inter(EN_INTER_GOPUB_DPI_Q))
+	if(g_iInter[EN_INTER_GOPUB_DI_Q]
+	||g_iInter[EN_INTER_GOPUB_DPI_Q])
 	{
 		IES_IMDI_Q(pgtagIES_IMDI);
 	}

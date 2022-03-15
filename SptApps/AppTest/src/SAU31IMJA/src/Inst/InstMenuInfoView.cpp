@@ -1,103 +1,102 @@
 #include"InstResource.h"
 
 // 界面密令 左上左下左右回车
-bool8 ViewPrivateKey(HmiKey key, uint8 byKeyType)
+bool8 ViewPrivateKey(HmiKey key,uint8 byKeyType)
 {
-	static uint8 KeyCnt = 0;
-	if (byKeyType >= g_NUM_KEY)
+	static uint8 KeyCnt[EN_KEY_END];
+	if((byKeyType>=g_NUM_KEY)||(byKeyType>=EN_KEY_END))
 	{
-		KeyCnt = 0;
 		return 1;
 	}
-
-	const uint8* pbyKey;
-	uint8  bykeyNum = g_tKeyTab[byKeyType].byKeyNum;
+	
+	const uint8 *pbyKey;
+	uint8  bykeyNum=g_tKeyTab[byKeyType].byKeyNum;
 	pbyKey = &g_tKeyTab[byKeyType].byKey[0];
-	if (bykeyNum == 0)
+	if(bykeyNum==0)
 	{
-		KeyCnt = 0;
+		KeyCnt[byKeyType]=0;
 		return 0;
 	}
-	else if ((pbyKey == NULL) || (bykeyNum >= CN_KEY_MAX))
+	else if((pbyKey==NULL)||(bykeyNum>=CN_KEY_MAX))
 	{
-		KeyCnt = 0;
+		KeyCnt[byKeyType]=0;
 		return 1;
 	}
-
-	if (KeyCnt == 0)
+	
+	if (KeyCnt[byKeyType] == 0)
 	{
 		if ((key.Key1 == EK1_KEYVALUE) && (key.Key2 == pbyKey[0]))
 		{
-			KeyCnt++;
+			KeyCnt[byKeyType]++;
 		}
 		return 1;
 	}
 	else if ((key.Key1 == EK1_KEYVALUE)
-		&& (key.Key2 == pbyKey[KeyCnt]))
+		&& (key.Key2 == pbyKey[KeyCnt[byKeyType]]))
 	{
-		KeyCnt++;
-		if (KeyCnt < bykeyNum)
+		KeyCnt[byKeyType]++;
+		if(KeyCnt[byKeyType]<bykeyNum)
 		{
 			return 1;
 		}
 	}
 	else
 	{
-		KeyCnt = 0;
+		KeyCnt[byKeyType] = 0;
 		return 1;
 	}
-	KeyCnt = 0;
+	KeyCnt[byKeyType] = 0;
 	return 0;
 }
 bool8 EnterAnaMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA, TRUE);
+	g_iInter[EN_INTER_OPT_ANA]=TRUE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
 
 bool8 ExitAnaMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA, FALSE);
+	g_iInter[EN_INTER_OPT_ANA]=FALSE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
 bool8 EnterAnaJMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA_J, TRUE);
+	g_iInter[EN_INTER_OPT_ANA_J]=TRUE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
 
 bool8 ExitAnaJMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA_J, FALSE);
+	g_iInter[EN_INTER_OPT_ANA_J]=FALSE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
 bool8 EnterAnaFrMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA_FR, TRUE);
+	g_iInter[EN_INTER_OPT_ANA_FR]=TRUE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
 
 bool8 ExitAnaFrMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA_FR, FALSE);
+	g_iInter[EN_INTER_OPT_ANA_FR]=FALSE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
 bool8 EnterAnaHumMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA_HUM, TRUE);
+	g_iInter[EN_INTER_OPT_ANA_HUM]=TRUE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
 
 bool8 ExitAnaHumMenu(ApiMenu* Menu)
 {
-	G_Set_Inter(EN_INTER_OPT_ANA_HUM, FALSE);
+	g_iInter[EN_INTER_OPT_ANA_HUM]=FALSE;
 	//MsSleep(CN_FACE_TIME);
 	return 1;
 }
@@ -105,13 +104,13 @@ bool8 MakeActStatusDispMenu(ApiMenu* Menu, ApiHmiGridWnd& wnd, SalStatusGroup* G
 {
 	uint32 dataNum = To;
 	SalStatus* cell;
-	bool8* pbGoose, * pbDo, * pbDoRet;
+	bool8  *pbGoose,*pbDo,*pbDoRet;
 	InstObject* obj;
 	uint8 col = 1;
-	wnd.SetColTitle("GOOSE命令", "状态", "出口", "返校", "时间", 0, 0, 0, 0, 0);
-	pbGoose = g_tActState.bActIn;
-	pbDo = g_tActState.bActOut;
-	pbDoRet = g_tActState.bActOutRet;
+	wnd.SetColTitle("GOOSE命令", "状态", "出口","返校", "时间", 0, 0, 0, 0, 0);
+	pbGoose=g_tActState.bActIn;
+	pbDo   =g_tActState.bActOut;
+	pbDoRet=g_tActState.bActOutRet;
 	for (uint16 i = From; i < dataNum; i++)
 	{
 		obj = Group->GetObject(i);
@@ -172,9 +171,9 @@ bool8 MakeStatusDispMenu(ApiMenu* Menu, ApiHmiGridWnd& wnd, SalStatusGroup* Grou
 			struct HmiGridWndDataMapRow* row = wnd.CreatRow();
 			row->SetName(cell->Name());
 			//状态量
-			row->SetColData(col, cell, 8);
+			row->SetColData(col, cell, 4);
 			col++;
-			if (cell->Flag().st.isDispUs)
+			if(cell->Flag().st.isDispUs)
 			{
 				row->SetColStatusTime(col, cell, 31, 3);
 			}
@@ -183,10 +182,18 @@ bool8 MakeStatusDispMenu(ApiMenu* Menu, ApiHmiGridWnd& wnd, SalStatusGroup* Grou
 				row->SetColStatusTime(col, cell, 27, 2);
 			}
 			col++;
-			if (!cell->Flag().st.isDispQ)
+			if(cell->Flag().st.isDispQ)
 			{
+				// 针对GOOSE开入特殊处理
 				row->SetColDataCfg(col, 0, E_SVT_HEX8 | E_SVT_PTR, 2, 0);
-				row->SetColData(col, (uint8*)(&cell->Data().q.u32));
+				if(Group==(SalStatusGroup*)&AppEventGoInSoeGroup)
+				{
+					row->SetColData(col, (uint8*)(&g_tagIO.wGoInQ[i]));
+				}
+				else
+				{
+					row->SetColData(col, (uint8*)(&cell->Data().q.u32));
+				}
 				col++;
 			}
 		}
@@ -309,7 +316,26 @@ bool8 ViewWarnDetailedStatus(ApiMenu* Menu)
 //}
 int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, HmiKey key)
 {
-	if (ViewPrivateKey(key, EN_KEY_VER))
+	if (!ViewPrivateKey(key,EN_KEY_DBG))
+	{
+		int32 res;
+		if(MenuDispDbgDisp)
+		{
+		    ApiSelectDialog sd("厂家模式退出?", 0, 0, 0,0);
+			res = sd.Show();
+		}
+		else
+		{
+		    ApiSelectDialog sd("厂家模式使能?", 0, 0, 0,0);
+			res = sd.Show();
+		}
+		if (res == 0)
+		{
+			MenuDispDbgDisp=!MenuDispDbgDisp;
+			MenuDispDbgIn=FALSE;
+		}
+	}
+	if (ViewPrivateKey(key,EN_KEY_VER))
 	{
 		return 0;
 	}
@@ -319,86 +345,108 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 	uint32 page = 0;
 	String1000B str;
 	str.Clear();
-	uint8 monthH, monthL, dayH, dayL;
-	SalRtc date;
+    uint8 monthH,monthL,dayH,dayL;
+    SalRtc date;
+	// 详细信息
+	str << "CPU板应用程序版本 :"<<CN_SOFT_VER_CPU_NAME<<"\n";
+#if(CN_SOFT_VER_CPU==CN_SOFT_CPU_TEST)
+	str << "测试版本状态字 :";
+	str.FormatHex((UINT16)CN_SOFT_CPU_TEST_CFG);
+	str <<"\n";
+#endif
+	str << "CPU板硬件版本     :"<<CN_HARDWARE_MCPU_NAME<<"\n";
+	str << "CPU背板硬件版本   :"<<CN_HARDWARE_MCPU_AUX_NAME<<"\n";
+	str << "PTCT1板硬件版本   :"<<CN_HARDWARE_PTCT1_NAME<<"\n";
+	str << "PTCT2板硬件版本   :"<<CN_HARDWARE_PTCT2_NAME<<"\n";
+	str << "DC板硬件版本      :"<<CN_HARDWARE_DC_NAME<<"\n";
+	str << "DO板硬件版本      :"<<CN_HARDWARE_DO_NAME<<"\n";
+	str << "DIO板硬件版本     :"<<CN_HARDWARE_DIO_NAME<<"\n";
+	str << "OPB板硬件版本     :"<<CN_HARDWARE_OPB_NAME<<"\n";
+	str << "DI板硬件版本      :"<<CN_HARDWARE_DI_NAME<<"\n";
+	str << "MB板硬件版本      :"<<CN_HARDWARE_MB_NAME<<"\n";
+	wnd.SetPage(page++, str.Str());
 	// APP版本信息
-	SptVersion* SptVersionTem = &(ApiVersionInfo::Instance().AppVersion());
-	str << "APP      VER:" << SptVersionTem->major << "." << SptVersionTem->minor << SptVersionTem->reversion;
+	str.Clear();
+	SptVersion* SptVersionTem=&(ApiVersionInfo::Instance().AppVersion());
+	str << "APP      VER:"<<SptVersionTem->major<<"."<<SptVersionTem->minor<<SptVersionTem->reversion;
 	date.FromStamp(SptVersionTem->datetimeus);
-	monthH = date.month / 10;
-	monthL = date.month % 10;
-	dayH = date.day / 10;
-	dayL = date.day % 10;
-	str << " DAT:" << date.year << monthH << monthL << dayH << dayL;
+	monthH=date.month/10;
+	monthL=date.month%10;
+	dayH  =date.day/10;
+	dayL  =date.day%10;
+	str << " DAT:"<<date.year<<monthH<<monthL<<dayH<<dayL;
 	str << " CRC:";
 	str.FormatHex((UINT16)SptVersionTem->crc);
 	str << "\n";
 	// API版本信息
-	const SptVersion* SptApiVersionTem = &(ApiVersionInfo::Instance().ApiVersion());
-	str << "API      VER:" << SptApiVersionTem->major << "." << SptApiVersionTem->minor << "." << SptApiVersionTem->reversion;
+	const SptVersion* SptApiVersionTem=&(ApiVersionInfo::Instance().ApiVersion());
+	str << "API      VER:"<<SptApiVersionTem->major<<"."<<SptApiVersionTem->minor<<"."<<SptApiVersionTem->reversion;
 	date.FromStamp(SptApiVersionTem->datetimeus);
-	monthH = date.month / 10;
-	monthL = date.month % 10;
-	dayH = date.day / 10;
-	dayL = date.day % 10;
-	str << " DAT:";
-	date.ToStrFmt42(str);
+	monthH=date.month/10;
+	monthL=date.month%10;
+	dayH  =date.day/10;
+	dayL  =date.day%10;
+	str << " DAT:"<<date.year<<monthH<<monthL<<dayH<<dayL<<".";
+	str.Format((uint32)date.hour,2,0,0,'0');
+	str.Format((uint32)date.minute,2,0,0,'0');
+	str.Format((uint32)date.second,2,0,0,'0');
 	str << "\n";
+#if defined(SYLIX_GZK)
 	// Boot0版本信息
-	SptVersionTem = &(ApiVersionInfo::Instance().Boot0Version());
-	str << "Boot0    VER:" << SptVersionTem->major << "." << SptVersionTem->minor << SptVersionTem->reversion;
-	date.FromStamp(SptVersionTem->datetimeus);
-	monthH = date.month / 10;
-	monthL = date.month % 10;
-	dayH = date.day / 10;
-	dayL = date.day % 10;
-	str << " DAT:" << date.year << monthH << monthL << dayH << dayL;
-	str << " CRC:";
-	str.FormatHex((UINT16)SptVersionTem->crc);
+	SptVersionTem=&(ApiVersionInfo::Instance().Boot0Version());
+	str << "Boot0    VER:"<<SptVersionTem->major<<"."<<SptVersionTem->minor<<SptVersionTem->reversion;
+    date.FromStamp(SptVersionTem->datetimeus);
+    monthH=date.month/10;
+    monthL=date.month%10;
+    dayH  =date.day/10;
+    dayL  =date.day%10;
+    str << " DAT:"<<date.year<<monthH<<monthL<<dayH<<dayL;
+    str << " CRC:";
+    str.FormatHex((UINT16)SptVersionTem->crc);
 	str << "\n";
 	// UBoot版本信息
-	SptVersionTem = &(ApiVersionInfo::Instance().UbootVersion());
-	str << "Uboot    VER:" << SptVersionTem->major << "." << SptVersionTem->minor << SptVersionTem->reversion;
-	date.FromStamp(SptVersionTem->datetimeus);
-	monthH = date.month / 10;
-	monthL = date.month % 10;
-	dayH = date.day / 10;
-	dayL = date.day % 10;
-	str << " DAT:" << date.year << monthH << monthL << dayH << dayL;
-	str << " CRC:";
-	str.FormatHex((UINT16)SptVersionTem->crc);
+	SptVersionTem=&(ApiVersionInfo::Instance().UbootVersion());
+	str << "Uboot    VER:"<<SptVersionTem->major<<"."<<SptVersionTem->minor<<SptVersionTem->reversion;
+    date.FromStamp(SptVersionTem->datetimeus);
+    monthH=date.month/10;
+    monthL=date.month%10;
+    dayH  =date.day/10;
+    dayL  =date.day%10;
+    str << " DAT:"<<date.year<<monthH<<monthL<<dayH<<dayL;
+    str << " CRC:";
+    str.FormatHex((UINT16)SptVersionTem->crc);
 	str << "\n";
 	// 系统版本信息
-	SptVersionTem = &(ApiVersionInfo::Instance().MainSysVersion());
-	str << "Sys      VER:" << SptVersionTem->major << "." << SptVersionTem->minor << SptVersionTem->reversion;
-	date.FromStamp(SptVersionTem->datetimeus);
-	monthH = date.month / 10;
-	monthL = date.month % 10;
-	dayH = date.day / 10;
-	dayL = date.day % 10;
-	str << " DAT:" << date.year << monthH << monthL << dayH << dayL;
-	str << " CRC:";
-	str.FormatHex((UINT16)SptVersionTem->crc);
+	SptVersionTem=&(ApiVersionInfo::Instance().MainSysVersion());
+	str << "Sys      VER:"<<SptVersionTem->major<<"."<<SptVersionTem->minor<<SptVersionTem->reversion;
+    date.FromStamp(SptVersionTem->datetimeus);
+    monthH=date.month/10;
+    monthL=date.month%10;
+    dayH  =date.day/10;
+    dayL  =date.day%10;
+    str << " DAT:"<<date.year<<monthH<<monthL<<dayH<<dayL;
+    str << " CRC:";
+    str.FormatHex((UINT16)SptVersionTem->crc);
 	str << "\n";
 	// 系统备份版本信息
-	SptVersionTem = &(ApiVersionInfo::Instance().BakSysVersion());
-	str << "SysBak   VER:" << SptVersionTem->major << "." << SptVersionTem->minor << SptVersionTem->reversion;
-	date.FromStamp(SptVersionTem->datetimeus);
-	monthH = date.month / 10;
-	monthL = date.month % 10;
-	dayH = date.day / 10;
-	dayL = date.day % 10;
-	str << " DAT:" << date.year << monthH << monthL << dayH << dayL;
-	str << " CRC:";
-	str.FormatHex((UINT16)SptVersionTem->crc);
+	SptVersionTem=&(ApiVersionInfo::Instance().BakSysVersion());
+	str << "SysBak   VER:"<<SptVersionTem->major<<"."<<SptVersionTem->minor<<SptVersionTem->reversion;
+    date.FromStamp(SptVersionTem->datetimeus);
+    monthH=date.month/10;
+    monthL=date.month%10;
+    dayH  =date.day/10;
+    dayL  =date.day%10;
+    str << " DAT:"<<date.year<<monthH<<monthL<<dayH<<dayL;
+    str << " CRC:";
+    str.FormatHex((UINT16)SptVersionTem->crc);
 	str << "\n";
 	// FPGA1版本信息
 	str << "FPGA1:";
-	if (SmartBoard[0].RunState(0) == 0xAAAA)
+	if(SmartBoard[0].RunState(0)==0xAAAA)
 	{
 		str << "OK";
 	}
-	else if (SmartBoard[0].RunState(0) == 0x5555)
+	else if(SmartBoard[0].RunState(0)==0x5555)
 	{
 		str << "BOOT";
 	}
@@ -406,28 +454,29 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 	{
 		str << "ERR";
 	}
-	const SalComVersion* pComVersionTemp = &(SmartBoard[0].CheckStatus()->Version1);
-	str << " VER:" << (pComVersionTemp->ProgVersion / 100) << "." << ((pComVersionTemp->ProgVersion / 10) % 10) << (pComVersionTemp->ProgVersion % 10);
+	const SalComVersion* pComVersionTemp=&(SmartBoard[0].CheckStatus()->Version1);
+	str << " VER:"<<(pComVersionTemp->ProgVersion/100)<<"."<<((pComVersionTemp->ProgVersion/10)%10)<<(pComVersionTemp->ProgVersion%10);
 	uint32 FpgaDate = 0;
-	FpgaDate = pComVersionTemp->ProgDate;
-	FpgaDate = 20000000 + ((FpgaDate >> 10) & 0x3f) * 10000 + ((FpgaDate >> 6) & 0xf) * 100 + ((FpgaDate) & 0x3f);
-
-	str << " DAT:" << FpgaDate;
-
-	str << " CRC:";
+	FpgaDate=pComVersionTemp->ProgDate;
+#if(CN_SOFT_VER_FPGA1<CN_SOFT_FPGA1_V3)
+	FpgaDate=20000000+((FpgaDate>>10)&0x3f)*10000+((FpgaDate>>6)&0xf)*100+((FpgaDate)&0x3f);
+#endif
+	str << " DAT:";
+	str.FormatHex(FpgaDate);
+	str << " CRC:" ;
 	str.FormatHex(pComVersionTemp->ProgCrc);
-	str << " BtCRC:";
-	pComVersionTemp = &(SmartBoard[0].CheckStatus()->Version2);
-	str.FormatHex(pComVersionTemp->ProgCrc);
+	str << " BtCRC:" ;
+	pComVersionTemp=&(SmartBoard[0].CheckStatus()->Version2);
+    str.FormatHex(pComVersionTemp->ProgCrc);
 	str << "\n";
 #if(CN_DEV_CPU1)
 	// FPGA2版本信息
-	str << "FPGA2:";
-	if (SmartBoard[1].RunState(0) == 0xAAAA)
+		str << "FPGA2:";
+	if(SmartBoard[1].RunState(0)==0xAAAA)
 	{
-		str << "OK";
+		str <<"OK";
 	}
-	else if (SmartBoard[1].RunState(0) == 0x5555)
+	else if(SmartBoard[1].RunState(0)==0x5555)
 	{
 		str << "BOOT";
 	}
@@ -435,22 +484,25 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 	{
 		str << "ERR";
 	}
-	pComVersionTemp = &(SmartBoard[1].CheckStatus()->Version1);
-	str << " VER:" << (pComVersionTemp->ProgVersion / 100) << "." << ((pComVersionTemp->ProgVersion / 10) % 10) << (pComVersionTemp->ProgVersion % 10);
+	pComVersionTemp=&(SmartBoard[1].CheckStatus()->Version1);
+	str << " VER:"<<(pComVersionTemp->ProgVersion/100)<<"."<<((pComVersionTemp->ProgVersion/10)%10)<<(pComVersionTemp->ProgVersion%10);
 	FpgaDate = 0;
-	FpgaDate = pComVersionTemp->ProgDate;
-	FpgaDate = 20000000 + ((FpgaDate >> 10) & 0x3f) * 10000 + ((FpgaDate >> 6) & 0xf) * 100 + ((FpgaDate) & 0x3f);
-	str << " DAT:" << FpgaDate;
-	str << " CRC:";
+	FpgaDate=pComVersionTemp->ProgDate;
+#if(CN_SOFT_VER_FPGA1<CN_SOFT_FPGA1_V3)
+	FpgaDate=20000000+((FpgaDate>>10)&0x3f)*10000+((FpgaDate>>6)&0xf)*100+((FpgaDate)&0x3f);
+#endif
+	str << " DAT:";
+	str.FormatHex(FpgaDate);
+	str << " CRC:" ;
 	str.FormatHex(pComVersionTemp->ProgCrc);
-	str << " BtCRC:";
-	pComVersionTemp = &(SmartBoard[1].CheckStatus()->Version2);
+	str << " BtCRC:" ;
+	pComVersionTemp=&(SmartBoard[1].CheckStatus()->Version2);
 	str.FormatHex(pComVersionTemp->ProgCrc);
 	str << "\n";
 #endif
 	// LED版本信息
-	SalComVersion* LcdVersionTemp = &(ApiVersionInfo::Instance().LcdVersion());
-	str << "LED      VER:" << (UINT16)(LcdVersionTemp->ProgVersion / 100) << "." << (UINT16)(LcdVersionTemp->ProgVersion % 100);
+	SalComVersion* LcdVersionTemp=&(ApiVersionInfo::Instance().LcdVersion());
+	str << "LED      VER:"<<(UINT16)(LcdVersionTemp->ProgVersion/100)<<"."<<(UINT16)(LcdVersionTemp->ProgVersion%100);
 	str << " DAT:";
 	str.FormatHex((UINT32)LcdVersionTemp->ProgDate);
 	str << " CRC:";
@@ -458,22 +510,22 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 
 	str << " RtCRC:";
 	str.FormatHex((UINT16)LcdVersionTemp->RtCrc);
-	str << "\n";
+	str <<"\n";
 	// 虚拟LCD版本信息
-	LcdVersionTemp = &(ApiVersionInfo::Instance().VirLcdVersion());
-	str << "Tool     VER:" << (UINT16)(LcdVersionTemp->ProgVersion / 100) << "." << (UINT16)(LcdVersionTemp->ProgVersion % 100);
+	LcdVersionTemp=&(ApiVersionInfo::Instance().VirLcdVersion());
+	str << "Tool     VER:"<<(UINT16)(LcdVersionTemp->ProgVersion/100)<<"."<<(UINT16)(LcdVersionTemp->ProgVersion%100);
 	str << " DAT:";
 	str.FormatHex((UINT32)LcdVersionTemp->ProgDate);
 	str << " CRC:";
 	str.FormatHex((UINT16)LcdVersionTemp->ProgCrc);
 	str << " RtCRC:";
 	str.FormatHex((UINT16)LcdVersionTemp->RtCrc);
-	str << "\n";
-	wnd.SetPage(page++, str.Str());
+	str <<"\n";
+	wnd.SetPage(page++,  str.Str());
 	str.Clear();
 	// DC版本信息
-	pComVersionTemp = &(AppDcInBoard.CheckStatus()->Version1);
-	str << "DC  VER:" << (pComVersionTemp->ProgVersion >> 8) << ".";
+	pComVersionTemp=&(AppDcInBoard.CheckStatus()->Version1);
+	str << "DC  VER:"<<(pComVersionTemp->ProgVersion>>8)<< ".";
 	str.FormatHex((UINT8)pComVersionTemp->ProgVersion);
 	str << "  DAT:";
 	str.FormatHex(pComVersionTemp->ProgDate);
@@ -481,13 +533,13 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 	str.FormatHex((UINT16)pComVersionTemp->ProgCrc);
 	str << "  RtCRC:";
 	str.FormatHex((UINT16)pComVersionTemp->RtCrc);
-	str << "\n";
+	str <<"\n";
 	// DO版本信息
 	uint8 i;
-	for (i = 0; i < CN_NUM_BOARD_DO_RTN; i++)
+	for(i=0;i<CN_NUM_BOARD_DO_RTN;i++)
 	{
-		pComVersionTemp = &(NorDoBoard[i].CheckStatus()->Version1);
-		str << g_tBoardDOTab[i].byName << " VER:" << (pComVersionTemp->ProgVersion >> 8) << ".";
+	    pComVersionTemp=&(NorDoBoard[i].CheckStatus()->Version1);
+		str <<g_tBoardDOTab[i].byName<<" VER:"<<(pComVersionTemp->ProgVersion>>8)<< ".";
 		str.FormatHex((UINT8)pComVersionTemp->ProgVersion);
 		str << "  DAT:";
 		str.FormatHex(pComVersionTemp->ProgDate);
@@ -495,13 +547,13 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 		str.FormatHex((UINT16)pComVersionTemp->ProgCrc);
 		str << "  RtCRC:";
 		str.FormatHex((UINT16)pComVersionTemp->RtCrc);
-		str << "\n";
+		str <<"\n";
 	}
 	// DI版本信息
-	for (i = 0; i < CN_NUM_BOARD_DI_DI; i++)
+	for(i=0;i<CN_NUM_BOARD_DI_DI;i++)
 	{
-		pComVersionTemp = &(NormalStateBoardIn[i].CheckStatus()->Version1);
-		str << g_tBoardDITab[i].byName << " VER:" << (pComVersionTemp->ProgVersion >> 8) << ".";
+		pComVersionTemp=&(NormalStateBoardIn[i].CheckStatus()->Version1);
+		str <<g_tBoardDITab[i].byName<<" VER:"<<(pComVersionTemp->ProgVersion>>8)<< ".";
 		str.FormatHex((UINT8)pComVersionTemp->ProgVersion);
 		str << "  DAT:";
 		str.FormatHex(pComVersionTemp->ProgDate);
@@ -509,14 +561,14 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 		str.FormatHex((UINT16)pComVersionTemp->ProgCrc);
 		str << "  RtCRC:";
 		str.FormatHex((UINT16)pComVersionTemp->RtCrc);
-		str << "\n";
+		str <<"\n";
 	}
-	wnd.SetPage(page++, str.Str());
+	wnd.SetPage(page++,  str.Str());
 	// 详细信息
 	str.Clear();
 	ApiVersionInfo::Instance().AppVersion().ToStr(str);
 	wnd.SetPage(page++, str.Str());
-
+	
 	str.Clear();
 	ApiVersionInfo::Instance().ApiVersion().ToStr(str);
 	wnd.SetPage(page++, str.Str());
@@ -526,31 +578,33 @@ int32 ViewPrivateVersion(class HmiTextWnd& Wnd, uint16 Page1, uint16 TotalPage, 
 	wnd.SetPage(page++, str.Str());
 	str.Clear();
 	ApiVersionInfo::Instance().UbootVersion().ToStr(str);
-	wnd.SetPage(page++, str.Str());
+	wnd.SetPage(page++,  str.Str());
 	str.Clear();
 	ApiVersionInfo::Instance().MainSysVersion().ToStr(str);
-	wnd.SetPage(page++, str.Str());
+	wnd.SetPage(page++,  str.Str());
 	str.Clear();
 	ApiVersionInfo::Instance().BakSysVersion().ToStr(str);
-	wnd.SetPage(page++, str.Str());
+	wnd.SetPage(page++,  str.Str());
 	str.Clear();
 	//str << "虚拟液晶 :"; ApiVersionInfo::Instance().VirLcdVersion().RtInfoStrFmt1(str); str << "\n";
 	//str << "液晶程序 :"; ApiVersionInfo::Instance().LcdVersion().RtInfoStrFmt1(str); str << "\n";
 	//wnd.SetPage(page++, str.Str());
 	//str.Clear();
+#endif
 	wnd.SetTitle("版本信息", page);
 	wnd.Show();
-	//	ApiVersionInfo::Instance().Print();
+//	ApiVersionInfo::Instance().Print();
 	str.Clear();
 	str << "生产厂家:" << "积成电子股份有限公司" << "\n";
 	str << "装置型号:" << CN_DEV_TITLE_NAME << "\n";
-	str << "CPU1程序版本:" << CN_CPU1_PUBLIC_SOFT << "\n";
-	str << "CPU2程序版本:" << CN_CPU2_PUBLIC_SOFT << "\n";
+	str << CN_CPU_PUBLIC_SOFT << "\n";
+	str << g_tDevInfor.byVerOthName << "\n";
 	str << "CCD文件CRC:";
 	str.FormatHex(g_tDevInfor.dwCrc);
 	str << "\n";
 	str << "装置唯一性编码:" << ApiUnitCfg::Instance().DeviceID.StrData() << "\n";
 	Wnd.SetPage(0, str.Str());
+	Wnd.SetReDraw(1);
 	return 1;
 }
 bool8 ViewPublicVersion(ApiMenu* Menu)
@@ -560,8 +614,8 @@ bool8 ViewPublicVersion(ApiMenu* Menu)
 	str.Clear();
 	str << "生产厂家:" << "积成电子股份有限公司" << "\n";
 	str << "装置型号:" << CN_DEV_TITLE_NAME << "\n";
-	str << "CPU1程序版本:" << CN_CPU1_PUBLIC_SOFT << "\n";
-	str << "CPU2程序版本:" << CN_CPU2_PUBLIC_SOFT << "\n";
+	str << CN_CPU_PUBLIC_SOFT << "\n";
+	str << g_tDevInfor.byVerOthName << "\n";
 	str << "CCD文件CRC:";
 	str.FormatHex(g_tDevInfor.dwCrc);
 	str << "\n";
@@ -573,17 +627,71 @@ bool8 ViewPublicVersion(ApiMenu* Menu)
 }
 bool8 DispTaskLoadInfo(ApiMenu* Menu)
 {
-	ApiHmiGridWnd gwnd;
-	uint32 lcdw = GraphicDevice::Instance().LcdWidth();
-	gwnd.SetInfo("负载监视(单位us)", 0, 0);
-	gwnd.Show();
-	return 1;
-}
-bool8 DispTaskPeriodInfo(ApiMenu* Menu)
-{
-	ApiHmiGridWnd gwnd;
-	uint32 lcdw = GraphicDevice::Instance().LcdWidth();
-	gwnd.SetInfo("周期监视(单位us)", 0, 0);
+    ApiHmiGridWnd gwnd;
+    uint32 lcdw = GraphicDevice::Instance().LcdWidth();
+    gwnd.SetInfo("负载监视(单位us)", 0, 0);
+    const TaskMonitor::RunInfo& Info = TaskMonitor::Instance().TaskRunInfo();
+    if (lcdw == 480)
+    {
+       gwnd.SetColTitle("名称", "    实时", "   Max(H)", "   Min(H)", "   Max(D)", "   Min(D)", 0, 0, 0, 0);
+        if (Info.isInfoOk)
+        {
+          for (uint16 i = 0; i < Info.taskNum; i++)
+          {
+              struct HmiGridWndDataMapRow* row = gwnd.CreatRow();
+               row->SetName(Info.info[i].taskRunInfo->Name());
+                    row->SetColDataCfg(1, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(1, &Info.info[i].taskRunInfo->realTimeLoad);
+                    row->SetColDataCfg(2, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(2, &Info.info[i].taskRunInfo->maxHourLoad);
+                    row->SetColDataCfg(3, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(3, &Info.info[i].taskRunInfo->minHourLoad);
+                    row->SetColDataCfg(4, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(4, &Info.info[i].taskRunInfo->maxDayLoad);
+                    row->SetColDataCfg(5, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(5, &Info.info[i].taskRunInfo->minDayLoad);
+                }
+            }
+        }
+        else if (lcdw == 320)
+        {
+
+        }
+        gwnd.Show();
+        return 1;
+ }
+ bool8 DispTaskPeriodInfo(ApiMenu* Menu)
+ {
+        ApiHmiGridWnd gwnd;
+        uint32 lcdw = GraphicDevice::Instance().LcdWidth();
+        gwnd.SetInfo("周期监视(单位us)", 0, 0);
+        const TaskMonitor::RunInfo& Info = TaskMonitor::Instance().TaskRunInfo();
+        if (lcdw == 480)
+        {
+            gwnd.SetColTitle("名称", "    实时", "   Max(H)", "   Min(H)", "   Max(D)", "   Min(D)", 0, 0, 0, 0);
+            if (Info.isInfoOk)
+            {
+                for (uint16 i = 0; i < Info.taskNum; i++)
+                {
+                    struct HmiGridWndDataMapRow* row = gwnd.CreatRow();
+                    row->SetName(Info.info[i].taskRunInfo->Name());
+                    row->SetColDataCfg(1, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(1, &Info.info[i].taskRunInfo->realTimePeriod);
+                    row->SetColDataCfg(2, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(2, &Info.info[i].taskRunInfo->maxHourPeriod);
+                    row->SetColDataCfg(3, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(3, &Info.info[i].taskRunInfo->minHourPeriod);
+                    row->SetColDataCfg(4, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(4, &Info.info[i].taskRunInfo->maxDayPeriod);
+                    row->SetColDataCfg(5, 0, E_SVT_U32 | E_SVT_PTR, 8, 0);
+                    row->SetColData(5, &Info.info[i].taskRunInfo->minDayPeriod);
+                }
+            }
+        }
+	else if (lcdw == 320)
+	{
+
+	}
 	gwnd.Show();
 	return 1;
 }
@@ -618,15 +726,16 @@ bool8 UpdateLogCfg(ApiMenu* Menu)
 
 bool8 AppEthnetPara(ApiMenu* Menu)
 {
-	ApiSelectDialog sd(Menu->Name(), 0, 0, 0, 0);
+	ApiSelectDialog sd(Menu->Name(),0, 0, 0, 0);
 	int32 res = sd.Show();
 	if (res == 0)
 	{
-		if ((ApiSysEthNetCfg::Instance().ReadAll()) > 0)
+		if((ApiSysEthNetCfg::Instance().ReadAll())>0)
 		{
 			ApiSysEthNetCfg::Instance().AppEthnetPara();
 			ApiWarnDialog wd(Menu->Name(), "成功", 0, 0, 0);
 			wd.Show();
+			AppEthNetParaRef();
 		}
 		else
 		{
@@ -640,16 +749,16 @@ bool8 AppEthnetPara(ApiMenu* Menu)
 static int32 HmiViewAnglogUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
 	// 更新数据
-	if (G_Get_Inter(EN_INTER_OPT_ANA))
+	if(g_iInter[EN_INTER_OPT_ANA])
 	{
-		if (AppDispAnaAmRef())
+		if(AppDispAnaAmRef())
 		{
 			return 0;
 		}
 	}
-	if (G_Get_Inter(EN_INTER_OPT_ANA_J))
+	if(g_iInter[EN_INTER_OPT_ANA_J])
 	{
-		if (AppDispAnaAmjRef())
+		if(AppDispAnaAmjRef())
 		{
 			return 0;
 		}
@@ -781,7 +890,7 @@ bool8 ViewAnglog(ApiMenu* Menu)
 }
 static int32 HmiViewFrlogUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
-	if (AppDispFrRef())
+	if(AppDispFrRef())
 	{
 		return 0;
 	}
@@ -852,7 +961,7 @@ bool8 ViewFrlog(ApiMenu* Menu)
 			row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
 			row->SetColStrData(col, rms->Units1() == 0 ? Unit_NULL.toString() : rms->Units1()->toString(), 0);
 			col++;
-
+			
 			col++;
 			col++;
 			col++;
@@ -869,7 +978,7 @@ bool8 ViewFrlog(ApiMenu* Menu)
 }
 static int32 HmiViewDclogUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
-	if (AppDispDcRef())
+	if(AppDispDcRef())
 	{
 		return 0;
 	}
@@ -916,7 +1025,7 @@ bool8 ViewDclog(ApiMenu* Menu)
 {
 	ApiHmiGridWnd wnd(HmiViewDclogUpdateData);
 	wnd.SetInfo("查看直流信息", 0, 0);
-	wnd.SetColTitle("名称", "二次值", 0, "一次值", "GOOSE发布", 0, 0, 0, 0, 0);
+	wnd.SetColTitle("名称", "二次值",0,"一次值", "GOOSE发布", 0, 0,  0, 0, 0);
 	SalAngRmsGroup* anmsGroup = (SalAngRmsGroup*)&ApiDispDcGroup;
 	uint32 dataNum = anmsGroup->InstNum();
 	st64value* pvalue;
@@ -956,7 +1065,7 @@ bool8 ViewDclog(ApiMenu* Menu)
 			pvalue->value.vptr = &GoDcOutCell[i];
 			pvalue = row->GetDataEdit(col);
 			row->SetColData(col, &g_tagDC.iDCOutCom[i]);
-
+			
 			col++;
 			col++;
 			col++;
@@ -973,7 +1082,7 @@ bool8 ViewDclog(ApiMenu* Menu)
 
 static int32 HmiViewDevlogUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
-	if (AppDispDevRef())
+	if(AppDispDevRef())
 	{
 		return 0;
 	}
@@ -1035,7 +1144,7 @@ bool8 ViewDevlog(ApiMenu* Menu)
 			struct HmiGridWndDataMapRow* row = wnd.CreatRow();
 			row->SetName(rms->Name());
 			// 16进制展示
-			if (g_tDCTab[i + EN_DC_DEV_STR].wType == EN_CTYPE_DC_H)
+			if (g_tDCTab[i+EN_DC_DEV_STR].wType==EN_CTYPE_DC_H)
 			{
 				row->SetColDataCfg(col, 0, E_SVT_HEX32 | E_SVT_PTR, 8, rms->Data1DotNum());
 				pvalue = row->GetDataSur(col);
@@ -1056,7 +1165,7 @@ bool8 ViewDevlog(ApiMenu* Menu)
 			row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
 			row->SetColStrData(col, rms->Units1() == 0 ? Unit_NULL.toString() : rms->Units1()->toString(), 0);
 			col++;
-
+			
 			col++;
 			col++;
 			col++;
@@ -1073,7 +1182,7 @@ bool8 ViewDevlog(ApiMenu* Menu)
 }
 static int32 HmiViewOpt1logUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
-	if (AppDispOpt1Ref())
+	if(AppDispOpt1Ref())
 	{
 		return 0;
 	}
@@ -1144,7 +1253,7 @@ bool8 ViewOpt1log(ApiMenu* Menu)
 			row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
 			row->SetColStrData(col, rms->Units1() == 0 ? Unit_NULL.toString() : rms->Units1()->toString(), 0);
 			col++;
-
+			
 			col++;
 			col++;
 			col++;
@@ -1161,7 +1270,7 @@ bool8 ViewOpt1log(ApiMenu* Menu)
 }
 static int32 HmiViewOpt2logUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
-	if (AppDispOpt2Ref())
+	if(AppDispOpt2Ref())
 	{
 		return 0;
 	}
@@ -1205,7 +1314,6 @@ bool8 ViewOpt2log(ApiMenu* Menu)
 {
 	ApiHmiGridWnd wnd(HmiViewOpt2logUpdateData);
 	wnd.SetInfo("查看母线CPU光功率", 0, 0);
-	//wnd.SetColTitle("名称", "频率", 0, 0, 0, 0, 0, 0, 0, 0);
 	SalAngRmsGroup* anmsGroup = (SalAngRmsGroup*)&ApiDispOptGroup[1];
 	uint32 dataNum = anmsGroup->InstNum();
 	st64value* pvalue;
@@ -1232,7 +1340,7 @@ bool8 ViewOpt2log(ApiMenu* Menu)
 			row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
 			row->SetColStrData(col, rms->Units1() == 0 ? Unit_NULL.toString() : rms->Units1()->toString(), 0);
 			col++;
-
+			
 			col++;
 			col++;
 			col++;
@@ -1250,7 +1358,7 @@ bool8 ViewOpt2log(ApiMenu* Menu)
 
 static int32 HmiViewInterlogUpdateData(class HmiGridWnd* Wnd, struct HmiGridWndDataMap* Map, HmiKey Key)
 {
-	if (AppDispInterRef())
+	if(AppDispInterRef())
 	{
 		return 0;
 	}
@@ -1294,7 +1402,6 @@ bool8 ViewInterlog(ApiMenu* Menu)
 {
 	ApiHmiGridWnd wnd(HmiViewInterlogUpdateData);
 	wnd.SetInfo("查看内部信息", 0, 0);
-	//wnd.SetColTitle("名称", "频率", 0, 0, 0, 0, 0, 0, 0, 0);
 	SalAngRmsGroup* anmsGroup = (SalAngRmsGroup*)&ApiDispInterGroup;
 	uint32 dataNum = anmsGroup->InstNum();
 	st64value* pvalue;
@@ -1321,7 +1428,7 @@ bool8 ViewInterlog(ApiMenu* Menu)
 			row->SetColDataCfg(col, 0, E_SVT_STR | E_SVT_PTR, 2, 0);
 			row->SetColStrData(col, rms->Units1() == 0 ? Unit_NULL.toString() : rms->Units1()->toString(), 0);
 			col++;
-
+			
 			col++;
 			col++;
 			col++;

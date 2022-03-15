@@ -8,7 +8,7 @@ extern ApiNormalBoolIn NormalBoolIn[CN_NUM_DI_DI];
 extern ApiBoardNormalDcIn AppDcInBoard;
 extern ApiNormalDcIn      AppNormalDcIn[CN_NUM_DC_SAM];
 // GOOSE开入
-extern ApiGoInFrame       GoInFrame[1];
+extern ApiGoInFrame       GoInFrame;
 extern ApiGoInCb          GoInCB[CN_NUM_GOCB_SUB];
 extern ApiGoPosIn         GoPosIn[CN_NUM_GOIN_S];
 // 光功率信息

@@ -5,18 +5,11 @@
  * 版本修订:
  * 修订人员:
  *================================================================================*/
-#ifndef _CONST_EQUIP_H_
-#define _CONST_EQUIP_H_
-
-#include "Const_DC.h"
-#include "Const_IO.h"
-#include "Const_Sam.h"
-#include "Const_Para.h"
-#include "Const_Rec.h"
-#include "Const_Flag.h"
-#include "Const_Com.h"
-
-// 板件属性
+#ifndef _CONST_PUB_H_
+#define _CONST_PUB_H_
+#define CN_DEV_CPU1        (0)
+#define CN_DEV_CPU2        (1)
+// 板件属性,仅双CPU板卡
 #ifndef CN_DEV_CPU1
 #error  装置型号设置错误:缺少宏定义CN_DEV_CPU1
 #define CN_DEV_CPU1    ( FALSE )                   // 间隔采集执行单元-间隔板
@@ -29,23 +22,43 @@
 #if((CN_DEV_CPU1+CN_DEV_CPU2)!=1)
 #error  装置板卡设置错误:宏定义设置错
 #endif
+// 枚举常量表描述字符串长度
+#define CN_LEN_NAME        (40)                    // 名称长度宏定义
+
+#include "IES_IMtypes.h"
+#include "Const_VerSion.h"
+#include "Const_DC.h"
+#include "Const_IO.h"
+#include "Const_Sam.h"
+#include "Const_Para.h"
+#include "Const_Rec.h"
+#include "Const_Flag.h"
+#include "Const_Com.h"
 
 // 系统测试内部版本V1.00,对外展示版本V1.00
-// 程序公共版本
+// 外出测试内部版本V1.10,对外展示版本V1.10
+// 外出测试内部版本V1.11,对外展示版本V1.11    20220308
 #define CN_DEV_TITLE_NAME   "SAU-32IMJA-DA-GZK"
-#define CN_CPU1_PUBLIC_SOFT "V1.00 57B2 20211101"
-#define CN_CPU2_PUBLIC_SOFT "V1.00 348F 20211101"
+// 系统测试内部版本
+//#define CN_CPU1_PUBLIC_SOFT "V1.00 57B2 20211101"
+//#define CN_CPU2_PUBLIC_SOFT "V1.00 348F 20211101"
+// 外出测试内部版本
 #if(CN_DEV_CPU1)
 #define CN_CPU_NAME         "CPU1"
+#define CN_CPU_PUBLIC_SOFT  CN_CPU_NAME"程序版本:V1.11 572E 20220308"
 #define CN_CPU_SOFT_VER_P   1              // CPU主版本信息
-#define CN_CPU_SOFT_VER_A   0              // CPU辅助版本信息
-#define CN_CPU_SOFT_VER_M   0              // CPU细化版本信息
+#define CN_CPU_SOFT_VER_A   1              // CPU辅助版本信息
+#define CN_CPU_SOFT_VER_M   1              // CPU细化版本信息
 #elif(CN_DEV_CPU2)
 #define CN_CPU_NAME         "CPU2"
+#define CN_CPU_PUBLIC_SOFT  CN_CPU_NAME"程序版本:V1.11 8A4D 20220308"
 #define CN_CPU_SOFT_VER_P   1              // CPU主版本信息
-#define CN_CPU_SOFT_VER_A   0              // CPU辅助版本信息
-#define CN_CPU_SOFT_VER_M   0              // CPU细化版本信息
+#define CN_CPU_SOFT_VER_A   1              // CPU辅助版本信息
+#define CN_CPU_SOFT_VER_M   1              // CPU细化版本信息
 #endif
+
+
+
 // 数据类常量表枚举
 enum  _DATA_TYPE_
 {
@@ -81,6 +94,8 @@ enum  _DATA_TYPE_
     EN_CFG_PARA_BOARD,
     EN_CFG_RUN,
     EN_CFG_OPT,
+    EN_CFG_PRVT_SOE,
+    EN_CFG_PRVT_OPT,
     EN_CFG_COM_INIT,
     EN_CFG_COM_FAST1_2,
     EN_CFG_COM_FAST2_1,
@@ -117,13 +132,11 @@ enum  _CHN_TYPE_
 	EN_CTYPE_DC_STR=EN_CTYPE_IO_END,
 	EN_CTYPE_DC_ZL1=EN_CTYPE_DC_STR,
 	EN_CTYPE_DC_ZL2,
-#if(!CN_FUN_DBUG1)
 	EN_CTYPE_DC_ZL3,
 	EN_CTYPE_DC_ZL4,
 	EN_CTYPE_DC_ZL5,
 	EN_CTYPE_DC_ZL6,
 	EN_CTYPE_DC_ZL7,
-#endif
 	EN_CTYPE_DC_mA,
 	EN_CTYPE_DC_V,
 	EN_CTYPE_DC_T,
@@ -132,6 +145,7 @@ enum  _CHN_TYPE_
 	EN_CTYPE_DC_OPTT,
 	EN_CTYPE_DC_OPTV,
 	EN_CTYPE_DC_H,
+	EN_CTYPE_DC_CLK,
 	EN_CTYPE_DC_END,
 	// 参数表格g_tParaTab通道类型
 	EN_CTYPE_PARA_STR=EN_CTYPE_DC_END,
@@ -219,7 +233,7 @@ enum _MEA_TYPE_
 	EN_MEA_BHHZ_DO,
 	EN_MEA_CKTZ_DO,
 	EN_MEA_CKHZ_DO,
-	EN_MEA_SHTQ_DO,
+	EN_MEA_JBS_XCBR_DO,
 	EN_MEA_BZTTZ_DO,
 	EN_MEA_BZTHZ_DO,
 	EN_MEA_CLS_XSWI01_DO,
@@ -296,7 +310,8 @@ enum  _CARD_INDEX_TYPE_
 enum  _KEY_INDEX_TYPE_
 {
     EN_KEY_STR=0,
-    EN_KEY_VER=EN_KEY_STR,// CPU1
+    EN_KEY_VER=EN_KEY_STR,// 版本信息查看组合操作
+    EN_KEY_DBG,           // 厂家调试功能组合操作
     EN_KEY_END
 };
 
@@ -313,8 +328,10 @@ enum  _KEY_INDEX_TYPE_
 #define CN_NUM_SOFT          (EN_SOFT_END)              // 软件个数
 #define CN_NULL_PINNO        (0xAAAA)                   // 无此虚端子
 
+// 审计队列长度
+#define CN_NUM_RPT_SJ    (1024)
 // 事项队列长度
-#define CN_NUM_RPT_ACT   (512)
+#define CN_NUM_RPT_ACT   (CN_NUM_RPT_SJ)
 #define CN_NUM_RPT_ALM   (512)
 #define CN_NUM_RPT_CHK   (512)
 #define CN_NUM_RPT_RUN   (512)
@@ -326,6 +343,11 @@ enum  _KEY_INDEX_TYPE_
 #define CN_NUM_RPT_GOOUT (512)
 #define CN_NUM_RPT_LED   (512)
 #define CN_NUM_RPT_DPI   (512)
+#define CN_NUM_RPT_PRVT_SOE (256)
+#define CN_NUM_RPT_PRVT_OPT (256)
+// 队列控制标志
+#define CN_RPT_NULL    (0)         // 空
+#define CN_RPT_FULL    (DB0)       // 队列新事项满
 
 // 内存扫描相关宏定义
 #define CN_RAMSCAN_MAX      (1024)
@@ -488,6 +510,8 @@ enum  _KEY_INDEX_TYPE_
 #define CN_CONST_CHK_ADDR     (DB7)                           // 常量表地址配置错误
 #define CN_CONST_CHK_LINK     (DB8)                           // 常量表关联配置错误
 #define CN_CONST_CHK_SUB      (DB9)                           // 常量表附加配置错误
+// IO板和DC板地址确认等待时间
+#define CN_IO_ADDR_DLY       (5000)                           // 5s确认时间
 
 typedef struct
 {

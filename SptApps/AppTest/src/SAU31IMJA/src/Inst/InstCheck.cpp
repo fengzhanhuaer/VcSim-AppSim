@@ -1,13 +1,14 @@
 #include "InstResource.h"
 #define  CN_CHEK_TASKDLY  (1500)
 #define  CN_CHEK_IO_CNT   (CN_MS_T_120S/CN_CHEK_TASKDLY)
-
+#define  CN_CHEK_DBG_CNT  (CN_MS_T_300S/CN_CHEK_TASKDLY)
 int32 AppCheckFunction1(SptCheckTask::CheckAppInst* Inst)
 {
 
 	static  uint8   byPowInit=FALSE;
 	static  uint32   dwIoResetCnt=0;
 	static  uint32   dwParaSyn=0;
+	static  uint32   dwMenuDbg=0;
 	uint16  i,wFlag=FALSE;
 	// 传输初始化信息 仅传输一次
 	if(!g_tagPub.bSysPower)
@@ -24,7 +25,7 @@ int32 AppCheckFunction1(SptCheckTask::CheckAppInst* Inst)
 		{
 			for(i=0;i<CN_NUM_BOARD_PARA_COM;i++)
 			{
-				if((dwParaSyn&g_dwBit[i])&&(!G_Get_ChkIn_P[EN_CHK_PARA_STR+i]))
+				if((dwParaSyn&g_dwBit[i])&&(!g_tChkState.bChkIn[EN_CHK_PARA_STR+i]))
 				{
 					if (AppSendPara2SubBoard(&ProtParaGroup[i], 0) == 0)
 					{
@@ -58,7 +59,7 @@ int32 AppCheckFunction1(SptCheckTask::CheckAppInst* Inst)
 	// IO板卡自检,下发配置帧
 	for(i=0;i<CN_NUM_BOARD_DI;i++)
 	{
-		if(G_Get_ChkOut(EN_CHK_BOARD_DI_STR+i))
+		if(g_tChkState.bChkOut[EN_CHK_BOARD_DI_STR+i])
 		{
 			wFlag=TRUE;
 		}
@@ -75,6 +76,24 @@ int32 AppCheckFunction1(SptCheckTask::CheckAppInst* Inst)
 	{
 		ApiIoGlobalFlag::Instance().ResetSubBoardState();
 		dwIoResetCnt=0;
+	}
+	// 控制类审计记录更新
+	AppEventSjOutRef_Task();
+	// 界面调试状态计时
+	if(!MenuDispDbgIn)
+	{
+		if(MenuDispDbgDisp)
+		{
+			if(++dwMenuDbg>=CN_CHEK_DBG_CNT)
+			{
+				MenuDispDbgDisp=FALSE;
+				dwMenuDbg=0;
+			}
+		}
+	}
+	else
+	{
+		dwMenuDbg=0;
 	}
 	return 0;
 }

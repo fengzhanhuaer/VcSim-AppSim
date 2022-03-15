@@ -14,5 +14,7 @@ bool8 DispGoOutEvent(ApiMenu* Menu);
 bool8 DispLedEvent(ApiMenu* Menu);
 bool8 DispFlagEvent(ApiMenu* Menu);
 bool8 DispDpiEvent(ApiMenu* Menu);
+bool8 DispPrvtSoeEvent(ApiMenu* Menu);
+bool8 DispPrvtOptEvent(ApiMenu* Menu);
 
 #endif // !INSTMENUEVENTDISP_H

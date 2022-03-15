@@ -88,7 +88,7 @@ namespace spt
 		uint32 inputMaxLen;
 		String100B inputStr;
 		HmiWidTextLineRect input;
-		HmiWidTextLine text[6];
+		HmiWidTextLine text[7];
 		HmiWidCurseTextLine curse;
 	};
 	class HmiStrEditDialog :public HmiWidDialog

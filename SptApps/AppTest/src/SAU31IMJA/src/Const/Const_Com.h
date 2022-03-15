@@ -1,8 +1,6 @@
 #ifndef _CONST_COM_H_
 #define _CONST_COM_H_
 
-#include "IES_IMtypes.h"
-
 #define CN_TX_MAX     (512)
 #define CN_RX_FRAME   (8)
 // 如果板间通信有改动,请修正校验码

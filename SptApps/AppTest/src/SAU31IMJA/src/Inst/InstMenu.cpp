@@ -4,6 +4,8 @@ uint32 MenuDispDisp = 1;
 uint32 MenuDispUnDisp = 0;
 // 厂家调试显示设置
 uint32 MenuDispDbgDisp = 0;
+uint32 MenuDispDbgIn = 0;
+
 
 ApiMenu menuAnaView[] =
 {
@@ -52,8 +54,6 @@ ApiMenu menuEventStatusView[] =
 	{"GOOSE命令状态",     ViewActStatus},
 	{"告警状态",          ViewWarnStatus},
 	{"自检状态",          ViewChekStatus},
-//	{"告警详细状态",        ViewWarnDetailedStatus},
-	{"内部信息",          ViewInterlog},
 	{EndOfInst}
 };
 
@@ -96,6 +96,7 @@ ApiMenu menuSptParaDsp[] =
 	{"模拟量校准系数",  DispProtSetAmCoe},
 	{"模拟量直流补偿",  DispProtSetDcBcCoe},
 	{"模拟量相位补偿",  DispProtSetAngCoe},
+	{"网络参数",  DispEthnetPara},
 	{EndOfInst}
 };
 ApiMenu menuSptParaSet[] =
@@ -104,11 +105,27 @@ ApiMenu menuSptParaSet[] =
 	{"直流参数"  ,       EditProtSetDC},
 	{"模拟量参数",       EditProtSetSam},
 	{"功能参数"  ,       EditProtSetFun},
-//	{"直流量校准系数",        EditProtSetDcCoe},
-//	{"模拟量校准系数",        EditProtSetAmCoe},
-//	{"模拟量直流补偿",        EditProtSetDcBcCoe},
-//	{"模拟量相位补偿",        EditProtSetAngCoe},
-	
+	{"直流量校准系数",        EditProtSetDcCoe,&MenuDispDbgDisp},
+	{"模拟量直流补偿",        EditProtSetDcBcCoe,&MenuDispDbgDisp},
+	{"模拟量校准系数",        EditProtSetAmCoe,&MenuDispDbgDisp},
+	{"模拟量相位补偿",        EditProtSetAngCoe,&MenuDispDbgDisp},
+	{EndOfInst}
+};
+ApiMenu menuSptInfo[]=
+{
+	{"平台状态信息",ViewSptWarnStatus},
+	{"负载信息",    DispTaskLoadInfo},
+	{"周期信息",    DispTaskPeriodInfo},
+	{"进程通信状态",HmiSptCmmState},
+	{"清空统计信息",ClearTaskRunCalInfo},
+	{EndOfInst}
+};
+ApiMenu menuSptInter[] =
+{
+	{"内部记录"  ,        DispPrvtSoeEvent},
+	{"内部操作"  ,        DispPrvtOptEvent},
+	{"内部信息",          ViewInterlog},
+	{"平台信息",          menuSptInfo},
 	{EndOfInst}
 };
 ApiMenu menuProgramUpdate[]=
@@ -154,16 +171,6 @@ ApiMenu menuBakup[]=
 ApiMenu menuRestore[]=
 {
 	{"FLASH参数还原",RestoreFlashPara},
-	{EndOfInst}
-};
-
-ApiMenu menuSptInfo[]=
-{
-	{"平台状态信息",ViewSptWarnStatus},
-	{"负载信息",    DispTaskLoadInfo},
-	{"周期信息",    DispTaskPeriodInfo},
-	{"进程通信状态",HmiSptCmmState},
-	{"清空统计信息",ClearTaskRunCalInfo},
 	{EndOfInst}
 };
 ApiMenu menuSptTools[] =
@@ -224,6 +231,8 @@ ApiMenu menuAppClearInterEvent[] =
 	{"清除所有事项",ClaerAllEvent},
 	{"清除运行事项",ClaerRunEvent},
 	{"清除操作事项",ClaerOptEvent},
+	{"清除内部事项",ClaerPrvtSoeEvent},
+	{"清除内部操作",ClaerPrvtOptEvent},
 //	{"清除虚遥信SOE事项",ClaerFlagSoe},
 	{EndOfInst}
 };
@@ -262,14 +271,15 @@ ApiMenu menuFactoryDebug[] =
 	{"清除记录(厂家)",menuAppClearInterEvent,&MenuDispDbgDisp},
 	{"参数初始化",menuAppDefaultPara,&MenuDispDbgDisp},
 	{"平台工具",    menuSptTools,&MenuDispDbgDisp},
-	{"平台信息",    menuSptInfo,&MenuDispDbgDisp},
 	{"以太网设置",  menuEthnet,&MenuDispDbgDisp},
 	{"导出审计记录",menuSjyExportMenu,&MenuDispDbgDisp},
 	{EndOfInst}
 };
 ApiMenu menuUnitDebug[] =
 {
+#if(CN_DEV_CPU1)
 	{"指示灯调试",HmiLedFlowWaterSim},
+#endif
 	{"GOOSE单点出口调试",HmiGooseOutSSim},
 	{"GOOSE双点出口调试",HmiGooseOutDSim},
 	{"GOOSE模拟量调试",HmiGooseOutDcSim},
@@ -296,16 +306,17 @@ ApiMenu menuInfoView[] =
 };
 ApiMenu AppUnitSetMenu[] =
 {
-#if(CN_DEV_CPU1)
 	{"时间设置",  HmiSetSystemDate},
-#endif
 	{EndOfInst}
 };
 ApiMenu AppOperatorMenu[] =
 {
 	{"用户设置",LcdOperUsrParaLogIn,menuSptParaSet,NULL,&MenuDispDisp},
+#if(CN_DEV_CPU1)
 	{"装置设置",LcdOperUsrDevSetLogIn,AppUnitSetMenu,NULL,&MenuDispDisp},
+#endif
 	{"装置调试",EnterDebugMode,    menuUnitDebug,ExitDebugMode,&MenuDispDisp},
+	{"厂家查看",menuSptInter,&MenuDispDbgDisp},
 #if 0
 	{"打印",      menuPrint},
 #endif

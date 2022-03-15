@@ -13,6 +13,8 @@ extern ApiEvent AppEventDOSoe[CN_NUM_DO];
 extern ApiEvent AppEventGoOutSoe[CN_NUM_GOOUT];
 extern ApiEvent AppEventLedSoe[CN_NUM_LED];
 extern ApiEvent AppEventDpiSoe[CN_NUM_DPI];
+extern ApiEvent AppEventPrvtSoe[CN_NUM_PRVT_SOE];
+extern ApiEvent AppEventPrvtOpt[CN_NUM_PRVT_OPT];
 
 extern ApiEventGroup AppEventActGroup;
 extern ApiEventGroup AppEventWarnGroup;
@@ -27,13 +29,20 @@ extern ApiEventGroup AppEventDOSoeGroup;
 extern ApiEventGroup AppEventGoOutSoeGroup;
 extern ApiEventGroup AppEventLedSoeGroup;
 extern ApiEventGroup AppEventDpiSoeGroup;
+extern ApiEventGroup AppEventPrvtSoeGroup;
+extern ApiEventGroup AppEventPrvtOptGroup;
+
 extern ApiEventViewPool HmiViewEventPool;
 
 void AppEventPowerUpIni();
-void AppEventOutRef();
+void AppEventSjOutRef_Task();
+//void AppEventOutRef();
+void AppEventOutRef_S();
 void AppEventRunRef(WORD wRunIndex);
 void AppEventOptRef(WORD wOptIndex);
 void AppEventOptValueRef(WORD wOptIndex,DWORD iMeaValue1,DWORD iMeaValue2,DWORD iMeaValue3);
+void AppEventPrvtSoeRef(WORD wPrvtSoeIndex,BOOL bState);
+void AppEventPrvtOptRef(WORD wPrvtOptIndex);
 INT32 AppEventClear(WORD wIndex);
 #endif // !INSTEVENT_H
 

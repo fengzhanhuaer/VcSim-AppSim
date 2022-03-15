@@ -185,7 +185,8 @@ BOOL IES_IMDC_Dev(tagIES_IMDC  *pgtagIES_IMDC)
 	for(i=EN_DC_DEV_STR;i<EN_DC_DEV_END;i++)
 	{
 		// 暂时仅考虑电压、温度、CRC数据类型
-		if(ptDCTab->wType==EN_CTYPE_DC_H)
+		if((ptDCTab->wType==EN_CTYPE_DC_H)
+		||(ptDCTab->wType==EN_CTYPE_DC_CLK))
 		{
 			*piDst = *piSrc;
 		}
@@ -761,7 +762,7 @@ void IES_IMDC_Para_Init()
 	pfDcCoe   = &pgtagIES_IMDC->fDcCoe[EN_DC_SAM_STR];
 	pdwDcTb   = &pgtagIES_IMDC->dwDcTb[0];
 	ptSamDcSet= &pgtagIES_IMDC->tSamDcSet[0];
-	fDcVtomACoe=pgtagIES_IMDC->fDcVtomACoe=G_Get_PARA_F(EN_PARA_DC_V_MA);
+	fDcVtomACoe=pgtagIES_IMDC->fDcVtomACoe=g_tagPara.fPara[EN_PARA_DC_V_MA];
 	for(i=EN_DC_SAM_STR;i<EN_DC_SAM_END;i++)
 	{
 		bDcInType  = G_Get_PARA_I(ptDCTab->wParaIndex1);
@@ -867,7 +868,7 @@ void IES_IMDC()
 		return;
 	}
 	// 品质处理
-	if(G_Get_Inter(EN_INTER_GOPUB_DC_Q))
+	if(g_iInter[EN_INTER_GOPUB_DC_Q])
 	{
 		IES_IMDC_Q(pgtagIES_IMDC);
 	}

@@ -112,93 +112,101 @@ void AppStateOutCfgRef()
 	{
 		if(!GoPosOutCell[i].IsVLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DI_LOSE,TRUE);
+			g_iInter[EN_INTER_GOPUB_DI_LOSE]=TRUE;
 		}
 		if((GoPosOutCell[i].IsVLinked())&&(!GoPosOutCell[i].IsTLinked()))
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DI_T,TRUE);
+			g_iInter[EN_INTER_GOPUB_DI_T]=TRUE;
 		}
 		if(GoPosOutCell[i].IsQLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DI_Q,TRUE);
+			g_iInter[EN_INTER_GOPUB_DI_Q]=TRUE;
 		}
 		if((!GoPosOutCell[i].IsVLinked())&&(GoPosOutCell[i].IsTLinked()||GoPosOutCell[i].IsQLinked()))
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DI_Dif,TRUE);
+			g_iInter[EN_INTER_GOPUB_DI_Dif]=TRUE;
 		}
 	}
 	for(i=CN_NUM_DI_DI;i<(CN_NUM_DI_DI+CN_NUM_GOOUT);i++)
 	{
 		if(!GoPosOutCell[i].IsVLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_OUT_LOSE,TRUE);
+			g_iInter[EN_INTER_GOPUB_OUT_LOSE]=TRUE;
 		}
 		if(GoPosOutCell[i].IsQLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_OUT_Q,TRUE);
+			g_iInter[EN_INTER_GOPUB_OUT_Q]=TRUE;
 		}
 		if((!GoPosOutCell[i].IsVLinked())&&(GoPosOutCell[i].IsTLinked()||GoPosOutCell[i].IsQLinked()))
 		{
-			G_Set_Inter(EN_INTER_GOPUB_OUT_Dif,TRUE);
+			g_iInter[EN_INTER_GOPUB_OUT_Dif]=TRUE;
 		}
 	}
 	for(i=0;i<CN_NUM_DPI;i++)
 	{
 		if(!GoDpPosOutCell[i].IsVLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DPI_LOSE,TRUE);
+			g_iInter[EN_INTER_GOPUB_DPI_LOSE]=TRUE;
 		}
 		if((GoDpPosOutCell[i].IsVLinked())&&(!GoDpPosOutCell[i].IsTLinked()))
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DPI_T,TRUE);
+			g_iInter[EN_INTER_GOPUB_DPI_T]=TRUE;
 		}
 		if(GoDpPosOutCell[i].IsQLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DPI_Q,TRUE);
+			g_iInter[EN_INTER_GOPUB_DPI_Q]=TRUE;
 		}
 		if((!GoDpPosOutCell[i].IsVLinked())&&(GoPosOutCell[i].IsTLinked()||GoPosOutCell[i].IsQLinked()))
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DPI_Dif,TRUE);
+			g_iInter[EN_INTER_GOPUB_DPI_Dif]=TRUE;
 		}
 	}
 	for(i=0;i<CN_NUM_DC;i++)
 	{
 		if(!GoDcOutCell[i].IsVLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DC_LOSE,TRUE);
+			g_iInter[EN_INTER_GOPUB_DC_LOSE]=TRUE;
 		}
 		if(GoDcOutCell[i].IsQLinked())
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DC_Q,TRUE);
+			g_iInter[EN_INTER_GOPUB_DC_Q]=TRUE;
 		}
 		if((!GoDcOutCell[i].IsVLinked())&&(GoDcOutCell[i].IsTLinked()||GoDcOutCell[i].IsQLinked()))
 		{
-			G_Set_Inter(EN_INTER_GOPUB_DC_Dif,TRUE);
+			g_iInter[EN_INTER_GOPUB_DC_Dif]=TRUE;
 		}
 	}
 }
 // GOOSE开出返校数据刷新
 void AppStateOutRtnRef()
 {
-	WORD i;
-	DWORD       *pdwBoardCnt,*pdwDIIn;
+	WORD i,j;
+	DWORD       *pdwBoardCnt,*pdwDIIn,dwcheckStatus1;
 	tagTimeUTC  *ptDIInUTC;
 	SalDateStamp  tStamp;
 	ApiBoardNormalStateOut *pNorDoBoard;
 	// 硬开入状态及时标刷新
 	pdwDIIn 	 =&g_tagIO.dwDIIn[0];
-	ptDIInUTC	 =&g_tagIO.tDIInUTC[CN_NUM_BOARD_DI_DI];
-	pdwBoardCnt  =&g_tagIO.dwDIBoardCnt[CN_NUM_BOARD_DI_DI];
+	ptDIInUTC	 =&g_tagIO.tDIInUTC[EN_BOARD_DI_DO_STR];
+	pdwBoardCnt  =&g_tagIO.dwDIBoardCnt[EN_BOARD_DI_DO_STR];
 	pNorDoBoard  =&NorDoBoard[0];
 
-	for(i=EN_BOARD_DI_DI_END;i<EN_BOARD_DI_END;i++,ptDIInUTC++,pdwBoardCnt++,pNorDoBoard++)
+	for(i=EN_BOARD_DI_DO_STR,j=0;i<EN_BOARD_DI_DO_END;i++,j++,ptDIInUTC++,pdwBoardCnt++,pNorDoBoard++)
 	{	
-		if(G_Sys_Div4_4)
+		if(G_Sys_Div(CN_NUM_BOARD_DI,i))
 		{
+		
+			dwcheckStatus1=pNorDoBoard->CheckStatus()->checkStatus1;
+			
 			if((pNorDoBoard->CheckStatus()->recvFrameOkCnt==*pdwBoardCnt)
-			||(pNorDoBoard->CheckStatus()->checkStatus1&(DB2+DB3)))
+	#if(CN_DEV_CPU1)
+			||(dwcheckStatus1&(CN_DO_CHK_CHN1+CN_DO_CHK_PARA+CN_DO_CHK_POW24))
+	#elif(CN_DEV_CPU2)
+			||(dwcheckStatus1&(CN_DO_CHK_CHN2+CN_DO_CHK_PARA+CN_DO_CHK_POW24))
+	#endif
+		)
 			{
-				G_Set_ChkIn(EN_CHK_BOARD_DI_STR+i);
+				G_Set_ChkIn_All(EN_CHK_BOARD_DO_STR+j,dwcheckStatus1,0,0);
 				#if 0
 			LogMsg<<"DOCnt"<<pNorDoBoard->CheckStatus()->recvFrameOkCnt
 				<<"   "<<*pdwBoardCnt \
@@ -210,31 +218,29 @@ void AppStateOutRtnRef()
 				<<"\n";
 			#endif
 				*pdwBoardCnt=pNorDoBoard->CheckStatus()->recvFrameOkCnt;
-				//*pbBoard=TRUE;
 			}
 			else
 			{
-				G_Clr_ChkIn(EN_CHK_BOARD_DI_STR+i);
+				G_Clr_ChkIn(EN_CHK_BOARD_DO_STR+j);
 				*pdwBoardCnt=pNorDoBoard->CheckStatus()->recvFrameOkCnt;
-				//*pbBoard=FALSE;
 			}
-			// 自检2
-			if(pNorDoBoard->CheckStatus()->checkStatus1&(DB0))
+			// 自检
+			if(j!=EN_BOARD_DO2)
 			{
-				G_Set_ChkIn(EN_CHK_BOARD_DO_CHN1_STR+i);
-			}
-			else
-			{
-				G_Clr_ChkIn(EN_CHK_BOARD_DO_CHN1_STR+i);
-			}
-			// 自检3
-			if(pNorDoBoard->CheckStatus()->checkStatus1&(DB1))
-			{
-				G_Set_ChkIn(EN_CHK_BOARD_DO_CHN2_STR+i);
-			}
-			else
-			{
-				G_Clr_ChkIn(EN_CHK_BOARD_DO_CHN2_STR+i);
+				if(dwcheckStatus1&CN_DO_CHK_FPOW)
+				{
+					G_Set_ChkIn_All(EN_CHK_BOARD_DO_POW30_STR+j,dwcheckStatus1,0,0);
+					// 进行断电处理
+					g_iInter[EN_INTER_POW30_OFF]=TRUE;
+				}
+				else if(dwcheckStatus1&CN_DO_CHK_POW30)
+				{
+					G_Set_ChkIn_All(EN_CHK_BOARD_DO_POW30_STR+j,dwcheckStatus1,0,0);
+				}
+				else
+				{
+					G_Clr_ChkIn(EN_CHK_BOARD_DO_POW30_STR+j);
+				}
 			}
 		}
 		if(pNorDoBoard->VerfyCodeNum()!=g_tagIO.dwDICnt[i])
@@ -248,7 +254,6 @@ void AppStateOutRtnRef()
 		}
 	}
 }
-
 // GOOSE开出数据刷新
 void AppStateOutRef()
 {
@@ -415,9 +420,9 @@ void AppStateOutRef()
 
 				if(GoDcOutCell[i].IsTLinked())
 				{
-					tStamp.usL=(G_Get_PUB_UTC)->dwUSecond_L;
-					tStamp.usH=(G_Get_PUB_UTC)->dwUSecond_H;
-					tStamp.q.q=(G_Get_PUB_UTC)->dwLeapSecFlg;
+					tStamp.usL=g_tagPub.tSysTimeUTC.dwUSecond_L;
+					tStamp.usH=g_tagPub.tSysTimeUTC.dwUSecond_H;
+					tStamp.q.q=g_tagPub.tSysTimeUTC.dwLeapSecFlg;
 					GoDcOutCell[i].SetStamp(tStamp);
 				}
 				pbDCChg[i]=FALSE;
@@ -427,7 +432,7 @@ void AppStateOutRef()
 		}
 	}
 	// 品质变化
-	if(G_Get_Inter(EN_INTER_GOPUB_DC_Q))
+	if(g_iInter[EN_INTER_GOPUB_DC_Q])
 	{
 		pdwQ =g_tagDC.dwDCOutQ;
 		for(j=0;j<CN_NUM_BOARD_DC;j++)
@@ -438,9 +443,9 @@ void AppStateOutRef()
 				{
 					//if(GoDcOutCell[i].IsTLinked())
 					//{
-					//	tStamp.usL=(G_Get_PUB_UTC)->dwUSecond_L;
-					//	tStamp.usH=(G_Get_PUB_UTC)->dwUSecond_H;
-					//	tStamp.q.q=(G_Get_PUB_UTC)->dwLeapSecFlg;
+					//	tStamp.usL=g_tagPub.tSysTimeUTC.dwUSecond_L;
+					//	tStamp.usH=g_tagPub.tSysTimeUTC.dwUSecond_H;
+					//	tStamp.q.q=g_tagPub.tSysTimeUTC.dwLeapSecFlg;
 					//	GoDcOutCell[i].SetStamp(tStamp);
 					//}
 					if(GoDcOutCell[i].IsQLinked())
@@ -466,4 +471,330 @@ void AppStateOutRef()
 		}
 	}
 }
+#if 0
+void AppStateOutInit_S()
+{
+	register BOOL      *pbDIHldIn;
+	register BYTE      *pbyDpiIn;
+	register WORD       i;
+	register DWORD      *pdwQ;
+	SalDateStamp        tStamp;
+	// 更新第一帧数据
+	if(g_tagIO.byDIFstToGoose)
+	{
+		pbDIHldIn   =g_tagIO.bDIHldIn;
+		pdwQ        =g_tagIO.dwDIQ;
+		tStamp.usL = g_tagPub.tSysTimeUTC.dwUSecond_L;
+		tStamp.usH = g_tagPub.tSysTimeUTC.dwUSecond_H;
+		tStamp.q.q = g_tagPub.tSysTimeUTC.dwLeapSecFlg;
+		ApiGoPosOut *pGoPosOutCell=&GoPosOutCell[0];
+		for(i=0;i<CN_NUM_DI_DI;i++,pGoPosOutCell++)
+		{
+			// 更新状态
+			pGoPosOutCell->SetValue(pbDIHldIn[i]);
+			pGoPosOutCell->SetStamp(tStamp);
+			// 更新品质
+			if(pGoPosOutCell->IsQLinked())
+			{
+				pGoPosOutCell->SetQ(pdwQ[i]);
+			}
+		}
+		g_tagIO.byDIFstToGoose=FALSE;
+	}
+	// 更新第一帧数据
+	if(g_tagIO.byDpiFstToGoose)
+	{
+	
+		pbyDpiIn	 =g_tagIO.byDpiIn;
+		pdwQ		 =g_tagIO.dwDpiQ;
+		tStamp.usL=g_tagPub.tSysTimeUTC.dwUSecond_L;
+		tStamp.usH=g_tagPub.tSysTimeUTC.dwUSecond_H;
+		tStamp.q.q=g_tagPub.tSysTimeUTC.dwLeapSecFlg;
+		ApiGoDpPosOut *pGoDpPosOutCell=&GoDpPosOutCell[0];
+		for(i=0;i<CN_NUM_DPI;i++,pGoDpPosOutCell++)
+		{
+			pGoDpPosOutCell->SetValue(pbyDpiIn[i]);
+			pGoDpPosOutCell->SetStamp(tStamp);
+						// 更新品质
+			if(pGoDpPosOutCell->IsQLinked())
+			{
+				pGoDpPosOutCell->SetQ(pdwQ[i]);
+			}
+		}
+		g_tagIO.byDpiFstToGoose=FALSE;
+	}
+}
+void AppStateOutDi_S()
+{
+	if(g_tDiQueue.wGoRptr!=g_tDiQueue.wWptr)
+	{
+	
+		register WORD        i,wStr,wIndex;
+		register DWORD       *pdwQ;
+		register tagSoeEvent *ptEvent;
+		SalDateStamp          tStamp;
+		
+		pdwQ    =g_tagIO.dwDIQ;
+		wStr    =g_tDiQueue.wGoRptr;
+		ptEvent =&g_tDiQueue.tEvent[wStr];
+		for(i=0;i<CN_NUM_RPT_DI;i++)
+		{
+			wIndex=ptEvent->wIndex;
+			if(wIndex<CN_NUM_DI_DI)
+			{
+				GoPosOutCell[wIndex].SetValue(ptEvent->wState);
+				tStamp.usL=ptEvent->tTime.dwUSecond_L;
+				tStamp.usH=ptEvent->tTime.dwUSecond_H;
+				tStamp.q.q=ptEvent->tTime.dwLeapSecFlg;
+				GoPosOutCell[wIndex].SetStamp(tStamp);
+				// 更新品质
+				if(GoPosOutCell[wIndex].IsQLinked())
+				{
+					GoPosOutCell[wIndex].SetQ(pdwQ[wIndex]);
+				}
+			}
+			if((++wStr)==g_tDiQueue.wWptr)
+			{
+				g_tDiQueue.wGoRptr=wStr;
+				return;
+			}
+			if(wStr>=CN_NUM_RPT_DI)
+			{
+				ptEvent=g_tDiQueue.tEvent;
+				wStr=0;
+			}
+			else
+			{
+				ptEvent++;
+			}
+		}
+	}
+
+}
+void AppStateOutGoOut_S()
+{
+	if(g_tGoOutQueue.wGoRptr!=g_tGoOutQueue.wWptr)
+	{
+		register WORD          i,wStr,wIndex;
+		register tagSoeEvent  *ptEvent;
+		SalDateStamp           tStamp;
+		
+		wStr    =g_tGoOutQueue.wGoRptr;
+		ptEvent =&g_tGoOutQueue.tEvent[wStr];
+		for(i=0;i<CN_NUM_RPT_GOOUT;i++)
+		{
+			wIndex=ptEvent->wIndex;
+			if(wIndex<CN_NUM_GOOUT)
+			{
+				wIndex+=CN_NUM_DI_DI;
+				GoPosOutCell[wIndex].SetValue(ptEvent->wState);
+				// 更新时标
+				if(GoPosOutCell[wIndex].IsTLinked())
+				{
+					tStamp.usL=ptEvent->tTime.dwUSecond_L;
+					tStamp.usH=ptEvent->tTime.dwUSecond_H;
+					tStamp.q.q=ptEvent->tTime.dwLeapSecFlg;
+					GoPosOutCell[wIndex].SetStamp(tStamp);
+				}
+				// 更新品质
+				if(GoPosOutCell[wIndex].IsQLinked())
+				{
+					GoPosOutCell[wIndex].SetQ(ptEvent->wQ);
+				}
+			}
+			if((++wStr)==g_tGoOutQueue.wWptr)
+			{
+				g_tGoOutQueue.wGoRptr=wStr;
+				return;
+			}
+			if(wStr>=CN_NUM_RPT_GOOUT)
+			{
+				ptEvent=g_tGoOutQueue.tEvent;
+				wStr=0;
+			}
+			else
+			{
+				ptEvent++;
+			}
+		}
+	}
+}
+void AppStateOutDpi_S()
+{
+	if(g_tDpiQueue.wGoRptr!=g_tDpiQueue.wWptr)
+	{
+	
+		register WORD        i,wStr,wIndex;
+		register DWORD       *pdwQ;
+		register tagSoeEvent *ptEvent;
+		SalDateStamp          tStamp;
+		pdwQ	=g_tagIO.dwDpiQ;
+		wStr	=g_tDpiQueue.wGoRptr;
+		ptEvent =&g_tDpiQueue.tEvent[wStr];
+		for(i=0;i<CN_NUM_RPT_DPI;i++)
+		{
+			wIndex=ptEvent->wIndex;
+			if(wIndex<CN_NUM_DPI)
+			{
+				GoDpPosOutCell[wIndex].SetValue(ptEvent->wState);
+				tStamp.usL=ptEvent->tTime.dwUSecond_L;
+				tStamp.usH=ptEvent->tTime.dwUSecond_H;
+				tStamp.q.q=ptEvent->tTime.dwLeapSecFlg;
+				GoDpPosOutCell[wIndex].SetStamp(tStamp);
+				// 更新品质
+				if(GoDpPosOutCell[wIndex].IsQLinked())
+				{
+					GoDpPosOutCell[wIndex].SetQ(pdwQ[wIndex]);
+				}
+			}
+			if((++wStr)==g_tDpiQueue.wWptr)
+			{
+				g_tDpiQueue.wGoRptr=wStr;
+				return;
+			}
+			if(wStr>=CN_NUM_RPT_DPI)
+			{
+				ptEvent=g_tDpiQueue.tEvent;
+				wStr=0;
+			}
+			else
+			{
+				ptEvent++;
+			}
+		}
+	}
+}
+
+void AppStateOutDc_S()
+{
+	register BOOL	*pbDCChg,*bDCGoOutFresh;
+	register WORD	i,j;
+	register INT32		*piDc;
+	register FLOAT32	*pfDc;
+	//register tagTimeUTC *ptagTimeUTC;
+	register DWORD		*pdwQ;
+	u32value   uVal;
+	SalDateStamp  tStamp;
+	
+	// GOOSE直流信息
+	bDCGoOutFresh=g_tagDC.bDCGoOutFresh;
+	pbDCChg 	 =g_tagDC.bDCChg;
+	piDc		 =g_tagDC.iDCOutCom;
+	pfDc		 =g_tagDC.fDCOutCom;
+	//ptagTimeUTC  =g_tagDC.tDCOut;
+	
+	for(j=0;j<CN_NUM_BOARD_DC;j++)
+	{
+		if(bDCGoOutFresh[j])
+		{
+			for(i=g_tBoardDCTab[j].wIndexStr;i<g_tBoardDCTab[j].wIndexEnd;i++)
+			{
+				if(!pbDCChg[i])
+				{
+					continue;
+				}
+				if(!GoDcOutCell[i].IsVLinked())
+				{
+					continue;
+				}
+				if(GoDcOutCell[i].GoValueType()==spt::GoSvDataType::E_GOSV_INT32)
+				{
+					uVal.i32 =piDc[i];
+				}
+				else if(GoDcOutCell[i].GoValueType()==spt::GoSvDataType::E_GOSV_FLOAT32)
+				{
+					uVal.f32 =pfDc[i];
+				}
+				else
+				{
+					uVal.u32 = (UINT32)piDc[i];
+				}
+
+				GoDcOutCell[i].SetValue(uVal);
+
+				if(GoDcOutCell[i].IsTLinked())
+				{
+					tStamp.usL=g_tagPub.tSysTimeUTC.dwUSecond_L;
+					tStamp.usH=g_tagPub.tSysTimeUTC.dwUSecond_H;
+					tStamp.q.q=g_tagPub.tSysTimeUTC.dwLeapSecFlg;
+					GoDcOutCell[i].SetStamp(tStamp);
+				}
+				pbDCChg[i]=FALSE;
+			}
+			bDCGoOutFresh[j]=FALSE;
+			break;
+		}
+	}
+	// 品质变化
+	if(g_iInter[EN_INTER_GOPUB_DC_Q])
+	{
+		pdwQ =g_tagDC.dwDCOutQ;
+		for(j=0;j<CN_NUM_BOARD_DC;j++)
+		{
+			if(g_tagDC.bDCOutQChg[j])
+			{
+				for(i=g_tBoardDCTab[j].wIndexStr;i<g_tBoardDCTab[j].wIndexEnd;i++)
+				{
+					//if(GoDcOutCell[i].IsTLinked())
+					//{
+					//	tStamp.usL=g_tagPub.tSysTimeUTC.dwUSecond_L;
+					//	tStamp.usH=g_tagPub.tSysTimeUTC.dwUSecond_H;
+					//	tStamp.q.q=g_tagPub.tSysTimeUTC.dwLeapSecFlg;
+					//	GoDcOutCell[i].SetStamp(tStamp);
+					//}
+					if(GoDcOutCell[i].IsQLinked())
+					{
+						GoDcOutCell[i].SetQ(pdwQ[j]);
+					}
+
+				}
+				g_tagDC.bDCOutQChg[j]=FALSE;
+				break;
+			}
+		}
+	}
+}
+
+void AppStateOutDo_S()
+{
+	if(g_tDoQueue.wGoRptr!=g_tDoQueue.wWptr)
+	{
+		register WORD        i,wStr,wIndex;
+		register tagSoeEvent *ptEvent;
+		wStr    =g_tDoQueue.wGoRptr;
+		ptEvent =&g_tDoQueue.tEvent[wStr];
+		for(i=0;i<CN_NUM_RPT_DO;i++)
+		{
+			wIndex=ptEvent->wIndex;
+			if(wIndex<CN_NUM_DO_RTN)
+			{
+				NorDoOut[wIndex].SetValue(ptEvent->wState);
+			}
+			if((++wStr)==g_tDoQueue.wWptr)
+			{
+				g_tDoQueue.wGoRptr=wStr;
+				return;
+			}
+			if(wStr>=CN_NUM_RPT_DO)
+			{
+				ptEvent=g_tDoQueue.tEvent;
+				wStr=0;
+			}
+			else
+			{
+				ptEvent++;
+			}
+		}
+	}
+}
+void AppStateOutRef_S()
+{
+	AppStateOutInit_S();
+	AppStateOutDi_S();
+	AppStateOutGoOut_S();
+	AppStateOutDpi_S();
+	AppStateOutDc_S();
+	AppStateOutDo_S();
+}
+#endif
 

@@ -12,8 +12,8 @@
  * V1.00 2021-2-24 증羚적：놓경
  *================================================================================*/
 
-#ifndef _IES_IMRec_H_
-#define _IES_IMRec_H_
+#ifndef _IES_IMREC_H_
+#define _IES_IMREC_H_
 
 #include "IES_IMSrc.h"
 #include "IES_IMPub.h"

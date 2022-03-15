@@ -14,13 +14,12 @@ const tagDCTab g_tDCTab[ ] =
 {
 	{ EN_DC_SAM1          ,  EN_CTYPE_DC_ZL1,    EN_PARA_DC1_STR, EN_PARA_DC_TB,   0,  "直流测量1",            "DC_SAM1"},
 	{ EN_DC_SAM2          ,  EN_CTYPE_DC_ZL2,    EN_PARA_DC2_STR, EN_PARA_DC_TB,   0,  "直流测量2",            "DC_SAM2"},
-#if(!CN_FUN_DBUG1)
 	{ EN_DC_SAM3          ,  EN_CTYPE_DC_ZL3,    EN_PARA_DC3_STR, EN_PARA_DC_TB,   0,  "直流测量3",            "DC_SAM3"},
 	{ EN_DC_SAM4          ,  EN_CTYPE_DC_ZL4,    EN_PARA_DC4_STR, EN_PARA_DC_TB,   0,  "直流测量4",            "DC_SAM4"},
 	{ EN_DC_SAM5          ,  EN_CTYPE_DC_ZL5,    EN_PARA_DC5_STR, EN_PARA_DC_TB,   0,  "直流测量5",            "DC_SAM5"},
 	{ EN_DC_SAM6          ,  EN_CTYPE_DC_ZL6,    EN_PARA_DC6_STR, EN_PARA_DC_TB,   0,  "直流测量6",            "DC_SAM6"},
-	{ EN_DC_SAM7          ,  EN_CTYPE_DC_ZL7,    EN_PARA_DC7_STR, EN_PARA_DC_TB,   0,  "直流测量7",            "DC_SAM7"},
-#endif
+	// 直流板第7路直流零飘比较大,代码中修正为备用,数据集中删除 2022-2-17 liuzhili
+	{ EN_DC_SAM7          ,  EN_CTYPE_DC_ZL7,    EN_PARA_DC7_STR, EN_PARA_DC_TB,   0,  "备用直流",             "DC_SAM7"},
 	{ EN_DC_T1            ,  EN_CTYPE_DC_T,      CN_NULL_PINNO,   EN_PARA_T_TB,    0,  "装置内部温度1X",          "DC_T1"},
 	{ EN_DC_V1            ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压1X-1",        "DC_V1"},
 	{ EN_DC_V2            ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压1X-2",        "DC_V2"},
@@ -28,7 +27,8 @@ const tagDCTab g_tDCTab[ ] =
 	{ EN_DC_V4            ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压1X-4",        "DC_V4"},
 	{ EN_DC_V5            ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压1X-5",        "DC_V5"},
 	{ EN_DC_CCD_CRC       ,  EN_CTYPE_DC_H,      CN_NULL_PINNO,   CN_NULL_PINNO,   0,  "装置配置文件的CRC 1X",        "DC_CCD_CRC"},
-
+	{ EN_DC_FPGA_CLK1_1   ,  EN_CTYPE_DC_CLK,    CN_NULL_PINNO,   CN_NULL_PINNO,   0,  "装置时钟频率1X-1",      "DC_FPGA_CLK1_1"},
+	{ EN_DC_FPGA_CLK1_2   ,  EN_CTYPE_DC_CLK,    CN_NULL_PINNO,   CN_NULL_PINNO,   0,  "装置时钟频率1X-2",      "DC_FPGA_CLK1_2"},
 	{ EN_DC_T2            ,  EN_CTYPE_DC_T,      CN_NULL_PINNO,   EN_PARA_T_TB,    0,  "装置内部温度2X",            "DC_T2"},
 	{ EN_DC_V6            ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压2X-1",        "DC_V6"},
 	{ EN_DC_V7            ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压2X-2",        "DC_V7"},
@@ -36,10 +36,9 @@ const tagDCTab g_tDCTab[ ] =
 	{ EN_DC_V9            ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压2X-4",        "DC_V9"},
 	{ EN_DC_V10           ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压2X-5",       "DC_V10"},
 	{ EN_DC_CCD_CRC2      ,  EN_CTYPE_DC_H,      CN_NULL_PINNO,   CN_NULL_PINNO,   0,  "装置配置文件的CRC 2X",       "DC_CCD_CRC2"},
-
+	{ EN_DC_FPGA_CLK2     ,  EN_CTYPE_DC_CLK,    CN_NULL_PINNO,   CN_NULL_PINNO,   0,  "装置时钟频率2X",            "DC_FPGA_CLK2"},
 	{ EN_DC_T3            ,  EN_CTYPE_DC_T,      CN_NULL_PINNO,   EN_PARA_T_TB,    0,  "装置内部温度5X",            "DC_T3"},
 	{ EN_DC_V11           ,  EN_CTYPE_DC_V,      CN_NULL_PINNO,   EN_PARA_V_TB,    0,  "装置内部工作电压5X",          "DC_V11"},
-
 	{ EN_DC_OPT11_RX      ,  EN_CTYPE_DC_DBM,    CN_NULL_PINNO,   EN_PARA_RT_TB,   0,  "光口1X-1接收功率",   "DC_OPT11_RX"},
 	{ EN_DC_OPT11_TX      ,  EN_CTYPE_DC_DBM,    CN_NULL_PINNO,   EN_PARA_RT_TB,   0,  "光口1X-1发送功率",   "DC_OPT11_TX"},
 	{ EN_DC_OPT11_T       ,  EN_CTYPE_DC_OPTT,   CN_NULL_PINNO,   EN_PARA_T_TB ,   0,  "光口1X-1温度",        "DC_OPT11_T"},

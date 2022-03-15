@@ -87,11 +87,11 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SptOnWin32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>legacy_stdio_definitions.lib;libcrypto.lib;libssl.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <GenerateMapFile>true</GenerateMapFile>
     </Link>
@@ -114,10 +114,11 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SptOnWin32;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>legacy_stdio_definitions.lib;libcrypto.lib;libssl.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -137,14 +138,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\SimHal\SimHal.vcxproj">
-      <Project>{fc02abd3-7169-4a78-8d08-e01f9a8618b7}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SptOnWin32\SptOnWin32.vcxproj">
-      <Project>{4c52c0a7-7c46-4aa7-8654-331f7397cc55}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ComSur\IES_IMDC.cpp" />
@@ -215,6 +208,7 @@
     <ClInclude Include="src\SAU31IMJA\src\Const\Const_Pub.h" />
     <ClInclude Include="src\SAU31IMJA\src\Const\Const_Rec.h" />
     <ClInclude Include="src\SAU31IMJA\src\Const\Const_Sam.h" />
+    <ClInclude Include="src\SAU31IMJA\src\Const\Const_VerSion.h" />
     <ClInclude Include="src\SAU31IMJA\src\Inst\InstAngIn.h" />
     <ClInclude Include="src\SAU31IMJA\src\Inst\InstAngOut.h" />
     <ClInclude Include="src\SAU31IMJA\src\Inst\InstAppCmm.h" />

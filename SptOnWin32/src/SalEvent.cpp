@@ -1137,15 +1137,11 @@ int32 spt::SalEventGroup::SaveEvent(uint16 eventId, StatusData& status)
 	eventTempBuf->data[w] = status;
 	ph->eventSaveWriter = (w + 1) % ph->eventPoolSize;
 	uint32 temp = (ph->eventSaveNum + 1);
+	ph->eventSaveNum = temp;
+	temp = ph->eventValidNum + 1;
 	if (temp >= ph->eventPoolSize)
 	{
 		temp = ph->eventPoolSize - 1;
-	}
-	ph->eventSaveNum = temp;
-	temp = ph->eventValidNum + 1;
-	if (temp > ph->eventSaveNum)
-	{
-		temp = ph->eventSaveNum;
 	}
 	ph->eventValidNum = temp;
 	if (eventIsUpdate < 2)
@@ -1289,16 +1285,14 @@ int32 spt::SalEventGroup::SaveFile()
 			eventSaveBuf->data[dw] = eventTempBuf->data[sr];
 			dw = (dw + 1) % dstph->eventPoolSize;
 			sr = (sr + 1) % surph->eventPoolSize;
+			eventSaveBuf->data[dw].crc = 0;
+			eventSaveBuf->data[dw].stamp = 0;
 			uint32 temp = (dstph->eventSaveNum + 1);
+			dstph->eventSaveNum = temp;
+			temp = dstph->eventValidNum + 1;
 			if (temp >= dstph->eventPoolSize)
 			{
 				temp = dstph->eventPoolSize - 1;
-			}
-			dstph->eventSaveNum = temp;
-			temp = dstph->eventValidNum + 1;
-			if (temp > dstph->eventSaveNum)
-			{
-				temp = dstph->eventSaveNum;
 			}
 			dstph->eventValidNum = temp;
 		}
@@ -1455,7 +1449,6 @@ int32 spt::SalEventGroup::loadFile(const char* FileName)
 	file.Read(eventSaveBuf, eventSaveBuf->SizeOfEventPool());
 	ph->eventPoolSize = hd.eventPoolSize;
 	file.Close();
-	hd.eventSaveNum = hd.eventSaveNum % hd.eventPoolSize;
 	uint32 num = eventSaveBuf->header.eventPoolSize;
 	uint32 oknum = 0;
 	for (uint32 i = 0; i < num; i++)
@@ -1465,10 +1458,10 @@ int32 spt::SalEventGroup::loadFile(const char* FileName)
 			oknum++;
 		}
 	}
-	hd.eventValidNum = oknum;
-	if (ph->eventValidNum >= ph->eventSaveNum)
+	ph->eventValidNum = oknum;
+	if (ph->eventValidNum == 0)
 	{
-		ph->eventValidNum = ph->eventSaveNum;
+		ph->eventSaveNum = 0;
 	}
 	return 0;
 }

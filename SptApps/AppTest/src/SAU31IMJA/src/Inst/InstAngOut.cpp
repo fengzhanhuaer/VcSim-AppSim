@@ -94,19 +94,19 @@ void AppAngOutCfgRef()
 		// 级联数据有发布
 		if((*pwSvPubCfg>=EN_ANA_SV_STR)&&(*pwSvPubCfg<EN_ANA_SV_END))
 		{
-			G_Set_Inter(EN_INTER_SVPUB_SUB,TRUE);
+			g_iInter[EN_INTER_SVPUB_SUB]=TRUE;
 		}
 	}
 #if(CN_DEV_CPU1)
 	// 无订阅 修正发布额定延时
-	if(G_Get_Inter(EN_INTER_SVSUB_NOPUB))
+	if(g_iInter[EN_INTER_SVSUB_NOPUB])
 	{
 		virSvSendDateSet.SetDealy(CN_SVPUB_TIME);
 	}
 #endif
 #if(CN_DEV_CPU2)
 // 无级联发布 修正发布额定延时及级联通道无效
-	if(!G_Get_Inter(EN_INTER_SVPUB_SUB))
+	if(!g_iInter[EN_INTER_SVPUB_SUB])
 	{
 		virSvSendDateSet.SetDealy(CN_SVPUB_TIME);
 		for(i=0;i< CN_NUM_SV;i++)
@@ -120,15 +120,15 @@ void AppAngOutCfgRef()
 void AppAngListRef()
 {
 	register  WORD  *pwSvPubSend,i,wSvPubChg;
-	pwSvPubSend =g_tagAna.wSvPubSend;
 	wSvPubChg=g_tagAna.wSvPubChg;
 	// 操作成功
 	if(wSvPubChg&CN_SV_OPT_S)
 	{
+		pwSvPubSend =g_tagAna.wSvPubSend;
 		//LogMsg.Stamp()<<"挑数下发\n";
 		for(i=0;i<g_tagAna.wSvPubDatNum;i++)
 		{
-			//LogMsg.Stamp()<<"Chn:"<<i+1<<"  Index:"<<*pwSvPubSend<<"\n";
+			//LogMsg.Stamp()<<"Chn:"<<i+1<<"  Index:"<<pwSvPubSend[i]<<"\n";
 			virSvSendDateSet.SetOutSelIndex(i+1,pwSvPubSend[i]);
 		}
 		// 板间交互数据挑数下发
@@ -137,7 +137,6 @@ void AppAngListRef()
 		// CPU1 更新板间挑数
 		//LogErr.Stamp()<<"级联挑数下发\n";
 		pwSvPubChn  =&g_tagAna.wSvPubChn[EN_ANA_SV_STR];
-		pwSvPubSend =g_tagAna.wSvPubSend;
 		// 判断有无级联
 		for(i=0;i<EN_LINK_END;i++)
 		{

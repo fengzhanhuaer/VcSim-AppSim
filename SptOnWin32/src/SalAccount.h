@@ -23,10 +23,6 @@ namespace spt
 			uint32 logErrCnt;//´íÎó´ÎÊý
 			bool8 isLock;
 			bool8 isDefaultPw;
-			uint8 lastLogTimeQ;
-			uint8 firstErrTimeQ;
-			uint8 lastErrTimeQ;
-			uint8 lastPwChagneTimeQ;
 			uint64 lastLogTime;
 			uint64 firstErrTime;
 			uint64 lastErrTime;

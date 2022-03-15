@@ -12,6 +12,7 @@
 #include"InstMenuCcdDisp.h"
 // 厂家调试显示设置
 extern uint32 MenuDispDbgDisp;
+extern uint32 MenuDispDbgIn;
 extern ApiMenu AppRootMenu[];
 
 

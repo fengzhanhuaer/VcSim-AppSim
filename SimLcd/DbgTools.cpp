@@ -144,7 +144,7 @@ void spt::DbgClient::ReConnect()
 	{
 		if (!lastUpdateReconnected.Status(5000))
 		{
-
+			return;
 		}
 	}
 	else

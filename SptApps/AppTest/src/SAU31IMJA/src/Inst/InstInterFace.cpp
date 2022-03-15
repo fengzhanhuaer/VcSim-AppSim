@@ -20,13 +20,11 @@ const tagCTypeTab  g_tCTypeTab[] =
 
     { EN_CTYPE_DC_ZL1,   &Unit_V,     &Unit_mA,         9,    CN_DC_DSP_SAM,  EN_PARA_DC1_IN},
     { EN_CTYPE_DC_ZL2,   &Unit_V,     &Unit_mA,         9,    CN_DC_DSP_SAM,  EN_PARA_DC2_IN},
-#if(!CN_FUN_DBUG1)
     { EN_CTYPE_DC_ZL3,   &Unit_V,     &Unit_mA,         9,    CN_DC_DSP_SAM,  EN_PARA_DC3_IN},
     { EN_CTYPE_DC_ZL4,   &Unit_V,     &Unit_mA,         9,    CN_DC_DSP_SAM,  EN_PARA_DC4_IN},
     { EN_CTYPE_DC_ZL5,   &Unit_V,     &Unit_mA,         9,    CN_DC_DSP_SAM,  EN_PARA_DC5_IN},
     { EN_CTYPE_DC_ZL6,   &Unit_V,     &Unit_mA,         9,    CN_DC_DSP_SAM,  EN_PARA_DC6_IN},
     { EN_CTYPE_DC_ZL7,   &Unit_V,     &Unit_mA,         9,    CN_DC_DSP_SAM,  EN_PARA_DC7_IN},
-#endif
     { EN_CTYPE_DC_mA,   &Unit_mA,     &Unit_NULL,       9,    CN_DC_DSP_DEV,  CN_NULL_PINNO},
     { EN_CTYPE_DC_V,    &Unit_V,      &Unit_NULL,       9,    CN_DC_DSP_DEV,  CN_NULL_PINNO},
     { EN_CTYPE_DC_T,    &Unit_TEMPR,  &Unit_NULL,       9,    CN_DC_DSP_DEV,  CN_NULL_PINNO},
@@ -35,6 +33,7 @@ const tagCTypeTab  g_tCTypeTab[] =
     { EN_CTYPE_DC_OPTT, &Unit_TEMPR,  &Unit_NULL,       9,    CN_DC_DSP_DEV,  CN_NULL_PINNO},
     { EN_CTYPE_DC_OPTV, &Unit_V,      &Unit_NULL,       9,    CN_DC_DSP_DEV,  CN_NULL_PINNO},
     { EN_CTYPE_DC_H,    &Unit_NULL,   &Unit_NULL,       9,    0,  CN_NULL_PINNO},
+    { EN_CTYPE_DC_CLK,  &Unit_HZ,     &Unit_NULL,       9,    0,  CN_NULL_PINNO},
     { EN_CTYPE_PARA_S,  &Unit_S,      &Unit_NULL,       9,    3,  CN_NULL_PINNO},
     { EN_CTYPE_PARA_Ms, &Unit_mS,     &Unit_NULL,       8,    0,  CN_NULL_PINNO},
     { EN_CTYPE_PARA_Us, &Unit_uS,     &Unit_NULL,       8,    0,  CN_NULL_PINNO},
@@ -125,7 +124,7 @@ tagMEATab g_tMEATab[] =
 	{EN_MEA_BHHZ_DO,       {"保护合闸出口    ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
 	{EN_MEA_CKTZ_DO,       {"遥控跳闸出口    ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
 	{EN_MEA_CKHZ_DO,       {"遥控合闸出口    ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
-	{EN_MEA_SHTQ_DO,       {"手合同期出口    ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
+	{EN_MEA_JBS_XCBR_DO,   {"断路器解闭锁出口",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
 	{EN_MEA_BZTTZ_DO,      {"备自投跳闸出口  ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
 	{EN_MEA_BZTHZ_DO,      {"备自投合闸出口  ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
 	{EN_MEA_CLS_XSWI01_DO, {"刀闸1合闸出口   ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
@@ -155,7 +154,7 @@ tagMEATab g_tMEATab[] =
 	{EN_MEA_BAK_01_DO,     {"备用遥控1出口   ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
 	{EN_MEA_BAK_02_DO,     {"备用遥控2出口   ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
 	{EN_MEA_DO_STATUS,     {"GOOSE命令状态   ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_DO_STATUS),ENumb(EN_CENUM_DO_STATUS)}},
-	{EN_MEA_DO_FAIL,       {"GOOSE命令结果   ",     E_SVT_ENUM8, 8, 0, &Unit_NULL,EDes(EN_CENUM_FAIL_RET),ENumb(EN_CENUM_FAIL_RET)}},
+	{EN_MEA_DO_FAIL,       {"GOOSE命令结果   ",     E_SVT_ENUM8, 16, 0, &Unit_NULL,EDes(EN_CENUM_FAIL_RET),ENumb(EN_CENUM_FAIL_RET)}},
 	{EN_MEA_DO_APPID,      {"GOOSE命令APPID  ",    E_SVT_HEX16, 8, 0, &Unit_NULL,0,0}},
 	{EN_MEA_DO_RET_T,      {"出口返校时间(us)",     E_SVT_U32  , 8, 0, &Unit_uS,   0,0}},
 };
@@ -172,6 +171,7 @@ const DWORD g_NUM_CARD= sizeof(g_tCardTab) / sizeof(g_tCardTab);
 const tagKeyTab  g_tKeyTab[] =
 {
 	{EN_KEY_VER,{EK_LEFT,EK_UP,EK_LEFT,EK_DOWN,EK_LEFT,EK_RIGHT},6},
+	{EN_KEY_DBG,{EK_UP,EK_DOWN,EK_LEFT,EK_RIGHT},4},
 };
 const DWORD g_NUM_KEY= sizeof(g_tKeyTab) / sizeof(tagKeyTab);
 

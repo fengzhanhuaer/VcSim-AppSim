@@ -191,11 +191,11 @@ bool8 AppDispAnaAmRef()
 	tagVector *ptAnaVect;
 	DWORD     *pdwAnaQ;
 	// 数据+品质更新
-	if(!G_Get_Inter(EN_INTER_OPT_ANA))
+	if(!g_iInter[EN_INTER_OPT_ANA])
 	{
 		return 1;
 	}
-	G_Set_Inter(EN_INTER_OPT_ANA,FALSE);
+	g_iInter[EN_INTER_OPT_ANA]=FALSE;
 	// 等待2ms锁存
 	MsSleep(2);
 	// 系数更新
@@ -217,11 +217,10 @@ bool8 AppDispAnaAmRef()
 	}
 	else
 	{
+	    g_iInter[EN_INTER_OPT_ANA]=TRUE;
 		return 1;
 	}
-
-	
-	G_Set_Inter(EN_INTER_OPT_ANA,TRUE);
+	g_iInter[EN_INTER_OPT_ANA]=TRUE;
 	return 0;
 }
 
@@ -232,12 +231,12 @@ bool8 AppDispAnaAmjRef()
 	DWORD     *pdwAnaQ;
 	
 	// 数据+品质更新
-	if(!G_Get_Inter(EN_INTER_OPT_ANA_J))
+	if(!g_iInter[EN_INTER_OPT_ANA_J])
 	{
 		return 1;
 	}
 	// 数据更新保留
-	G_Set_Inter(EN_INTER_OPT_ANA_J,FALSE);
+	g_iInter[EN_INTER_OPT_ANA_J]=FALSE;
 	// 等待2ms锁存
 	MsSleep(2);
 	// 系数更新
@@ -259,11 +258,10 @@ bool8 AppDispAnaAmjRef()
 	}
 	else
 	{
+	    g_iInter[EN_INTER_OPT_ANA_J]=TRUE;
 		return 1;
 	}
-
-	
-	G_Set_Inter(EN_INTER_OPT_ANA_J,TRUE);
+	g_iInter[EN_INTER_OPT_ANA_J]=TRUE;
 	return 0;
 }
 // 频率刷新
@@ -272,14 +270,14 @@ bool8 AppDispFrRef()
 	WORD      i;
 	DWORD     *pdwFrCal;
 	// 数据+品质更新
-	if(!G_Get_Inter(EN_INTER_OPT_ANA_FR))
+	if(!g_iInter[EN_INTER_OPT_ANA_FR])
 	{
 		return 1;
 	}
 	
 	// 界面更新数据时间有限,此处不做使能停止！！
 	
-	//G_Set_Inter(EN_INTER_OPT_ANA_FR,FALSE);
+	//g_iInter[EN_INTER_OPT_ANA_FR]=FALSE;
 	// 等待2ms锁存
 	//MsSleep(2);
 	// 数据+品质更新

@@ -8,7 +8,7 @@ int32 AppSlowCmmMsgRecvFunc(class SalCmmChannel* Cmm, struct CmmMsgDriver* Drive
 int32 AppFastCmmMsgRecvFunc(class SalCmmChannel* Cmm, struct CmmMsgDriver* Driver, SalCmmMsgHeader* Header)
 {
 	SalTransFrame* frame = (SalTransFrame*)Header;
-	IES_IMCom_Fast_Rx_Buf(frame->data, frame->Header.dataLen, frame->Header.type);
+	IES_IMCom_Fast_Rx_Buf(frame->data,frame->Header.dataLen,frame->Header.type);
 
 	return 0;
 }
@@ -30,11 +30,11 @@ int32 AppSlowCmmMsgRecvFileFunc(class SalCmmChannel* Cmm, struct CmmMsgDriver* D
 	{
 		if ((trans.GetRusult() == 0) && (!Driver->SendPtr))
 		{
-			if (trans.DstFile().IsInclude("user.dat") >= 0)
+			if (trans.DstFile().IsInclude("user.dat")>=0)
 			{
 				SalUserMng::Instance().LoadPool();
 			}
-			else if (trans.DstFile().IsInclude("AccountCfg.cfg") >= 0)
+			else if (trans.DstFile().IsInclude("AccountCfg.cfg")>=0)
 			{
 				SalUserMng::Instance().UsrCfg.ReadAll();
 			}
@@ -82,7 +82,7 @@ ApiAppSlowCmm AppInstSlowCmmTest("从板SlowCmm");
 
 int32 AppCmmPowerUpIni()
 {
-	// 缓冲区BufLen 最大256,设置不能超过256
+// 缓冲区BufLen 最大256,设置不能超过256
 	AppInstFastCmm.PowerUpIni(FastMsgDriver, M_ArrLen(FastMsgDriver), CN_BOARD_CPU, CN_BOARD_CPU_OTH, 10, 200);
 	AppInstSlowCmm.PowerUpIni(SlowMsgDriver, M_ArrLen(SlowMsgDriver), CN_BOARD_CPU, CN_BOARD_CPU_OTH, 32, 256);
 #ifdef WIN32_SIM
@@ -138,10 +138,10 @@ int32 Send2SubBoardMsg(class SalCmmChannel* Cmm, struct CmmMsgDriver* driver)
 	}
 	StaticAdtBufDes<2048> des;
 	SalMsgTrans trans(des.Des.Des, Cmm, Cmm->Dst(), &Driver);
-	if ((Driver.SendPara == E_ASMT_INIT) || (Driver.SendPara == E_ASMT_SLOW_1))
+	if((Driver.SendPara == E_ASMT_INIT)||(Driver.SendPara == E_ASMT_SLOW_1))
 	{
 		trans.Send(Driver.SendPara, g_tComSlowTx.wType, g_tComSlowTx.byData, g_tComSlowTx.wLen);
-		g_tComSlowTx.wSendFlag = FALSE;
+		g_tComSlowTx.wSendFlag=FALSE;
 		Driver.HasNewToSend = 0;
 		return 0;
 	}
@@ -170,21 +170,21 @@ int32 AppSlowCmmMsgRecvFunc(class SalCmmChannel* Cmm, struct CmmMsgDriver* Drive
 	}
 	SalTransFrame* frame = (SalTransFrame*)Header;
 	SalMsgTrans::Msg* Msg = (SalMsgTrans::Msg*)frame->data;
-	if ((Msg->type == E_ASMT_INIT) || (Msg->type == E_ASMT_SLOW_1))
+	if((Msg->type==E_ASMT_INIT)||(Msg->type==E_ASMT_SLOW_1))
 	{
-		IES_IMCom_Slow_Rx_Buf(Msg->data, Msg->msgLen, Msg->paras);
+		IES_IMCom_Slow_Rx_Buf(Msg->data,Msg->msgLen,Msg->paras);
 	}
-	else if (Msg->type == E_ASMT_PARA_INIT)
+	else if(Msg->type==E_ASMT_PARA_INIT)
 	{
-		int32 res = AppParaDefault(Msg->paras);
+		int32 res=AppParaDefault(Msg->paras);
 		ptrans->Send(E_ASMT_PARA_INIT_ACK, res, 0, 0);
 	}
-	else if (Msg->type == E_ASMT_PARA_CLEAR)
+	else if(Msg->type==E_ASMT_PARA_CLEAR)
 	{
-		bool8 res = AppEventClear(Msg->paras);
+		bool8 res=AppEventClear(Msg->paras);
 		ptrans->Send(E_ASMT_PARA_CLEAR_ACK, res, 0, 0);
 	}
-	else if (Msg->type == E_ASMT_PARA_ADJUST)
+	else if(Msg->type==E_ASMT_PARA_ADJUST)
 	{
 		ptrans->Send(E_ASMT_PARA_ADJUST_ACK, 0, 0, 0);
 	}
@@ -217,8 +217,10 @@ int32 AppSend2SubBoardMsgAndWaitAck(uint32 Type, int32 Paras, uint8* SendBuf, ui
 			Driver.SendPtr = 0;
 			Driver.sendMutex = 0;
 			return SalMsgTrans::E_RecvOverTime;
+			
 		}
-		int32 min = Min((int32)RecvBufLen, (int32)Msg->msgLen);
+		
+		int32 min = Min((UINT32)RecvBufLen, Msg->msgLen);
 		if (min)
 		{
 			MemCpy(RecvBuf, Msg->data, min);
@@ -238,7 +240,7 @@ int32 AppSend2SubBoardMsgAndWaitAck(uint32 Type, int32 Paras, uint8* SendBuf, ui
 			Driver.sendMutex = 0;
 			return SalMsgTrans::E_RecvOverTime;
 		}
-		int32 min = Min((int32)RecvBufLen, (int32)Msg->msgLen);
+		int32 min = Min((UINT32)RecvBufLen, Msg->msgLen);
 		if (min)
 		{
 			MemCpy(RecvBuf, Msg->data, min);
@@ -261,10 +263,10 @@ int32 AppSend2SubBoardMsgAndWaitAck(uint32 Type, int32 Paras, uint8* SendBuf, ui
 
 int32 AppCmmSend()
 {
-	if (g_tComFastTx.wFlag)
+	if(g_tComFastTx.wFlag)
 	{
 		AppInstFastCmm.SendMsg(0, g_tComFastTx.wType, g_tComFastTx.wLen, g_tComFastTx.byData);
-		g_tComFastTx.wFlag = FALSE;
+		g_tComFastTx.wFlag=FALSE;
 	}
 	return 0;
 }

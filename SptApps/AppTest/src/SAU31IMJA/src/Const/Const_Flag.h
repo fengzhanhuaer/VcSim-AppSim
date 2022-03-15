@@ -1,7 +1,6 @@
 #ifndef _CONST_FLAG_H_
 #define _CONST_FLAG_H_
 
-#include "IES_IMtypes.h"
 /*================================================================================*/
 // 信号枚举
 /*================================================================================*/
@@ -138,10 +137,10 @@ enum _INTER_NUMBER
     
     EN_INTER_GOPUB_CFG,              // GOOSE发布异常
     EN_INTER_GOPUB_PORT,             // GOOSE发布端口配置错
-    EN_INTER_GOPUB_NUMERR,           // GOOSE订阅控制块个数越限
-    EN_INTER_GOPUB_PARAERR,          // GOOSE订阅控制块解析异常
-    EN_INTER_GOPUB_ADRERR,           // GOOSE订阅控制块短地址错
-    EN_INTER_GOPUB_CFGERR,           // GOOSE订阅控制块配置错
+    EN_INTER_GOPUB_NUMERR,           // GOOSE发布控制块个数越限
+    EN_INTER_GOPUB_PARAERR,          // GOOSE发布控制块解析异常
+    EN_INTER_GOPUB_ADRERR,           // GOOSE发布控制块短地址错
+    EN_INTER_GOPUB_CFGERR,           // GOOSE发布控制块配置错
     EN_INTER_GOPUB_DI_LOSE,          // 单点硬遥信未全发布
     EN_INTER_GOPUB_DI_T,             // 单点硬遥信时标未全发布
     EN_INTER_GOPUB_DI_Q,             // 单点硬遥信有品质发布
@@ -178,6 +177,7 @@ enum _INTER_NUMBER
     EN_INTER_CPU2_CTRL_ZK,            // 非接管状态ZK标志开放
     EN_INTER_CPU2_CTRL_DBG,
     EN_INTER_LCD_VIR,
+    EN_INTER_POW30_OFF,               // 30V电源自检断开
     EN_INTER_END
 };
 

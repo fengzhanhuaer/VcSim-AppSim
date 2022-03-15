@@ -27,6 +27,18 @@ void spt::ApiSjRecordGroup::ClearEvent()
 {
 	SalSjRecordGroup::ClearEvent();
 }
+uint16 spt::ApiSjRecordGroup::ValidNum()
+{
+	return hdr.validNum;
+}
+uint16 spt::ApiSjRecordGroup::CreatNum()
+{
+	return hdr.usdNum;
+}
+uint16 spt::ApiSjRecordGroup::PoolSize()
+{
+	return hdr.elementPoolSize;
+}
 void spt::ApiSjRecordViewPool::GetValid(SalSjRecordGroup* Group, uint64 TimeStart, uint64 TimeEnd)
 {
 	uint32 Num = Group->ValidNum();

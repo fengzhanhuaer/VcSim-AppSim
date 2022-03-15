@@ -41,6 +41,8 @@ const tagCfgTab  g_tCfgTab[] =
 	{ EN_CFG_PARA_BOARD  ,   (BYTE*)&g_tBoardParaTab[0]  ,    g_NUM_BOARD_PARA  ,  CN_NUM_BOARD_PARA  ,    "参数分类",                 "CFG_PARA_BOARD"},
 	{ EN_CFG_RUN         ,   (BYTE*)&g_tRunTab[0]        ,    g_NUM_RUN         ,  CN_NUM_RUN         ,    "运行事项",                 "CFG_RUN"},
 	{ EN_CFG_OPT         ,   (BYTE*)&g_tOptTab[0]        ,    g_NUM_OPT         ,  CN_NUM_OPT         ,    "操作事项",                 "CFG_OPT"},
+	{ EN_CFG_PRVT_SOE    ,   (BYTE*)&g_tPrvtSoeTab[0]    ,    g_NUM_PRVT_SOE    ,  CN_NUM_PRVT_SOE    ,    "内部事项",                 "CFG_PRVT_SOE"},
+	{ EN_CFG_PRVT_OPT    ,   (BYTE*)&g_tPrvtOptTab[0]    ,    g_NUM_PRVT_OPT    ,  CN_NUM_PRVT_OPT    ,    "内部操作",                 "CFG_PRVT_OPT"},
 	{ EN_CFG_COM_INIT    ,   (BYTE*)&g_tComInitTab[0]    ,    g_NUM_COM_INIT    ,  g_NUM_COM_INIT     ,    "板间交互初始化",              "CFG_COM_INIT"},
 	{ EN_CFG_COM_FAST1_2 ,   (BYTE*)&g_tComFast1To2Tab[0],    g_NUM_COM1TO2_FAST,  g_NUM_COM1TO2_FAST ,    "板间交互快速信息1-2",          "CFG_COM_FAST1_2"},
 	{ EN_CFG_COM_FAST2_1 ,   (BYTE*)&g_tComFast2To1Tab[0],    g_NUM_COM2TO1_FAST,  g_NUM_COM2TO1_FAST ,    "板间交互快速信息2-1",          "CFG_COM_FAST2_1"},

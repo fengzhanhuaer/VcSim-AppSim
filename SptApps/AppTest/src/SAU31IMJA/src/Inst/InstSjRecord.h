@@ -2,7 +2,7 @@
 #define InstSjRecord_H
 
 
-const uint32 CN_SJRECORD_MAX_POOLLEN = 1024;
+const uint32 CN_SJRECORD_MAX_POOLLEN = CN_NUM_RPT_SJ;
 
 extern ApiSjRecordGroup SjUsrLogRecord; // 用户登录类记录
 extern ApiSjRecordGroup SjUsrAdmRecord; // 用户管理记录

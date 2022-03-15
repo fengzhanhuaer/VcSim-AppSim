@@ -86,6 +86,21 @@ bool8 LcdAskForAccountInfo(ApiMenu* Menu)
 	{
 		const SalString* account = dig.GetText(0);
 		const SalString* pw = dig.GetText(1);
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_MENUDBG))
+		// 调试用户登录检测
+		if(MenuDispDbgDisp)
+		{
+			const SalUserAccount* LogInUsrTem= SalUserMng::Instance().GetUser(account->Str());
+			if(LogInUsrTem!=0)
+			{
+				if((LogInUsrTem->Type() == SalUserAccount::E_UT_Operator))
+				{
+					LogInUsr = LogInUsrTem;
+					return 2;
+				}
+			}
+		}
+	#endif
 		res = SalUserMng::Instance().UserLog(account->Str(), pw->Str());
 		if (res == 0)
 		{
@@ -145,6 +160,8 @@ bool8 LcdExitAccount(ApiMenu* Menu)
 {
 	if(!(SalUserMng::Instance().UsrCfg.EnableAccount.Data()))
 	{
+		MenuDispDbgDisp=FALSE;
+		MenuDispDbgIn=FALSE;
 		return 1;
 	}
 	uint32 time = HmiKeyService::Instance().SinceLastKeyPutIn() / 1000;
@@ -157,6 +174,7 @@ bool8 LcdExitAccount(ApiMenu* Menu)
 		HmiMain::Instance().MsSleep(2000);
 		ApiWarnDialog wd("登录超时", "用户注销", 0, 0, 0);
 		wd.Show();
+		MenuDispDbgIn=FALSE;
 		return 1;
 	}
 	else
@@ -167,6 +185,7 @@ bool8 LcdExitAccount(ApiMenu* Menu)
 		{
 		    if(LogInUsr)
 			SjUsrLogRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "用户注销", "退出登录", 0, 0);
+			MenuDispDbgIn=FALSE;
 			return 1;
 		}
 	}
@@ -257,12 +276,14 @@ int8 LcdDbgOperationAccountInfo(ApiMenu* Menu)
 	{
 		const SalString* account = dig.GetText(0);
 		const SalString* pw = dig.GetText(1);
-		if(strcmp(pw->Str(),"801800")==0)
+	#if(CN_SOFT_CPU_TEST_GET(CN_TEST_MENUDBG))
+		if(MenuDispDbgDisp)
 		{
 			SjUsrLogRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "登录成功", "调试登录", 0, 0);
 			LogInUsr = SalUserMng::Instance().GetUser(account->Str());
 			return -1;
 		}
+	#endif
 		res = SalUserMng::Instance().UserLog(account->Str(), pw->Str());
 		if (res == 0)
 		{
@@ -317,8 +338,8 @@ bool8 LcdMngLogIn(ApiMenu* Menu)
 	{
 		return 1;
 	}
-
-	if (LcdAskForAccountInfo(Menu))
+	uint8 res=LcdAskForAccountInfo(Menu);
+	if (res==1)
 	{
 		if (LogInUsr)
 		{
@@ -330,7 +351,6 @@ bool8 LcdMngLogIn(ApiMenu* Menu)
 			//越权访问，应生成审计事项
 			else
 			{
-			
 				SjUsrLogRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "登录失败", "用户没有管理员权限", 0, 0);
 				ApiWarnDialog dig("您没有管理员权限!", 0, 0, 0, 0);
 				dig.Show();
@@ -346,7 +366,8 @@ bool8 LcdComptrollerLogIn(ApiMenu* Menu)
 	{
 		return 1;
 	}
-	if (LcdAskForAccountInfo(Menu))
+	uint8 res=LcdAskForAccountInfo(Menu);
+	if (res==1)
 	{
 		if (LogInUsr)
 		{
@@ -371,15 +392,28 @@ bool8 LcdOperLogIn(ApiMenu* Menu)
 {
 	if(!(SalUserMng::Instance().UsrCfg.EnableAccount.Data()))
 	{
+		MenuDispDbgDisp=TRUE;
+		MenuDispDbgIn=TRUE;
 		return 1;
 	}
-	if (LcdAskForAccountInfo(Menu))
+	uint8 res=LcdAskForAccountInfo(Menu);
+	if (res)
 	{
 		if (LogInUsr)
 		{
 			if ((LogInUsr->Type() == SalUserAccount::E_UT_Operator))
 			{
-				SjUsrLogRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "登录成功", 0, 0, 0);
+				if(res==1)
+				{
+					SjUsrLogRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "登录成功", 0, 0, 0);
+				}
+			#if(CN_SOFT_CPU_TEST_GET(CN_TEST_MENUDBG))
+				else if(res==2)
+				{
+					SjUsrLogRecord.CreatRecord("Hmi", LogInUsr->Name(), Menu->Name(), "厂家登录", 0, 0, 0);
+				}
+			#endif
+				MenuDispDbgIn=TRUE;
 				return 1;
 			}
 			//越权访问，应生成审计事项

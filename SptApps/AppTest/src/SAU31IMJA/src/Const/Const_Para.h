@@ -1,7 +1,6 @@
 #ifndef _CONST_PARA_H_
 #define _CONST_PARA_H_
 
-#include "IES_IMtypes.h"
 // 直流参数组
 enum _GROUP_PARA_DC
 {
@@ -54,7 +53,6 @@ enum _PARA_NUMBER
 	EN_PARA_DC2_MIN =EN_PARA_DC2_STR+EN_GROUP_DC_MIN,        // DC2输出最小值
 	EN_PARA_DC2_MAX =EN_PARA_DC2_STR+EN_GROUP_DC_MAX,        // DC2输出最大值
 	EN_PARA_DC2_OFST=EN_PARA_DC2_STR+EN_GROUP_DC_OFST,       // DC2输出最偏移量
-#if(!CN_FUN_DBUG1)
 	EN_PARA_DC3_STR =EN_PARA_DC2_STR+EN_GROUP_DC_END,        // DC3起始 
 	EN_PARA_DC3_IN  =EN_PARA_DC3_STR,                        // DC3输入模式
 	EN_PARA_DC3_OUT =EN_PARA_DC3_STR+EN_GROUP_DC_OUT,        // DC3输出模式
@@ -83,13 +81,12 @@ enum _PARA_NUMBER
 	EN_PARA_DC6_MAX =EN_PARA_DC6_STR+EN_GROUP_DC_MAX,        // DC6输出最大值
 	EN_PARA_DC6_OFST=EN_PARA_DC6_STR+EN_GROUP_DC_OFST,       // DC6输出最偏移量
 	
-	EN_PARA_DC7_STR =EN_PARA_DC6_STR+EN_GROUP_DC_END,        // DC7起始 
-	EN_PARA_DC7_IN  =EN_PARA_DC7_STR,                        // DC7输入模式
-	EN_PARA_DC7_OUT =EN_PARA_DC7_STR+EN_GROUP_DC_OUT,        // DC7输出模式
-	EN_PARA_DC7_MIN =EN_PARA_DC7_STR+EN_GROUP_DC_MIN,        // DC7输出最小值
-	EN_PARA_DC7_MAX =EN_PARA_DC7_STR+EN_GROUP_DC_MAX,        // DC7输出最大值
-	EN_PARA_DC7_OFST=EN_PARA_DC7_STR+EN_GROUP_DC_OFST,       // DC7输出最偏移量
-#endif
+	EN_PARA_DC7_STR =EN_PARA_DC6_STR+EN_GROUP_DC_END,        // 备用直流起始 
+	EN_PARA_DC7_IN  =EN_PARA_DC7_STR,                        // 备用直流输入模式
+	EN_PARA_DC7_OUT =EN_PARA_DC7_STR+EN_GROUP_DC_OUT,        // 备用直流输出模式
+	EN_PARA_DC7_MIN =EN_PARA_DC7_STR+EN_GROUP_DC_MIN,        // 备用直流输出最小值
+	EN_PARA_DC7_MAX =EN_PARA_DC7_STR+EN_GROUP_DC_MAX,        // 备用直流输出最大值
+	EN_PARA_DC7_OFST=EN_PARA_DC7_STR+EN_GROUP_DC_OFST,       // 备用直流输出最偏移量
 	EN_PARA_DC_V_MA,
 	EN_PARA_DC_TB,          // 直流突变
 	EN_PARA_T_TB,           // 温度突变参数
@@ -139,8 +136,10 @@ enum _PARA_NUMBER
 	EN_PARA_ENA_JZ,     // AD基准监视投退
 	EN_PARA_V_JZ1MIN,   // AD基准1自检门槛上限
 	EN_PARA_V_JZ1MAX,   // AD基准1自检门槛下限
+#if(CN_HARDWARE_MCPU==CN_HARDWARE_MCPU_V1)
 	EN_PARA_V_JZ2MIN,   // AD基准2自检门槛上限
 	EN_PARA_V_JZ2MAX,   // AD基准2自检门槛下限
+#endif
 	EN_PARA_JF_TYPE,
 	EN_PARA_MF_TYPE,
 	EN_PARA_SAM_BAK01,       // 交流量备用参数01
@@ -203,8 +202,13 @@ enum _PARA_NUMBER
 	EN_PARA_MAT_LED4,        // 备用指示灯4点亮矩阵
 	EN_PARA_MAT_LED5,        // 备用指示灯5点亮矩阵
 	EN_PARA_MAT_LED6,        // 备用指示灯6点亮矩阵
-	EN_PARA_FUN_BAK01,       // 功能备用参数01
+//	V1.01系统测试版本增加, 2021-12-30
+	EN_PARA_ENA_DIST,        // 飞点处理功能投退
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_SAMLOCL))
+	EN_PARA_TYPE_MSAM,       // 母线电压采集方式
+#else
 	EN_PARA_FUN_BAK02,       // 功能备用参数02
+#endif
 	EN_PARA_FUN_BAK03,       // 功能备用参数03
 	EN_PARA_FUN_BAK04,       // 功能备用参数04
 	EN_PARA_FUN_BAK05,       // 功能备用参数05
@@ -268,7 +272,7 @@ typedef struct
 	INT32           iValMin;                        // 最小值
 	INT32           iValMax;                        // 最大值
 	INT32           iValDft;                        // 缺省值
-//	WORD            wCoeRet;                        // 返回系数的100倍
+	WORD            wCfg;                           // 配置字
 	INT8S           byName[CN_LEN_NAME];            // 定值名称
 	INT8S           byPinName[CN_LEN_NAME];         // 虚端子名称
 }tagParaTab;

@@ -1,6 +1,6 @@
 #ifndef INSTMENUPARASET_H
 #define INSTMENUPARASET_H
-
+bool8 DispEthnetPara(ApiMenu* Menu);
 bool8 EditEthnetPara(ApiMenu* Menu);
 bool8 DispProtSetDI(ApiMenu* Menu);
 bool8 DispProtSetDC(ApiMenu* Menu);

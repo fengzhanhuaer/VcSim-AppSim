@@ -57,9 +57,9 @@ const tagActTab g_tActTab[ ] =
 	{EN_ACT_CKHZ  ,   EN_DTYPE_GOIN,             {EN_GOIN_CKHZ,
 	                                              CN_NULL_PINNO      // 结束符
 	                                                 },       EN_DO_XCBR_CLS,    EN_DI_DO_XCBR_CLS,  0,  EN_MEA_DO_STATUS,  EN_MEA_CKHZ_DO,EN_MEA_DO_RET_T,EN_MEA_DO_FAIL,EN_MEA_DO_APPID,CN_NULL_PINNO,  "测控合闸",       "ACT_CKHZ"},
-	{EN_ACT_SHTQ  ,   EN_DTYPE_GOIN,             {EN_GOIN_SHTQ,
+	{EN_ACT_JBS_XCBR  ,   EN_DTYPE_GOIN,             {EN_GOIN_JBS_XCBR,
 	                                              CN_NULL_PINNO      // 结束符
-	                                                 },       EN_DO_SHTQ,    EN_DI_DO_SHTQ,  0,  EN_MEA_DO_STATUS,  EN_MEA_SHTQ_DO,EN_MEA_DO_RET_T,EN_MEA_DO_FAIL,EN_MEA_DO_APPID,CN_NULL_PINNO,  "手合同期",       "ACT_SHTQ"},
+	                                                 },       EN_DO_XCBR_JBS,    EN_DI_DO_XCBR_JBS,  0,  EN_MEA_DO_STATUS,  EN_MEA_JBS_XCBR_DO,EN_MEA_DO_RET_T,EN_MEA_DO_FAIL,EN_MEA_DO_APPID,CN_NULL_PINNO,  "断路器解闭锁",       "ACT_JBS_XCBR"},
 
 	{EN_ACT_BZTTZ ,   EN_DTYPE_GOIN,             {EN_GOIN_BZTTZ1,
 	                                              EN_GOIN_BZTTZ2,
@@ -166,8 +166,8 @@ const DWORD g_NUM_ACT = sizeof(g_tActTab) / sizeof(tagActTab);
 
 const tagAlmTab g_tAlmTab[ ] =
 {
-	{EN_ALM_SYN           ,     CN_NULL_PINNO,         EN_PARA_T_SYNCHK,   CN_T1S,        CN_T1S,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "同步异常",               "ALM_SYN"},
-	{EN_ALM_SAM           ,     CN_NULL_PINNO,         EN_PARA_T_SAMCHK,   CN_T1S,        CN_T1S,    DB1,  EN_MEA_FLAG16,  EN_MEA_FLAG16,  CN_NULL_PINNO,  "采样异常",               "ALM_SAM"},
+	{EN_ALM_SYN           ,     CN_NULL_PINNO,         EN_PARA_T_SYNCHK,   CN_T1S,        CN_T1S,    DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "同步异常",               "ALM_SYN"},
+	{EN_ALM_SAM           ,     CN_NULL_PINNO,         EN_PARA_T_SAMCHK,   CN_T1S,        CN_T1S,    DB0,  EN_MEA_FLAG16,  EN_MEA_FLAG16,  CN_NULL_PINNO,  "采样异常",               "ALM_SAM"},
 	{EN_ALM_DIPOW         ,     CN_NULL_PINNO,         EN_PARA_T_DICHK ,   CN_T1S,        CN_T1S,    DB0,  EN_MEA_FLAG16,  CN_NULL_PINNO,  CN_NULL_PINNO,  "光耦失电",               "ALM_DIPOW"},
 	{EN_ALM_TIME_SINGLE   ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "对时信号状态",             "ALM_TIME_SINGLE"},
 	{EN_ALM_TIME_SERVICE  ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "对时服务状态",             "ALM_TIME_SERVICE"},
@@ -192,25 +192,25 @@ const tagAlmTab g_tAlmTab[ ] =
 	{EN_ALM_SVLINK_QB     ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "B套级联SV数据异常",          "ALM_SVLINK_QB"},
 	{EN_ALM_SVLINK_CFGA   ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "A套级联SV配置异常",          "ALM_SVLINK_CFGA"},
 	{EN_ALM_SVLINK_CFGB   ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "B套级联SV配置异常",          "ALM_SVLINK_CFGB"},
-	{EN_ALM_SVLINK_NOCFGA ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    EN_MEA_SVCB_CFG,CN_NULL_PINNO,  CN_NULL_PINNO,  "A套级联SV未配置",           "ALM_SVLINK_NOCFGA"},
-	{EN_ALM_SVLINK_NOCFGB ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    EN_MEA_SVCB_CFG,CN_NULL_PINNO,  CN_NULL_PINNO,  "B套级联SV未配置",           "ALM_SVLINK_NOCFGB"},
+	{EN_ALM_SVLINK_NOCFGA ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "A套级联SV未配置",           "ALM_SVLINK_NOCFGA"},
+	{EN_ALM_SVLINK_NOCFGB ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "B套级联SV未配置",           "ALM_SVLINK_NOCFGB"},
 	{EN_ALM_SVLINK_TESTA  ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "A套级联SV检修",            "ALM_SVLINK_TESTA"},
 	{EN_ALM_SVLINK_TESTB  ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "B套级联SV检修",            "ALM_SVLINK_TESTB"},
-	{EN_ALM_KHDX          ,     EN_PARA_ENA_KHDX,      EN_PARA_T_KHDX,        0,         CN_T1S,     0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "控制回路断线",              "ALM_KHDX"},
+	{EN_ALM_KHDX          ,     EN_PARA_ENA_KHDX,      EN_PARA_T_KHDX,        0,         CN_T1S,     DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "控制回路断线",              "ALM_KHDX"},
 	{EN_ALM_XZBS          ,     EN_PARA_ENA_LNK,       EN_PARA_T_BS_CHK,      0,         CN_T1S,     DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "选择把手状态异常",            "ALM_XZBS"},
 	{EN_ALM_XSWI          ,     EN_PARA_ENA_VQH,       EN_PARA_T_XSWI,        0,         CN_T1S,     DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "刀闸位置异常",              "ALM_XSWI"},
 	{EN_ALM_PTACT         ,     EN_PARA_ENA_VQH,       EN_PARA_T_VQH_ACT,     0,         CN_T1S,     DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "PT切换同时动作",            "ALM_PTACT"},
 	{EN_ALM_PTRET         ,     EN_PARA_ENA_VQH,       EN_PARA_T_VQH_RET,     0,         CN_T1S,     DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "PT切换同时返回",            "ALM_PTRET"},
 	{EN_ALM_OPBP1         ,     EN_PARA_ENA_OPB1,      EN_PARA_T_OPB1,        0,         CN_T1S,     DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "操作电源掉电监视信号",     "ALM_OPBP1"},
 	{EN_ALM_SGZ           ,     EN_PARA_ENA_SGZ,       EN_PARA_T_SGZ,         0,         CN_T1S,     0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "事故总",                 "ALM_SGZ"},
-	{EN_ALM_SXBYZ         ,     EN_PARA_SXBYZ_YX,      EN_PARA_T_SXBYZ,       0,         CN_T1S,     0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "三相不一致",               "ALM_SXBYZ"},
+	{EN_ALM_SXBYZ         ,     EN_PARA_SXBYZ_YX,      EN_PARA_T_SXBYZ,       0,         CN_T1S,     DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "三相不一致",               "ALM_SXBYZ"},
 	{EN_ALM_BSCH_OTH      ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "至另一套采执闭锁重合闸",    "ALM_BSCH_OTH"},
 	{EN_ALM_BSCH          ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "闭锁本套保护重合闸",           "ALM_BSCH"},
 	
 	{EN_ALM_BS_LINKQH     ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "闭锁级联切换功能",            "ALM_BS_LINKQH"},
 	{EN_ALM_BS_VQH        ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "闭锁电压切换功能",            "ALM_BS_VQH"},
 	{EN_ALM_BS_DO         ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "闭锁出口",                "ALM_BS_DO"},
-	{EN_ALM_GOOSE         ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE总告警",            "ALM_GOOSE"},
+	{EN_ALM_GOOSE         ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         DB0,  CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE总告警",            "ALM_GOOSE"},
 	{EN_ALM_GOOSE_TEST    ,     CN_NULL_PINNO,         CN_NULL_PINNO,         0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE检修不一致",          "ALM_GOOSE_TEST"},
 
 	{EN_ALM_GOCB01_DATA  ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,         0,    EN_MEA_GOCB_CFG,EN_MEA_GOCB_A,EN_MEA_GOCB_B,  "GOCB01数据异常",    "ALM_GOCB01_DATA"},
@@ -238,7 +238,6 @@ const tagAlmTab g_tAlmTab[ ] =
 	{EN_ALM_GOCB10_TEST  ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB10检修不一致",    "ALM_GOCB10_TEST"},
 	{EN_ALM_GOCB11_TEST  ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB11检修不一致",    "ALM_GOCB11_TEST"},
 	{EN_ALM_GOCB12_TEST  ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,         0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB12检修不一致",    "ALM_GOCB12_TEST"},
-#if(!CN_FUN_DBUG1)
 	{EN_ALM_GOCB01_STORM ,     CN_NULL_PINNO,         CN_NULL_PINNO,   CN_T1S,    CN_T1S,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB01网络风暴",    "ALM_GOCB01_STORM"},
 	{EN_ALM_GOCB02_STORM ,     CN_NULL_PINNO,         CN_NULL_PINNO,   CN_T1S,    CN_T1S,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB02网络风暴",    "ALM_GOCB02_STORM"},
 	{EN_ALM_GOCB03_STORM ,     CN_NULL_PINNO,         CN_NULL_PINNO,   CN_T1S,    CN_T1S,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB03网络风暴",    "ALM_GOCB03_STORM"},
@@ -251,11 +250,10 @@ const tagAlmTab g_tAlmTab[ ] =
 	{EN_ALM_GOCB10_STORM ,     CN_NULL_PINNO,         CN_NULL_PINNO,   CN_T1S,    CN_T1S,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB10网络风暴",    "ALM_GOCB10_STORM"},
 	{EN_ALM_GOCB11_STORM ,     CN_NULL_PINNO,         CN_NULL_PINNO,   CN_T1S,    CN_T1S,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB11网络风暴",    "ALM_GOCB11_STORM"},
 	{EN_ALM_GOCB12_STORM ,     CN_NULL_PINNO,         CN_NULL_PINNO,   CN_T1S,    CN_T1S,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOCB12网络风暴",    "ALM_GOCB12_STORM"},
-#endif
 	{EN_ALM_CCD_SVSUB    ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "SV订阅配置异常",        "ALM_CCD_SVSUB"},
 	{EN_ALM_CCD_SVPUB    ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "SV发布配置异常",        "ALM_CCD_SVPUB"},
-	{EN_ALM_CCD_GOSUB    ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE订阅配异常",      "ALM_CCD_GOSUB"},
-	{EN_ALM_CCD_GOPUB    ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE发布配异常",      "ALM_CCD_GOPUB"},
+	{EN_ALM_CCD_GOSUB    ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE订阅配置异常",      "ALM_CCD_GOSUB"},
+	{EN_ALM_CCD_GOPUB    ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE发布配置异常",      "ALM_CCD_GOPUB"},
 	{EN_ALM_BOARD_CPU2   ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "CPU2告警总",     "ALM_BOARD_CPU2"},
 	{EN_ALM_BAK01        ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "备用告警01",      "ALM_BAK01"},
 	{EN_ALM_BAK02        ,     CN_NULL_PINNO,         CN_NULL_PINNO,          0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "备用告警02",      "ALM_BAK02"},
@@ -284,7 +282,9 @@ const DWORD g_NUM_ALM = sizeof(g_tAlmTab) / sizeof(tagAlmTab);
 const tagChkTab g_tChkTab[ ] =
 {
 	{EN_CHK_CONST         ,       0          ,    0         ,    DB0+DB1,EN_MEA_DTYPE ,  EN_MEA_FLAG  ,EN_MEA_INDEX ,  "应用侧常量表自检",             "CHK_CONST"},
-	{EN_CHK_RAMERR        ,       0          ,    0         ,    DB0+DB1,EN_MEA_PTR   ,  EN_MEA_INDEX ,CN_NULL_PINNO,  "应用侧内存溢出",              "CHK_RAMERR"},
+	{EN_CHK_RAM_ERR       ,       0          ,    0         ,    DB0+DB1,EN_MEA_PTR   ,  EN_MEA_INDEX ,CN_NULL_PINNO,  "应用侧内存溢出",              "CHK_RAM_ERR"},
+	{EN_CHK_RAM_ALLOC     ,       0          ,    0         ,    DB0+DB1,CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "平台侧内存申请异常",            "CHK_RAM_ALLOC"},
+	{EN_CHK_RAM_CHK       ,       0          ,    0         ,    DB0+DB1,CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "平台侧内存自检异常",            "CHK_RAM_CHK"},
 	{EN_CHK_CCD_NO        ,       0          ,    0         ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CCD文件不存在",             "CHK_CCD_NO"},
 	{EN_CHK_CCD_ERR       ,       0          ,    0         ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CCD文件解析异常",             "CHK_CCD_ERR"},
 	{EN_CHK_CCD_PARALOSE  ,       0          ,    0         ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CCD文件中配置参数缺失",          "CHK_CCD_PARALOSE"},
@@ -299,17 +299,36 @@ const tagChkTab g_tChkTab[ ] =
 //	{EN_CHK_CCD_GOSUB     ,       0          ,    0         ,    DB0,    EN_MEA_FLAG,    CN_NULL_PINNO,CN_NULL_PINNO,  "CCD文件中GOOSE订阅解析异常",         "CHK_CCD_GOSUB"},
 //	{EN_CHK_CCD_GOPUB     ,       0          ,    0         ,    DB0,    EN_MEA_FLAG,    CN_NULL_PINNO,CN_NULL_PINNO,  "CCD文件中GOOSE发布解析异常",         "CHK_CCD_GOPUB"},
 	{EN_CHK_DO1_RTN0      ,       4000       ,    4000      ,    DB0,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1控分返校自检",          "CHK_DO1_RTN0"},
+#if(CN_SOFT_VER_CPU==CN_SOFT_CPU_NANJING)
+	{EN_CHK_DO2_RTN0      ,       4000       ,    4000      ,    0  ,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2控分返校自检",          "CHK_DO2_RTN0"},
+	{EN_CHK_DIO_RTN0      ,       4000       ,    4000      ,    0  ,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板控分返校自检",          "CHK_DIO_RTN0"},
+#else
 	{EN_CHK_DO2_RTN0      ,       4000       ,    4000      ,    DB0,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2控分返校自检",          "CHK_DO2_RTN0"},
 	{EN_CHK_DIO_RTN0      ,       4000       ,    4000      ,    DB0,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板控分返校自检",          "CHK_DIO_RTN0"},
+#endif
 	{EN_CHK_DO1_RTN1      ,       4000       ,    4000      ,    DB0,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1控合返校自检",          "CHK_DO1_RTN1"},
+#if(CN_SOFT_VER_CPU==CN_SOFT_CPU_NANJING)
+	{EN_CHK_DO2_RTN1      ,       4000       ,    4000      ,    0  ,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2控合返校自检",          "CHK_DO2_RTN1"},
+	{EN_CHK_DIO_RTN1      ,       4000       ,    4000      ,    0  ,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板控合返校自检",          "CHK_DIO_RTN1"},
+#else
 	{EN_CHK_DO2_RTN1      ,       4000       ,    4000      ,    DB0,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2控合返校自检",          "CHK_DO2_RTN1"},
 	{EN_CHK_DIO_RTN1      ,       4000       ,    4000      ,    DB0,    EN_MEA_INDEX,   CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板控合返校自检",          "CHK_DIO_RTN1"},
-	{EN_CHK_BOARD_DO1_CHN1,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1通道1自检",            "CHK_BOARD_DO1_CHN1"},
-	{EN_CHK_BOARD_DO2_CHN1,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2通道1自检",            "CHK_BOARD_DO2_CHN1"},
-	{EN_CHK_BOARD_DIO_CHN1,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板通道1自检",           "CHK_BOARD_DIO_CHN1"},
-	{EN_CHK_BOARD_DO1_CHN2,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1通道2自检",            "CHK_BOARD_DO1_CHN2"},
-	{EN_CHK_BOARD_DO2_CHN2,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2通道2自检",            "CHK_BOARD_DO2_CHN2"},
-	{EN_CHK_BOARD_DIO_CHN2,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板通道2自检",           "CHK_BOARD_DIO_CHN2"},
+#endif
+//	{EN_CHK_BOARD_DO1_CHN1,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1通道1自检",            "CHK_BOARD_DO1_CHN1"},
+//	{EN_CHK_BOARD_DO2_CHN1,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2通道1自检",            "CHK_BOARD_DO2_CHN1"},
+//	{EN_CHK_BOARD_DIO_CHN1,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板通道1自检",           "CHK_BOARD_DIO_CHN1"},
+//	{EN_CHK_BOARD_DO1_CHN2,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1通道2自检",            "CHK_BOARD_DO1_CHN2"},
+//	{EN_CHK_BOARD_DO2_CHN2,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2通道2自检",            "CHK_BOARD_DO2_CHN2"},
+//	{EN_CHK_BOARD_DIO_CHN2,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板通道2自检",           "CHK_BOARD_DIO_CHN2"},
+//	{EN_CHK_BOARD_DO1_POW24,      10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1电源24V自检",            "CHK_BOARD_DO1_POW24"},
+//	{EN_CHK_BOARD_DO2_POW24,      10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2电源24V自检",            "CHK_BOARD_DO2_POW24"},
+//	{EN_CHK_BOARD_DIO_POW24,      10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板电源24V自检",           "CHK_BOARD_DIO_POW24"},
+	{EN_CHK_BOARD_DO1_POW30,      5000       ,    500       ,    0  ,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1电源30V自检",            "CHK_BOARD_DO1_POW30"},
+	{EN_CHK_BOARD_DO2_POW30,      5000       ,    500       ,    0  ,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2电源30V自检",            "CHK_BOARD_DO2_POW30"},
+	{EN_CHK_BOARD_DIO_POW30,      5000       ,    500       ,    0  ,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板电源30V自检",           "CHK_BOARD_DIO_POW30"},
+//	{EN_CHK_BOARD_DO1_PARA ,      10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1参数自检",               "CHK_BOARD_DO1_PARA"},
+//	{EN_CHK_BOARD_DO2_PARA ,      10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2参数自检",               "CHK_BOARD_DO2_PARA"},
+//	{EN_CHK_BOARD_DIO_PARA ,      10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板参数自检",              "CHK_BOARD_DIO_PARA"},
 	{EN_CHK_PARA_DI       ,       10000      ,    1000      ,    DB0,    EN_MEA_FLAG ,   CN_NULL_PINNO,CN_NULL_PINNO,  "开入量参数自检",             "CHK_PARA_DI"},
 	{EN_CHK_PARA_DC       ,       10000      ,    1000      ,    DB0,    EN_MEA_FLAG ,   CN_NULL_PINNO,CN_NULL_PINNO,  "直流量参数自检",             "CHK_PARA_DC"},
 	{EN_CHK_PARA_SAM      ,       10000      ,    1000      ,    DB0,    EN_MEA_FLAG ,   CN_NULL_PINNO,CN_NULL_PINNO,  "模拟量参数自检",             "CHK_PARA_SAM"},
@@ -319,31 +338,49 @@ const tagChkTab g_tChkTab[ ] =
 	{EN_CHK_PARA_DCBC_COE ,       10000      ,    1000      ,    DB0,    EN_MEA_FLAG ,   CN_NULL_PINNO,CN_NULL_PINNO,  "模拟量直流补偿自检",           "CHK_PARA_DCBC_COE"},
 	{EN_CHK_PARA_ANG_COE  ,       10000      ,    1000      ,    DB0,    EN_MEA_FLAG ,   CN_NULL_PINNO,CN_NULL_PINNO,  "模拟量相位补偿自检",           "CHK_PARA_ANG_COE"},
 	{EN_CHK_PARA_DI_HLD   ,       0          ,    0         ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "去颤时间设置错误自检",          "CHK_PARA_DI_HLD"},
-	{EN_CHK_BOARD_DI1     ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入板1自检",              "CHK_BOARD_DI1"},
-	{EN_CHK_BOARD_DI2     ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入板2自检",              "CHK_BOARD_DI2"},
-	{EN_CHK_BOARD_DI3     ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入板3自检",              "CHK_BOARD_DI3"},
-	{EN_CHK_BOARD_DIO_DI  ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板开入自检",           "CHK_BOARD_DIO_DI"},
-    {EN_CHK_BOARD_OPB1    ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "操作回路板自检",            "CHK_BOARD_OPB1"},
-	{EN_CHK_BOARD_DO1     ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1自检",              "CHK_BOARD_DO1"},
-	{EN_CHK_BOARD_DO2     ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2自检",              "CHK_BOARD_DO2"},
-	{EN_CHK_BOARD_DIO_DO  ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板开出自检",           "CHK_BOARD_DIO_DO"},
+	{EN_CHK_BOARD_DI1     ,       5000       ,    500       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入板1自检",              "CHK_BOARD_DI1"},
+	{EN_CHK_BOARD_DI2     ,       5000       ,    500       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入板2自检",              "CHK_BOARD_DI2"},
+#if(CN_SOFT_VER_CPU==CN_SOFT_CPU_NANJING)
+	{EN_CHK_BOARD_DI3     ,       5000       ,    500       ,    0  ,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入板3自检",              "CHK_BOARD_DI3"},
+	{EN_CHK_BOARD_DIO_DI  ,       5000       ,    500       ,    0  ,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板开入自检",           "CHK_BOARD_DIO_DI"},
+#else
+	{EN_CHK_BOARD_DI3     ,       5000       ,    500       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入板3自检",              "CHK_BOARD_DI3"},
+	{EN_CHK_BOARD_DIO_DI  ,       5000       ,    500       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板开入自检",           "CHK_BOARD_DIO_DI"},
+#endif
+    {EN_CHK_BOARD_OPB1    ,       5000       ,    500       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "操作回路板自检",             "CHK_BOARD_OPB1"},
+	{EN_CHK_BOARD_DO1     ,       5000       ,    500       ,    DB0,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板1自检",              "CHK_BOARD_DO1"},
+#if(CN_SOFT_VER_CPU==CN_SOFT_CPU_NANJING)
+	{EN_CHK_BOARD_DO2     ,       5000       ,    500       ,    0  ,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2自检",              "CHK_BOARD_DO2"},
+	{EN_CHK_BOARD_DIO_DO  ,       5000       ,    500       ,    0  ,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板开出自检",           "CHK_BOARD_DIO_DO"},
+	{EN_CHK_BOARD_DC_SAM  ,       400        ,    100       ,    0  ,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "直流板自检",                "CHK_BOARD_DC_SAM"},
+#else
+	{EN_CHK_BOARD_DO2     ,       5000       ,    500       ,    DB0,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开出板2自检",              "CHK_BOARD_DO2"},
+	{EN_CHK_BOARD_DIO_DO  ,       5000       ,    500       ,    DB0,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "开入开出板开出自检",           "CHK_BOARD_DIO_DO"},
 	{EN_CHK_BOARD_DC_SAM  ,       400        ,    100       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "直流板自检",                "CHK_BOARD_DC_SAM"},
+#endif
 	{EN_CHK_BOARD_DC_DEV  ,       400        ,    100       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "状态监视自检",               "CHK_BOARD_DC_DEV"},
 	{EN_CHK_BOARD_DC_OPT1_1,      400        ,    100       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU1板光功率帧自检",          "CHK_BOARD_DC_OPT1_1"},
 	{EN_CHK_BOARD_DC_OPT1_2,      400        ,    100       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU1背板光功率帧自检",         "CHK_BOARD_DC_OPT1_2"},
 	{EN_CHK_BOARD_DC_OPT2 ,       400        ,    100       ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU2板光功率帧自检",          "CHK_BOARD_DC_OPT2"},
 	{EN_CHK_BOARD_PTCT1   ,       40000      ,    4000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "PTCT板1自检",             "CHK_BOARD_PTCT1"},
 	{EN_CHK_BOARD_PTCT2   ,       40000      ,    4000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "PTCT板2自检",             "CHK_BOARD_PTCT2"},
-	{EN_CHK_BOARD_CPU     ,       40000      ,    4000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU识别自检",              "CHK_BOARD_CPU"},
-	{EN_CHK_BOARD_CPU_AUX ,       4          ,    4         ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU背板自检",              "CHK_BOARD_CPU_AUX"},
+	{EN_CHK_BOARD_CPU     ,       40000      ,    4000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU板AD自检",             "CHK_BOARD_CPU"},
+	{EN_CHK_BOARD_CPU_AUX ,       10         ,    10        ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU背板自检",              "CHK_BOARD_CPU_AUX"},
 	{EN_CHK_BOARD_POW     ,       40000      ,    4000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "电源掉电监视长期存在",           "CHK_BOARD_POW"},
 	{EN_CHK_BOARD_CPU2    ,       0          ,    0         ,    0  ,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "CPU2板自检总",             "CHK_BOARD_CPU2"},
 	{EN_CHK_BOARD_LED     ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "LED板自检",               "CHK_BOARD_LED"},
-	{EN_CHK_FRAME_ANA     ,       10000      ,    1000      ,    DB0,    EN_MEA_INDEX  ,  EN_MEA_INDEX,CN_NULL_PINNO,  "模拟量帧自检",               "CHK_FRAME_ANA"},
+	{EN_CHK_FRAME_ANA     ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "模拟量帧自检",               "CHK_FRAME_ANA"},
+#if(CN_SOFT_VER_CPU==CN_SOFT_CPU_NANJING)
+	{EN_CHK_CPUCOM_FAST   ,       10000      ,    1000      ,    0  ,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "双CPU通信自检",             "CHK_CPUCOM_SLOW"},
+	{EN_CHK_CPUCOM_PARA   ,       4          ,    4         ,    0  ,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "双CPU参数CRC不一致",         "CHK_CPUCOM_PARA"},
+	{EN_CHK_CPUCOM_VER    ,       0          ,    0         ,    0  ,    EN_MEA_FLAG16,  EN_MEA_FLAG16,CN_NULL_PINNO,  "双CPU版本信息不一致",          "CHK_CPUCOM_VER"},
+	{EN_CHK_CPUCOM_CCD    ,       0          ,    0         ,    0  ,    EN_MEA_FLAG  ,  EN_MEA_FLAG  ,CN_NULL_PINNO,  "双CPU配置CRC不一致",         "CHK_CPUCOM_CCD"},
+#else
 	{EN_CHK_CPUCOM_FAST   ,       10000      ,    1000      ,    DB0,    CN_NULL_PINNO,  CN_NULL_PINNO,CN_NULL_PINNO,  "双CPU通信自检",             "CHK_CPUCOM_SLOW"},
 	{EN_CHK_CPUCOM_PARA   ,       4          ,    4         ,    DB0,    EN_MEA_FLAG16,  CN_NULL_PINNO,CN_NULL_PINNO,  "双CPU参数CRC不一致",         "CHK_CPUCOM_PARA"},
 	{EN_CHK_CPUCOM_VER    ,       0          ,    0         ,    DB0,    EN_MEA_FLAG16,  EN_MEA_FLAG16,CN_NULL_PINNO,  "双CPU版本信息不一致",          "CHK_CPUCOM_VER"},
 	{EN_CHK_CPUCOM_CCD    ,       0          ,    0         ,    DB0,    EN_MEA_FLAG  ,  EN_MEA_FLAG  ,CN_NULL_PINNO,  "双CPU配置CRC不一致",         "CHK_CPUCOM_CCD"},
+#endif
 	
 	{EN_CHK_BAK01         ,        0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "备用自检01",      "CHK_BAK01"},
 	{EN_CHK_BAK02         ,        0,          0,    0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "备用自检02",      "CHK_BAK02"},
@@ -418,15 +455,6 @@ const DWORD g_NUM_RUN = sizeof(g_tRunTab) / sizeof(tagRunTab);
 //================================================================================
 const tagOptTab g_tOptTab[ ] =
 {
-	{EN_OPT_DEV_LINK          ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "调试工具连接成功"           ,        "OPT_DEV_LINK"          },
-	{EN_OPT_DEV_BREAK         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "调试工具连接中断"           ,        "OPT_DEV_BREAK"         },
-	{EN_OPT_DATA_R_SUCC       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "召唤数据成功"             ,        "OPT_DATA_R_SUCC"       },
-	{EN_OPT_DATA_R_FAIL       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "召唤数据失败"             ,        "OPT_DATA_R_FAIL"       },
-	{EN_OPT_FILE_UP_SUCC      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "文件上传成功"             ,        "OPT_FILE_UP_SUCC"      },
-	{EN_OPT_FILE_UP_FAIL      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "文件上传失败"             ,        "OPT_FILE_UP_FAIL"      },
-	{EN_OPT_FILE_DN_SUCC      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "文件下载成功"             ,        "OPT_FILE_DN_SUCC"      },
-	{EN_OPT_FILE_DN_FAIL      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "文件下载失败"             ,        "OPT_FILE_DN_FAIL"      },
-
 	{EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_DI       ,  0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "开关量参数修改成功"          ,        "OPT_PARA_DI_W_SUCC"    },
 	{EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_DC       ,  0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "直流量参数修改成功"          ,        "OPT_PARA_DC_W_SUCC"    },
 	{EN_OPT_PARA_W_SUCC_STR+EN_BOARD_PARA_SAM      ,  0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "交流量参数修改成功"          ,        "OPT_PARA_ANA_W_SUCC"   },
@@ -470,25 +498,6 @@ const tagOptTab g_tOptTab[ ] =
 	{EN_OPT_ADJ_ANG_FAIL      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "交流量相位补偿校准失败"    ,            "OPT_ADJ_ANG_FAIL"     },
 	{EN_OPT_ADJ_DC_SUCC       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "直流量系数校准成功"          ,        "OPT_ADJ_DC_SUCC"       },
 	{EN_OPT_ADJ_DC_FAIL       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "直流量系数校准失败"          ,        "OPT_ADJ_DC_FAIL"       },
-
-	{EN_OPT_FLASH_BAK_SUCC    ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "一键备份成功"                ,     "OPT_FLASH_BAK_SUCC"     },
-	{EN_OPT_FLASH_BAK_FAIL    ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "一键备份失败"                ,     "OPT_FLASH_BAK_FAIL"     },
-	{EN_OPT_PARA_REST_SUCC    ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "参数还原成功"                ,     "OPT_PARA_REST_SUCC"     },
-	{EN_OPT_PARA_REST_FAIL    ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "参数还原失败"                ,     "OPT_PARA_REST_FAIL"     },
-
-
-
-	{EN_OPT_UPDATE_BOOT0_SUCC ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "BOOT0升级成功"        ,     "OPT_UPDATE_BOOT0_SUCC"     },
-	{EN_OPT_UPDATE_BOOT0_FAIL ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "BOOT0升级失败"        ,     "OPT_UPDATE_BOOT0_FAIL"     },
-	{EN_OPT_UPDATE_UBOOT_SUCC ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "UBOOT升级成功"        ,     "OPT_UPDATE_UBOOT_SUCC"     },
-	{EN_OPT_UPDATE_UBOOT_FAIL ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "UBOOT升级失败"        ,     "OPT_UPDATE_UBOOT_FAIL"     },
-	{EN_OPT_UPDATE_SYSTEM_SUCC,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "SYSTEM升级成功"       ,     "OPT_UPDATE_SYSTEM_SUCC"     },
-	{EN_OPT_UPDATE_SYSTEM_FAIL,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "SYSTEM升级失败"       ,     "OPT_UPDATE_SYSTEM_FAIL"     },
-	{EN_OPT_UPDATE_FPGA1_SUCC ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "FPGA1升级成功"        ,     "OPT_UPDATE_FPGA1_SUCC"     },
-	{EN_OPT_UPDATE_FPGA1_FAIL ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "FPGA1升级失败"        ,     "OPT_UPDATE_FPGA1_FAIL"     },
-	{EN_OPT_UPDATE_FPGA2_SUCC ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "FPGA2升级成功"        ,     "OPT_UPDATE_FPGA2_SUCC"     },
-	{EN_OPT_UPDATE_FPGA2_FAIL ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "FPGA2升级失败"        ,     "OPT_UPDATE_FPGA2_FAIL"     },
-
 	{EN_OPT_DEBUG_IN          ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "装置调试态进入"               ,     "OPT_DEBUG_IN"           },
 	{EN_OPT_DEBUG_OUT         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "装置调试态退出"               ,     "OPT_DEBUG_OUT"          },
 
@@ -502,41 +511,18 @@ const tagOptTab g_tOptTab[ ] =
 	{EN_OPT_DEBUG_GO_Dp       ,      0,    EN_MEA_INDEX ,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE双点出口调试"           ,     "OPT_DEBUG_GO_Dp"         },
 	{EN_OPT_DEBUG_GO_DC       ,      0,    EN_MEA_INDEX ,  CN_NULL_PINNO,  CN_NULL_PINNO,  "GOOSE模拟量调试"            ,     "OPT_DEBUG_GO_DC"        },
 
-//	{EN_OPT_DO_BLOCK          ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "硬出口闭锁"                 ,     "OPT_DO_BLOCK"           },
-//	{EN_OPT_DO_UNLOCK         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "硬出口解锁"                 ,     "OPT_DO_UNLOCK"          },
-//	{EN_OPT_DEV_BLOCK         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "装置总闭锁"                 ,     "OPT_DEV_BLOCK"          },
-//	{EN_OPT_DEV_UNLOCK        ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "装置总解锁"                 ,     "OPT_DEV_UNLOCK"         },
-//	{EN_OPT_CHK_BLOCK         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "自检异常闭锁"                ,     "OPT_CHK_BLOCK"          },
-//	{EN_OPT_CHK_UNLOCK        ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "自检异常恢复"                ,     "OPT_CHK_UNLOCK"         },
-//	{EN_OPT_USR_LOGIN_SUCC    ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "用户登录成功"                ,     "OPT_USR_LOGIN_SUCC"     },
-//	{EN_OPT_USR_LOGIN_FAIL    ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "用户登录失败"                ,     "OPT_USR_LOGIN_FAIL"     },
-//	{EN_OPT_USR_ADD_SUCC      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "添加用户成功"                ,     "OPT_USR_ADD_SUCC"       },
-//	{EN_OPT_USR_ADD_FAIL      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "添加用户失败"                ,     "OPT_USR_ADD_FAIL"       },
-//	{EN_OPT_USR_CODE_SUCC     ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "用户密码修改成功"              ,     "OPT_USR_CODE_SUCC"      },
-//	{EN_OPT_USR_CODE_FAIL     ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "用户密码修改失败"              ,     "OPT_USR_CODE_FAIL"      },
-	{EN_OPT_EVENT_ALL_DEl     ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除所有事项"                ,     "OPT_EVENT_ALL_DEl"      },
 	{EN_OPT_ACT_DEl           ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除GOOSE命令事项"      ,          "OPT_ACT_DEl"},
 	{EN_OPT_ALM_DEl           ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除告警事项"        ,             "OPT_ALM_DEl"},
 	{EN_OPT_CHK_DEl           ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除自检事项"        ,             "OPT_CHK_DEl"},
-	{EN_OPT_RUN_DEl 		  , 	 0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除运行事项"        ,             "OPT_RUN_DEl"},
-	{EN_OPT_OPT_DEl           ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除操作事项"        ,             "OPT_OPT_DEl"},
 	{EN_OPT_DI_SOE_DEl        ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除硬开入SOE事项"    ,             "OPT_DI_SOE_DEl"},
 	{EN_OPT_DO_SOE_DEl        ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除硬开出SOE事项"    ,             "OPT_DO_SOE_DEl"},
 	{EN_OPT_GOIN_SOE_DEl      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除GOOSE开入SOE事项" ,           "OPT_GOIN_SOE_DEl"},
 	{EN_OPT_GOOUT_SOE_DEl     ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除GOOSE开出SOE事项" ,           "OPT_GOOUT_SOE_DEl"},
 	{EN_OPT_LED_SOE_DEl       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除指示灯SOE事项" ,               "OPT_LED_SOE_DEl"},
 	{EN_OPT_DPI_SOE_DEl       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除双点遥信SOE事项" ,               "OPT_DPI_SOE_DEl"},
-	{EN_OPT_FLAG_SOE_DEl      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除虚遥信SOE事项" ,                "OPT_FLAG_SOE_DEl"},
-//	{EN_OPT_WAVE_DEl          ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除录波"          ,             "OPT_WAVE_DEl"},
-//	{EN_OPT_RESET             ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "CPU复位"         ,             "OPT_RESET"},
-//	{EN_OPT_FUN_RESET         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "装置复归"          ,             "OPT_FUN_RESET"},
+	{EN_OPT_FLAG_SOE_DEl      ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "清除虚遥信SOE事项"   ,               "OPT_FLAG_SOE_DEl"},
 	{EN_OPT_TIME_W_SUCC       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "时钟修改成功"        ,             "OPT_TIME_W_SUCC"},
 	{EN_OPT_TIME_W_FAIL       ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "时钟修改失败"        ,             "OPT_TIME_W_FAIL"},
-
-	{EN_OPT_ETH_W_SUCC        ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "网络参数修改成功"        ,           "OPT_ETH_W_SUCC"},
-	{EN_OPT_ETH_W_FAIL        ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "网络参数修改失败"        ,           "OPT_ETH_W_FAIL"},
-//	{EN_OPT_WAVE_SUCC         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "录波生成成功"        ,             "OPT_WAVE_SUCC"},
-//	{EN_OPT_WAVE_FAIL         ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "录波生成失败"        ,             "OPT_WAVE_FAIL"},
 
 	{EN_OPT_BAK01             ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "备用操作01"        ,             "OPT_BAK01"},
 	{EN_OPT_BAK02             ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "备用操作02"        ,             "OPT_BAK02"},
@@ -550,6 +536,57 @@ const tagOptTab g_tOptTab[ ] =
 	{EN_OPT_BAK10             ,      0,    CN_NULL_PINNO,  CN_NULL_PINNO,  CN_NULL_PINNO,  "备用操作10"        ,             "OPT_BAK10"},
 };
 const DWORD g_NUM_OPT = sizeof(g_tOptTab) / sizeof(tagOptTab);
-
+//================================================================================
+// 内部事项常量表
+//  WORD            wIndex;                // 记录枚举
+//  WORD            wCfg;                  // 其他设置
+//  INT8S           byName[CN_LEN_NAME];   // 记录名称
+//  INT8S           byPinName[CN_LEN_NAME];// 虚端子名称
+//================================================================================
+const tagPrvtSoeTab g_tPrvtSoeTab[ ] =
+{
+	{EN_PRVT_SOE_BAK0          ,      0,    "内部事项备用"           ,     "PRVT_SOE_BAK0"},
+};
+const DWORD g_NUM_PRVT_SOE = sizeof(g_tPrvtSoeTab) / sizeof(tagPrvtSoeTab);
+//================================================================================
+// 内部操作常量表
+//  WORD            wIndex;                // 记录枚举
+//  WORD            wCfg;                  // 其他设置
+//  INT8S           byName[CN_LEN_NAME];   // 记录名称
+//  INT8S           byPinName[CN_LEN_NAME];// 虚端子名称
+//================================================================================
+const tagPrvtOptTab g_tPrvtOptTab[ ] =
+{
+	{EN_PRVT_OPT_DEV_LINK          ,      0,    "调试工具连接成功"           ,     "PRVT_OPT_DEV_LINK"     },
+	{EN_PRVT_OPT_DEV_BREAK         ,      0,    "调试工具连接中断"           ,     "PRVT_OPT_DEV_BREAK"    },
+	{EN_PRVT_OPT_DATA_R_SUCC       ,      0,    "召唤数据成功"             ,     "PRVT_OPT_DATA_R_SUCC"  },
+	{EN_PRVT_OPT_DATA_R_FAIL       ,      0,    "召唤数据失败"             ,     "PRVT_OPT_DATA_R_FAIL"  },
+	{EN_PRVT_OPT_FILE_UP_SUCC      ,      0,    "文件上传成功"             ,     "PRVT_OPT_FILE_UP_SUCC" },
+	{EN_PRVT_OPT_FILE_UP_FAIL      ,      0,    "文件上传失败"             ,     "PRVT_OPT_FILE_UP_FAIL"},
+	{EN_PRVT_OPT_FILE_DN_SUCC      ,      0,    "文件下载成功"             ,     "PRVT_OPT_FILE_DN_SUCC"},
+	{EN_PRVT_OPT_FILE_DN_FAIL      ,      0,    "文件下载失败"             ,     "PRVT_OPT_FILE_DN_FAIL"},
+	{EN_PRVT_OPT_FLASH_BAK_SUCC    ,      0,    "一键备份成功"             ,     "PRVT_OPT_FLASH_BAK_SUCC"},
+	{EN_PRVT_OPT_FLASH_BAK_FAIL    ,      0,    "一键备份失败"             ,     "PRVT_OPT_FLASH_BAK_FAIL"},
+	{EN_PRVT_OPT_PARA_REST_SUCC    ,      0,    "参数还原成功"             ,     "PRVT_OPT_PARA_REST_SUCC"},
+	{EN_PRVT_OPT_PARA_REST_FAIL    ,      0,    "参数还原失败"             ,     "PRVT_OPT_PARA_REST_FAIL"},
+	{EN_PRVT_OPT_UPDATE_BOOT0_SUCC ,      0,    "BOOT0升级成功"          ,     "PRVT_OPT_UPDATE_BOOT0_SUCC"},
+	{EN_PRVT_OPT_UPDATE_BOOT0_FAIL ,      0,    "BOOT0升级失败"          ,     "PRVT_OPT_UPDATE_BOOT0_FAIL"},
+	{EN_PRVT_OPT_UPDATE_UBOOT_SUCC ,      0,    "UBOOT升级成功"          ,     "PRVT_OPT_UPDATE_UBOOT_SUCC"},
+	{EN_PRVT_OPT_UPDATE_UBOOT_FAIL ,      0,    "UBOOT升级失败"          ,     "PRVT_OPT_UPDATE_UBOOT_FAIL"},
+	{EN_PRVT_OPT_UPDATE_SYSTEM_SUCC,      0,    "SYSTEM升级成功"         ,     "PRVT_OPT_UPDATE_SYSTEM_SUCC"},
+	{EN_PRVT_OPT_UPDATE_SYSTEM_FAIL,      0,    "SYSTEM升级失败"         ,     "PRVT_OPT_UPDATE_SYSTEM_FAIL"},
+	{EN_PRVT_OPT_UPDATE_FPGA1_SUCC ,      0,    "FPGA1升级成功"          ,     "PRVT_OPT_UPDATE_FPGA1_SUCC"},
+	{EN_PRVT_OPT_UPDATE_FPGA1_FAIL ,      0,    "FPGA1升级失败"          ,     "PRVT_OPT_UPDATE_FPGA1_FAIL"},
+	{EN_PRVT_OPT_UPDATE_FPGA2_SUCC ,      0,    "FPGA2升级成功"          ,     "PRVT_OPT_UPDATE_FPGA2_SUCC"},
+	{EN_PRVT_OPT_UPDATE_FPGA2_FAIL ,      0,    "FPGA2升级失败"          ,     "PRVT_OPT_UPDATE_FPGA2_FAIL"},
+	{EN_PRVT_OPT_EVENT_ALL_DEl     ,      0,    "清除所有事项"          ,        "PRVT_OPT_EVENT_ALL_DEl"      },
+	{EN_PRVT_OPT_RUN_DEl           ,      0,    "清除运行事项"          ,        "PRVT_OPT_RUN_DEl"},
+	{EN_PRVT_OPT_OPT_DEl           ,      0,    "清除操作事项"          ,        "PRVT_OPT_OPT_DEl"},
+	{EN_PRVT_OPT_PRVT_SOE_DEl      ,      0,    "清除内部事项"          ,        "PRVT_OPT_PRVT_SOE_DEl"},
+	{EN_PRVT_OPT_PRVT_OPT_DEl      ,      0,    "清除内部操作"          ,        "PRVT_OPT_PRVT_OPT_DEl"},
+	{EN_PRVT_OPT_ETH_W_SUCC        ,      0,    "网络参数修改成功"        ,        "PRVT_OPT_ETH_W_SUCC"},
+	{EN_PRVT_OPT_ETH_W_FAIL        ,      0,    "网络参数修改失败"        ,        "PRVT_OPT_ETH_W_FAIL"},
+};
+const DWORD g_NUM_PRVT_OPT = sizeof(g_tPrvtOptTab) / sizeof(tagPrvtOptTab);
 
 

@@ -28,7 +28,7 @@ WORD IES_IMCom_Chk_Para()
 		}
 	}
 	// 参数修改中
-	if(G_Get_Flag(EN_FLAG_PARACHG))
+	if(g_bFlag[EN_FLAG_PARACHG])
 	{
 		return wErr;
 	}
@@ -310,7 +310,7 @@ void IES_IMCom_Fast_Rx()
 	tagCom    *ptComRx;
 	ptComRx=&g_tComFastRx;
 	// 交互自检清除交互数据
-	if(G_Get_ChkOut_P[EN_CHK_CPUCOM_FAST])
+	if(g_tChkState.bChkOut[EN_CHK_CPUCOM_FAST])
 	{
 		if(!ptComRx->wReset)
 		{
@@ -424,7 +424,7 @@ void IES_IMCom_Slow_Rx()
 	// 参数CRC自检
 	if(g_tagPara.bCrcOthChg)
 	{
-		if(!G_Get_Flag(EN_FLAG_PARACHG))
+		if(!g_bFlag[EN_FLAG_PARACHG])
 		{
 			IES_IMCom_Chk_Para();
 		}

@@ -14,5 +14,6 @@ void AppStateOutPowerUpIni();
 void AppStateOutCfgRef();
 void AppStateOutRtnRef();
 void AppStateOutRef();
+void AppStateOutRef_S();
 
 #endif

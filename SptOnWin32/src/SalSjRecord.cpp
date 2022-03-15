@@ -200,10 +200,6 @@ int32 spt::SalSjRecordGroup::CreatEvent(SalSjRecordData& Record)
 	Record.AddSum();
 	MemCpy(&record[writer], &Record, sizeof(SalSjRecordData));
 	uint32 temp = hdr.usdNum + 1;
-	if (temp >= hdr.elementPoolSize)
-	{
-		temp = hdr.elementPoolSize - 1;
-	}
 	hdr.usdNum = temp;
 
 	temp = hdr.validNum + 1;
@@ -213,6 +209,8 @@ int32 spt::SalSjRecordGroup::CreatEvent(SalSjRecordData& Record)
 	}
 	hdr.validNum = temp;
 	hdr.writer = (writer + 1) % hdr.elementPoolSize;
+	record[writer].stamp[0] = 0;
+	record[writer].sum = 0;
 	SalSjRecordDispachTask::Instance().SaveEvent(this);
 	return 0;
 }
@@ -341,7 +339,6 @@ int32 spt::SalSjRecordGroup::loadFile()
 	}
 	hdr.reader = hd.reader % hd.elementPoolSize;
 	hdr.writer = hd.writer % hd.elementPoolSize;
-	hdr.usdNum = hd.usdNum % hd.elementPoolSize;
 	hdr.validNum = 0;
 	SalSjRecordData* record = (SalSjRecordData*)buf.BufBase();
 	if (!record)
@@ -357,9 +354,9 @@ int32 spt::SalSjRecordGroup::loadFile()
 			hdr.validNum++;
 		}
 	}
-	if (hdr.validNum > hdr.usdNum)
+	if (hdr.validNum == 0)
 	{
-		hdr.validNum = hdr.usdNum;
+		hdr.usdNum = 0;
 	}
 	return 0;
 }

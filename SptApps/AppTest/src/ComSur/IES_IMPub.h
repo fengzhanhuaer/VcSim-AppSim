@@ -28,10 +28,35 @@ typedef struct
 /*================================================================================*/
 extern  BOOL  IES_memset(void *pDst,BYTE byDate,DWORD dwLen);
 extern  BOOL  IES_memcpy(void *pDst,DWORD dwDstLen,void *pSrc,DWORD dwSrcLen);
-extern  void  IES_TimeRelaySet(tagTimeRelay *ptTR, UINT32 dwTimeActSet, UINT32 dwTimeRetSet);
+#ifdef __cplusplus
+extern  inline void  IES_TimeRelaySet(tagTimeRelay *ptTR, UINT32 dwTimeActSet, UINT32 dwTimeRetSet)
+{
+	ptTR->dwTimeActSet = dwTimeActSet;
+	ptTR->dwTimeRetSet = dwTimeRetSet;
+}
+#else
+#define IES_TimeRelaySet(ptTR, dwTimeActSet, dwTimeRetSet)  \
+{                                      \
+	ptTR->dwTimeActSet = dwTimeActSet; \
+	ptTR->dwTimeRetSet = dwTimeRetSet; \
+}
+#endif
 extern  BOOL  IES_TimeRelayRun(tagTimeRelay *ptTR, BOOL bStatus);
-extern  void  IES_TimeRelayStop(tagTimeRelay *ptTR);
-
+#ifdef __cplusplus
+extern  inline void IES_TimeRelayStop(tagTimeRelay *ptTR)
+{
+	ptTR->dwActSCnt = 0;
+	ptTR->dwRetSCnt = 0;
+	ptTR->bStatusOut = FALSE;
+}
+#else
+#define IES_TimeRelayStop(tagTimeRelay *ptTR)\
+{                             \
+	ptTR->dwActSCnt = 0;      \
+	ptTR->dwRetSCnt = 0;      \
+	ptTR->bStatusOut = FALSE; \
+}
+#endif
 extern  void  IES_RamScanAdd(BYTE *pdwRamPtr);
 extern  void  IES_RamScanChk();
 /*================================================================================*/

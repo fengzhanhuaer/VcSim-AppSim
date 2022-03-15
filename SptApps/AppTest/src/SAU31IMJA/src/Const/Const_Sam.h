@@ -1,7 +1,6 @@
 #ifndef _CONST_SAM_H_
 #define _CONST_SAM_H_
 
-#include "IES_IMtypes.h"
 /*================================================================================*/
 //母线电压排序枚举，与标准保持一致
 /*================================================================================*/
@@ -30,19 +29,19 @@ enum _ANA_INDEX_TYPE_
     EN_ANA_START,                              //
 // 1.本地模拟量通道
     EN_ANA_SAM_STR=EN_ANA_START,               // 本地采样起始
-    EN_ANA_UA1=EN_ANA_SAM_STR,                 // 保护测控Ua AD1
-    EN_ANA_UA2,                                // 保护测控UA AD2
-    EN_ANA_UB1,                                // 保护测控Ub AD1
-    EN_ANA_UB2,                                // 保护测控UB AD2
-    EN_ANA_UC1,                                // 保护测控Uc AD1
-    EN_ANA_UC2,                                // 保护测控UC AD2
-    EN_ANA_U01,                                // 零序3U0 AD1
-    EN_ANA_U02,                                // 零序3U0 AD2
+    EN_ANA_UA1=EN_ANA_SAM_STR+EN_LINK_UA1,     // 保护测控Ua AD1
+    EN_ANA_UA2=EN_ANA_SAM_STR+EN_LINK_UA2,     // 保护测控UA AD2
+    EN_ANA_UB1=EN_ANA_SAM_STR+EN_LINK_UB1,     // 保护测控Ub AD1
+    EN_ANA_UB2=EN_ANA_SAM_STR+EN_LINK_UB2,     // 保护测控UB AD2
+    EN_ANA_UC1=EN_ANA_SAM_STR+EN_LINK_UC1,     // 保护测控Uc AD1
+    EN_ANA_UC2=EN_ANA_SAM_STR+EN_LINK_UC2,     // 保护测控UC AD2
+    EN_ANA_U01=EN_ANA_SAM_STR+EN_LINK_U01,     // 零序3U0 AD1
+    EN_ANA_U02=EN_ANA_SAM_STR+EN_LINK_U02,     // 零序3U0 AD2
+    EN_ANA_UAJ=EN_ANA_SAM_STR+EN_LINK_UAJ,     // 计量UAj
+    EN_ANA_UBJ=EN_ANA_SAM_STR+EN_LINK_UBJ,     // 计量UBj
+    EN_ANA_UCJ=EN_ANA_SAM_STR+EN_LINK_UCJ,     // 计量UCj
     EN_ANA_UX1,                                // 同期Ux AD1
     EN_ANA_UX2,                                // 同期UX AD2
-    EN_ANA_UAJ,                                // 计量UAj
-    EN_ANA_UBJ,                                // 计量UBj
-    EN_ANA_UCJ,                                // 计量UCj
     EN_ANA_1_IA1,                              // 保护IA1 AD1
     EN_ANA_1_IA2,                              // 保护IA1 AD2
     EN_ANA_1_IB1,                              // 保护IB1 AD1
@@ -180,6 +179,7 @@ enum _TCHG_INDEX_TYPE_
     EN_TCHG_MOD1=0,
     EN_TCHG_MOD2,
     EN_TCHG_MOD3,
+    EN_TCHG_MOD4,
     EN_TCHG_END,
 };
 #endif
@@ -209,7 +209,8 @@ typedef struct
 	WORD            wFrmNo;                         // 数据源--帧类型
 	WORD            wADNo;                          // 数据源--AD芯片编码
 	WORD            wADChn;                         // 数据源--AD芯片通道编码
-	DWORD           dwCfg;                          // 通道其他属性
+	WORD            wAD2Index;                      // AD2通道
+	WORD            wCfg;                           // 通道其他属性 DB0 通道映射为上一通道
 	INT8S           byName[CN_LEN_NAME];            // 模拟量名称
 	INT8S           byPinName[CN_LEN_NAME];         // 模拟量短地址
 } tagAnaTab;
@@ -349,13 +350,18 @@ typedef struct
 #define CN_SV_OPT_CHG1_S      (DB1)                           // 挑数操作类型--级联切换成功
 #define CN_SV_OPT_CHG2_S      (DB2)                           // 挑数操作类型--电压切换成功
 #define CN_SV_OPT_CAL_S       (DB3)                           // 挑数操作类型--线电压修正成功
+#define CN_SV_OPT_CHG3_S      (DB4)                           // 挑数操作类型--本地电压切换成功
+#define CN_SV_OPT_CHG4_S      (DB5)                           // 挑数操作类型--级联电压切换成功
 #define CN_SV_OPT_CHG1_F      (DB8)                           // 挑数操作类型--级联切换失败
 #define CN_SV_OPT_CHG2_F      (DB9)                           // 挑数操作类型--电压切换失败
 #define CN_SV_OPT_CAL_F       (DB10)                          // 挑数操作类型--线电压修正失败
+#define CN_SV_OPT_CHG3_F      (DB11)                          // 挑数操作类型--本地电压切换失败
+#define CN_SV_OPT_CHG4_F      (DB12)                          // 挑数操作类型--级联电压切换失败
+
 // 挑数操作成功
-#define CN_SV_OPT_S           (CN_SV_OPT_POL_S+CN_SV_OPT_CHG1_S+CN_SV_OPT_CHG2_S+CN_SV_OPT_CAL_S)
+#define CN_SV_OPT_S           (CN_SV_OPT_POL_S+CN_SV_OPT_CHG1_S+CN_SV_OPT_CHG2_S+CN_SV_OPT_CAL_S+CN_SV_OPT_CHG3_S+CN_SV_OPT_CHG4_S)
 // 挑数操作失败
-#define CN_SV_OPT_F           (CN_SV_OPT_CHG1_F+CN_SV_OPT_CHG2_F+CN_SV_OPT_CAL_F)
+#define CN_SV_OPT_F           (CN_SV_OPT_CHG1_F+CN_SV_OPT_CHG2_F+CN_SV_OPT_CAL_F+CN_SV_OPT_CHG3_F+CN_SV_OPT_CHG4_F)
 /*================================================================================*/
 // 变量声明
 /*================================================================================*/

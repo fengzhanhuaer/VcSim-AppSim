@@ -23,6 +23,7 @@ const tagComSlowTab g_tComInitTab[] =
 	// 版本信息
 	{ (BYTE*)&g_tDevInfor.dwCrc                          ,  sizeof(g_tDevInfor.dwCrc)                            ,NULL,  (BYTE*)&g_tDevInfor.dwCrcOth                         ,  sizeof(g_tDevInfor.dwCrcOth)                       ,NULL},
 	{ (BYTE*)&g_tComVer[CN_BOARD_CPU]                    ,  sizeof(tagComVer)                                    ,NULL,  (BYTE*)&g_tComVer[CN_BOARD_CPU_OTH]                  ,  sizeof(tagComVer)                                  ,NULL},
+	{ (BYTE*)&g_tDevInfor.byVerName                      ,  sizeof(g_tDevInfor.byVerName)                        ,NULL,  (BYTE*)&g_tDevInfor.byVerOthName                     ,  sizeof(g_tDevInfor.byVerOthName)                   ,NULL},
 };
 const DWORD g_NUM_COM_INIT= sizeof(g_tComInitTab) / sizeof(tagComSlowTab);
 // 快速数据交互常量表(CPU1-CPU2)
@@ -90,7 +91,10 @@ const DWORD g_NUM_COM2TO1_FAST= sizeof(g_tComFast2To1Tab) / sizeof(tagComFastTab
 const tagComSlowTab g_tComSlow1To2Tab[] =
 {
 	// 参数CRC
-	{(BYTE*)g_tagPara.dwCrc               ,sizeof(g_tagPara.dwCrc)                                  ,&g_tagPara.bCrcCom                     , (BYTE*)g_tagPara.dwCrcOth              ,  sizeof(g_tagPara.dwCrcOth)                              ,&g_tagPara.bCrcOthChg},
+	{(BYTE*)g_tagPara.dwCrc               ,sizeof(g_tagPara.dwCrc)     ,&g_tagPara.bCrcCom                     , (BYTE*)g_tagPara.dwCrcOth              ,  sizeof(g_tagPara.dwCrcOth)                              ,&g_tagPara.bCrcOthChg},
+	// IP地址
+	{(BYTE*)&g_tDevInfor.tDevEthnet       ,sizeof(tagDevEthnet)        ,&g_tDevInfor.byDevEthnet               , (BYTE*)&g_tDevInfor.tDevEthnetOth      ,  sizeof(tagDevEthnet)                                    ,NULL},
+
 };
 const DWORD g_NUM_COM1TO2_SLOW= sizeof(g_tComSlow1To2Tab) / sizeof(tagComSlowTab);
 // 慢速数据交互常量表(CPU2-CPU1)
@@ -102,6 +106,9 @@ const tagComSlowTab g_tComSlow2To1Tab[] =
 	{(BYTE*)&g_tagDC.iDCIn[EN_DC_OPT2_STR] ,CN_NUM_DC_OPT2*sizeof(g_tagDC.iDCIn[EN_DC_OPT2_STR])    ,&g_tagDC.bDCCommFresh[EN_BOARD_DC_OPT2], (BYTE*)&g_tagDC.iDCIn[EN_DC_OPT2_STR]    ,  CN_NUM_DC_OPT2*sizeof(g_tagDC.iDCIn[EN_DC_OPT2_STR])   ,&g_tagDC.bDCFresh[EN_BOARD_DC_OPT2]},
 	// 温湿度、内部电压
 	{(BYTE*)&g_tagDC.iDCIn[EN_DC_DEV2_STR] ,CN_NUM_DC_DEV_CPU2*sizeof(g_tagDC.iDCIn[EN_DC_DEV2_STR]),&g_tagDC.bDCCommFresh[EN_BOARD_DC_DEV] , (BYTE*)&g_tagDC.iDCIn[EN_DC_DEV2_STR]    ,  CN_NUM_DC_DEV_CPU2*sizeof(g_tagDC.iDCIn[EN_DC_DEV2_STR]),NULL},
+	// IP地址
+	{(BYTE*)&g_tDevInfor.tDevEthnet,                         sizeof(tagDevEthnet)                   ,&g_tDevInfor.byDevEthnet               , (BYTE*)&g_tDevInfor.tDevEthnetOth        ,  sizeof(tagDevEthnet)                                    ,NULL},
+
 };
 const DWORD g_NUM_COM2TO1_SLOW= sizeof(g_tComSlow2To1Tab) / sizeof(tagComSlowTab);
 

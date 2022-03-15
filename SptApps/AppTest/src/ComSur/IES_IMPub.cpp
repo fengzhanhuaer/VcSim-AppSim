@@ -60,18 +60,6 @@ BOOL IES_memcpy(void *pDst,DWORD dwDstLen,void *pSrc,DWORD dwSrcLen)
 		return FALSE;
 	}
 }
-
-// ============================================================================
-// 函数功能：时间继电器定值赋值
-// 输入参数：
-// 输出参数：
-// 返回值：  无
-// ============================================================================
-void IES_TimeRelaySet(tagTimeRelay *ptTR, UINT32 dwTimeActSet, UINT32 dwTimeRetSet)
-{
-	ptTR->dwTimeActSet = dwTimeActSet;
-	ptTR->dwTimeRetSet = dwTimeRetSet;
-}
 // ============================================================================
 // 函数功能：时间继电器
 //           延时T1动作,延时T2返回
@@ -99,18 +87,6 @@ BOOL IES_TimeRelayRun(tagTimeRelay *ptTR, BOOL bStatus)
 	}
 	return ptTR->bStatusOut;
 }
-// ============================================================================
-// 函数功能：时间继电器停止
-// 输入参数：
-// 输出参数：
-// 返回值：  无
-// ============================================================================
-void IES_TimeRelayStop(tagTimeRelay *ptTR)
-{
-	ptTR->dwActSCnt = 0;
-	ptTR->dwRetSCnt = 0;
-	ptTR->bStatusOut = FALSE;
-}
 void IES_RamScanAdd(BYTE *pbyRamPtr)
 {
 	tagRamDot *ptRamDot;
@@ -129,7 +105,7 @@ void IES_RamScanChk()
 	ptRamDot=&g_tagRamScan.tRamDot[g_tagRamScan.dwRamChkPtr];
 	if((*ptRamDot->pbyRamPtr)!=CN_RAMSCAN_VALUE)
 	{
-		G_Set_ChkIn_All(EN_CHK_RAMERR,(UINT32)ptRamDot->pbyRamPtr, (UINT32)g_tagRamScan.dwRamChkPtr,0);
+		G_Set_ChkIn_All(EN_CHK_RAM_ERR,(UINT32)ptRamDot->pbyRamPtr, (UINT32)g_tagRamScan.dwRamChkPtr,0);
 	}
 	if(++g_tagRamScan.dwRamChkPtr>=g_tagRamScan.dwRamPtr)
 	{

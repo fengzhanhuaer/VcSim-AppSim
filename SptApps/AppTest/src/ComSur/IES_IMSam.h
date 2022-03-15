@@ -50,8 +50,10 @@ typedef struct
 	BOOL            bJzChkEna;                    // 基准电压自检控制字
 	UINT32          dwJz1MkMin;                    // 基准电压1上限定值
 	UINT32          dwJz1MkMax;                    // 基准电压1下限定值
+#if(CN_HARDWARE_MCPU==CN_HARDWARE_MCPU_V1)
 	UINT32          dwJz2MkMin;                    // 基准电压2上限定值
 	UINT32          dwJz2MkMax;                    // 基准电压2下限定值
+#endif
 	BOOL            bJzChk[CN_NUM_JZ];            // 基准电压越限
 	BYTE            byRamScan8;                  // 扫描内存片
 // 测频相关数据
@@ -105,6 +107,11 @@ typedef struct
 	UINT32          dwCoeTMod;                     // 温度调节模式
 	UINT32          dwCoeTModStr;                  // 温度调节模式启动
 	UINT32          dwCoeTCnt;                     // 温度调节模式定时器
+#if(CN_SOFT_CPU_TEST_GET(CN_TEST_TCOMP))
+	BOOL            bTCompEna;                     // 温度补偿投退
+	INT32           iTCompT[EN_TCHG_END];          // 温度补偿门槛
+	FLOAT32         fTCompCoe[EN_TCHG_END];        // 温度补偿系数
+#endif	
 #endif
 // 反极性设置
 #if(CN_SV_IN_ENA)
