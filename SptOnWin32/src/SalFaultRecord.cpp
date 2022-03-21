@@ -845,11 +845,7 @@ bool8 spt::SalFwRecordGroup::Copy(SalFwData* Dst, SalFwData* Sur)
 	{
 		return 0;
 	}
-	if (!(Sur->RecordState & Dst->E_EndRec))
-	{
-		return 0;
-	}
-	if (!(Sur->SaveState & Dst->E_AllFileSaved))
+	if (!(Sur->SaveState & Dst->E_EndSave))
 	{
 		return 0;
 	}
@@ -1566,8 +1562,8 @@ int32 spt::SalFwData::LoadPriPub(SalFile& File)
 	StrNCmp(fileName, str.Str(), sizeof(fileName));
 	BufSerNo = (uint8)ts1.GetUInt64(',');
 	RecordSerNo = (uint8)ts1.GetUInt64(',');
-	RecordState = (uint8)ts1.GetUInt64(',');
-	SaveState = (uint8)ts1.GetUInt64(',');
+	RecordState = (uint8)ts1.GetHex(',', 8);
+	SaveState = (uint8)ts1.GetHex(',', 8);
 	ActType = (uint8)ts1.GetUInt64(',');
 	str.Clear();
 	return 0;
@@ -1958,17 +1954,17 @@ int32 spt::SalFwData::SavePubHdrFile(const char* FileName, SalFwRecordCfg* FwCfg
 		str << "ms</time>\n";
 		str << "<name>" << Event[i].EventData.Name() << "</name>\n";
 		const SalStatus* des = Event[i].EventData.StatusDes();
-		if (des&&des->Flag().st.isFirstInfoIsPhase)
+		if (des && des->Flag().st.isFirstInfoIsPhase)
 		{
-			str << "<phase>" << GetPhaseStr (Event[i].EventData.exInfo[0].u32)<< " </phase>\n";
+			str << "<phase>" << GetPhaseStr(Event[i].EventData.exInfo[0].u32) << " </phase>\n";
 		}
 		else
 		{
 			str << "<phase>" << " </phase>\n";
 		}
 		str << "<value>";
-		Event[i].EventData.ValueStr(Event[i].EventData.status, str,10);
-		str<< "</value>\n";
+		Event[i].EventData.ValueStr(Event[i].EventData.status, str, 10);
+		str << "</value>\n";
 		String40B name, data, unit;
 		for (uint32 j = 0; j < Event[i].EventData.ExternInfoNum(); j++)
 		{
@@ -1979,10 +1975,10 @@ int32 spt::SalFwData::SavePubHdrFile(const char* FileName, SalFwRecordCfg* FwCfg
 			name.Clear();
 			data.Clear();
 			unit.Clear();
-			Event[i].EventData.ExternInfoStr(j,name,data,unit);
+			Event[i].EventData.ExternInfoStr(j, name, data, unit);
 			str << "<FaultInfo>\n";
-			str << "<name>" << name<< "</name>\n";
-			str << "<value>" << data <<unit<< "</value>\n";
+			str << "<name>" << name << "</name>\n";
+			str << "<value>" << data << unit << "</value>\n";
 			str << "</FaultInfo>\n";
 		}
 		str << "</TripInfo>\n";

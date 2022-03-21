@@ -70,75 +70,15 @@ namespace spt
 	private:
 		GBK_SYMBOL();
 	};
-
-	class SalPrinter :protected RingCharBuf
+	class SalEscPk2Printer
 	{
 	public:
-		int32 SetCharBuf(void* Buf, uint32 BufSize);
-		void ClearContext();
-		int32 Print2(SalFile& File);
+		SalEscPk2Printer(void* buf, uint32 BufLen);
+	protected:
 	private:
-	};
-	class SalTextPrinter :public SalPrinter
-	{
-	public:
-
-	public:
-		int32 Print2(SalString& Str);
-	};
-	class SalTablePrinter :public SalPrinter
-	{
-	public:
-
-	public:
-		enum TableFmt
-		{
-			TF_Null,
-			TF_TopLeft,
-			TF_TopMiddle,
-			TF_TopRight,
-			TF_MiddleLeft,
-			TF_MiddleMiddle,
-			TF_MiddleRight,
-			TF_BottomLeft,
-			TF_BottomMiddle,
-			TF_BottomRight,
-		};
-		/// <summary>
-		/// 初级打印接口
-		/// </summary>
-	public:
-		SalTablePrinter();
-		int32 PrintTableTopLeft();
-		int32 PrintTableTopMidle();
-		int32 PrintTableTopRight();
-		int32 PrintTableMiddleLeft();
-		int32 PrintTableMiddleMidle();
-		int32 PrintTableMiddleRight();
-		int32 PrintTableBottomLeft();
-		int32 PrintTableBottomMidle();
-		int32 PrintTableBottomRight();
-		int32 PrintTextSpace(uint32 Width);
-		int32 PrintTableVerticalLine(uint32 Width);
-		int32 PrintTableHorizontalLine(uint32 Height);
-		int32 PrintHorizontalText(const char* Txt, uint32 Width = 0, TableFmt Fmt = TF_TopLeft);
-		int32 Print2(SalString& Str);
-		/// <summary>
-		/// 中级打印接口
-		/// </summary>
-	public:
-		int32 SetGridLineWidth(uint32 Width);
-		int32 AddTableCell(const char* Txt, uint32 Row, uint32 Col, uint32 RowSpan, uint32 ColSpan, bool8 IsDrawBottomRight, bool8 IsVerticalLine, TableFmt Fmt);
-	protected:
-		int32 Write(const void* Buf, uint32 Len);
-		int32 ReWrite(uint32 Row, uint32 Col, uint8 Txt);
-		int32 ReWrite(uint32 Row, uint32 Col, uint16 Txt);
-		int32 ReWrite(uint32 Row, uint32 Col, const char* Txt);
-		int32 GetHzCode(uint32 Row, uint32 Col);
-	protected:
-		uint32 gridLineWidth;
-		uint32 gridRowPos;
-		uint32 gridColPos;
+		uint8* buf;
+		uint32 bufLen;
+		uint32 writer;
 	};
 
 }

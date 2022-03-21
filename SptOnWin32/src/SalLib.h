@@ -38,6 +38,8 @@ namespace spt
 	bool8 IsGraph(unsigned char Data);
 	void* Calloc(uint32 ElementNum, uint32 ElementSize);
 	int Free(void* Buf);
+	int32 TaskLock();
+	int32 TaskUnLock();
 	//¶þ½øÖÆ
 	class SemaphoreB
 	{

@@ -94,6 +94,7 @@ namespace spt
 		void SetBuf(const char* Buf);
 		void GetHex(uint32& data, uint8 StopFlag);
 		uint64 GetHex(uint8 StopFlag, uint32 DataLen);
+		uint64 GetHex(uint8 StopFlag);
 		bool8 Get(char& data);
 		void Get(uint32& data, uint8 StopFlag);
 		void Get(int32& data, uint8 StopFlag);

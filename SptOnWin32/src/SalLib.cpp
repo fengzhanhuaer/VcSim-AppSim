@@ -595,6 +595,26 @@ int spt::Free(void* Buf)
 	return 0;
 }
 
+int32 spt::TaskLock()
+{
+#ifdef WIN32_SIM
+	return 0;
+#elif defined(SYLIX_GZK)
+	return Lw_Thread_Lock();
+#endif
+	return 0;
+}
+
+int32 spt::TaskUnLock()
+{
+#ifdef WIN32_SIM
+	return 0;
+#elif defined(SYLIX_GZK)
+	return Lw_Thread_Unlock();
+#endif
+	return 0;
+}
+
 int32 spt::MkDir(const char* Dir)
 {
 

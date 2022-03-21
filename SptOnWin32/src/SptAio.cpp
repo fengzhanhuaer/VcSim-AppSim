@@ -195,7 +195,9 @@ int32 spt::SptAngVirInputBoard::ProcIni()
 	frameBuf[1] = dataNumOfRealFrm;
 	CpuFpgaCmmMsgBuf msg;
 	msg.Write(&frameBuf, sizeof(frameBuf[0]) * (dataNumOfRealFrm + 2));
-	msg.IntSend(0, FpgaMsgProc::E_CPU_FPGA_SVSELECT);
+	msg.SlowSend(0, FpgaMsgProc::E_CPU_FPGA_SVSELECT);
+	MsSleep(1);
+	LogMsg.Stamp() << "Fpga anglog ProcIni Select Frame download.\n";
 	return 0;
 }
 

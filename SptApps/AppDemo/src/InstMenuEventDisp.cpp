@@ -64,7 +64,7 @@ bool8 DispActReport(ApiMenu* Menu)
 			PageNum++;
 		}
 	}
-	if (PageNum == group->MaxRecordFwRamData)
+	if (PageNum >= group->MaxRecordFwRamData)
 	{
 		PageNum = group->MaxRecordFwRamData - 1;
 	}

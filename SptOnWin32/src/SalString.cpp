@@ -1365,6 +1365,11 @@ uint64 spt::TransString::GetHex(uint8 StopFlag, uint32 DataLen)
 	return data;
 }
 
+uint64 spt::TransString::GetHex(uint8 StopFlag)
+{
+	return GetHex(StopFlag, 16);
+}
+
 bool8 spt::TransString::Get(char& data)
 {
 	data = 0;

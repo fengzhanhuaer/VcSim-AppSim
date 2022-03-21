@@ -959,6 +959,7 @@ int32 spt::DatePara::PowerUpIni(int32 Para)
 	AddCfgData(&TimeZone);
 	IrigB_Delay.Set("B码额定延时", "", 990);
 	IrigB_Delay.SetUnit(&Unit_mS);
+	IrigB_Delay.SetNotes("固定延时,不宜修改");
 	AddCfgData(&IrigB_Delay);
 	IrigB_Precision.Set("时钟精度", "", 7);
 	IrigB_Precision.SetNotes("6-100us;7-ms;8-10ms;9-100ms");
@@ -973,7 +974,7 @@ int32 spt::DatePara::PowerUpIni(int32 Para)
 	IrigB_CheckCode.SetNotes("0不校验;1奇校验;2偶校验");
 	AddCfgData(&IrigB_CheckCode);
 	IrigB_HostContDif.Set("时钟帧跳变阈值", "", 2);
-	IrigB_HostContDif.SetNotes("ms");
+	IrigB_HostContDif.SetNotes("ms,默认为2,据情况修改");
 	AddCfgData(&IrigB_HostContDif);
 	IrigB_ReSyncDif.Set("时钟再同步阈值", "", 3600);
 	IrigB_ReSyncDif.SetNotes("s");
