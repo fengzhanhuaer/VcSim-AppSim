@@ -129,12 +129,17 @@ namespace spt
 		virtual int32 OneLoop();
 		void MsSleep(uint32 Ms);
 		virtual void SaveIds(void* Ele);
+		uint32 TaskStep() { return taskStep; }
+		uint32 TaskLastStep() { return taskLastStep; }
+		uint32 TaskStatus() { return status; }
 	protected:
 		void CheckLoadStart();
 		void CheckLoadEnd();
+		virtual ~Task();
 	private:
 		static void* TaskRunEntry(void* Para);
 	protected:
+		bool8 forceExit;
 		uint32 core;
 		uint32 status;
 		uint32 taskStep;

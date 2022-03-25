@@ -93,6 +93,7 @@ void StartLcd()
 	{
 		return;
 	}
+#if 0
 	if (FindProcess(L"SimLcd.exe"))
 	{
 		WinExec("..\\..\\Debug\\SimLcd.exe", SW_NORMAL);
@@ -111,6 +112,7 @@ void StartLcd()
 	{
 		return;
 	}
+#endif
 }
 extern"C" int SimSysStartUp()
 {

@@ -1708,7 +1708,6 @@ void spt::SptDateTask::UpdateTimeInMsInt()
 	{
 		update->UpdateTimeInMsInt(localStamp);
 		UpdateStatus();
-
 	}
 }
 
@@ -1763,7 +1762,7 @@ int32 spt::SptDateTask::PowerUpIni(int32 Para)
 	}
 	else
 	{
-		update = 0;
+		update = new PcSimDateUpdate;
 	}
 	ForceGetRtcFromHw();
 	Task::PowerUpIni(0);
@@ -1774,4 +1773,5 @@ int32 spt::SptDateTask::PowerUpIni(int32 Para)
 
 void spt::PcSimDateUpdate::UpdateTimeInTask(SalDateStamp& Stamp)
 {
+
 }

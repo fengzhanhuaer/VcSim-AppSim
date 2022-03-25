@@ -48,8 +48,8 @@ void spt::OpenSslLibIni()
 #if SSL_LIB_ON
 		SSL_library_init();
 		SSL_load_error_strings();
-		DbgGmSslServerIni();
-		//	DbgGmSslClientIni();
+		DbgGmSslServerIni(DbgSimCfg::Instance().GmsslLinkMode.StrData(), DbgSimCfg::Instance().GmsslCrtFormat.Data(), DbgSimCfg::Instance().GmsslVerifyMode.Data());
+		//DbgGmSslClientIni();
 #else
 
 #endif // SSL_LIB_ON
@@ -77,18 +77,18 @@ void spt::OpenSslLibClean()
 #endif
 }
 
-void* GmServerMothed()
+void* GmServerMothed(const char* EncryMode)
 {
 #if SSL_LIB_ON
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
+	if (StrCmp(EncryMode, "SM2-WITH-SMS4-SM3") == 0)
 	{
 		return(void*)GMTLS_server_method();
 	}
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-GCM-SM3") == 0)
+	if (StrCmp(EncryMode, "ECDHE-SM2-WITH-SMS4-GCM-SM3") == 0)
 	{
 		return(void*)TLSv1_2_server_method();
 	}
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-SM3") == 0)
+	if (StrCmp(EncryMode, "ECDHE-SM2-WITH-SMS4-SM3") == 0)
 	{
 		return(void*)TLSv1_2_server_method();
 	}
@@ -98,18 +98,18 @@ void* GmServerMothed()
 	return 0;
 }
 
-void* GmClientMothed()
+void* GmClientMothed(const char* EncryMode)
 {
 #if SSL_LIB_ON
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
+	if (StrCmp(EncryMode, "SM2-WITH-SMS4-SM3") == 0)
 	{
 		return(void*)GMTLS_client_method();
 	}
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-GCM-SM3") == 0)
+	if (StrCmp(EncryMode, "ECDHE-SM2-WITH-SMS4-GCM-SM3") == 0)
 	{
 		return(void*)TLSv1_2_client_method();
 	}
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "ECDHE-SM2-WITH-SMS4-SM3") == 0)
+	if (StrCmp(EncryMode, "ECDHE-SM2-WITH-SMS4-SM3") == 0)
 	{
 		return(void*)TLSv1_2_client_method();
 	}
@@ -139,34 +139,33 @@ void* SslContextNew(void* GmSerMothed)
 #define CLIENT_ENC_KEY_FILE (CN_GMSSL_FILE_ROOT CN_FILE_DivFlag "db_client_enc.key")
 
 
-int32  DbgConfigGmServerSsl(void* SslContext)
+int32  DbgConfigGmServerSsl(void* SslContext, const char* EncryMode, int32 CrtMode, int32 VerifyMode)
 {
 #if SSL_LIB_ON
 	SSL_CTX* ctx = (SSL_CTX*)SslContext;
 
-	SSL_CTX_set_cipher_list(ctx, DbgSimCfg::Instance().GmsslLinkMode.StrData());
+	SSL_CTX_set_cipher_list(ctx, EncryMode);
 	//设置pass word
 	SSL_CTX_set_default_passwd_cb_userdata(ctx, (void*)"123456");
 	// 是否要求校验对方证书 若不验证客户端身份则设置为： SSL_VERIFY_NONE
 	//	SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
 	//验证对方
-	SSL_CTX_set_verify(ctx, DbgSimCfg::Instance().GmsslVerifyMode.Data(), NULL);
+	SSL_CTX_set_verify(ctx, VerifyMode, NULL);
 	//若验证,则放置CA证书
 	int ret = SSL_CTX_load_verify_locations(ctx, CA_CERT_FILE, NULL);
 	if (ret < 0)
 	{
 		LogErr << "SSL_CTX_load_verify_locations failed.";
 	}
-
 	//双证书模式，需要先设置签名证书，然后再设置加密证书
 	//载入服务端数字签名证书
-	if (SSL_CTX_use_certificate_file(ctx, SIGN_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+	if (SSL_CTX_use_certificate_file(ctx, SIGN_CERT_FILE, CrtMode) <= 0)
 	{
 		LogErr << "SSL_CTX_use_certificate_file SIGN_CERT_FILE err.\n";
 		return(-1);
 	}
 	//载入服务端签名私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, SIGN_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+	if (SSL_CTX_use_PrivateKey_file(ctx, SIGN_KEY_FILE, CrtMode) <= 0)
 	{
 		LogErr << "SSL_CTX_use_PrivateKey_file SIGN_CERT_FILE err.\n";
 		return(-1);
@@ -177,16 +176,16 @@ int32  DbgConfigGmServerSsl(void* SslContext)
 		LogErr << "SSL_CTX_check_private_key err.\n";
 		return(-1);
 	}
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
+	if (StrCmp(EncryMode, "SM2-WITH-SMS4-SM3") == 0)
 	{
 		//载入服务端加密证书
-		if (SSL_CTX_use_certificate_file(ctx, ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		if (SSL_CTX_use_certificate_file(ctx, ENC_CERT_FILE, CrtMode) <= 0)
 		{
 			LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
 			return(-1);
 		}
 		//载入加密私钥
-		if (SSL_CTX_use_PrivateKey_file(ctx, ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		if (SSL_CTX_use_PrivateKey_file(ctx, ENC_KEY_FILE, CrtMode) <= 0)
 		{
 			LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
 			return(-1);
@@ -204,10 +203,10 @@ int32  DbgConfigGmServerSsl(void* SslContext)
 #endif
 }
 
-int32 spt::DbgGmSslServerIni()
+int32 spt::DbgGmSslServerIni(const char* EncryMode, int32 CrtMode, int32 VerifyMode)
 {
 	//gmssl双证书通信
-	SSL_METHOD* meth = (SSL_METHOD*)GmServerMothed();
+	SSL_METHOD* meth = (SSL_METHOD*)GmServerMothed(EncryMode);
 
 	if (!meth)
 	{
@@ -221,7 +220,7 @@ int32 spt::DbgGmSslServerIni()
 		LogErr << "DbgGmSslServerIni ctx is null.\n";
 		return -1;
 	}
-	if (DbgConfigGmServerSsl(ctx))
+	if (DbgConfigGmServerSsl(ctx, EncryMode, CrtMode, VerifyMode))
 	{
 		LogErr << "DbgGmSslServerIni DbgConfigGmServerSsl failed.\n";
 		SSL_CTX_free(ctx);
@@ -238,14 +237,14 @@ bool8 spt::IsGmServerIniOk()
 {
 	return DbgGmSslServerCtx != 0;
 }
-int DbgConfigGmClientSsl(SSL_CTX* ctx)
+int DbgConfigGmClientSsl(SSL_CTX* ctx, const char* EncryMode, int32 CrtMode, int32 VerifyMode)
 {
-	SSL_CTX_set_cipher_list(ctx, DbgSimCfg::Instance().GmsslLinkMode.StrData());
+	SSL_CTX_set_cipher_list(ctx, EncryMode);
 
 	//要求校验对方证书，表示需要验证服务器端，若不需要验证则使用  SSL_VERIFY_NONE
 	//SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
 	/* Set flag in context to require peer (server) certificate verification */
-	SSL_CTX_set_verify(ctx, DbgSimCfg::Instance().GmsslVerifyMode.Data(), NULL);
+	SSL_CTX_set_verify(ctx, VerifyMode, NULL);
 	/* Load the  CA certificate into the SSL_CTX structure */
 	/* This will allow this client to verify the server's certificate. */
 	int ret = SSL_CTX_load_verify_locations(ctx, CA_CERT_FILE, NULL);
@@ -255,28 +254,28 @@ int DbgConfigGmClientSsl(SSL_CTX* ctx)
 	}
 
 	//载入客户端数字证书
-	if (SSL_CTX_use_certificate_file(ctx, CLIENT_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+	if (SSL_CTX_use_certificate_file(ctx, CLIENT_CERT_FILE, CrtMode) <= 0)
 	{
 		LogErr << "DbgConfigGmClientSsl CLIENT_CERT_FILE err.\n";
 		return -1;
 	}
 
 	//载入客户端私钥
-	if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+	if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_KEY_FILE, CrtMode) <= 0)
 	{
 		LogErr << "DbgConfigGmClientSsl CLIENT_KEY_FILE err.\n";
 		return -1;
 	}
-	if (StrCmp(DbgSimCfg::Instance().GmsslLinkMode.StrData(), "SM2-WITH-SMS4-SM3") == 0)
+	if (StrCmp(EncryMode, "SM2-WITH-SMS4-SM3") == 0)
 	{
 		//载入客户端加密证书
-		if (SSL_CTX_use_certificate_file(ctx, CLIENT_ENC_CERT_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		if (SSL_CTX_use_certificate_file(ctx, CLIENT_ENC_CERT_FILE, CrtMode) <= 0)
 		{
 			LogErr << "SSL_CTX_use_certificate_file ENC_CERT_FILE err.\n";
 			return(-1);
 		}
 		//载入加密私钥
-		if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_ENC_KEY_FILE, DbgSimCfg::Instance().GmsslCrtFormat.Data()) <= 0)
+		if (SSL_CTX_use_PrivateKey_file(ctx, CLIENT_ENC_KEY_FILE, CrtMode) <= 0)
 		{
 			LogErr << "SSL_CTX_use_PrivateKey_file ENC_KEY_FILE err.\n";
 			return(-1);
@@ -290,10 +289,10 @@ int DbgConfigGmClientSsl(SSL_CTX* ctx)
 	}
 	return 0;
 }
-int32 spt::DbgGmSslClientIni()
+int32 spt::DbgGmSslClientIni(const char* EncryMode, int32 CrtMode, int32 VerifyMode)
 {
 	//gmssl双证书通信
-	SSL_METHOD* meth = (SSL_METHOD*)GmClientMothed();
+	SSL_METHOD* meth = (SSL_METHOD*)GmClientMothed(EncryMode);
 
 	if (!meth)
 	{
@@ -309,7 +308,7 @@ int32 spt::DbgGmSslClientIni()
 		return -1;
 	}
 
-	if (DbgConfigGmClientSsl(ctx))
+	if (DbgConfigGmClientSsl(ctx, EncryMode, CrtMode, VerifyMode))
 	{
 		LogErr << "DbgGmSslClientIni DbgConfigGmClientSsl failed.\n";
 		SSL_CTX_free(ctx);

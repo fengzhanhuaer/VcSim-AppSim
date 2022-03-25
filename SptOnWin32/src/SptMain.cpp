@@ -68,8 +68,8 @@ void spt::SptMain::PowerUpIni(int32 Para)
 	SptSampAppTaskScheduler::Instance().PowerUpIni(0);
 	SalParaGroupSaveTask::Instance().PowerUpIni(0);
 	SptIoProcess::Instance().PowerUpIni(0);
-	DbgServer::Instance().PowerUpIni(0);
 	SalUserMng::Instance().PowerUpIni();
+	DbgToolsServer::Instance().PowerUpIni(0);
 	SptAppCmmTask::Instance().PowerUpIni(0);
 	SptCheckTask::Instance().PowerUpIni(0);
 	SalFwRecordTask::Instance().PowerUpIni(0);
@@ -91,7 +91,8 @@ void spt::SptMain::Run()
 	MsSleep(5000);
 #endif
 	LogMsg.Stamp() << "Program exit SptMain.Run.\n";
-}
+	SocketEnvClearUp();
+	}
 bool8 spt::SptMain::IsStartOver()
 {
 	return isStartOver;

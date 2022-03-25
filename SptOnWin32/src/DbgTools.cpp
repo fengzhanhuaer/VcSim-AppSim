@@ -1,5 +1,77 @@
 #include "SptProject.h"
 using namespace spt;
+int32 spt::DbgSimCfg::PowerUpIni(int32 Para)
+{
+	DataNum = 0;
+	EnableDbgServer.Set("EnableDbgServer", "使用调试服务器", 1);
+	AddCfgData(&EnableDbgServer);
+	EnableSimLcd.Set("EnableSimLcd", "使用虚拟液晶", 1);
+	AddCfgData(&EnableSimLcd);
+	EnableIedTools.Set("EnableIedTools", "使用配置工具", 1);
+	AddCfgData(&EnableIedTools);
+	EnableDbgTools.Set("EnableDbgTools", "使用调试工具", 1);
+	AddCfgData(&EnableDbgTools);
+	NeedCheckDeviceId.Set("NeedCheckDeviceId", "验证唯一性代码", 0);
+	AddCfgData(&NeedCheckDeviceId);
+	NeedUsrLog.Set("NeedUsrLog", "使能用户登录", 0);
+	AddCfgData(&NeedUsrLog);
+	if (SptMain::Instance().IsDevice(ED_SAU31_Sub))
+	{
+		ServerIp.Set("ServerIp", "", "100.100.100.101");
+	}
+	else
+	{
+		ServerIp.Set("ServerIp", "", "100.100.100.100");
+	}
+	AddCfgData(&ServerIp);
+	if (SptMain::Instance().StartMode() == SptMain::E_Factory)
+	{
+		EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
+	}
+	else
+	{
+		EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
+	}
+	AddCfgData(&EnableGmssl);
+	EnableGmCrtCheck.Set("EnableGmCrtCheck", "使能证书自检", 0);
+	AddCfgData(&EnableGmCrtCheck);
+	GmsslVerifyMode.Set("GmsslVerifyMode", "证书验证方式0是SSL_VERIFY_NONE，1是SSL_VERIFY_PEER，2是SSL_VERIFY_FAIL_IF_NO_PEER_CERT", 1);
+	AddCfgData(&GmsslVerifyMode);
+	GmsslLinkMode.Set("GmsslLinkMode", "加密方式ECDHE-SM2-WITH-SMS4-SM3(默认)SM2-WITH-SMS4-SM3(双证书)ECDHE-SM2-WITH-SMS4-GCM-SM3（单证书）", "ECDHE-SM2-WITH-SMS4-SM3");
+	AddCfgData(&GmsslLinkMode);
+	GmsslCrtFormat.Set("GmsslCrtFormat", "证书格式1是pem(默认)，2是asn1", 1);
+	AddCfgData(&GmsslCrtFormat);
+	path.Set(CN_CFG_FILE_ROOT);
+	name.Set("DbgSim.cfg");
+	if ((uint32)ReadAll() != CfgDataNum())
+	{
+		if (Para == 0)
+		{
+			SaveAll();
+		}
+	}
+	return 0;
+}
+int32 spt::DbgClientCfg::PowerUpIni(int32 Para)
+{
+	DataNum = 0;
+	ServerIp.Set("ServerIp", "", "100.100.100.100");
+	ClientIp.Set("ClientIp", "", "0.0.0.0");
+	ClientPort.Set("ClientPort", "Client端口33001~35000", 33001);
+	EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
+	EnableGmCrtCheck.Set("EnableGmCrtCheck", "使能证书自检", 0);
+	GmsslVerifyMode.Set("GmsslVerifyMode", "证书验证方式0是SSL_VERIFY_NONE，1是SSL_VERIFY_PEER，2是SSL_VERIFY_FAIL_IF_NO_PEER_CERT", 1);
+	GmsslLinkMode.Set("GmsslLinkMode", "加密方式ECDHE-SM2-WITH-SMS4-SM3(默认)SM2-WITH-SMS4-SM3(双证书)ECDHE-SM2-WITH-SMS4-GCM-SM3（单证书）", "ECDHE-SM2-WITH-SMS4-SM3");
+	GmsslCrtFormat.Set("GmsslCrtFormat", "证书格式1是pem(默认)，2是asn1", 1);
+	path.Set(CN_CFG_FILE_ROOT);
+	name.Set("DbgSim.cfg");
+	return 0;
+}
+DbgSimCfg& spt::DbgSimCfg::Instance()
+{
+	static DbgSimCfg inst;
+	return inst;
+}
 
 int32 spt::DbgToolsServer::PowerUpIni(int32 Type)
 {
@@ -11,6 +83,8 @@ int32 spt::DbgToolsServer::PowerUpIni(int32 Type)
 	}
 	OpenSslLibIni();
 	Start();
+	IedToolsServer::Instance().PowerUpIni(0);
+	DbgTools::Instance().PowerUpIni(0);
 	return 0;
 }
 
@@ -384,7 +458,7 @@ int32 spt::DbgToolsServer::OneLoop()
 								LogMsg.Stamp() << "VirLcd connected .\n";
 								if (userLinkFunc)
 								{
-									userLinkFunc(E_VirLcd, str.Str(), -2);
+									userLinkFunc(E_VirLcd, str.Str(), 0);
 								}
 								return 0;
 							}
@@ -399,39 +473,73 @@ int32 spt::DbgToolsServer::OneLoop()
 								taskStep = E_CheckClient;
 								return 0;
 							}
-							break;
+							return 0;
 						}
-						case E_DbgServer:
+						case E_IedTools:
 						{
-#if 0
-							if (DbgServer::Instance().IsRuning())
+							if (!DbgSimCfg::Instance().EnableIedTools.Data())
 							{
-								taskStep = E_CheckClient;
+								LogMsg.Stamp() << "IedTools Is not Enable .\n";
+								signIn.SetClientSock(-1);
+								signIn.CloseClient();
 								return 0;
 							}
-							DbgServer::Instance().SetLocalIp(DbgSimCfg::Instance().ServerIp.StrData());
-							DbgServer::Instance().Instance().SetLocalPort(33004);
-							DbgServer::Instance().SetRemoteIp(signIn.RemoteIp().u32);
-							DbgServer::Instance().SetRemotePort(33005);
-							if (DbgServer::Instance().StartServer() == 0)
+							if (IedToolsServer::Instance().StartServer(signIn.LocalIp().u32, signIn.LocalPort().u16, signIn.RemoteIp().u32, signIn.RemotePort().u16, signIn.ClientSock()) == 0)
 							{
-								const char* msginfo = "DbgClient connected .\n";
-								LogMsg.Stamp() << msginfo;
 								taskStep = E_CheckClient;
+								signIn.SetClientSock(-1);
+								LogMsg.Stamp() << "IedTools connected .\n";
+								if (userLinkFunc)
+								{
+									userLinkFunc(E_IedTools, str.Str(), 0);
+								}
 								return 0;
 							}
 							else
 							{
-								const char* msginfo = "DbgClient connect failed .\n";
-								LogMsg.Stamp() << msginfo;
+								if (userLinkFunc)
+								{
+									userLinkFunc(E_IedTools, str.Str(), -4);
+								}
+								signIn.CloseClient();
+								LogMsg.Stamp() << "IedTools connect failed .\n";
 								taskStep = E_CheckClient;
 								return 0;
 							}
-#endif
-							signIn.CloseClient();
-							taskStep = E_CheckClient;
 							return 0;
-							break;
+						}
+						case E_DbgTools:
+						{
+							if (!DbgSimCfg::Instance().EnableDbgTools.Data())
+							{
+								LogMsg.Stamp() << "DbgTools Is not Enable .\n";
+								signIn.SetClientSock(-1);
+								signIn.CloseClient();
+								return 0;
+							}
+							if (DbgTools::Instance().StartServer(signIn.LocalIp().u32, signIn.LocalPort().u16, signIn.RemoteIp().u32, signIn.RemotePort().u16, signIn.ClientSock()) == 0)
+							{
+								taskStep = E_CheckClient;
+								signIn.SetClientSock(-1);
+								LogMsg.Stamp() << "DbgTools connected .\n";
+								if (userLinkFunc)
+								{
+									userLinkFunc(E_DbgTools, str.Str(), 0);
+								}
+								return 0;
+							}
+							else
+							{
+								if (userLinkFunc)
+								{
+									userLinkFunc(E_DbgTools, str.Str(), -4);
+								}
+								signIn.CloseClient();
+								LogMsg.Stamp() << "IedTools connect failed .\n";
+								taskStep = E_CheckClient;
+								return 0;
+							}
+							return 0;
 						}
 						default:
 							taskStep = E_IniServer;
@@ -507,8 +615,80 @@ spt::DbgClient::DbgClient()
 	signInStep = 0;
 }
 
-void spt::DbgClient::AskConnect()
+void spt::DbgClient::SendLogHeartBeat()
 {
+	DbgSocket* sock = &gmsock;
+	if (sock)
+	{
+		DbgLogOnMsg msg;
+		msg.dbgMsg.header.len = sizeof(msg.msg.header) + 200;
+		uint16 data = DbgToolsServer::E_HeartBeat;
+		MemCpy(&msg.msg.buf, &data, sizeof(data));
+		msg.msg.header.version = 1;
+		EncryptData(msg.msg.buf, 200, 66);
+		int32 res = sock->Send(msg.dbgMsg);
+	}
+}
+void spt::DbgClient::ReConnect()
+{
+	if (lastUpdateReconnected.IsEnable())
+	{
+		if (!lastUpdateReconnected.Status(2000))
+		{
+			return;
+		}
+	}
+	else
+	{
+		lastUpdateReconnected.Enable(1);
+	}
+	isAskConnect = 1;
+	lastUpdateReconnected.StartTimer();
+}
+void spt::DbgClient::ClientIni()
+{
+	if (cfg)
+	{
+#ifdef WIN32_SIM
+
+#endif
+		signIn.SetLocalIp(cfg->ClientIp.StrData());
+		signIn.SetLocalPort(cfg->ClientPort.Data());
+		signIn.SetRemoteIp(cfg->ServerIp.StrData());
+		signIn.SetRemotePort(33000);
+		taskStep = E_WaitConnect;
+	}
+}
+int32 spt::DbgClient::PowerUpIni(int32 Para)
+{
+	DbgGmSslClientIni(cfg->GmsslLinkMode.StrData(), cfg->GmsslCrtFormat.Data(), cfg->GmsslVerifyMode.Data());
+	return 0;
+}
+void spt::DbgClient::WaitConnect()
+{
+	if (logTimer.Status())
+	{
+		isAskConnect = 1;
+	}
+	else if (!logTimer.IsEnable())
+	{
+		logTimer.UpCnt(2000);
+		logTimer.Enable(1);
+	}
+	if (isAskConnect)
+	{
+		isAskConnect = 0;
+		taskStep = E_AskConnect;
+		logTimer.Enable(0);
+	}
+}
+void spt::DbgClient::AskConnect(uint16 Cmd)
+{
+	if (signIn.StartNonBlock() != 0)
+	{
+		taskStep = E_ClentIni;
+		return;
+	}
 	uint32 data = 0x12fa990;
 	EncryptData(&data, sizeof(data), 16);
 	DbgLogOnMsg msg;
@@ -516,17 +696,18 @@ void spt::DbgClient::AskConnect()
 	msg.dbgMsg.header.header = 0xd555;
 	msg.msg.header.dbgheader.len = sizeof(msg.msg.header) + sizeof(data) + 40;
 	MemCpy(msg.msg.buf, &data, sizeof(data));
-	if (signIn.SendTo(&msg, msg.msg.header.dbgheader.len, 0) > 0)
+	if (signIn.Send(msg.dbgMsg) > 0)
 	{
 		MsTimer timer;
-		timer.UpCnt(5000);
+		timer.UpCnt(3000);
 		timer.Enable(1);
 		timer.Restart();
 		while (!timer.Status())
 		{
 			MsSleep(10);
 			uint64 ms;
-			if (signIn.RecvFrom(&msg, sizeof(msg), 0) == msg.msg.header.dbgheader.len)
+			int32 res = signIn.Recv(msg.dbgMsg);
+			if (res > 0)
 			{
 				MemCpy(&ms, msg.msg.buf, sizeof(ms));
 				DecryptData(&ms, sizeof(ms), 3);
@@ -536,14 +717,60 @@ void spt::DbgClient::AskConnect()
 				uint16 crc = Crc16ModBus.AddCrc(buf, sizeof(ms) + 2);
 				MemCpy(msg.msg.buf, &crc, sizeof(crc));
 				msg.msg.header.dbgheader.len = sizeof(msg.msg.header) + sizeof(buf);
-				if (signIn.SendTo(&msg, msg.msg.header.dbgheader.len, 0) > 0)
+				if (signIn.Send(msg.dbgMsg) > 0)
 				{
-					taskStep = E_SendCmd;
 					break;
 				}
 				else
 				{
 					taskStep = E_ClentIni;
+					return;
+				}
+			}
+		}
+		if (timer.Status())
+		{
+			taskStep = E_ClentIni;
+			return;
+		}
+		else
+		{
+			timer.UpCnt(1000);
+			timer.Enable(1);
+			timer.Restart();
+			while (!timer.Status())
+			{
+				MsSleep(10);
+				int32 res = signIn.Recv(msg.dbgMsg);
+				if (res > 0)
+				{
+					msg.msg.header.version = 1;
+					DbgToolsServer::HandshakeMsg hdmsg;
+					MemCpy(&hdmsg, msg.msg.buf, sizeof(hdmsg));
+					DecryptData(&hdmsg, sizeof(hdmsg), 27);
+					isIdCheck = hdmsg.msg[4];
+					isPwCheck = hdmsg.msg[5];
+					if (cfg && (StrCmp(cfg->GmsslLinkMode.StrData(), (const char*)&hdmsg.msg[33])
+						|| (cfg->GmsslVerifyMode.Data() != hdmsg.msg[3])
+						|| (cfg->EnableGmssl.Data() != hdmsg.msg[2]))
+						)
+					{
+						cfg->GmsslVerifyMode.SetData(hdmsg.msg[3]);
+						cfg->EnableGmssl.SetData(hdmsg.msg[2]);
+						cfg->GmsslLinkMode.SetData((const char*)&hdmsg.msg[33]);
+						cfg->SaveAll();
+						OpenSslLibClean();
+						DbgGmSslClientIni(cfg->GmsslLinkMode.StrData(), cfg->GmsslCrtFormat.Data(), cfg->GmsslVerifyMode.Data());
+					}
+					hdmsg.msg[0] = DbgToolsServer::E_ServiceAsk;
+					hdmsg.msg[1] = DbgToolsServer::E_ServiceAsk >> 8;
+					hdmsg.msg[2] = (uint8)Cmd;
+					hdmsg.msg[3] = (uint8)(Cmd >> 8);
+					MemCpy(&msg.msg.buf, &hdmsg, sizeof(hdmsg));
+					msg.dbgMsg.header.len = sizeof(msg.msg.header) + sizeof(hdmsg);
+					signIn.Send(msg.dbgMsg);
+					taskStep = E_LogOn;
+					return;
 				}
 			}
 		}
@@ -557,67 +784,60 @@ void spt::DbgClient::AskConnect()
 		MsSleep(1000);
 		taskStep = E_ClentIni;
 	}
+	taskStep = E_ClentIni;
 }
-
-void spt::DbgClient::SendCmd(uint16 Cmd)
+void spt::DbgClient::OneLoopPowerUpIni()
 {
-	DbgLogOnMsg msg;
+	isAskConnect = 1;
+	taskStep = E_ClentIni;
+	if (cfg)
+	{
+		cfg->ReadAll();
+	}
+}
+int32 spt::DbgClient::StartClient(uint16 Cmd, uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock)
+{
+	gmsock.SetLocalIp(LocalIp);
+	gmsock.SetLocalPort(LocalPort);
+	gmsock.SetRemoteIp(RemoteIp);
+	gmsock.SetRemotePort(RemotePort);
+	gmsock.EnableGmssl(cfg->EnableGmssl.Data());
+	gmsock.SetClientSock(ClientSock);
+	MsSleep(100);
 	MsTimer timer;
-	timer.UpCnt(3000);
-	timer.Enable(1);
-	timer.Restart();
-	while (!timer.Status())
+	if (cfg->EnableGmssl.Data())
 	{
-		MsSleep(10);
-		if (signIn.Recv(&msg, sizeof(msg), 0) > 0)
+		gmsock.CreatGmSock();
+		timer.UpCnt(5000);
+		timer.Enable(1);
+		timer.Restart();
+		while (!timer.Status())
 		{
-			msg.msg.header.version = 1;
-			DbgToolsServer::HandshakeMsg hdmsg;
-			MemCpy(&hdmsg, msg.msg.buf, sizeof(hdmsg));
-			DecryptData(&hdmsg, sizeof(hdmsg), 27);
-			DbgSimCfg::Instance().EnableGmssl.SetData(hdmsg.msg[2]);
-			DbgSimCfg::Instance().GmsslVerifyMode.SetData(hdmsg.msg[3]);
-			isIdCheck = hdmsg.msg[4];
-			isPwCheck = hdmsg.msg[5];
-			if (StrLen((const char*)&hdmsg.msg[33]) == hdmsg.msg[32])
+			MsSleep(50);
+			if (gmsock.GmConnect() >= 0)
 			{
-				DbgSimCfg::Instance().GmsslLinkMode.SetData((const char*)&hdmsg.msg[33]);
-				DbgSimCfg::Instance().SaveAll();
+				break;
 			}
-			hdmsg.msg[0] = DbgToolsServer::E_ServiceAsk;
-			hdmsg.msg[1] = DbgToolsServer::E_ServiceAsk >> 8;
-			hdmsg.msg[2] = (uint8)Cmd;
-			hdmsg.msg[3] = (uint8)(Cmd >> 8);
-			MemCpy(&msg.msg.buf, &hdmsg, sizeof(hdmsg));
-			msg.dbgMsg.header.len = sizeof(msg.msg.header) + sizeof(hdmsg);
-			signIn.SendTo(&msg, msg.dbgMsg.header.len, 0);
-			break;
 		}
+		if (timer.Status())
+		{
+			gmsock.Close();
+			return -1;
+		}
+		MsSleep(100);
 	}
-	if (timer.Status())
+	gmsock.SetLinkOk(1);
+	if (LogOn((DbgToolsServer::E_MsgType)Cmd, gmsock))
 	{
-		taskStep = E_ClentIni;
+		return 0;
 	}
+	gmsock.Close();
+	return -1;
 }
-
-void spt::DbgClient::SendLogHeartBeat()
-{
-	if (sock)
-	{
-		DbgLogOnMsg msg;
-		msg.dbgMsg.header.len = sizeof(msg.msg.header) + 200;
-		uint16 data = DbgToolsServer::E_HeartBeat;
-		MemCpy(&msg.msg.buf, &data, sizeof(data));
-		msg.msg.header.version = 1;
-		EncryptData(msg.msg.buf, 200, 66);
-		sock->Send(msg.dbgMsg);
-	}
-}
-
 bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 {
 	msgType = MsgType;
-	sock = &Sock;
+	DbgSocket* sock = &Sock;
 	DbgLogOnMsg msg;
 	msg.dbgMsg.header.len = sizeof(msg.msg.header) + 200;
 	uint16 data = DbgToolsServer::E_ServiceAsk;
@@ -626,28 +846,16 @@ bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 	String100B id;
 	String100B name;
 	String100B pw;
-	if (isIdCheck && isPwCheck)
-	{
-
-	}
-	else if (isIdCheck)
-	{
-
-	}
-	else if (isPwCheck)
-	{
-
-	}
 	logstatus = E_InputPw;
-	//AskForLogOnInfo(isIdCheck, isPwCheck, id, name, pw, 0);
+	AskForLogOnInfo(isIdCheck, isPwCheck, id, name, pw, 0);
 	logstatus = E_CheckPw;
 	StrNCpy((char*)&msg.msg.buf[2], name.Str(), 20);
 	StrNCpy((char*)&msg.msg.buf[22], pw.Str(), 20);
 	StrNCpy((char*)&msg.msg.buf[42], id.Str(), 40);
 	EncryptData(msg.msg.buf, 200, 66);
-	Sock.Send(msg.dbgMsg);
+	int32 res = Sock.Send(msg.dbgMsg);
 	MsTimer timer;
-	timer.UpCnt(1 * timer.Mt1Second);
+	timer.UpCnt(2 * timer.Mt1Second);
 	timer.Enable(1);
 	timer.Restart();
 	while (!timer.Status())
@@ -694,68 +902,8 @@ bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 				}
 			}
 		}
-		if (rtn < 0)
-		{
-			logstatus = E_LogOnLinkErr;
-			return 0;
-		}
 		MsSleep(20);
 	}
 	logstatus = E_LogOverTime;
 	return 0;
-}
-
-int32 spt::DbgSimCfg::PowerUpIni(int32 Para)
-{
-	DataNum = 0;
-	EnableDbgServer.Set("EnableDbgServer", "使用调试服务器", 1);
-	AddCfgData(&EnableDbgServer);
-	EnableSimLcd.Set("EnableSimLcd", "使用虚拟液晶", 1);
-	AddCfgData(&EnableSimLcd);
-	NeedCheckDeviceId.Set("NeedCheckDeviceId", "验证唯一性代码", 0);
-	AddCfgData(&NeedCheckDeviceId);
-	NeedUsrLog.Set("NeedUsrLog", "使能用户登录", 0);
-	AddCfgData(&NeedUsrLog);
-	if (SptMain::Instance().IsDevice(ED_SAU31_Sub))
-	{
-		ServerIp.Set("ServerIp", "", "100.100.100.101");
-	}
-	else
-	{
-		ServerIp.Set("ServerIp", "", "100.100.100.100");
-	}
-	AddCfgData(&ServerIp);
-	if (SptMain::Instance().StartMode() == SptMain::E_Factory)
-	{
-		EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
-	}
-	else
-	{
-		EnableGmssl.Set("EnableGmssl", "使用国密加密", 0);
-	}
-	AddCfgData(&EnableGmssl);
-	EnableGmCrtCheck.Set("EnableGmCrtCheck", "使能证书自检", 0);
-	AddCfgData(&EnableGmCrtCheck);
-	GmsslVerifyMode.Set("GmsslVerifyMode", "证书验证方式0是SSL_VERIFY_NONE，1是SSL_VERIFY_PEER，2是SSL_VERIFY_FAIL_IF_NO_PEER_CERT", 1);
-	AddCfgData(&GmsslVerifyMode);
-	GmsslLinkMode.Set("GmsslLinkMode", "加密方式ECDHE-SM2-WITH-SMS4-SM3(默认)SM2-WITH-SMS4-SM3(双证书)ECDHE-SM2-WITH-SMS4-GCM-SM3（单证书）", "ECDHE-SM2-WITH-SMS4-SM3");
-	AddCfgData(&GmsslLinkMode);
-	GmsslCrtFormat.Set("GmsslCrtFormat", "证书格式1是pem(默认)，2是asn1", 1);
-	AddCfgData(&GmsslCrtFormat);
-	path.Set(CN_CFG_FILE_ROOT);
-	name.Set("DbgSim.cfg");
-	if ((uint32)ReadAll() != CfgDataNum())
-	{
-		if (Para == 0)
-		{
-			SaveAll();
-		}
-	}
-	return 0;
-}
-
-DbgSimCfg& spt::DbgSimCfg::Instance()
-{
-	static DbgSimCfg inst;
-	return inst;
 }

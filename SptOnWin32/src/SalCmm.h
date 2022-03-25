@@ -13,6 +13,8 @@ namespace spt
 		SCT_SptInnerData,//平台数据（不出芯片）
 		SCT_SptFastCmm,//平台片外交互快速数据
 		SCT_SptSlowCmm,//平台片外交互慢速数据
+		SCT_IEDTools,
+		SCT_DBGTools,
 	};
 	struct SalCmmMsgHeader
 	{
@@ -156,8 +158,6 @@ namespace spt
 		uint32 driverNum;
 		SalCmmMsgHeader frmHeader;
 	};
-
-
 	struct SalTransHeader
 	{
 		SalCmmMsgHeader salHeader;
@@ -189,6 +189,7 @@ namespace spt
 			E_FileTrans = 0x0101,
 			E_ParaTrans = 0x0102,
 			E_MsgTrans = 0x0103,
+			E_PriDataTrans = 0x8000,
 		};
 		enum Result
 		{
@@ -281,6 +282,11 @@ namespace spt
 			int32 paras;
 			uint32 msgLen;
 			uint8 data[1];
+		};
+		struct SalMsg
+		{
+			SalTransHeader tsheader;
+			Msg msg;
 		};
 	public:
 		SalMsgTrans(AdtBufDes& recMsg, SalCmmChannel* Cmm, uint16 Dst, struct CmmMsgDriver* Driver);

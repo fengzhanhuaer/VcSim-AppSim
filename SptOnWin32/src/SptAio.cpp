@@ -84,10 +84,15 @@ void spt::SptAngVirInputBoard::RecSvInCbCheckStateMsg(void* Buf, uint32 BufLen)
 	b += sizeof(frameno);
 	uint16 frameNum = GetLittleEndian16Bit(b);
 	b += sizeof(frameNum);
-	if (frameNum <= ProcInBuf.Top())
+	//if (frameNum <= ProcInBuf.Top())	//20220321 AEU 李华东说是固定按照2个控制块上送数据，因此去掉个数判断
 	{
 		SptSvInDataSet* Board;
-		for (uint32 i = 0; i < frameNum; i++)
+		uint16 loopend = ProcInBuf.Top();
+		if (loopend > frameNum)
+		{
+			loopend = frameNum;
+		}
+		for (uint32 i = 0; i < loopend; i++)
 		{
 			Board = (SptSvInDataSet*)ProcInBuf.GetAddrElement(i);
 			Board->SetRecvStatus(b, 4);

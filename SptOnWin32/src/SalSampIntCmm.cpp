@@ -250,7 +250,7 @@ bool8 spt::SampIntMsgPool::IsEmpty()
 
 void spt::SampIntMsgPool::ClearData()
 {
-	if ((Read!=Write)&&Des)
+	if ((Read != Write) && Des)
 	{
 		for (int32 i = 0; i < DesNum; i++)
 		{
@@ -263,7 +263,7 @@ void spt::SampIntMsgPool::ClearData()
 bool8 spt::SampIntMsg::IsSumOk()
 {
 	uint16 len = frameLen - 2;
-	if (len >= sizeof(buf))
+	if (len >= (sizeof(buf) - 2))
 	{
 		return 0;
 	}

@@ -22,6 +22,8 @@ namespace spt
 		CfgStr GmsslLinkMode;
 		CfgUint32 GmsslCrtFormat;
 		CfgBool EnableGmCrtCheck;
+		CfgHex32 ForeGroundColour;
+		CfgHex32 BackGroundColour;
 	private:
 		PCfgDataBase pool[20];
 	};

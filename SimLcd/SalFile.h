@@ -10,7 +10,7 @@ namespace spt
 #define CN_SYS_PATH	".\\SptSim\\"
 #define CN_DATA_PATH	".\\SptSim\\"
 #define CN_PARA_FILE_ROOT	".\\SptSim\\Using\\Para"
-#define CN_CFG_FILE_ROOT	".\\SptSim\\Using\\LcdCfg"
+#define CN_CFG_FILE_ROOT	".\\SptSim\\Using\\Cfg"
 #define CN_INFO_FILE_ROOT	".\\SptSim\\Using\\Info"
 #define CN_LOG_FILE_ROOT	".\\SptSim\\Using\\Log"
 #define CN_EVENT_FILE_ROOT	".\\SptSim\\Using\\Event"

@@ -16,6 +16,8 @@ namespace spt
 	public:
 		CfgBool EnableDbgServer;
 		CfgBool EnableSimLcd;
+		CfgBool EnableIedTools;
+		CfgBool EnableDbgTools;
 		CfgBool NeedCheckDeviceId;
 		CfgBool NeedUsrLog;
 		CfgStr ServerIp;
@@ -26,6 +28,25 @@ namespace spt
 		CfgBool EnableGmCrtCheck;
 	private:
 		PCfgDataBase pool[20];
+	};
+	class DbgClientCfg :public CfgFile
+	{
+	public:
+		int32 PowerUpIni(int32 Para);
+	protected:
+		virtual PCfgDataBase* CfgPool() { return pool; };
+		virtual uint32 CfgPoolSize() { return M_ArrLen(pool); };
+	public:
+		CfgStr ServerIp;
+		CfgStr ClientIp;
+		CfgUint32 ClientPort;
+		CfgBool EnableGmssl;
+		CfgUint32 GmsslVerifyMode;
+		CfgStr GmsslLinkMode;
+		CfgUint32 GmsslCrtFormat;
+		CfgBool EnableGmCrtCheck;
+	private:
+		PCfgDataBase pool[200];
 	};
 	class DbgToolsServer :public Task
 	{
@@ -41,7 +62,8 @@ namespace spt
 			E_HeartBeat,
 			E_ServiceAsk,
 			E_VirLcd,
-			E_DbgServer
+			E_IedTools,
+			E_DbgTools,
 		};
 	public:
 		/// <summary>
@@ -121,7 +143,7 @@ namespace spt
 			E_ClentIni,
 			E_WaitConnect,
 			E_AskConnect,
-			E_SendCmd,
+			E_LogOn,
 			E_AskIniInfo,
 			E_Work,
 			E_Check,
@@ -139,25 +161,35 @@ namespace spt
 			E_LogOverTime,
 		};
 	public:
+		int32 PowerUpIni(int32 Para);
 		void SendLogHeartBeat();
+		void ReConnect();
+		void ClientIni();
+		void WaitConnect();
+		void AskConnect(uint16 Cmd);
+		void OneLoopPowerUpIni();
+		int32 StartClient(uint16 Cmd, uint32 LocalIp, uint16 LocalPort, uint32 RemoteIp, uint16 RemotePort, int32 ClientSock);
 		bool8 LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock);
 		uint8 LogStatus() { return logstatus; };
 	protected:
 		DbgClient();
-		void AskConnect();
-		void SendCmd(uint16 Cmd);
+		virtual bool8 AskForLogOnInfo(bool8 isCheckId, bool8 isCheckAccount, SalString& Id, SalString& Name, SalString& Pw, int32(*DoHeartCheck)()) { return 0; };
 	protected:
+		DbgClientCfg* cfg;
+		bool8 isAskConnect;
 		bool8 isIdCheck;
 		bool8 isPwCheck;
 		uint32 signInStep;
 		DbgTcpClient signIn;
 		MsPeriodTimer checkTimer;
 		MsPeriodTimer logTimer;
+		MsStampTimer lastUpdateReconnected;
 		uint8 logstatus;
 		DbgToolsServer::E_MsgType msgType;
-		DbgSocket* sock;
+		DbgTcpGmClient gmsock;
 	};
 }
-#include"DbgServer.h"
+#include "DbgIedTools.h"
+#include "DbgDbgTools.h"
 
 #endif

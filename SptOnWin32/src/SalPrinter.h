@@ -81,6 +81,14 @@ namespace spt
 		uint32 writer;
 	};
 
+	class SalVirPrinter
+	{
+	public:
+		int32 PowerUpIni();
+	protected:
+
+	};
+
 }
 
 #endif // !SALPRINTER_H

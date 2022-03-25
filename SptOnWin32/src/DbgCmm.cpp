@@ -66,8 +66,8 @@ int32 spt::DbgSocket::Send(const void* buf, int32 bufLen, uint32 flags)
 int32 spt::DbgSocket::Send(DbgMsg& Msg)
 {
 	Msg.header.header = 0xd555;
-	Msg.header.sur = localIp.u2b[0].u16;
-	Msg.header.dst = remoteIp.u2b[0].u16;
+	Msg.header.sur = localIp.u2b[1].u16;
+	Msg.header.dst = remoteIp.u2b[1].u16;
 	return Send(&Msg, Msg.header.len + sizeof(DbgMsg::checkCode), 0);
 }
 
@@ -424,7 +424,7 @@ void spt::DbgTcpCmm::Close()
 
 int32 spt::DbgTcpCmm::SetClientSock(int32 sock)
 {
-	return clientsock = sock; 
+	return clientsock = sock;
 }
 
 int32 spt::DbgTcpClient::Start()
@@ -668,7 +668,7 @@ void spt::DbgTcpGmClient::CreatGmSock()
 	{
 		return;
 	}
-	gmSock = DbgGmSslSockServerNew((void*)clientsock);
+	gmSock = DbgGmSslSockClientNew((void*)clientsock);
 }
 
 int32 spt::DbgTcpGmClient::StartNonBlock()

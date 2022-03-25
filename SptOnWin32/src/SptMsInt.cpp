@@ -47,11 +47,14 @@ static void GzkSauIntProc()
 {
 
 }
+static void PcSimProc()
+{
+	SptDateTask::Instance().UpdateTimeInMsInt();
+}
 
 void spt::SptMsInt::PowerUpIni(int32 Para)
 {
 	const struct ApiAppCfg* cfg = SptMain::Instance().AppCfg();
-#ifndef GZK_LCD
 	if (cfg)
 	{
 		if (cfg->platform.hardware == EH_GZK35KVP
@@ -69,18 +72,14 @@ void spt::SptMsInt::PowerUpIni(int32 Para)
 		}
 	}
 	else
-#endif
-		if (0)
+	{
+		if (Para == 2)
 		{
-			if (Para == 0)
-			{
-				SetMsInt(MsInt, 1);
-			}
-			else if (Para == 1)
-			{
-				SetMsNormalInt(MsInt, 1);
-			}
+			intData.func = PcSimProc;
+			intData.Enable = 1;
+			SetMsInt(MsInt, 1);
 		}
+	}
 
 }
 

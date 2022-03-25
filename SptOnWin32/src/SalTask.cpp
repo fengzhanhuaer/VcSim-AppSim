@@ -43,6 +43,27 @@ int32 spt::Task::Suspend()
 
 int32 spt::Task::Exit()
 {
+	forceExit = 1;
+	while (forceExit)
+	{
+		if (status == E_Exited)
+		{
+			break;
+		}
+		if (status == E_Default)
+		{
+			break;
+		}
+		if (status == E_Stoped)
+		{
+			break;
+		}
+		if (status == E_Suspend)
+		{
+			break;
+		}
+		MsSleep(10);
+	}
 	return 0;
 }
 
@@ -64,11 +85,18 @@ int32 spt::Task::PowerUpIni(int32 Para)
 int32 spt::Task::Do()
 {
 	status = E_Running;
+	forceExit = 0;
 	while (1)
 	{
 		DoOnce();
+		if (forceExit)
+		{
+			break;
+		}
 	}
+	forceExit = 0;
 	status = E_Exited;
+	return 0;
 }
 int32 spt::Task::DoOnce()
 {
@@ -114,6 +142,10 @@ void spt::Task::CheckLoadStart()
 void spt::Task::CheckLoadEnd()
 {
 	runInfo.RunEnd();
+}
+spt::Task::~Task()
+{
+	Exit();
 }
 void* spt::Task::TaskRunEntry(void* Para)
 {
@@ -191,7 +223,7 @@ void* spt::StartTask(const char* Name, TaskFunction Func, void* Para, unsigned P
 	if (handle)
 	{
 		SetTaskRunAt(handle, Core);
-	}
+}
 	return handle;
 }
 #endif // WIN32_SIM

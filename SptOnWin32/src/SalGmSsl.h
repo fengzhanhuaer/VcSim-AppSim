@@ -7,8 +7,8 @@ namespace spt
 	bool8 IsGmServerIniOk();
 	void OpenSslLibIni();
 	void OpenSslLibClean();
-	int32 DbgGmSslServerIni();
-	int32 DbgGmSslClientIni();
+	int32 DbgGmSslServerIni(const char* EncryMode, int32 CrtMode, int32 VerifyMode);
+	int32 DbgGmSslClientIni(const char* EncryMode, int32 CrtMode, int32 VerifyMode);
 	void* DbgGmSslSockServerNew(void* Sock);
 	void* DbgGmSslSockClientNew(void* Sock);
 	int32 DbgGmSslAccept(void* GmSock);

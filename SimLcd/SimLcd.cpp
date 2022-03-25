@@ -48,60 +48,11 @@ public:
 	}
 	virtual void ApplySet(wxCommandEvent& event);
 };
-class LcdConfig :public CfgFile
-{
-public:
-	CfgHex32 ForeGroundColour;
-	CfgHex32 BackGroundColour;
-public:
-	int32 PowerUpIni(int32 Para)
-	{
-		ForeGroundColour.Set("FrontCorlor", "", 0xff40ff00);
-		AddCfgData(&ForeGroundColour);
-		BackGroundColour.Set("BackCorlor", "", 0xff000000);
-		AddCfgData(&BackGroundColour);
-		path.Set(CN_CFG_FILE_ROOT);
-		name.Set("LcdCfg.cfg");
-		if ((uint32)ReadAll() != CfgDataNum())
-		{
-			SaveAll();
-		}
-		LoadSet();
-		return 0;
-	}
-	void SaveSet()
-	{
-		SaveAll();
-	}
-	void LoadSet()
-	{
-		ReadAll();
-
-	}
-	void SetLcdCorlor()
-	{
-		LoadSet();
-		SetLcdColourInst inst;
-		inst.ForeGroundColour()->SetColour(ForeGroundColour.Data());
-		inst.BackGroundColour()->SetColour(BackGroundColour.Data());
-		inst.Show();
-
-		SaveSet();
-	}
-
-public:
-	M_Singleton(LcdConfig);
-	LcdConfig() {	}
-protected:
-	virtual PCfgDataBase* CfgPool() { return pool; };
-	virtual uint32 CfgPoolSize() { return M_ArrLen(pool); };
-private:
-	PCfgDataBase pool[20];
-};
 void SetLcdColourInst::ApplySet(wxCommandEvent& event) {
 
-	LcdConfig::Instance().ForeGroundColour.SetData(ForeGroundColour()->GetColour().GetRGBA());
-	LcdConfig::Instance().BackGroundColour.SetData(BackGroundColour()->GetColour().GetRGBA());
+	DbgSimCfg::Instance().ForeGroundColour.SetData(ForeGroundColour()->GetColour().GetRGBA());
+	DbgSimCfg::Instance().BackGroundColour.SetData(BackGroundColour()->GetColour().GetRGBA());
+	DbgSimCfg::Instance().SaveAll();
 	event.Skip();
 }
 class InstLogOnWnd :public LogOnWnd
@@ -147,7 +98,6 @@ public:
 public:
 	MySimLcd() :SimLcd(NULL) {
 
-		LcdConfig::Instance().PowerUpIni(0);
 		m_textCtrl1->SetFocus();
 		wxString str = DbgSimCfg::Instance().ServerIp.StrData();
 		m_IpStr->SetValue(str);
@@ -302,8 +252,8 @@ public:
 		wxImage LcdCache(484, 276);
 		uint8* bf;
 		wxColour fore, back;
-		fore.SetRGBA(LcdConfig::Instance().ForeGroundColour.Data());
-		back.SetRGBA(LcdConfig::Instance().BackGroundColour.Data());
+		fore.SetRGBA(DbgSimCfg::Instance().ForeGroundColour.Data());
+		back.SetRGBA(DbgSimCfg::Instance().BackGroundColour.Data());
 		for (uint32 i = 0; i < 276; i++)
 		{
 			for (uint32 j = 0; j < 484; j++)
@@ -540,7 +490,11 @@ public:
 	}
 	virtual void SetLCDCorlor(wxCommandEvent& event) {
 		event.Skip();
-		LcdConfig::Instance().SetLcdCorlor();
+		SetLcdColourInst inst;
+		inst.ForeGroundColour()->SetColour(DbgSimCfg::Instance().ForeGroundColour.Data());
+		inst.BackGroundColour()->SetColour(DbgSimCfg::Instance().BackGroundColour.Data());
+		inst.Show();
+		DbgSimCfg::Instance().SaveAll();
 	}
 	bool8 AskForLogOnInfo(bool8 isCheckId, bool8 isCheckAccount, SalString& Id, SalString& Name, SalString& Pw, int32(*DoHeartCheck)())
 	{

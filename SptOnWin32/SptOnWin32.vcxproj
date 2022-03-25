@@ -39,7 +39,8 @@
     <ClCompile Include="src\ApiSysCfg.cpp" />
     <ClCompile Include="src\ApiVersion.cpp" />
     <ClCompile Include="src\DbgCmm.cpp" />
-    <ClCompile Include="src\DbgServer.cpp" />
+    <ClCompile Include="src\DbgDbgTools.cpp" />
+    <ClCompile Include="src\DbgIedTools.cpp" />
     <ClCompile Include="src\DbgTools.cpp" />
     <ClCompile Include="src\HalBoardIo.cpp" />
     <ClCompile Include="src\HalFactoryTools.cpp" />
@@ -125,7 +126,8 @@
     <ClInclude Include="src\ApiSysCfg.h" />
     <ClInclude Include="src\ApiVersion.h" />
     <ClInclude Include="src\DbgCmm.h" />
-    <ClInclude Include="src\DbgServer.h" />
+    <ClInclude Include="src\DbgDbgTools.h" />
+    <ClInclude Include="src\DbgIedTools.h" />
     <ClInclude Include="src\DbgTools.h" />
     <ClInclude Include="src\HalBoardIo.h" />
     <ClInclude Include="src\HalFactoryTools.h" />

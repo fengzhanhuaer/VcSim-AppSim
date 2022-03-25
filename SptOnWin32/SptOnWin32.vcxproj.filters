@@ -72,9 +72,6 @@
     <ClCompile Include="src\DbgCmm.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\DbgServer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\DbgTools.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -258,6 +255,12 @@
     <ClCompile Include="src\LcdHalDriver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\DbgIedTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DbgDbgTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ApiAio.h">
@@ -324,9 +327,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\DbgCmm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DbgServer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\DbgTools.h">
@@ -522,6 +522,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\LcdBitmap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DbgIedTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DbgDbgTools.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

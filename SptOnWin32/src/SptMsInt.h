@@ -30,7 +30,7 @@ namespace spt
 	public:
 		static SptMsInt& Instance();
 		/*
-		*MsIntType:0,real time ,1,normal
+		*MsIntType:0,real time ,1,normal,2 PCSim
 		*/
 		void PowerUpIni(int32 MsIntType);
 		void Interrupt();
