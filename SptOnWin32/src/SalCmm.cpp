@@ -1140,5 +1140,52 @@ int32 spt::SalMsgTrans::Send(uint32 Type, int32 Para, uint8* Msg, uint32 MsgLen)
 		sendbuf.Write(Msg, MsgLen);
 	}
 	SendMsg(sendbuf.Top(), sendbuf.BufBase());
-	return int32();
+	return 0;
+}
+
+spt::SalTransFrameCtrl::SalTransFrameCtrl(SalTransFrame* Frame, uint32 DataBufLen)
+{
+	frame = Frame;
+	dataBufLen = DataBufLen;
+	reader = writer = 0;
+}
+
+void spt::SalTransFrameCtrl::SetMsgIniInfo(uint32 Type, uint32 unPackIndex)
+{
+	frame->Header.SetHeader(Type, unPackIndex, 0);
+	reader = writer = 0;
+}
+
+int32 spt::SalTransFrameCtrl::Write(void* Data, uint32 DataLen)
+{
+	uint32 w = writer + DataLen + 2;
+	if (w > dataBufLen)
+	{
+		return -1;
+	}
+	MemCpy(frame->data + writer, Data, DataLen);
+	frame->Header.dataLen = writer += DataLen;
+	return DataLen;
+}
+
+int32 spt::SalTransFrameCtrl::Read(void* Data, uint32 DataBufLen)
+{
+	if (reader < frame->Header.dataLen)
+	{
+		uint32 len = Min(DataBufLen, frame->Header.dataLen - reader);
+		MemCpy(Data, frame->data + reader, len);
+		reader += len;
+		return len;
+	}
+	return 0;
+}
+
+int32 spt::SalTransHeader::SetHeader(uint16 Type, uint16 UnpackIndex, uint16 DataLen)
+{
+	type = Type;
+	unPackIndex = UnpackIndex;
+	dataLen = DataLen;
+	res = 0;
+	salHeader.len = DataLen + sizeof(SalTransHeader);
+	return DataLen;
 }

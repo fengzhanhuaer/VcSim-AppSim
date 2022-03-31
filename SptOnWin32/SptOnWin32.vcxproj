@@ -32,7 +32,8 @@
     <ClCompile Include="src\ApiHmiLed.cpp" />
     <ClCompile Include="src\ApiHmiSptInfo.cpp" />
     <ClCompile Include="src\ApiHmiTextWnd.cpp" />
-    <ClCompile Include="src\ApiMenu.cpp" />
+    <ClCompile Include="src\ApiIedTools.cpp" />
+    <ClCompile Include="src\ApiHmiMenu.cpp" />
     <ClCompile Include="src\ApiPara.cpp" />
     <ClCompile Include="src\ApiResource.cpp" />
     <ClCompile Include="src\ApiSjRecord.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="src\ApiBoard.h" />
     <ClInclude Include="src\ApiCfgPara.h" />
     <ClInclude Include="src\ApiCmm.h" />
+    <ClInclude Include="src\ApiDbgTools.h" />
     <ClInclude Include="src\ApiDio.h" />
     <ClInclude Include="src\ApiEvent.h" />
     <ClInclude Include="src\ApiFaultRecord.h" />
@@ -118,7 +120,8 @@
     <ClInclude Include="src\ApiHmiLed.h" />
     <ClInclude Include="src\ApiHmiSptInfo.h" />
     <ClInclude Include="src\ApiHmiTextWnd.h" />
-    <ClInclude Include="src\ApiMenu.h" />
+    <ClInclude Include="src\ApiIedTools.h" />
+    <ClInclude Include="src\ApiHmiMenu.h" />
     <ClInclude Include="src\ApiPara.h" />
     <ClInclude Include="src\ApiProject.h" />
     <ClInclude Include="src\ApiResource.h" />

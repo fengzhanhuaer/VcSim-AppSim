@@ -3,7 +3,7 @@
 
 #include"SptProject.h"
 #include"ApiHmiLed.h"
-#include"ApiMenu.h"
+#include"ApiHmiMenu.h"
 #include"ApiPara.h"
 #include"ApiCfgPara.h"
 #include"ApiEvent.h"
@@ -22,6 +22,8 @@
 #include"ApiSjRecord.h"
 #include"ApiCmm.h"
 #include"ApiFaultRecord.h"
+#include"ApiDbgTools.h"
+#include"ApiIedTools.h"
 
 namespace spt
 {

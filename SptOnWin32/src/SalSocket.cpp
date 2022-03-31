@@ -264,6 +264,7 @@ void spt::SocketEnvClearUp()
 #ifdef WIN32_SIM
 	WSACleanup();
 #endif // !WIN32_SIM
+	OpenSslLibClean();
 }
 
 

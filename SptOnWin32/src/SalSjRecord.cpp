@@ -208,7 +208,7 @@ int32 spt::SalSjRecordGroup::CreatEvent(SalSjRecordData& Record)
 		temp = hdr.elementPoolSize - 1;
 	}
 	hdr.validNum = temp;
-	hdr.writer = (writer + 1) % hdr.elementPoolSize;
+	hdr.writer = writer = (writer + 1) % hdr.elementPoolSize;
 	record[writer].stamp[0] = 0;
 	record[writer].sum = 0;
 	SalSjRecordDispachTask::Instance().SaveEvent(this);

@@ -1119,7 +1119,6 @@ int32 spt::SalEventGroup::SaveEvent(uint16 eventId, StatusData& status)
 	{
 		return -1;
 	}
-
 	if (eventId != status.eventId)
 	{
 		return -1;

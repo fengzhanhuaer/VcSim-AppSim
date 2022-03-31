@@ -223,7 +223,7 @@ void* spt::StartTask(const char* Name, TaskFunction Func, void* Para, unsigned P
 	if (handle)
 	{
 		SetTaskRunAt(handle, Core);
-}
+	}
 	return handle;
 }
 #endif // WIN32_SIM

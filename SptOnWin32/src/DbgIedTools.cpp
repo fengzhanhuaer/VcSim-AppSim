@@ -59,10 +59,15 @@ int32 spt::IedToolsServer::StartServer(uint32 LocalIp, uint16 LocalPort, uint32 
 	return  0;
 }
 
+void spt::IedToolsServer::SetIedToolsWndRoot(ApiIedToolsCascadeWnd* Wnd)
+{
+	wndRoot = (IedToolsCascadeWnd*)Wnd;
+	IedToolsCascadeWnd* wnd = (IedToolsCascadeWnd*)Wnd;
+	wnd->SetId(0);
+}
+
 int32 spt::IedToolsServer::PowerUpIni(int32 Para)
 {
-	recMsgBuf = (IedToolsMsg60kb*)Calloc(1, sizeof(IedToolsMsg60kb));
-	sendMsgBuf = (IedToolsMsg60kb*)Calloc(1, sizeof(IedToolsMsg60kb));
 	Task::PowerUpIni(0);
 	msgSem.Creat(1);
 	Start();
@@ -84,10 +89,7 @@ int32 spt::IedToolsServer::OneLoop()
 		if (isLogOn)
 		{
 			isLogOn = 0;
-			if (recMsgBuf && sendMsgBuf)
-			{
-				taskStep = E_ClientIni;
-			}
+			taskStep = E_ClientIni;
 		}
 		MsSleep(100);
 		break;
@@ -129,11 +131,15 @@ int32 spt::IedToolsServer::OneLoop()
 	return 0;
 }
 
-int32 spt::IedToolsServer::RecMsg(SalCmmMsgHeader& msg)
+int32 spt::IedToolsServer::RecMsg(SalCmmMsgHeader& msg, uint32 MsgBufLen)
 {
-	if (msgSem.Wait(200) < 0)
+	if (gmSock.IsLinkOk() == 0)
 	{
-		return 0;
+		return -1;
+	}
+	if (msgSem.Wait(1000) < 0)
+	{
+		return -1;
 	}
 	SalCmmMsgHeader header;
 	int cnt = 0;
@@ -143,6 +149,10 @@ int32 spt::IedToolsServer::RecMsg(SalCmmMsgHeader& msg)
 		{
 			MemCpy(&msg, &header, sizeof(header));
 			int len = msg.len - sizeof(header) + sizeof(DbgMsg::checkCode);
+			if ((uint32)(msg.len + 2) >= MsgBufLen)
+			{
+				continue;
+			}
 			int32 remLen = 0;
 			int32 recLen = 0;
 			int32 breakcnt = 0;
@@ -191,7 +201,32 @@ int32 spt::IedToolsServer::RecMsg(SalCmmMsgHeader& msg)
 		}
 	}
 	msgSem.Post();
-	return 0;
+	return -1;
+}
+
+int32 spt::IedToolsServer::RecMsg(uint32 MsgType, int32 WaitTime, SalCmmMsgHeader& Msg, uint32 MsgBufLen)
+{
+	if (gmSock.IsLinkOk() == 0)
+	{
+		return -1;
+	}
+	MsTimer timer;
+	timer.UpCnt(WaitTime);
+	timer.Enable(1);
+	SalTransFrame* msg = (SalTransFrame*)&Msg;
+	while (!timer.Status())
+	{
+		if (RecMsg(Msg, MsgBufLen) < 0)
+		{
+			MsSleep(200);
+			SendHeartBeat();
+		}
+		else if (msg->Header.type == MsgType)
+		{
+			return 0;
+		}
+	}
+	return -1;
 }
 
 int32 spt::IedToolsServer::SendMsg(SalCmmMsgHeader& msg)
@@ -200,7 +235,7 @@ int32 spt::IedToolsServer::SendMsg(SalCmmMsgHeader& msg)
 	{
 		return 0;
 	}
-	if (msgSem.Wait(200) < 0)
+	if (msgSem.Wait(1000) < 0)
 	{
 		return 0;
 	}
@@ -221,10 +256,21 @@ int32 spt::IedToolsServer::SendMsg(SalCmmMsgHeader& msg, uint32 DataLen)
 	return SendMsg(msg);
 }
 
-int32 spt::IedToolsServer::SendMsg(IedToolsMsgHeader& msg)
+int32 spt::IedToolsServer::SendMsg(SalTransHeader& msg)
 {
 	msg.salHeader.len = (uint16)msg.dataLen + sizeof(SalTransHeader);
 	return SendMsg(msg.salHeader);
+}
+
+void spt::IedToolsServer::SendHeartBeat()
+{
+	SalDateStamp s;
+	s.Now();
+	IedToolHeartBeatMsg msg;
+	msg.data.stamp = s;
+	msg.header.SetHeader(E_ITMT_HeartBeat, 0, sizeof(msg.data));
+	SendMsg(msg.header.salHeader);
+	heartbeatTimer.Restart();
 }
 
 spt::IedToolsServer::IedToolsServer()
@@ -245,7 +291,7 @@ int32 spt::IedToolsServer::Check()
 	}
 	else if (gmSock.IsLinkOk())
 	{
-		checkTimer.UpCnt(5000);
+		checkTimer.UpCnt(10000);
 		checkTimer.Enable(1);
 	}
 	else
@@ -255,7 +301,7 @@ int32 spt::IedToolsServer::Check()
 	}
 	if (checkTimer.Status())
 	{
-		IedToolMsgCtrl ctrl;
+		SalTransFrame2kB ctrl;
 		ctrl.SetMsgIniInfo(E_ITMT_SockClose, 0);
 		SendMsg(ctrl.Header());
 		MsSleep(100);
@@ -291,12 +337,19 @@ int32 spt::IedToolsServer::Check()
 
 int32 spt::IedToolsServer::Work()
 {
-	if (RecMsg(recMsgBuf->header) <= 0)
+	SalTransFrame5kB recMsgBuf;
+	if (RecMsg(recMsgBuf.Header().salHeader, recMsgBuf.FrameBufLen()) <= 0)
 	{
 		MsSleep(10);
 		return 0;
 	}
-	IedToolsMsgHeader* msg = (IedToolsMsgHeader*)recMsgBuf;
+	Unpack(recMsgBuf.Header().salHeader);
+	return 0;
+}
+
+int32 spt::IedToolsServer::Unpack(SalCmmMsgHeader& Msg)
+{
+	SalTransHeader* msg = (SalTransHeader*)&Msg;
 	uint16 type = msg->type;
 	switch (type)
 	{
@@ -316,17 +369,24 @@ int32 spt::IedToolsServer::Work()
 		{
 			String1000B str;
 			str << SptMain::Instance().AppCfg()->hmicfg.DispName << "," << SptMain::Instance().AppCfg()->hmicfg.FullTypeName << "," << ApiUnitCfg::Instance().DeviceID.StrData();
-			IedToolMsgCtrl ctrl;
+			SalTransFrame5kB ctrl;
 			ctrl.SetMsgIniInfo(E_ITMT_AskClientInfoAck, 0);
 			ctrl.Write(str.Str(), str.StrLen() + 1);
 			SendMsg(ctrl.Header());
 		}
 		break;
 	}
+	case E_ITMT_AskRootWnd:
+	{
+		if (wndRoot)
+		{
+			SendCascadeWnd(wndRoot->childWnd);
+		}
+		break;
+	}
 	default:
 		break;
 	}
-
 	return 0;
 }
 
@@ -340,36 +400,90 @@ int32 spt::IedToolsServer::CloseSock()
 	return 0;
 }
 
-void spt::IedToolsMsgHeader::SetHeader(uint32 Type, uint32 unPackIndex, uint32 DataLen)
+int32 spt::IedToolsServer::SendCascadeWnd(IedToolsCascadeWnd* Wnd)
 {
-	type = Type;
-	this->unPackIndex = 0;
-	dataLen = DataLen;
-	salHeader.len = dataLen + sizeof(SalTransHeader);
-	res = 0;
-}
-
-void spt::IedToolMsgCtrl::SetMsgIniInfo(uint32 Type, uint32 unPackIndex)
-{
-	msg.SetHeader(Type, unPackIndex, 0);
-	reader = writer = 0;
-}
-
-int32 spt::IedToolMsgCtrl::Write(void* Data, uint32 Len)
-{
-	uint16 w = writer + Len;
-	if (w > sizeof(msg.data))
+	while (Wnd && (!Wnd->IsEnd()))
 	{
-		return -1;
+		if (Wnd->pdisp && *Wnd->pdisp)
+		{
+			SalTransFrame5kB ctrl;
+			ctrl.SetMsgIniInfo(E_ITMT_AskRootWndAck, 0);
+
+			SendMsg(ctrl.Header());
+			MsSleep(2);
+		}
+		Wnd++;
 	}
-	MemCpy(msg.data + writer, Data, Len);
-	writer = w;
-	msg.dataLen = writer;
-	return Len;
+	return 0;
 }
 
-IedToolsMsgHeader& spt::IedToolMsgCtrl::Header()
+spt::IedToolsDialog::IedToolsDialog(const char* Name, int32 WaitTime)
 {
-	return msg;
+	SetInfo(Name, WaitTime);
 }
 
+int32 spt::IedToolsDialog::SetInfo(const char* Name, int32 WaitTime)
+{
+	StrNCpy(title, Name, sizeof(title));
+	waitTime = WaitTime;
+	result = -1;
+	if (waitTime < 0)
+	{
+		waitTime = 0;
+	}
+	return 0;
+}
+
+int32 spt::IedToolsDialog::SendMsg(SalTransHeader& msg)
+{
+	return 	IedToolsServer::Instance().SendMsg(msg);
+}
+
+int32 spt::IedToolsDialog::RecMsg(uint32 MsgType, int32 WaitTime, SalCmmMsgHeader& msg, uint32 MsgBufLen)
+{
+	return 	IedToolsServer::Instance().RecMsg(MsgType, WaitTime, msg, MsgBufLen);
+}
+
+spt::IedToolsCascadeWnd::IedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, ApiIedToolsCascadeWnd* ChildWnd, WndFunc WorkFunc, WndFunc ExitFunc, const uint32* pDisp)
+{
+	StrNCpy(title, Name, sizeof(title));
+	enterFunc = EnterFunc;
+	workFunc = WorkFunc;
+	childWnd = (IedToolsCascadeWnd*)ChildWnd;
+	exitFunc = ExitFunc;
+	pdisp = pDisp;
+	if (!pdisp)
+	{
+		pdisp = &MenuDisp;
+	}
+	wndId = 0;
+}
+
+bool8 spt::IedToolsCascadeWnd::IsEnd()
+{
+	return StrNCmp(title, EndOfInst, sizeof(title)) == 0;
+}
+
+uint32 spt::IedToolsCascadeWnd::SetId(uint32 Id)
+{
+	wndId = Id + 1;
+	if (IsEnd())
+	{
+		return wndId;
+	}
+	lastChildId = firstChildId = wndId;
+	if (childWnd)
+	{
+		IedToolsCascadeWnd* wnd = childWnd;
+		while (wnd)
+		{
+			if (wnd->IsEnd())
+			{
+				return lastChildId;
+			}
+			lastChildId = wnd->SetId(lastChildId);
+			wnd++;
+		}
+	}
+	return wndId;
+}

@@ -25,8 +25,8 @@ ApiMenu menuSwitchView[] =
 	{"GOOSE开出",     ViewGoOutStatus},
 	{"指示灯",         ViewLedStatus},
 	{"双点遥信",        ViewDpiStatus},
-//	{"虚遥信",         ViewFlagStatus},
-	{EndOfInst}
+	//	{"虚遥信",         ViewFlagStatus},
+		{EndOfInst}
 };
 
 ApiMenu menuDevView[] =
@@ -46,8 +46,8 @@ ApiMenu menuCcdView[] =
 	{"SV发布",          DispCcdSvPub},
 	{"GOOSE订阅",       DispCcdGooseSub},
 	{"GOOSE发布",       DispCcdGoosePub},
-//	{"配置下装状态",     DispCcdToFPGA},
-	{EndOfInst}
+	//	{"配置下装状态",     DispCcdToFPGA},
+		{EndOfInst}
 };
 ApiMenu menuEventStatusView[] =
 {
@@ -83,8 +83,8 @@ ApiMenu menuEventView[] =
 	{"GOOSE开入SOE",  DispGoInEvent},
 	{"GOOSE开出SOE",  DispGoOutEvent},
 	{"指示灯SOE",      DispLedEvent},
-//	{"虚遥信SOE",      DispFlagEvent},
-	{EndOfInst}
+	//	{"虚遥信SOE",      DispFlagEvent},
+		{EndOfInst}
 };
 ApiMenu menuSptParaDsp[] =
 {
@@ -92,7 +92,7 @@ ApiMenu menuSptParaDsp[] =
 	{"直流参数"  ,    DispProtSetDC},
 	{"模拟量参数",    DispProtSetSam},
 	{"功能参数"  ,    DispProtSetFun},
-	{"直流量校准系数",  DispProtSetDcCoe},	
+	{"直流量校准系数",  DispProtSetDcCoe},
 	{"模拟量校准系数",  DispProtSetAmCoe},
 	{"模拟量直流补偿",  DispProtSetDcBcCoe},
 	{"模拟量相位补偿",  DispProtSetAngCoe},
@@ -111,7 +111,7 @@ ApiMenu menuSptParaSet[] =
 	{"模拟量相位补偿",        EditProtSetAngCoe,&MenuDispDbgDisp},
 	{EndOfInst}
 };
-ApiMenu menuSptInfo[]=
+ApiMenu menuSptInfo[] =
 {
 	{"平台状态信息",ViewSptWarnStatus},
 	{"负载信息",    DispTaskLoadInfo},
@@ -128,7 +128,7 @@ ApiMenu menuSptInter[] =
 	{"平台信息",          menuSptInfo},
 	{EndOfInst}
 };
-ApiMenu menuProgramUpdate[]=
+ApiMenu menuProgramUpdate[] =
 {
 	{"操作系统升级",OsUpdate},
 	{"Boot0升级",Boot0Update},
@@ -139,20 +139,20 @@ ApiMenu menuProgramUpdate[]=
 #endif
 	{EndOfInst}
 };
-ApiMenu menuProgramUpdate1[]=
+ApiMenu menuProgramUpdate1[] =
 {
 	{"操作系统升级",OsUpdate1},
 	{"Boot0升级",Boot0Update1},
 	{"UBoot升级",UbootUpdate1},
 	{EndOfInst}
 };
-ApiMenu menuProgramUpdateRoot[]=
+ApiMenu menuProgramUpdateRoot[] =
 {
 	{"从sdcard0升级",menuProgramUpdate},
 	{"从sd卡(sdcard1)升级",menuProgramUpdate1},
 	{EndOfInst}
 };
-ApiMenu menuFileFormat[]=
+ApiMenu menuFileFormat[] =
 {
 	{"格式化系统盘",FormatSysCard},
 	{"格式化数据盘",FormatDataCard},
@@ -163,12 +163,12 @@ ApiMenu menuFileTrans[]
 	{"发送用户配置",HmiSendFile2SubBoard},
 	{EndOfInst}
 };
-ApiMenu menuBakup[]=
+ApiMenu menuBakup[] =
 {
 	{"FLASH备份",FlashBak},
 	{EndOfInst}
 };
-ApiMenu menuRestore[]=
+ApiMenu menuRestore[] =
 {
 	{"FLASH参数还原",RestoreFlashPara},
 	{EndOfInst}
@@ -223,8 +223,8 @@ ApiMenu menuAppClearEvent[] =
 	{"清除GOOSE开出SOE事项",ClaerGoOutSoe},
 	{"清除指示灯SOE事项",ClaerLedSoe},
 	{"清除双点遥信SOE事项",ClaerDpiSoe},
-//	{"清除虚遥信SOE事项",ClaerFlagSoe},
-	{EndOfInst}
+	//	{"清除虚遥信SOE事项",ClaerFlagSoe},
+		{EndOfInst}
 };
 ApiMenu menuAppClearInterEvent[] =
 {
@@ -233,8 +233,8 @@ ApiMenu menuAppClearInterEvent[] =
 	{"清除操作事项",ClaerOptEvent},
 	{"清除内部事项",ClaerPrvtSoeEvent},
 	{"清除内部操作",ClaerPrvtOptEvent},
-//	{"清除虚遥信SOE事项",ClaerFlagSoe},
-	{EndOfInst}
+	//	{"清除虚遥信SOE事项",ClaerFlagSoe},
+		{EndOfInst}
 };
 
 ApiMenu menuAppDefaultPara[] =
@@ -252,16 +252,16 @@ ApiMenu menuAppDefaultPara[] =
 };
 ApiMenu menuSjyExportMenu[] =
 {
-    {"用户登录",ExportUserLogSjRecord},
-    {"用户管理",ExportUserAdmSjRecord},
-    {"控制类",     ExportControlSjRecord},
-    {EndOfInst}
+	{"用户登录",ExportUserLogSjRecord},
+	{"用户管理",ExportUserAdmSjRecord},
+	{"控制类",     ExportControlSjRecord},
+	{EndOfInst}
 };
 ApiMenu menuEthnet[] =
 {
-    {"以太网参数设置",EditEthnetPara},
-    {"以太网参数导入",AppEthnetPara},
-    {EndOfInst}
+	{"以太网参数设置",EditEthnetPara},
+	{"以太网参数导入",AppEthnetPara},
+	{EndOfInst}
 };
 ApiMenu menuFactoryDebug[] =
 {
@@ -306,7 +306,7 @@ ApiMenu menuInfoView[] =
 };
 ApiMenu AppUnitSetMenu[] =
 {
-	{"时间设置",  HmiSetSystemDate},
+	//{"时间设置",  HmiSetSystemDate},
 	{EndOfInst}
 };
 ApiMenu AppOperatorMenu[] =

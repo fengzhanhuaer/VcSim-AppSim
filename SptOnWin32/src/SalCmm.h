@@ -160,6 +160,7 @@ namespace spt
 	};
 	struct SalTransHeader
 	{
+		int32 SetHeader(uint16 Type, uint16 UnpackIndex, uint16 DataLen);
 		SalCmmMsgHeader salHeader;
 		uint16 unPackIndex;
 		uint16 type;
@@ -171,6 +172,47 @@ namespace spt
 		SalTransHeader Header;
 		uint8 data[1];
 	};
+	struct SalTransFrameCtrl
+	{
+	public:
+		SalTransFrameCtrl(SalTransFrame* Frame, uint32 DataBufLen);
+		void SetMsgIniInfo(uint32 Type, uint32 unPackIndex);
+		SalTransHeader& Header() { return frame->Header; }
+		uint32 DataBufLen() { return dataBufLen; };
+		uint32 FrameBufLen() { return dataBufLen + sizeof(SalTransHeader); };
+		int32 Write(void* Data, uint32 DataLen);
+		int32 Write(uint32& Data) { return Write(&Data, sizeof(Data)); }
+		int32 Write(uint16& Data) { return Write(&Data, sizeof(Data)); }
+		int32 Write(uint8& Data) { return Write(&Data, sizeof(Data)); }
+		int32 Read(void* Data, uint32 DataBufLen);
+		int32 Read(uint32& Data) { return Read(&Data, sizeof(Data)); }
+		int32 Read(uint16& Data) { return Read(&Data, sizeof(Data)); }
+		int32 Read(uint8& Data) { return Read(&Data, sizeof(Data)); }
+	protected:
+		uint32 reader;
+		uint32 writer;
+		uint32 dataBufLen;
+		SalTransFrame* frame;
+	};
+	template <const uint32 CN_DataBufLen>
+	struct SalTransFrameBufCtrl :public SalTransFrameCtrl
+	{
+		SalTransFrameBufCtrl() :SalTransFrameCtrl((SalTransFrame*)&frame, CN_DataBufLen) {}
+	protected:
+		struct Frame
+		{
+			SalTransHeader Header;
+			uint8 data[CN_DataBufLen];
+		}frame;
+	};
+	typedef SalTransFrameBufCtrl<256> SalTransFrame256B;
+	typedef SalTransFrameBufCtrl<512> SalTransFrame512B;
+	typedef SalTransFrameBufCtrl<1024> SalTransFrame1kB;
+	typedef SalTransFrameBufCtrl<2048> SalTransFrame2kB;
+	typedef SalTransFrameBufCtrl<1024 * 5> SalTransFrame5kB;
+	typedef SalTransFrameBufCtrl<1024 * 10> SalTransFrame10kB;
+	typedef SalTransFrameBufCtrl<1024 * 60> SalTransFrame60kB;
+
 	class SalTransCmm :public SalCmmChannel
 	{
 	public:

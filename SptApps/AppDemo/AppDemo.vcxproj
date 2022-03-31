@@ -146,6 +146,7 @@
     <ClCompile Include="src\InstEvent.cpp" />
     <ClCompile Include="src\InstFwRecord.cpp" />
     <ClCompile Include="src\InstHmiLed.cpp" />
+    <ClCompile Include="src\InstIedTools.cpp" />
     <ClCompile Include="src\InstMenu.cpp" />
     <ClCompile Include="src\InstMenuDebug.cpp" />
     <ClCompile Include="src\InstMenuEventDisp.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="src\InstEvent.h" />
     <ClInclude Include="src\InstFwRecord.h" />
     <ClInclude Include="src\InstHmiLed.h" />
+    <ClInclude Include="src\InstIedTools.h" />
     <ClInclude Include="src\InstMenu.h" />
     <ClInclude Include="src\InstMenuDebug.h" />
     <ClInclude Include="src\InstMenuEventDisp.h" />

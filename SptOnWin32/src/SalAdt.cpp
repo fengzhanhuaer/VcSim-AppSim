@@ -870,3 +870,14 @@ bool8 spt::CharStreamReader::Read(int8& Data)
 	}
 	return 0;
 }
+
+bool8 spt::CharStreamReader::Read(void* Data, uint32 Len)
+{
+	if (reader < bufLen)
+	{
+		MemCpy(Data, buf + reader, Len);
+		reader += Len;
+		return 1;
+	}
+	return 0;
+}

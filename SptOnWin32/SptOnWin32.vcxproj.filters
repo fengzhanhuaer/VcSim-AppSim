@@ -51,9 +51,6 @@
     <ClCompile Include="src\ApiHmiTextWnd.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\ApiMenu.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\ApiPara.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -261,6 +258,12 @@
     <ClCompile Include="src\DbgDbgTools.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\ApiIedTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ApiHmiMenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ApiAio.h">
@@ -303,9 +306,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\ApiHmiTextWnd.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ApiMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\ApiPara.h">
@@ -528,6 +528,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\DbgDbgTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ApiIedTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ApiDbgTools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ApiHmiMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

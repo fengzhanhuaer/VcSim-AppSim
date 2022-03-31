@@ -565,7 +565,7 @@ void spt::HmiWidTextWnd::SetLine(uint16 Line)
 
 void spt::HmiWidTextWnd::SetCrc(uint32 Crc, uint32 CrcLen)
 {
-	crc = crc;
+	crc = Crc;
 	crcLen = CrcLen;
 	isUpdateTitle = 1;
 	SetUpdateSelf(1);

@@ -45,7 +45,7 @@ bool8 DispProtSet(ApiMenu* Menu)
 bool8 EditProtSet(ApiMenu* Menu)
 {
 	ApiHmiGridWnd wnd(0);
-	wnd.SetInfo("保护定值", 0, 0);
+	wnd.SetInfo("保护定值", ProtParaGroup.GetCrc(0), 2);
 	HmiParaEditGroup.Set((SalParaGroup*)&ProtParaGroup, 0);
 	MakeParaSetMenu(Menu, wnd, &HmiParaEditGroup, 1);
 	wnd.Edit();

@@ -93,6 +93,9 @@
     <ClCompile Include="src\InstEvent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\InstIedTools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\InstAngIn.h">
@@ -165,6 +168,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\InstDbg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InstIedTools.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

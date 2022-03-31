@@ -220,6 +220,7 @@ namespace spt
 		bool8 Read(int32& Data);
 		bool8 Read(int16& Data);
 		bool8 Read(int8& Data);
+		bool8 Read(void* Data, uint32 Len);
 		void* Base() { return buf; };
 		void* Top() { return &buf[reader]; };
 	protected:

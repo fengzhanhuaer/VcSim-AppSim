@@ -626,7 +626,7 @@ void spt::DbgClient::SendLogHeartBeat()
 		MemCpy(&msg.msg.buf, &data, sizeof(data));
 		msg.msg.header.version = 1;
 		EncryptData(msg.msg.buf, 200, 66);
-		int32 res = sock->Send(msg.dbgMsg);
+		sock->Send(msg.dbgMsg);
 	}
 }
 void spt::DbgClient::ReConnect()
@@ -837,7 +837,6 @@ int32 spt::DbgClient::StartClient(uint16 Cmd, uint32 LocalIp, uint16 LocalPort, 
 bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 {
 	msgType = MsgType;
-	DbgSocket* sock = &Sock;
 	DbgLogOnMsg msg;
 	msg.dbgMsg.header.len = sizeof(msg.msg.header) + 200;
 	uint16 data = DbgToolsServer::E_ServiceAsk;
@@ -853,7 +852,7 @@ bool8 spt::DbgClient::LogOn(DbgToolsServer::E_MsgType MsgType, DbgSocket& Sock)
 	StrNCpy((char*)&msg.msg.buf[22], pw.Str(), 20);
 	StrNCpy((char*)&msg.msg.buf[42], id.Str(), 40);
 	EncryptData(msg.msg.buf, 200, 66);
-	int32 res = Sock.Send(msg.dbgMsg);
+	Sock.Send(msg.dbgMsg);
 	MsTimer timer;
 	timer.UpCnt(2 * timer.Mt1Second);
 	timer.Enable(1);
