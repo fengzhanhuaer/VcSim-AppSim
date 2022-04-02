@@ -1180,6 +1180,21 @@ int32 spt::SalTransFrameCtrl::Read(void* Data, uint32 DataBufLen)
 	return 0;
 }
 
+int32 spt::SalTransFrameCtrl::CopyCtx(SalCmmMsgHeader& Ctrl)
+{
+	if (dataBufLen >= Ctrl.len)
+	{
+		MemCpy(&frame->Header, &Ctrl, Ctrl.len);
+		return Ctrl.len;
+	}
+	else
+	{
+		MemCpy(&frame->Header, &Ctrl, dataBufLen);
+		return dataBufLen;
+	}
+	return -1;
+}
+
 int32 spt::SalTransHeader::SetHeader(uint16 Type, uint16 UnpackIndex, uint16 DataLen)
 {
 	type = Type;

@@ -14,7 +14,7 @@ int32 spt::ApiIedToolsDialog::ShowAskIdPw(SalString& DefId, SalString& Id, SalSt
 {
 	SalTransFrame512B msg;
 	msg.SetMsgIniInfo(E_ITMT_ShowDialog, 0);
-	uint32 u32 = E_AskIdPw;
+	uint32 u32 = E_AskAccountPw;
 	msg.Write(&u32, sizeof(u32));
 	char buf[40];
 	StrNCpy(buf, title, sizeof(buf));
@@ -27,7 +27,7 @@ int32 spt::ApiIedToolsDialog::ShowAskIdPw(SalString& DefId, SalString& Id, SalSt
 		msg.Read(&u32, sizeof(u32));
 		int32 i32;
 		msg.Read(&i32, sizeof(i32));
-		if (u32 == E_AskIdPw)
+		if (u32 == E_AskAccountPw)
 		{
 			if (i32 == 0)
 			{
@@ -60,8 +60,9 @@ spt::ApiIedToolsCascadeWnd::ApiIedToolsCascadeWnd(const char* Name, WndFunc Ente
 
 }
 
-spt::ApiIedToolsCascadeWnd::ApiIedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, WndFunc WorkFunc, WndFunc ExitFunc, const uint32* pDisp)
+spt::ApiIedToolsCascadeWnd::ApiIedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, WorkFunc WorkFunc, WndFunc ExitFunc, const uint32* pDisp)
 	: IedToolsCascadeWnd(Name, EnterFunc, 0, WorkFunc, ExitFunc, pDisp)
 {
 
 }
+

@@ -8,7 +8,5 @@
 extern ApiIedToolsCascadeWnd  InstIedToolsOperatorRootMenu[];
 
 
-bool8 InstIedToolsMenuEnterFunc(ApiIedToolsCascadeWnd* Wnd);
-
 #endif // !INSTIEDTOOLS_H
 

@@ -339,6 +339,7 @@ int32 spt::SalSjRecordGroup::loadFile()
 	}
 	hdr.reader = hd.reader % hd.elementPoolSize;
 	hdr.writer = hd.writer % hd.elementPoolSize;
+	hdr.usdNum = hd.usdNum;
 	hdr.validNum = 0;
 	SalSjRecordData* record = (SalSjRecordData*)buf.BufBase();
 	if (!record)

@@ -12,6 +12,7 @@ namespace spt
 	{
 	public:
 		ApiIedToolsTextWnd(const char* Name);
+		struct IedToolsWndPara& WndPara();
 
 	};
 	class ApiIedToolsGridWnd
@@ -20,14 +21,30 @@ namespace spt
 	};
 	/// <summary>
 	/// 配置工具级联窗口
-	/// 必须在配置工具服务端任务中调用，禁止跨任务调用
+	/// 该类禁止被继承及添加数据成员
 	/// </summary>
 	class ApiIedToolsCascadeWnd :protected IedToolsCascadeWnd
 	{
 	public:
 		ApiIedToolsCascadeWnd(const char* Name);
+		/// <summary>
+		/// 级联窗口
+		/// </summary>
+		/// <param name="Name">名称</param>
+		/// <param name="EnterFunc">进入询问函数</param>
+		/// <param name="ChildWnd">子窗口</param>
+		/// <param name="ExitFunc">退出询问函数</param>
+		/// <param name="pDisp">是否显示</param>
 		ApiIedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, class ApiIedToolsCascadeWnd* ChildWnd, WndFunc ExitFunc, const uint32* pDisp);
-		ApiIedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, WndFunc WorkFunc, WndFunc ExitFunc, const uint32* pDisp);
+		/// <summary>
+		/// 功能窗口
+		/// </summary>
+		/// <param name="Name">名称</param>
+		/// <param name="EnterFunc">进入询问函数</param>
+		/// <param name="WorkFunc">功能函数</param>
+		/// <param name="ExitFunc">退出询问函数</param>
+		/// <param name="pDisp">是否显示</param>
+		ApiIedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, WorkFunc WorkFunc, WndFunc ExitFunc, const uint32* pDisp);
 	};
 	/// <summary>
 	/// 配置工具对话框模块

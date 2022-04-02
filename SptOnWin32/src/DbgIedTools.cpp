@@ -63,7 +63,7 @@ void spt::IedToolsServer::SetIedToolsWndRoot(ApiIedToolsCascadeWnd* Wnd)
 {
 	wndRoot = (IedToolsCascadeWnd*)Wnd;
 	IedToolsCascadeWnd* wnd = (IedToolsCascadeWnd*)Wnd;
-	wnd->SetId(0);
+	wnd->SetParent(0);
 }
 
 int32 spt::IedToolsServer::PowerUpIni(int32 Para)
@@ -102,9 +102,11 @@ int32 spt::IedToolsServer::OneLoop()
 	}
 	case E_Work:
 	{
-		taskStep = E_Check;
-		Work();
-		MsSleep(10);
+		if (Work() == 1)
+		{
+			taskStep = E_Check;
+			MsSleep(100);
+		}
 		break;
 	}
 	case E_Check:
@@ -122,7 +124,7 @@ int32 spt::IedToolsServer::OneLoop()
 		{
 			taskStep = E_WaitClient;
 		}
-		MsSleep(10);
+		MsSleep(100);
 		break;
 	}
 	default:
@@ -219,7 +221,7 @@ int32 spt::IedToolsServer::RecMsg(uint32 MsgType, int32 WaitTime, SalCmmMsgHeade
 		if (RecMsg(Msg, MsgBufLen) < 0)
 		{
 			MsSleep(200);
-			SendHeartBeat();
+			Check();
 		}
 		else if (msg->Header.type == MsgType)
 		{
@@ -274,7 +276,7 @@ void spt::IedToolsServer::SendHeartBeat()
 }
 
 spt::IedToolsServer::IedToolsServer()
-	:Task("tIedTools", TaskBasePriority + 30, 2 * 1048 * 1024, E_T_FLOAT, E_AuxCore)
+	:Task("tIedTools", TaskBasePriority + 30, 4 * 1048 * 1024, E_T_FLOAT, E_AuxCore)
 {
 
 }
@@ -340,8 +342,7 @@ int32 spt::IedToolsServer::Work()
 	SalTransFrame5kB recMsgBuf;
 	if (RecMsg(recMsgBuf.Header().salHeader, recMsgBuf.FrameBufLen()) <= 0)
 	{
-		MsSleep(10);
-		return 0;
+		return 1;
 	}
 	Unpack(recMsgBuf.Header().salHeader);
 	return 0;
@@ -349,8 +350,8 @@ int32 spt::IedToolsServer::Work()
 
 int32 spt::IedToolsServer::Unpack(SalCmmMsgHeader& Msg)
 {
-	SalTransHeader* msg = (SalTransHeader*)&Msg;
-	uint16 type = msg->type;
+	SalTransFrame* msg = (SalTransFrame*)&Msg;
+	uint16 type = msg->Header.type;
 	switch (type)
 	{
 	case E_ITMT_HeartBeat:
@@ -376,14 +377,37 @@ int32 spt::IedToolsServer::Unpack(SalCmmMsgHeader& Msg)
 		}
 		break;
 	}
-	case E_ITMT_AskRootWnd:
+	case E_ITMT_AskWnd:
 	{
 		if (wndRoot)
 		{
+			if (wndRoot->enterFunc)
+			{
+				if (!wndRoot->enterFunc((class ApiIedToolsCascadeWnd*)wndRoot))
+				{
+					SalTransFrame5kB ctrl;
+					ctrl.SetMsgIniInfo(E_ITMT_EnterWndAck, 0);
+					uint32 Id = wndRoot->wndId;
+					ctrl.Write(Id);
+					uint32 u32 = -1;
+					ctrl.Write(Id);
+					SendMsg(ctrl.Header());
+					return 0;
+				}
+			}
 			SendCascadeWnd(wndRoot->childWnd);
 		}
 		break;
 	}
+	case E_ITMT_EnterWnd:
+	{
+		SalTransFrame256B m;
+		m.CopyCtx(msg->Header.salHeader);
+		uint32 Id;
+		m.Read(Id);
+		EnterWnd(SearchBoard(wndRoot, Id));
+		break;
+	};
 	default:
 		break;
 	}
@@ -397,26 +421,119 @@ int32 spt::IedToolsServer::CloseSock()
 	gmSock.GetRemote(str);
 	DbgToolsServer::Instance().SetClientClose(DbgToolsServer::E_IedTools, str.Str());
 	checkTimer.Enable(0);
+	if (wndRoot->exitFunc)
+	{
+		if (!wndRoot->exitFunc((class ApiIedToolsCascadeWnd*)wndRoot))
+		{
+		}
+	}
 	return 0;
 }
 
 int32 spt::IedToolsServer::SendCascadeWnd(IedToolsCascadeWnd* Wnd)
 {
-	while (Wnd && (!Wnd->IsEnd()))
+	if (!Wnd)
 	{
-		if (Wnd->pdisp && *Wnd->pdisp)
+		return -1;
+	}
+	SalTransFrame5kB ctrl;
+	IedToolsCascadeWnd* wnd = Wnd;
+	while (wnd && (!wnd->IsEnd()))
+	{
+		if (*wnd->pdisp)
+		{
+			ctrl.SetMsgIniInfo(E_ITMT_AskWndAck, 0);
+			uint32 Id;
+			ctrl.Write(Id = wnd->parent->wndId);
+			ctrl.Write(Id = wnd->wndId);
+			ctrl.Write(wnd->title, sizeof(wnd->title));
+			SendMsg(ctrl.Header());
+		}
+		MsSleep(2);
+		wnd++;
+	}
+	uint32 Id;
+	ctrl.SetMsgIniInfo(E_ITMT_AskWndAck, 0);
+	ctrl.Write(Id = Wnd->parent->wndId);
+	ctrl.Write(Id = -1);
+	char buf[10] = "    ";
+	ctrl.Write(buf, sizeof(buf));
+	SendMsg(ctrl.Header());
+	return 0;
+}
+int32 spt::IedToolsServer::EnterWnd(IedToolsCascadeWnd* Wnd)
+{
+	if (!Wnd)
+	{
+		return -1;
+	}
+	if (Wnd->enterFunc)
+	{
+		if (!Wnd->enterFunc((class ApiIedToolsCascadeWnd*)Wnd))
 		{
 			SalTransFrame5kB ctrl;
-			ctrl.SetMsgIniInfo(E_ITMT_AskRootWndAck, 0);
-
+			ctrl.SetMsgIniInfo(E_ITMT_EnterWndAck, 0);
+			uint32 Id = Wnd->wndId;
+			ctrl.Write(Id);
+			uint32 u32 = -1;
+			ctrl.Write(Id);
 			SendMsg(ctrl.Header());
-			MsSleep(2);
+			return -1;
+		}
+	}
+	if (Wnd->childWnd)
+	{
+		SendCascadeWnd(Wnd->childWnd);
+		SalTransFrame5kB ctrl;
+		ctrl.SetMsgIniInfo(E_ITMT_EnterWndAck, 0);
+		uint32 Id = Wnd->wndId;
+		ctrl.Write(Id);
+		uint32 u32 = 0;
+		ctrl.Write(u32);
+		SendMsg(ctrl.Header());
+		return 0;
+	}
+	else if (Wnd->workFunc)
+	{
+		IedToolsCascadeWnd::Flags flag;
+		IedToolsCascadeWnd::IedToolsWndPara Para;
+		MemSet(&flag, 0, sizeof(flag));
+		flag.isFirstCreat = 1;
+		MemSet(&Para, 0, sizeof(Para));
+		Para.sizePara = sizeof(Para);
+		Wnd->workFunc((class ApiIedToolsCascadeWnd*)Wnd, flag, Para);
+		return 0;
+	}
+	return -1;
+}
+IedToolsCascadeWnd* spt::IedToolsServer::SearchBoard(IedToolsCascadeWnd* RotBook, uint32 Id)
+{
+	IedToolsCascadeWnd* Wnd = RotBook;
+	while (Wnd && (!Wnd->IsEnd()))
+	{
+		if (Wnd->wndId < Id)
+		{
+			if (Wnd->childWnd)
+			{
+				IedToolsCascadeWnd* w = SearchBoard(Wnd->childWnd, Id);
+				if (w)
+				{
+					return w;
+				}
+			}
+		}
+		else if (Wnd->wndId == Id)
+		{
+			return Wnd;
+		}
+		else
+		{
+			return 0;
 		}
 		Wnd++;
 	}
 	return 0;
 }
-
 spt::IedToolsDialog::IedToolsDialog(const char* Name, int32 WaitTime)
 {
 	SetInfo(Name, WaitTime);
@@ -444,7 +561,7 @@ int32 spt::IedToolsDialog::RecMsg(uint32 MsgType, int32 WaitTime, SalCmmMsgHeade
 	return 	IedToolsServer::Instance().RecMsg(MsgType, WaitTime, msg, MsgBufLen);
 }
 
-spt::IedToolsCascadeWnd::IedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, ApiIedToolsCascadeWnd* ChildWnd, WndFunc WorkFunc, WndFunc ExitFunc, const uint32* pDisp)
+spt::IedToolsCascadeWnd::IedToolsCascadeWnd(const char* Name, WndFunc EnterFunc, ApiIedToolsCascadeWnd* ChildWnd, WorkFunc WorkFunc, WndFunc ExitFunc, const uint32* pDisp)
 {
 	StrNCpy(title, Name, sizeof(title));
 	enterFunc = EnterFunc;
@@ -464,9 +581,18 @@ bool8 spt::IedToolsCascadeWnd::IsEnd()
 	return StrNCmp(title, EndOfInst, sizeof(title)) == 0;
 }
 
-uint32 spt::IedToolsCascadeWnd::SetId(uint32 Id)
+uint32 spt::IedToolsCascadeWnd::SetParent(IedToolsCascadeWnd* Wnd)
 {
-	wndId = Id + 1;
+	if (Wnd)
+	{
+		parent = Wnd;
+		wndId = Wnd->lastChildId + 1;
+	}
+	else
+	{
+		parent = 0;
+		wndId = 0;
+	}
 	if (IsEnd())
 	{
 		return wndId;
@@ -479,9 +605,10 @@ uint32 spt::IedToolsCascadeWnd::SetId(uint32 Id)
 		{
 			if (wnd->IsEnd())
 			{
-				return lastChildId;
+				return wndId;
 			}
-			lastChildId = wnd->SetId(lastChildId);
+			wnd->SetParent(this);
+			lastChildId = wnd->lastChildId;
 			wnd++;
 		}
 	}

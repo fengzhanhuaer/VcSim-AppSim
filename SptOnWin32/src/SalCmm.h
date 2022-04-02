@@ -188,6 +188,8 @@ namespace spt
 		int32 Read(uint32& Data) { return Read(&Data, sizeof(Data)); }
 		int32 Read(uint16& Data) { return Read(&Data, sizeof(Data)); }
 		int32 Read(uint8& Data) { return Read(&Data, sizeof(Data)); }
+		void* ReadTop() { return frame->data + reader; };
+		int32 CopyCtx(SalCmmMsgHeader& Ctrl);
 	protected:
 		uint32 reader;
 		uint32 writer;

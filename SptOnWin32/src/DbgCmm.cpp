@@ -472,7 +472,7 @@ int32 spt::DbgTcpClient::StartNonBlock()
 	{
 		return -1;
 	}
-	if (SetSocketNonBlock(0) < 0)
+	if (SetSocketNonBlock(1) < 0)
 	{
 		LogWarn.Stamp() << "Socket SetSocketNonBlock Failed." << GetSocketLastError() << "\n";
 		return -1;
